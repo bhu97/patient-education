@@ -4,7 +4,6 @@ const FontFamily = {
     LatoBold: 'Lato-Bold',
 } as const;
 
-
 export const BaseThemeStyle = {
     //add color code here
     colors: {
@@ -15,6 +14,7 @@ export const BaseThemeStyle = {
         black: '#000000',
         gray: '#9E9E9E',
         white: '#FFFFFF',
+        blue: '#0000FF',
     },
     paddings: {
         bodyHorizontal: 0,
@@ -41,7 +41,7 @@ export const BaseThemeStyle = {
         heights: {
             dots: 10,
             radio: 20,
-            separatorContainer:16,
+            separatorContainer: 16,
             checkBox: 24,
             buttons: 44,
             topBars: 56,
@@ -143,6 +143,5 @@ export const BaseThemeStyle = {
             fontFamily: FontFamily.LatoBold,
             fontSize: 12,
         },
-    }
-    
-}
+    },
+};
