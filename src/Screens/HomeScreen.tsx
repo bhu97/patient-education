@@ -5,7 +5,7 @@ import { Dispatch } from 'redux';
 import CustomBody from '../Components/custom-body/custom-body';
 import CustomButton from '../Components/custom-button/custom-button';
 import CustomWrapper from '../Components/custom-wrapper/custom-wrapper';
-import FormBottomContainer from '../Components/form-bottom-container/form-bottom-container';
+import BottomContainer from '../Components/bottom-container/bottom-container';
 import FullScreenLoader from '../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../Components/main-container/main-container';
 import { envConfiguration } from '../Helper/EnvConfigurations';
@@ -86,11 +86,11 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                     />
                 </CustomBody>
 
-                <FormBottomContainer>
+                <BottomContainer>
                     <CustomWrapper paddingVertical paddingHorizontal>
                         <CustomButton text={'change message'} onPress={this.buttonPress} rounded />
                     </CustomWrapper>
-                </FormBottomContainer>
+                </BottomContainer>
 
                 <FullScreenLoader isLoading={this.props.apiDataLoading} showSpinner />
             </MainContainer>
