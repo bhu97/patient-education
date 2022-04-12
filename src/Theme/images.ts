@@ -24,7 +24,7 @@ const images = {
      * The Fresenius Netcare GmbH logo.
      * @type png
      */
-    netcareLogo: require('../Assets/Netcare_Logo.png'),
+    superSignLogoWhite: require('../Assets/Supersign_Logo_white.png'),
 };
 
 /// ################################ Export ################################
