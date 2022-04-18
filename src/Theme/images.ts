@@ -19,12 +19,13 @@
  *    </p>
  * -----------------------------------------------------------------
  */
+const prefix = '../../assets/images';
 const images = {
     /**
      * The Fresenius Netcare GmbH logo.
      * @type png
      */
-    superSignLogoWhite: require('../Assets/Supersign_Logo_white.png'),
+    superSignLogoWhite: require(prefix + '/Supersign_Logo_white.png'),
 };
 
 /// ################################ Export ################################
