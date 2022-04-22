@@ -5,7 +5,18 @@ import { LocalizationManager } from './LocalizationManager';
  * also add translation in Locales file
  */
 export const BaseLocalization = {
-    welcome: LocalizationManager.strings('welcome'),
-    howAreYou: LocalizationManager.strings('howAreYou'),
-    noInternetConnection: LocalizationManager.strings('noInternetConnection'),
+    welcome: LocalizationManager.getLocalizedStrings('welcome'),
+    howAreYou: LocalizationManager.getLocalizedStrings('howAreYou'),
+    noInternetConnection: LocalizationManager.getLocalizedStrings('noInternetConnection'),
+    favoriteTitle: LocalizationManager.getLocalizedStrings('favoriteTitle'),
+    favoriteSubTitle: LocalizationManager.getLocalizedStrings('favoriteSubTitle'),
+    settingTitle: LocalizationManager.getLocalizedStrings('settingTitle'),
+    settingSubTitle: LocalizationManager.getLocalizedStrings('settingSubTitle'),
+    generalTitle: LocalizationManager.getLocalizedStrings('generalTitle'),
+    technicalTitle: LocalizationManager.getLocalizedStrings('technicalTitle'),
+    contact: LocalizationManager.getLocalizedStrings('contact'),
+    countryTitle: LocalizationManager.getLocalizedStrings('countryTitle'),
+    contentTitle: LocalizationManager.getLocalizedStrings('contentTitle'),
+    updateTitle: LocalizationManager.getLocalizedStrings('updateTitle'),
+    selectCatgory: LocalizationManager.getLocalizedStrings('selectCatgory'),
 };

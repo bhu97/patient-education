@@ -17,7 +17,7 @@ export class LocalizationManager {
         AsyncStorage.setItem(LANGUAGE_CONSTANT.APP_LANGUAGE, newLanguage);
     }
 
-    static strings(name: string) {
+    static getLocalizedStrings(name: string) {
         const str = I18n.t(name);
         return str;
     }
