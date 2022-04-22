@@ -67,6 +67,7 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
 
     render() {
         return <FlatList
+            nestedScrollEnabled
             ItemSeparatorComponent={this.flatListItemSeparator}
             data={this.props.catagoryList}
             renderItem={this.renderItem}

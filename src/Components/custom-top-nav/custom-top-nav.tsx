@@ -1,17 +1,23 @@
 import React, { PureComponent } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
+import Images from '../../Theme/Images';
+import CustomIcon from '../custom-icon/custom-icon';
 import { style } from './style';
 
 interface CustomTopNavProps {
     title?: string;
-    subTitle: string;
+    subTitle?: string;
     back?: boolean;
     onPressBack?: () => void;
+    isShowImage?: boolean | false;
+    imageName?: string;
+    backgroundColor?: string;
 }
 
-interface CustomTopNavState {}
+interface CustomTopNavState { }
 
 export default class CustomTopNav extends PureComponent<CustomTopNavProps, CustomTopNavState> {
     constructor(props: CustomTopNavProps) {
@@ -21,18 +27,25 @@ export default class CustomTopNav extends PureComponent<CustomTopNavProps, Custo
     render() {
         return (
             <View style={style.container}>
-                {this.props.back && (
-                    <View style={style.backIcon}>
+                <View style={style.backIcon}>
+                    {this.props.back && (
                         <TouchableOpacity onPress={this.props.onPressBack}>
-                            <Text>
-                                <Icon name="arrowleft" size={50} bold color="#4389BC" />
-                            </Text>
+                            <CustomIcon
+                                name={'arrow-left'}
+                                size={50}
+                                color={BaseThemeStyle.colors.iconColor}
+                            />
                         </TouchableOpacity>
-                    </View>
-                )}
-                {this.props.title && <Text style={style.titleContainer}>{this.props.title}</Text>}
-                <View style={{}}>
-                    <Text style={style.subTitle}>{this.props.subTitle}</Text>
+                    )}
+                </View>
+                <View style={style.textContainer}>
+                    <Text style={style.titleText}>{this.props.title}</Text>
+                    <Text style={style.subTitleText} numberOfLines={2}>
+                        {this.props.subTitle}
+                    </Text>
+                </View>
+                <View style={style.imageContainer}>
+                    <Image source={Images.topNavImageSettingScreen} style={style.imageStyle} />
                 </View>
             </View>
         );

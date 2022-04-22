@@ -1,18 +1,29 @@
 import React, { Component } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Alert, Image, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
+import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
+import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
 import NavigationManager from '../../Helper/NavigationManager';
+import { setCatagoryList } from '../../Redux/catagory/catagorySlice';
 import { RootState } from '../../Redux/rootReducer';
+import Images from '../../Theme/Images';
 
-interface HomePageProps {}
+interface HomePageProps {
+    dispatch: Dispatch;
+    catagoryList: any;
+    getList: () => void;
+    navigation: any;
+}
 
-interface HomePageState {}
+interface HomePageState {
+}
 
 class HomePage extends Component<HomePageProps, HomePageState> {
     constructor(props: HomePageProps) {
@@ -32,43 +43,49 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         Alert.alert('on Click Bredcrum 1');
     };
 
-    onClickBredcrum2 = () => {
-        Alert.alert('on Click Bredcrum 2');
-    };
-
-    onClickBredcrum3 = () => {
-        Alert.alert('on Click Bredcrum 3');
-    };
 
     render() {
         return (
+
             <MainContainer>
-                <CustomTopNav
-                    title="Welcome!"
-                    // back
-                    subTitle="Please select your catagory"
-                    onPressBack={this.goBack}
-                />
 
+                <CustomTopNav title={BaseLocalization.welcome} subTitle={BaseLocalization.selectCatgory} />
                 <CustomBody>
-                    <Text>{'Body Details'}</Text>
-                </CustomBody>
-
-                <CustomBottomContainer>
-                    <View style={{ backgroundColor: 'white', flexDirection: 'row', padding: 8 }}>
-                        <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onClickBredcrum1} />
-                        <CustomBredcrum title={'Test'} onPress={this.onClickBredcrum2} />
-                        <CustomBredcrum title={'Watch out for 12345'} onPress={this.onClickBredcrum3} />
+                    <View style={{ height: '60%' }}>
+                        <View style={{ flexDirection: 'row', width: '100%' }}>
+                            <View style={{ marginLeft: '5%', width: '40%' }}>
+                                <CustomFlatList
+                                    catagoryList={this.props.catagoryList}
+                                />
+                            </View>
+                            <View style={{ marginTop: '20%', width: '100%', height: '100%', marginBottom: '5%' }}>
+                                <Image
+                                    resizeMode="contain"
+                                    style={{ width: 600, height: 380 }}
+                                    source={Images.illuHome}
+                                />
+                            </View>
+                        </View>
                     </View>
+                </CustomBody>
+                <CustomBottomContainer>
+                    <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onClickBredcrum1} />
                 </CustomBottomContainer>
             </MainContainer>
         );
     }
 }
 
-const mapStateToProps = (state: RootState) => ({});
 
-const mapDispatchToProps = (dispatch: any) => ({});
+const mapStateToProps = (state: RootState) => ({
+    catagoryList: state.catagoryReducer.catagoryList,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+    getList: () => {
+        dispatch(setCatagoryList());
+    },
+});
 
 //export default HomePage;
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

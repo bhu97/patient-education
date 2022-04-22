@@ -1,32 +1,46 @@
 import { StyleSheet } from 'react-native';
 import { BaseThemeStyle } from '../Theme/BaseThemeStyle';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-
-const statusBarHeight = getStatusBarHeight();
 
 export const style = StyleSheet.create({
-    container: {
-        flexDirection: 'column',
-              width: '10.5%',
-              justifyContent: 'center',
-              backgroundColor: '#4389BC',
+    tabMainContainer: {
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: 0,
+        bottom: 0,
+        width: '11%',
+        backgroundColor: BaseThemeStyle.colors.blue,
     },
-    backIcon: {
-        marginBottom:16.38
+    tabLogo: {
+        position: 'absolute',
+        top: 60,
     },
-
-    titleContainer: {
-        fontSize:30,
-        color:"#071B45",
-        fontWeight:'600'
+    logoSize: {
+        width: 70,
+        height: 70,
     },
-    subTitle: {
-        fontSize:20,
-        color:"#071B45",
-        fontWeight:'600'
+    screenContainer: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        right: 0,
+        width: '89%',
+        left: '11%',
     },
-
-    titleColor: {
-        color: BaseThemeStyle.colors.danger,
+    iconContainer: {
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    focused: {
+        backgroundColor: BaseThemeStyle.colors.white,
+    },
+    unfocused: {
+        backgroundColor: BaseThemeStyle.colors.blue,
+    },
+    tabIconContainer: {
+        paddingVertical: 25,
+    },
+    tabIcon: {
+        alignSelf: 'center',
     },
 });

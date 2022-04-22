@@ -1,33 +1,41 @@
 import { StyleSheet } from 'react-native';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-
-const statusBarHeight = getStatusBarHeight();
 
 export const style = StyleSheet.create({
     container: {
-        width: '100%',
-        height: BaseThemeStyle.dimensions.heights.topBars + statusBarHeight,
-        marginLeft: 45,
-        marginTop: 59,
-        marginBottom: 41,
+        height: 125,
+        backgroundColor: BaseThemeStyle.colors.white,
+        shadowColor: 'black',
+        opacity: 1,
+        shadowRadius: 2,
+        flexDirection: 'row',
+        marginTop: BaseThemeStyle.margin.formElements,
+        marginBottom: BaseThemeStyle.margin.formElements,
     },
     backIcon: {
-        marginBottom: 16.38,
+        margin: BaseThemeStyle.margin.containers,
+        padding: BaseThemeStyle.paddings.containers,
     },
-
-    titleContainer: {
-        fontSize: 30,
-        color: '#071B45',
-        fontWeight: '600',
+    textContainer: {
+        flex: 0.7,
+        justifyContent: 'space-evenly',
     },
-    subTitle: {
-        fontSize: 20,
-        color: '#071B45',
-        fontWeight: '600',
+    titleText: {
+        ...BaseThemeStyle.fonts.pageTitle,
+        color: BaseThemeStyle.colors.titleColor,
     },
-
-    titleColor: {
-        color: BaseThemeStyle.colors.danger,
+    subTitleText: {
+        ...BaseThemeStyle.fonts.pageSubTitle,
+        color: BaseThemeStyle.colors.titleColor,
+        width: '80%',
+    },
+    imageContainer: {
+        flex: 0.3,
+        padding: 8,
+    },
+    imageStyle: {
+        height: '100%',
+        width: '100%',
+        resizeMode: 'contain',
     },
 });

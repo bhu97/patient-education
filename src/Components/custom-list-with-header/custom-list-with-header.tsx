@@ -3,16 +3,13 @@ import { Text, View } from 'react-native';
 import { style } from './style';
 import Icon from 'react-native-vector-icons/Entypo';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
+import CustomIcon from '../custom-icon/custom-icon';
 
 interface CustomListWithHeaderProps {
     iconName: string;
     labelText: string;
     headerText?: string;
 }
-
-const getIcon = (iconName) => {
-    return <Icon name={iconName} size={35} color={BaseThemeStyle.colors.black} />;
-};
 
 const CustomListWithHeader = (props: CustomListWithHeaderProps) => {
     return (
@@ -21,11 +18,23 @@ const CustomListWithHeader = (props: CustomListWithHeaderProps) => {
                 <Text style={style.headerTextStyle}>{props.headerText}</Text>
             </View>
             <View style={style.itemContainer}>
-                <View style={style.circleIconContainer}>{getIcon(props.iconName)}</View>
+                <View style={style.circleIconContainer}>
+                    <CustomIcon
+                        name={props.iconName}
+                        size={35}
+                        color={BaseThemeStyle.colors.black}
+                    />
+                </View>
                 <View style={style.textContainer}>
                     <Text style={style.textStyle}>{props.labelText}</Text>
                 </View>
-                <View style={style.iconContainer}>{getIcon('chevron-small-right')}</View>
+                <View style={style.iconContainer}>
+                    <CustomIcon
+                        name={'chevron-right'}
+                        size={35}
+                        color={BaseThemeStyle.colors.black}
+                    />
+                </View>
             </View>
         </View>
     );
