@@ -3,7 +3,7 @@ import { StyleProp, TextStyle, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 interface CustomIconProps {
-    name?: string;
+    name: string;
     color?: string;
     size?: number;
     style?: StyleProp<TextStyle>;

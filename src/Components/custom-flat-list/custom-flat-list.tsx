@@ -20,7 +20,7 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
         return (
             <Image
                 resizeMode="contain"
-                style={{ width: 20, height: 20 }}
+                style={style.imageStyle}
                 source={imageName}
             />
         )
@@ -29,34 +29,23 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
     flatListItemSeparator = () => {
         return (
             <View
-                style={{
-                    height: 20,
-                    width: '45%',
-                }}
+                style={style.lineSeparator}
             />
-        );
+        )
+
     };
 
     renderItem = ({ item }: any) => {
         return (
-            <TouchableOpacity
-                onPress={() => console.log("here")}
-            >
-                <View
-                    style={style.listItemContainer}
-                >
-                    <View style={{ flex: 1, height: 38, justifyContent: 'center' }}>
-                        <Text
-                            numberOfLines={2}
-                            style={style.textStyle}
-                        >
-                            {item.key}
-                        </Text>
-                    </View>
-                    <View style={{ marginRight: 10 }}>
+            <TouchableOpacity onPress={() => this.onPress(item)} >
+                <View style={style.listItemContainer} >
+                    <Text numberOfLines={2} style={style.textStyle} >
+                        {item.key}
+                    </Text>
+                    <View style={style.iamgeViewStyle}>
+
                         {this.getImage(Images.menuBlueDots)}
-                    </View>
-                    <View style={{}}>
+
                         {this.getImage(Images.rightArrow)}
                     </View>
                 </View>
@@ -64,6 +53,9 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
         );
     };
 
+    onPress = (item: any) => {
+        console.log(item)
+    }
 
     render() {
         return <FlatList

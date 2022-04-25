@@ -7,6 +7,7 @@ import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
+import CustomScrollView from '../../Components/custom-scroll-view/custom-scroll-view';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
 import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
@@ -14,6 +15,8 @@ import NavigationManager from '../../Helper/NavigationManager';
 import { setCatagoryList } from '../../Redux/catagory/catagorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
+import { style } from './style';
+
 
 interface HomePageProps {
     dispatch: Dispatch;
@@ -51,27 +54,32 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 
                 <CustomTopNav title={BaseLocalization.welcome} subTitle={BaseLocalization.selectCatgory} />
                 <CustomBody>
-                    <View style={{ height: '60%' }}>
-                        <View style={{ flexDirection: 'row', width: '100%' }}>
-                            <View style={{ marginLeft: '5%', width: '40%' }}>
+                    <View style={style.container}>
+                        <View style={style.flatListViewConatiner}>
+                            <CustomScrollView>
                                 <CustomFlatList
                                     catagoryList={this.props.catagoryList}
                                 />
-                            </View>
-                            <View style={{ marginTop: '20%', width: '100%', height: '100%', marginBottom: '5%' }}>
+                            </CustomScrollView>
+                        </View>
+                        <View style={style.imageViewConatiner}>
+                            <View style={style.imageView}>
                                 <Image
                                     resizeMode="contain"
-                                    style={{ width: 600, height: 380 }}
+                                    style={style.imageStyle}
                                     source={Images.illuHome}
+
                                 />
                             </View>
                         </View>
                     </View>
                 </CustomBody>
                 <CustomBottomContainer>
-                    <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onClickBredcrum1} />
+                    <View style={style.botomView}>
+                        <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onClickBredcrum1} />
+                    </View>
                 </CustomBottomContainer>
-            </MainContainer>
+            </MainContainer >
         );
     }
 }

@@ -7,6 +7,6 @@ export const style = StyleSheet.create({
         position: 'relative',
         paddingHorizontal: BaseThemeStyle.paddings.bodyHorizontal,
         paddingVertical: BaseThemeStyle.paddings.bodyVertical,
-        backgroundColor: BaseThemeStyle.colors.success,
+        backgroundColor: BaseThemeStyle.colors.screenBackgroundColor,
     },
 });
