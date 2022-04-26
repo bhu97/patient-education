@@ -10,7 +10,7 @@ const CustomNavigator = () => {
     return (
         <MyNavigator.Navigator initialRouteName="List">
             <MyNavigator.Screen name="HomePage" component={HomeStack} />
-            <MyNavigator.Screen name="TestPage" component={FavouritePage} />
+            <MyNavigator.Screen name="FavouritePage" component={FavouritePage} />
             <MyNavigator.Screen name="SettingPage" component={SettingPage} />
         </MyNavigator.Navigator>
     );

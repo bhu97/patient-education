@@ -1,9 +1,8 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { style } from './style';
-import Icon from 'react-native-vector-icons/Entypo';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import CustomIcon from '../custom-icon/custom-icon';
+import { style } from './style';
 
 interface CustomListWithHeaderProps {
     iconName: string;
@@ -14,14 +13,16 @@ interface CustomListWithHeaderProps {
 const CustomListWithHeader = (props: CustomListWithHeaderProps) => {
     return (
         <View style={style.mainContainer}>
-            <View style={style.headerTextContainer}>
-                <Text style={style.headerTextStyle}>{props.headerText}</Text>
-            </View>
+            {props.headerText &&
+                <View style={style.headerTextContainer}>
+                    <Text style={style.headerTextStyle}>{props.headerText}</Text>
+                </View>
+            }
             <View style={style.itemContainer}>
                 <View style={style.circleIconContainer}>
                     <CustomIcon
                         name={props.iconName}
-                        size={35}
+                        size={30}
                         color={BaseThemeStyle.colors.black}
                     />
                 </View>
@@ -31,7 +32,7 @@ const CustomListWithHeader = (props: CustomListWithHeaderProps) => {
                 <View style={style.iconContainer}>
                     <CustomIcon
                         name={'chevron-right'}
-                        size={35}
+                        size={30}
                         color={BaseThemeStyle.colors.black}
                     />
                 </View>

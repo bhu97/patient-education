@@ -1,21 +1,48 @@
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import CustomBody from '../../Components/custom-body/custom-body';
-import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
-import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomListWithHeader from '../../Components/custom-list-with-header/custom-list-with-header';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
 import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
 import Images from '../../Theme/Images';
+import { style } from './style';
 
-interface SettingPageProps {}
+interface SettingPageProps { }
 
-interface SettingPageState {}
+interface SettingPageState { }
 
 class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     constructor(props: SettingPageProps) {
         super(props);
+    }
+
+    titleRowView = (leftHeader, rightHeader) => {
+        return (
+            <View style={style.rowTextContainer}>
+                <Text style={style.rowTextStyle}>{leftHeader}</Text>
+                <Text style={style.rowTextStyle}>{rightHeader}</Text>
+            </View>
+        )
+    }
+
+    boxRowView = (customListlabel, iconName, customListValue) => {
+        return (
+            <View style={style.boxContainer}>
+                <View style={style.boxView}>
+                    <CustomListWithHeader labelText={customListlabel} iconName={iconName} />
+                </View>
+                <View style={style.textView}>
+                    <Text style={style.rowTextStyle}>{customListValue}</Text>
+                </View>
+            </View>
+        )
+    }
+
+    headerContainer = (title) => {
+        return (
+            <Text style={style.headerTextStyle}>{title}</Text>
+        )
     }
 
     render() {
@@ -26,35 +53,47 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                     subTitle={BaseLocalization.settingSubTitle}
                     isShowImage={true}
                     imageName={Images.superSignLogoWhite}
-                    // back
-                    // onPressBack={() => {
-                    //     console.log('back press');
-                    // }}
+                // back
+                // onPressBack={() => {
+                //     console.log('back press');
+                // }}
                 />
                 <CustomBody>
-                    <View style={{ backgroundColor: 'yellow', padding: 8, width: '40%' , flexDirection: 'column' }}>
-                      
+                    <View style={style.mainContainer}>
+                        <View style={style.contactConatiner}>
+
+                            {this.headerContainer("Contacts")}
+
                             <CustomListWithHeader
                                 headerText={BaseLocalization.generalTitle}
                                 labelText={BaseLocalization.contact}
                                 iconName="mail"
                             />
-                        
+
                             <CustomListWithHeader
                                 headerText={BaseLocalization.generalTitle}
                                 labelText={BaseLocalization.contact}
                                 iconName="mail"
                             />
-                        
+                        </View>
+                        <View style={style.appInfoConatiner}>
+
+                            {this.headerContainer("App Information")}
+
+                            {this.titleRowView('User Country', 'Version')}
+
+                            {this.boxRowView('Master', "edit-2", '0.9.2')}
+
+
+                            {this.headerContainer("Modified date")}
+
+                            {this.titleRowView('Online Content', 'Modified date')}
+
+                            {this.boxRowView('Update now', "download-cloud", '04.03.2022 14.02')}
+
+                        </View>
                     </View>
                 </CustomBody>
-                <CustomBottomContainer>
-                    <View style={{ backgroundColor: 'white', flexDirection: 'row', padding: 8 }}>
-                        <CustomBredcrum title={'Home'} isFirstCrumb={true} />
-                        <CustomBredcrum title={'Test'} />
-                        <CustomBredcrum title={'Watch out for 12345'} />
-                    </View>
-                </CustomBottomContainer>
             </MainContainer>
         );
     }

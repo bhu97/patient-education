@@ -6,7 +6,8 @@ const iconCircleSize = 45;
 export const style = StyleSheet.create({
     mainContainer: {
         flexDirection: 'column',
-        padding: BaseThemeStyle.paddings.formElements, //16
+        padding: BaseThemeStyle.paddings.containers,
+        justifyContent: 'center',
     },
     itemContainer: {
         flexDirection: 'row',
@@ -23,7 +24,7 @@ export const style = StyleSheet.create({
         alignItems: 'flex-start',
     },
     headerTextStyle: {
-        margin: BaseThemeStyle.margin.containers, //8
+        margin: BaseThemeStyle.margin.containers,
         ...BaseThemeStyle.fonts.listTitle,
         color: BaseThemeStyle.colors.titleColor,
         textAlign: 'left',

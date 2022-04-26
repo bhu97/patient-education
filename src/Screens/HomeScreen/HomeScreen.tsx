@@ -56,11 +56,9 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                 <CustomBody>
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
-                            <CustomScrollView>
-                                <CustomFlatList
-                                    catagoryList={this.props.catagoryList}
-                                />
-                            </CustomScrollView>
+                            <CustomFlatList
+                                catagoryList={this.props.catagoryList}
+                            />
                         </View>
                         <View style={style.imageViewConatiner}>
                             <View style={style.imageView}>

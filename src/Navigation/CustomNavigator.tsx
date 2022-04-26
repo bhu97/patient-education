@@ -23,7 +23,7 @@ const ScreenOptions = ({ route, isFocused }) => {
                 </View>
             );
 
-        case 'TestPage':
+        case 'FavouritePage':
             return (
                 <View style={[style.tabIconContainer, isFocused ? style.focused : style.unfocused]}>
                     <View style={style.tabIcon}>
