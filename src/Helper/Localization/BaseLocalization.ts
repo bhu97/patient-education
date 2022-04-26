@@ -19,4 +19,8 @@ export const BaseLocalization = {
     contentTitle: LocalizationManager.getLocalizedStrings('contentTitle'),
     updateTitle: LocalizationManager.getLocalizedStrings('updateTitle'),
     selectCatgory: LocalizationManager.getLocalizedStrings('selectCatgory'),
+    appInformation: LocalizationManager.getLocalizedStrings('appInformation'),
+    version: LocalizationManager.getLocalizedStrings('version'),
+    modificationDate: LocalizationManager.getLocalizedStrings('modificationDate'),
+    contentUpdates: LocalizationManager.getLocalizedStrings('contentUpdates'),
 };

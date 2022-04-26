@@ -8,9 +8,9 @@ import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
-interface SettingPageProps { }
+interface SettingPageProps {}
 
-interface SettingPageState { }
+interface SettingPageState {}
 
 class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     constructor(props: SettingPageProps) {
@@ -23,8 +23,8 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                 <Text style={style.rowTextStyle}>{leftHeader}</Text>
                 <Text style={style.rowTextStyle}>{rightHeader}</Text>
             </View>
-        )
-    }
+        );
+    };
 
     boxRowView = (customListlabel, iconName, customListValue) => {
         return (
@@ -36,14 +36,12 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                     <Text style={style.rowTextStyle}>{customListValue}</Text>
                 </View>
             </View>
-        )
-    }
+        );
+    };
 
     headerContainer = (title) => {
-        return (
-            <Text style={style.headerTextStyle}>{title}</Text>
-        )
-    }
+        return <Text style={style.headerTextStyle}>{title}</Text>;
+    };
 
     render() {
         return (
@@ -53,16 +51,15 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                     subTitle={BaseLocalization.settingSubTitle}
                     isShowImage={true}
                     imageName={Images.superSignLogoWhite}
-                // back
-                // onPressBack={() => {
-                //     console.log('back press');
-                // }}
+                    // back
+                    // onPressBack={() => {
+                    //     console.log('back press');
+                    // }}
                 />
                 <CustomBody>
                     <View style={style.mainContainer}>
                         <View style={style.contactConatiner}>
-
-                            {this.headerContainer("Contacts")}
+                            {this.headerContainer(BaseLocalization.contact)}
 
                             <CustomListWithHeader
                                 headerText={BaseLocalization.generalTitle}
@@ -77,20 +74,17 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                             />
                         </View>
                         <View style={style.appInfoConatiner}>
+                            {this.headerContainer(BaseLocalization.appInformation)}
 
-                            {this.headerContainer("App Information")}
+                            {this.titleRowView(BaseLocalization.countryTitle, BaseLocalization.version)}
 
-                            {this.titleRowView('User Country', 'Version')}
+                            {this.boxRowView('Master', 'edit-2', '0.9.2')}
 
-                            {this.boxRowView('Master', "edit-2", '0.9.2')}
+                            {this.headerContainer(BaseLocalization.contentUpdates)}
 
+                            {this.titleRowView(BaseLocalization.contentTitle, BaseLocalization.modificationDate)}
 
-                            {this.headerContainer("Modified date")}
-
-                            {this.titleRowView('Online Content', 'Modified date')}
-
-                            {this.boxRowView('Update now', "download-cloud", '04.03.2022 14.02')}
-
+                            {this.boxRowView(BaseLocalization.updateTitle, 'download-cloud', '04.03.2022 14.02')}
                         </View>
                     </View>
                 </CustomBody>
