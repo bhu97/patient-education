@@ -6,7 +6,9 @@ export const style = StyleSheet.create({
         width: '100%',
         height: BaseThemeStyle.dimensions.heights.bottomContainer,
         flexDirection: 'column',
-        backgroundColor: BaseThemeStyle.colors.olive,
+        backgroundColor: BaseThemeStyle.colors.white,
         justifyContent: 'center',
+        borderWidth: 5,
+        borderColor: BaseThemeStyle.colors.lightGray
     },
 });

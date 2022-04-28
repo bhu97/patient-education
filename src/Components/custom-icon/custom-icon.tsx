@@ -1,19 +1,29 @@
 import React from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 
 interface CustomIconProps {
     name: string;
-    color?: string;
-    size?: number;
+    color: string;
+    size: number;
     style?: StyleProp<TextStyle>;
     // onIconPress?: () => void;
     accessibilityLabel?: string;
 }
-interface CustomIconState { }
-class CustomIcon extends React.PureComponent<CustomIconProps, CustomIconState> {
+
+class CustomIcon extends React.PureComponent<CustomIconProps> {
+
     constructor(props: CustomIconProps) {
         super(props);
+    }
+
+    //default values to size, color and style
+    static defaultProps = {
+        animate: true,
+        color: BaseThemeStyle.colors.black,
+        size: 30,
+        style: {},
     }
 
     // callBack() {

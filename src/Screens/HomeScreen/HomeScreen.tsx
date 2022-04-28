@@ -1,3 +1,101 @@
+// import React, { Component } from 'react';
+// import { Alert, Image, View } from 'react-native';
+// import SplashScreen from 'react-native-splash-screen';
+// import { connect } from 'react-redux';
+// import { Dispatch } from 'redux';
+// import CustomBody from '../../Components/custom-body/custom-body';
+// import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
+// import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
+// import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
+// import CustomScrollView from '../../Components/custom-scroll-view/custom-scroll-view';
+// import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
+// import MainContainer from '../../Components/main-container/main-container';
+// import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
+// import NavigationManager from '../../Helper/NavigationManager';
+// import { setCatagoryList } from '../../Redux/catagory/catagorySlice';
+// import { RootState } from '../../Redux/rootReducer';
+// import Images from '../../Theme/Images';
+// import { style } from './style';
+
+
+// interface HomePageProps {
+//     dispatch: Dispatch;
+//     catagoryList: any;
+//     getList: () => void;
+//     navigation: any;
+// }
+
+// interface HomePageState {
+// }
+
+// class HomePage extends Component<HomePageProps, HomePageState> {
+//     constructor(props: HomePageProps) {
+//         super(props);
+//     }
+
+//     componentDidMount() {
+//         //hide splash screen
+//         SplashScreen.hide();
+//     }
+
+//     goBack = () => {
+//         NavigationManager.goBack();
+//     };
+
+//     onClickBredcrum1 = () => {
+//         Alert.alert('on Click Bredcrum 1');
+//     };
+
+
+//     render() {
+//         return (
+
+//             <MainContainer>
+
+//                 <CustomTopNav title={BaseLocalization.welcome} subTitle={BaseLocalization.selectCatgory} />
+//                 <CustomBody>
+//                     <View style={style.container}>
+//                         <View style={style.flatListViewConatiner}>
+//                             <CustomFlatList
+//                                 catagoryList={this.props.catagoryList}
+//                             />
+//                         </View>
+//                         <View style={style.imageViewConatiner}>
+//                             <View style={style.imageView}>
+//                                 <Image
+//                                     resizeMode="contain"
+//                                     style={style.imageStyle}
+//                                     source={Images.illuHome}
+
+//                                 />
+//                             </View>
+//                         </View>
+//                     </View>
+//                 </CustomBody>
+//                 <CustomBottomContainer>
+//                     <View style={style.botomView}>
+//                         <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onClickBredcrum1} />
+//                     </View>
+//                 </CustomBottomContainer>
+//             </MainContainer >
+//         );
+//     }
+// }
+
+
+// const mapStateToProps = (state: RootState) => ({
+//     catagoryList: state.catagoryReducer.catagoryList,
+// });
+
+// const mapDispatchToProps = (dispatch: any) => ({
+//     getList: () => {
+//         dispatch(setCatagoryList());
+//     },
+// });
+
+// //export default HomePage;
+// export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+
 import React, { Component } from 'react';
 import { Alert, Image, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
@@ -7,7 +105,6 @@ import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
-import CustomScrollView from '../../Components/custom-scroll-view/custom-scroll-view';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
 import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
@@ -17,7 +114,6 @@ import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
-
 interface HomePageProps {
     dispatch: Dispatch;
     catagoryList: any;
@@ -25,8 +121,7 @@ interface HomePageProps {
     navigation: any;
 }
 
-interface HomePageState {
-}
+interface HomePageState { }
 
 class HomePage extends Component<HomePageProps, HomePageState> {
     constructor(props: HomePageProps) {
@@ -35,7 +130,9 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 
     componentDidMount() {
         //hide splash screen
-        SplashScreen.hide();
+        setTimeout(() => {
+            SplashScreen.hide();
+        }, 10000);
     }
 
     goBack = () => {
@@ -46,28 +143,27 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         Alert.alert('on Click Bredcrum 1');
     };
 
+    onClick = (item) => {
+        //set category 
+        NavigationManager.navigate('CategoryScreen', { wholeData: item });
+    };
 
     render() {
         return (
-
             <MainContainer>
-
                 <CustomTopNav title={BaseLocalization.welcome} subTitle={BaseLocalization.selectCatgory} />
                 <CustomBody>
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
                             <CustomFlatList
                                 catagoryList={this.props.catagoryList}
+                                onPressList={this.onClick}
+                                elementType="key"
                             />
                         </View>
                         <View style={style.imageViewConatiner}>
                             <View style={style.imageView}>
-                                <Image
-                                    resizeMode="contain"
-                                    style={style.imageStyle}
-                                    source={Images.illuHome}
-
-                                />
+                                <Image resizeMode="contain" style={style.imageStyle} source={Images.illuHome} />
                             </View>
                         </View>
                     </View>
@@ -77,11 +173,10 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                         <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onClickBredcrum1} />
                     </View>
                 </CustomBottomContainer>
-            </MainContainer >
+            </MainContainer>
         );
     }
 }
-
 
 const mapStateToProps = (state: RootState) => ({
     catagoryList: state.catagoryReducer.catagoryList,

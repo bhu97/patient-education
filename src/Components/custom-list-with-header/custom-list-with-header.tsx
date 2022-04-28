@@ -22,8 +22,6 @@ const CustomListWithHeader = (props: CustomListWithHeaderProps) => {
                 <View style={style.circleIconContainer}>
                     <CustomIcon
                         name={props.iconName}
-                        size={30}
-                        color={BaseThemeStyle.colors.black}
                     />
                 </View>
                 <View style={style.textContainer}>
@@ -32,8 +30,6 @@ const CustomListWithHeader = (props: CustomListWithHeaderProps) => {
                 <View style={style.iconContainer}>
                     <CustomIcon
                         name={'chevron-right'}
-                        size={30}
-                        color={BaseThemeStyle.colors.black}
                     />
                 </View>
             </View>
