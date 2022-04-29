@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 function Routes() {
     return (
         <Stack.Navigator
-            initialRouteName="Home"
+            initialRouteName="HomeScreen"
             screenOptions={{
                 gestureEnabled: false,
                 header: undefined,
@@ -15,7 +15,7 @@ function Routes() {
                 cardStyle: { backgroundColor: 'white' },
             }}
         >
-            <Stack.Screen name="Home" component={CustomNavigator} />
+            <Stack.Screen name="HomeScreen" component={CustomNavigator} />
         </Stack.Navigator>
     );
 }

@@ -8,8 +8,9 @@ import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
+import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
-import { setCatagoryList } from '../../Redux/catagory/catagorySlice';
+import { setCatagoryList, setCategoryDetailTitle } from '../../Redux/catagory/catagorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
@@ -19,10 +20,11 @@ interface SubCategoryScreenProps {
     getList: () => void;
     navigation: any;
     route: any;
+    mainTitle: String;
+    categoryTitle: String;
 }
 
 interface SubCategoryScreenState {
-    title: String;
     subCategory: any;
     selectedSubCategory: any;
 }
@@ -31,29 +33,35 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
     constructor(props: SubCategoryScreenProps) {
         super(props);
         this.state = {
-            title: this.props.route.params.wholeData.value,
             subCategory: this.props.route.params.wholeData,
             selectedSubCategory: this.props.route.params.selectedCategory.array,
         };
     }
 
-    goBack = () => {
-        NavigationManager.goBack();
-    };
-
+    
     onClickFirstList = () => { };
+
     onClickSecondList = (item) => {
-        console.log('last page', item.options);
+        console.log(item);
+        //LogManager.error("selected detail category=", item.options);
+        //set sub category tiltle
+        this.props.setTileCategoryDetails(item.options);
+
         NavigationManager.navigate('CategoryDetailScreen');
     };
-    onClickBredcrum1 = () => {
-        Alert.alert('on Click Bredcrum 1');
+
+    goToHomeScreen = () => {
+        NavigationManager.navigateAndClear("HomeScreen");
+    };
+
+    goBack = () => {
+         NavigationManager.goBack();
     };
 
     render() {
         return (
             <MainContainer>
-                <CustomTopNav back subTitle={this.state.title} onPressBack={this.goBack} />
+                <CustomTopNav back subTitle={this.props.categoryTitle} onPressBack={this.goBack} />
                 <CustomBody>
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
@@ -75,8 +83,9 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                 </CustomBody>
                 <CustomBottomContainer>
                     <View style={style.botomView}>
-                        <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onClickBredcrum1} />
-                        <CustomBredcrum title={this.state.title} onPress={this.onClickBredcrum1} />
+                        <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.goToHomeScreen} />
+                        <CustomBredcrum title={this.props.mainTitle} onPress={this.goBack} />
+                        <CustomBredcrum title={this.props.categoryTitle}  />
                     </View>
                 </CustomBottomContainer>
             </MainContainer>
@@ -86,11 +95,16 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
 
 const mapStateToProps = (state: RootState) => ({
     catagoryList: state.catagoryReducer.catagoryList,
+    categoryTitle: state.catagoryReducer.subCategoryTitle,
+    mainTitle: state.catagoryReducer.categoryTitle,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
     getList: () => {
         dispatch(setCatagoryList());
+    },
+    setTileCategoryDetails: (titleText: String) => {
+        dispatch(setCategoryDetailTitle(titleText));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SubCategoryScreen);

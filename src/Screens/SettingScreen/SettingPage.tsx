@@ -8,9 +8,9 @@ import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
-interface SettingPageProps {}
+interface SettingPageProps { }
 
-interface SettingPageState {}
+interface SettingPageState { }
 
 class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     constructor(props: SettingPageProps) {
@@ -51,10 +51,10 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                     subTitle={BaseLocalization.settingSubTitle}
                     isShowImage={true}
                     imageName={Images.superSignLogoWhite}
-                    // back
-                    // onPressBack={() => {
-                    //     console.log('back press');
-                    // }}
+                // back
+                // onPressBack={() => {
+                //     console.log('back press');
+                // }}
                 />
                 <CustomBody>
                     <View style={style.mainContainer}>

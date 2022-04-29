@@ -79,8 +79,8 @@ class Log {
  * on different levels tagged with a timestamp.
  * @see Log
  */
-const logManager = new Log();
+const LogManager = new Log();
 
-export default logManager;
+export default LogManager;
 
 /// ################################ EOF ################################

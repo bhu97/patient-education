@@ -6,7 +6,7 @@ import { style } from './style';
 
 interface customFlatListProps {
     catagoryList: any;
-    onPressList: any;
+    onPressList?: any;
     elementType: string;
     selectedElement?: any;
 }

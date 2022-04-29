@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Alert, View } from 'react-native';
+import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
@@ -8,21 +9,27 @@ import MainContainer from '../../Components/main-container/main-container';
 import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
 import NavigationManager from '../../Helper/NavigationManager';
 import { GridViewModel } from '../../Model/GridViewModel';
+import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
 
-interface CategoryDetailScreenProps { }
+interface CategoryDetailScreenProps {
+    detailsTitle: String;
+    mainTitle: String;
+    categoryTitle: String;
+    subCategoryTitle: String;
+}
 
 interface CategoryDetailScreenState {
     dummyData: GridViewModel[],
 }
 
 class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, CategoryDetailScreenState> {
+
+
     constructor(props: CategoryDetailScreenProps) {
         super(props);
-
-
         this.state = {
             dummyData: [],
         };
@@ -40,8 +47,12 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
         this.setState({ dummyData: dummyImages });
     }
 
-    onClickBredcrum1 = () => {
-        Alert.alert('on Click Bredcrum 1');
+    goToHomeScreen = () => {
+        NavigationManager.navigateAndClear("HomeScreen");
+    };
+
+    gotoCategoryScreen = () => {
+        NavigationManager.navigateAndClear("CategoryScreen");
     };
 
     goBack = () => {
@@ -52,7 +63,7 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
         return (
             <MainContainer>
 
-                <CustomTopNav back subTitle={'category detail screen'} onPressBack={this.goBack} />
+                <CustomTopNav back subTitle={this.props.detailsTitle} onPressBack={this.goBack} />
                 <CustomBody>
                     <View style={style.mainContainer}>
                         <View style={style.fileConatiner}>
@@ -68,7 +79,10 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
                 <CustomBottomContainer>
                     <CustomBottomContainer>
                         <View style={style.botomView}>
-                            <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onClickBredcrum1} />
+                            <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.goToHomeScreen} />
+                            <CustomBredcrum title={this.props.mainTitle} onPress={this.gotoCategoryScreen} />
+                            <CustomBredcrum title={this.props.categoryTitle} onPress={this.goBack} />
+                            <CustomBredcrum title={this.props.detailsTitle}  />
                         </View>
                     </CustomBottomContainer>
                 </CustomBottomContainer>
@@ -77,5 +91,14 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
     }
 }
 
-export default CategoryDetailScreen;
+const mapStateToProps = (state: RootState) => ({
+    detailsTitle: state.catagoryReducer.categoryDetailTitle,
+    categoryTitle: state.catagoryReducer.subCategoryTitle,
+    mainTitle: state.catagoryReducer.categoryTitle,
+});
 
+const mapDispatchToProps = (dispatch: any) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryDetailScreen);

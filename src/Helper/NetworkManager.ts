@@ -1,5 +1,5 @@
 import NetInfo from '@react-native-community/netinfo';
-import logManager from './LogManager';
+import LogManager from './LogManager';
 
 export class NetworkManager {
     /**
@@ -13,12 +13,12 @@ export class NetworkManager {
         return new Promise((res) => {
             NetInfo.fetch()
                 .then((state) => {
-                    logManager.debug('network state details ', state);
+                    LogManager.debug('network state details ', state);
                     if (state.isConnected) res(true);
                     else res(false);
                 })
                 .catch((innerErr) => {
-                    logManager.error('network error details ', innerErr);
+                    LogManager.error('network error details ', innerErr);
                     res(false);
                 });
         });

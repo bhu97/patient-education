@@ -10,7 +10,7 @@ import { style } from './style';
 
 const ScreenOptions = ({ route, isFocused }) => {
     switch (route) {
-        case 'HomePage':
+        case 'HomeScreen':
             return (
                 <View style={[style.tabIconContainer, isFocused ? style.focused : style.unfocused]}>
                     <View style={style.tabIcon}>
@@ -23,7 +23,7 @@ const ScreenOptions = ({ route, isFocused }) => {
                 </View>
             );
 
-        case 'FavouritePage':
+        case 'FavouriteScreen':
             return (
                 <View style={[style.tabIconContainer, isFocused ? style.focused : style.unfocused]}>
                     <View style={style.tabIcon}>
@@ -36,7 +36,7 @@ const ScreenOptions = ({ route, isFocused }) => {
                 </View>
             );
 
-        case 'SettingPage':
+        case 'SettingScreen':
             return (
                 <View style={[style.tabIconContainer, isFocused ? style.focused : style.unfocused]}>
                     <View style={style.tabIcon}>

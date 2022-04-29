@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { envConfiguration } from './EnvConfigurations';
-import logManager from './LogManager';
+import LogManager from './LogManager';
 import { NetworkManager } from './NetworkManager';
 
 class ApiManager {
@@ -28,9 +28,9 @@ class ApiManager {
     apiCall(endPoint: string, httpMethodName: any, params?: any) {
         //TODO: need to update to check n/w
 
-        logManager.info('endPoint=', endPoint);
-        logManager.debug('httpMethodName=', httpMethodName);
-        logManager.warn('=>', `${envConfiguration.api.host}${endPoint}`);
+        LogManager.info('endPoint=', endPoint);
+        LogManager.debug('httpMethodName=', httpMethodName);
+        LogManager.warn('=>', `${envConfiguration.api.host}${endPoint}`);
 
         return new Promise((resolve, reject) => {
             axios({
@@ -40,11 +40,11 @@ class ApiManager {
                 params: params ? params : {},
             })
                 .then(function ({ data }) {
-                    logManager.info('API response success=', data);
+                    LogManager.info('API response success=', data);
                     resolve(data);
                 })
                 .catch(function (error) {
-                    logManager.error('API response error=', error);
+                    LogManager.error('API response error=', error);
                     reject(error);
                 });
         });
@@ -58,9 +58,9 @@ class ApiManager {
      * @returns
      */
     async callApiToGetData(endPoint: string, httpMethodName: any, params?: any) {
-        logManager.info('endPoint=', endPoint);
-        logManager.debug('httpMethodName=', httpMethodName);
-        logManager.warn('=>', `${envConfiguration.api.host}${endPoint}`);
+        LogManager.info('endPoint=', endPoint);
+        LogManager.debug('httpMethodName=', httpMethodName);
+        LogManager.warn('=>', `${envConfiguration.api.host}${endPoint}`);
 
         let response = await axios({
             method: httpMethodName,
@@ -68,7 +68,7 @@ class ApiManager {
             headers: this.createHeaders(),
             params: params ? params : {},
         });
-        logManager.debug('callApiToGetData ', response);
+        LogManager.debug('callApiToGetData ', response);
         return response;
     }
 }

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import logManager from '../../Helper/LogManager';
+import LogManager from '../../Helper/LogManager';
 
 /**
  * createAsyncThunk receives two arguments
@@ -8,6 +8,6 @@ import logManager from '../../Helper/LogManager';
  */
 export const fetchPost = createAsyncThunk('posts/fetchPost', async () => {
     const response = await fetch('https://jsonplaceholder.typicode.com/post');
-    logManager.debug('response', response.json());
+    LogManager.debug('response', response.json());
     return await response.json();
 });

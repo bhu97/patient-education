@@ -44,9 +44,12 @@ export default class CustomTopNav extends PureComponent<CustomTopNavProps, Custo
                         {this.props.subTitle}
                     </Text>
                 </View>
+                {this.props.isShowImage ? 
                 <View style={style.imageContainer}>
                     <Image source={Images.topNavImageSettingScreen} style={style.imageStyle} />
-                </View>
+                    </View>
+                    : null
+                }
             </View>
         );
     }

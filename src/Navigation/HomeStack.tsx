@@ -1,6 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import HomePage from '../Screens/HomeScreen/HomeScreen';
+import CategoryDetailScreen from '../Screens/CategoryDetailScreen/CategoryDetailScreen';
+import CategoryScreen from '../Screens/CategoryScreen/CategoryScreen';
+import HomeScreen from '../Screens/HomeScreen/HomeScreen';
+import SubCategoryScreen from '../Screens/SubCategoryScreen/SubCategoryScreen';
+import { BaseThemeStyle } from '../Theme/BaseThemeStyle';
 
 
 const Stack = createStackNavigator();
@@ -9,15 +13,18 @@ function HomeStack() {
 
     return (
         <Stack.Navigator
-            initialRouteName="Home"
+            initialRouteName="HomeScreen"
             screenOptions={{
                 gestureEnabled: false,
                 header: undefined,
                 headerShown: false,
-                cardStyle: { backgroundColor: '#F2F3F5' },
+                cardStyle: { backgroundColor: BaseThemeStyle.colors.screenBackgroundColor },
             }}
         >
-            <Stack.Screen name="HomePage" component={HomePage} />
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
+            <Stack.Screen name="SubCategoryScreen" component={SubCategoryScreen} />
+            <Stack.Screen name="CategoryDetailScreen" component={CategoryDetailScreen} />
         </Stack.Navigator>
 
     );
