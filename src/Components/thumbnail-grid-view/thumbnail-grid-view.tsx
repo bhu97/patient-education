@@ -5,54 +5,45 @@ import CustomIcon from '../custom-icon/custom-icon';
 import { style } from './style';
 
 interface ThumbnailGridViewProps {
-    gridViewData: GridViewModel[],
+    gridViewList: GridViewModel[];
 }
-
 
 export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps> {
     constructor(props) {
         super(props);
-
     }
 
     getImage = (imageName) => {
-        return (
-            <Image
-                resizeMode="contain"
-                style={style.iconImageStyle}
-                source={imageName}
-            />
-        )
+        return <Image resizeMode="contain" style={style.iconImageStyle} source={imageName} />;
     };
 
     renderItem = ({ item }) => (
         <View style={style.backgroundViewStyle}>
-            <Image style={style.imageStyle} source={item.source} />
+            <Image style={style.imageStyle} source={item.imageName} />
 
             <View style={style.itemContainer}>
                 <View style={style.textContainer}>
-                    <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>{item.labelText}</Text>
+                    <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
+                        {item.fileName}
+                    </Text>
                 </View>
 
                 <View style={style.iconContainer}>
-                    <CustomIcon
-                        name={'more-horizontal'}
-                    />
-
+                    <CustomIcon name={'more-horizontal'} />
                     <Text style={style.sizeStyle}>{item.fileSize}</Text>
                 </View>
             </View>
         </View>
-    )
+    );
 
     render() {
         return (
             <View style={style.mainViewStyle}>
                 <FlatList
-                    data={this.props.gridViewData}
+                    data={this.props.gridViewList}
                     renderItem={this.renderItem}
                     numColumns={2}
-                    columnWrapperStyle={{ flex: 1, justifyContent: "space-between" }}
+                    columnWrapperStyle={{ flex: 1, justifyContent: 'space-between' }}
                     keyExtractor={(item, index) => index.toString()}
                 />
             </View>

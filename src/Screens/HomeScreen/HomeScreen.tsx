@@ -16,11 +16,12 @@ import { setCatagoryList, setCategoryTitle } from '../../Redux/catagory/catagory
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
+import categoryData from '../../Json/category';
 
 interface HomePageProps {
     dispatch: Dispatch;
     catagoryList: any;
-    getList: () => void;
+    setCategoryList: () => void;
     navigation: any;
 }
 
@@ -32,6 +33,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     }
 
     componentDidMount() {
+        this.props.setCategoryList(categoryData);
         //hide splash screen
         setTimeout(() => {
             SplashScreen.hide();
@@ -91,8 +93,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    getList: () => {
-        dispatch(setCatagoryList());
+    setCategoryList: (data: any) => {
+        dispatch(setCatagoryList(data));
     },
     setTileCategory: (titleText: String) => {
         dispatch(setCategoryTitle(titleText));

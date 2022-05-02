@@ -1,26 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 
+const iconCircleSize = 45;
+
 export const style = StyleSheet.create({
-    mainViewStyle: {
-        flex: 1,
-        flexDirection: 'row',
-        backgroundColor: BaseThemeStyle.colors.white,
-    },
-    backgroundViewStyle: {
-        flex: .5,
-        margin: BaseThemeStyle.margin.containers,
-        borderWidth: 2,
-        borderColor: BaseThemeStyle.colors.gray,
-    },
-    imageStyle: {
-        resizeMode: 'contain',
-        height: 200,
-        width: 'auto'
-    },
-    iconImageStyle: {
-        height: 20,
-        width: 20,
+    mainContainer: {
+        flexDirection: 'column',
     },
     itemContainer: {
         flexDirection: 'row',
@@ -31,6 +16,17 @@ export const style = StyleSheet.create({
         boxShadow: '10px 10px 5px lightblue',
         alignItems: 'center',
     },
+    circleIconContainer: {
+        backgroundColor: BaseThemeStyle.colors.white,
+        width: iconCircleSize,
+        height: iconCircleSize,
+        borderRadius: 0.5 * iconCircleSize,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 2,
+        margin: BaseThemeStyle.margin.containers,
+    },
     textContainer: {
         marginHorizontal: BaseThemeStyle.margin.formElements,
         flex: 0.6,
@@ -39,14 +35,26 @@ export const style = StyleSheet.create({
         ...BaseThemeStyle.fonts.listTitle,
         color: BaseThemeStyle.colors.titleColor,
         fontWeight: 'bold',
-        fontSize: 18,
     },
     iconContainer: {
         flex: 0.3,
         alignItems: 'flex-end',
     },
-    sizeStyle: {
+    imageStyle:{ 
+        resizeMode: 'contain', 
+        height: 200, 
+        width: 'auto' 
+    
+    },
+    flatSizeStyle:{ 
         ...BaseThemeStyle.fonts.subtitle3,
-        color: BaseThemeStyle.colors.titleColor,
+         color: BaseThemeStyle.colors.titleColor,
+        fontWeight: 'bold' 
+    },
+    lineSeparator: {
+        height: 20,
+        width: '100%',
     }
+
+
 });

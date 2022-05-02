@@ -15,10 +15,9 @@ import { style } from './style';
 
 interface CategoryScreenProps {
     catagoryList: any;
-    getList: () => void;
     navigation: any;
     route: any;
-    mainTitle: String;
+    mainTitle: string;
 }
 
 interface CategoryScreenState {
@@ -105,10 +104,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    getList: () => {
-        dispatch(setCatagoryList());
-    },
-    setTileSubCategory: (titleText: String) => {
+    setTileSubCategory: (titleText: string) => {
         dispatch(setSubCategoryTitle(titleText));
     },
 });

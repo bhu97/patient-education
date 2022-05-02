@@ -9,20 +9,18 @@ export const style = StyleSheet.create({
         padding: BaseThemeStyle.paddings.containers,
         justifyContent: 'space-between'
     },
-    fileConatiner: {
+    fileContainer: {
         flex: .55,
         flexDirection: 'column',
         backgroundColor: BaseThemeStyle.colors.white,
         borderRadius: 1,
         padding: BaseThemeStyle.paddings.containers,
     },
-    moreInfoConatiner: {
+    moreInfoContainer: {
         flex: .40,
         flexDirection: 'column',
         borderRadius: 1,
-        backgroundColor: 'blue',
         padding: BaseThemeStyle.paddings.containers,
-        // height: '60%'
     },
     botomView: {
         padding: BaseThemeStyle.paddings.containers,

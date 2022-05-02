@@ -17,11 +17,10 @@ import { style } from './style';
 interface SubCategoryScreenProps {
     dispatch: Dispatch;
     catagoryList: any;
-    getList: () => void;
     navigation: any;
     route: any;
-    mainTitle: String;
-    categoryTitle: String;
+    mainTitle: string;
+    categoryTitle: string;
 }
 
 interface SubCategoryScreenState {
@@ -100,10 +99,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    getList: () => {
-        dispatch(setCatagoryList());
-    },
-    setTileCategoryDetails: (titleText: String) => {
+    setTileCategoryDetails: (titleText: string) => {
         dispatch(setCategoryDetailTitle(titleText));
     },
 });

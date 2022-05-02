@@ -1,6 +1,6 @@
 //to declare all required variables
-export class GridViewModel {
-    imageName: string;
+export class MoreInfoListModel {
     fileName: string;
+    iconName: string;
     fileSize: string;
 }

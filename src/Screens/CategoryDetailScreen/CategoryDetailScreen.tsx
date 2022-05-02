@@ -6,53 +6,39 @@ import CustomBottomContainer from '../../Components/custom-bottom-container/cust
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
+import MoreInfoList from '../../Components/more-info-list/more-info-list';
 import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
 import NavigationManager from '../../Helper/NavigationManager';
 import { GridViewModel } from '../../Model/GridViewModel';
+import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
+import { setGridViewData } from '../../Redux/catagory/catagorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
-
 interface CategoryDetailScreenProps {
-    detailsTitle: String;
-    mainTitle: String;
-    categoryTitle: String;
-    subCategoryTitle: String;
+    detailsTitle: string;
+    mainTitle: string;
+    categoryTitle: string;
+    subCategoryTitle: string;
+    setGridViewList: () => void;
+    gridViewData: GridViewModel[];
+    moreInfoData: MoreInfoListModel[];
 }
 
-interface CategoryDetailScreenState {
-    dummyData: GridViewModel[],
-}
+interface CategoryDetailScreenState {}
 
 class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, CategoryDetailScreenState> {
-
-
     constructor(props: CategoryDetailScreenProps) {
         super(props);
-        this.state = {
-            dummyData: [],
-        };
-
-    }
-
-    componentDidMount() {
-        let dummyImages = [];
-        const labelText = ['GDP Fluids', 'Balance Overview1 Balance Overview2 Balance Overview3', 'ABD dffsdf sdfdf dsf', 'DEF asf asjfh  ', 'GHI asd asd', 'Jkl', 'AB', 'AB']
-        const fileSize = ['64 KB', '12 KB', '16KB', '24KB', '8KB', '20KB', '2 KB', '14 KB']
-
-        for (let i = 0; i < 8; i++) {
-            dummyImages.push({ source: Images.illuHome, labelText: labelText[i], fileSize: fileSize[i] });
-        }
-        this.setState({ dummyData: dummyImages });
     }
 
     goToHomeScreen = () => {
-        NavigationManager.navigateAndClear("HomeScreen");
+        NavigationManager.navigateAndClear('HomeScreen');
     };
 
     gotoCategoryScreen = () => {
-        NavigationManager.navigateAndClear("CategoryScreen");
+        NavigationManager.navigateAndClear('CategoryScreen');
     };
 
     goBack = () => {
@@ -62,17 +48,14 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
     render() {
         return (
             <MainContainer>
-
                 <CustomTopNav back subTitle={this.props.detailsTitle} onPressBack={this.goBack} />
                 <CustomBody>
                     <View style={style.mainContainer}>
-                        <View style={style.fileConatiner}>
-                            <ThumbnailGridView
-                                gridViewData={this.state.dummyData}
-                            />
+                        <View style={style.fileContainer}>
+                            <ThumbnailGridView gridViewList={this.props.gridViewData} />
                         </View>
-                        <View style={style.moreInfoConatiner}>
-
+                        <View style={style.moreInfoContainer}>
+                            <MoreInfoList moreInfoList={this.props.moreInfoData} />
                         </View>
                     </View>
                 </CustomBody>
@@ -82,7 +65,7 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
                             <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.goToHomeScreen} />
                             <CustomBredcrum title={this.props.mainTitle} onPress={this.gotoCategoryScreen} />
                             <CustomBredcrum title={this.props.categoryTitle} onPress={this.goBack} />
-                            <CustomBredcrum title={this.props.detailsTitle}  />
+                            <CustomBredcrum title={this.props.detailsTitle} />
                         </View>
                     </CustomBottomContainer>
                 </CustomBottomContainer>
@@ -95,10 +78,14 @@ const mapStateToProps = (state: RootState) => ({
     detailsTitle: state.catagoryReducer.categoryDetailTitle,
     categoryTitle: state.catagoryReducer.subCategoryTitle,
     mainTitle: state.catagoryReducer.categoryTitle,
+    gridViewData: state.catagoryReducer.gridViewData,
+    moreInfoData: state.catagoryReducer.moreInfoData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-
+    setGridViewList: () => {
+        dispatch(setGridViewData());
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryDetailScreen);

@@ -1,23 +1,29 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { object } from 'prop-types';
-import category from '../../Json/category';
+import gridViewData from '../../Json/gridviewjson';
+import { GridViewModel } from '../../Model/GridViewModel';
+import moreInfoData from '../../Json/moreinfojson';
+import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 
 // interface to declare all required variables
 export interface CatagoryState {
 
-    catagoryList: any;
+    catagoryList: [];
     categoryTitle: string;
     subCategoryTitle: string;
     categoryDetailTitle: string;
+    gridViewData: GridViewModel[];
+    moreInfoData: MoreInfoListModel[];
 }
 
 // to set initial value for all variable
 const initialState: CatagoryState = {
 
-    catagoryList: category,
+    catagoryList: [],
     categoryTitle: '',
     subCategoryTitle: '',
-    categoryDetailTitle: ''
+    categoryDetailTitle: '',
+    gridViewData: gridViewData,
+    moreInfoData: moreInfoData
 
 };
 
@@ -37,16 +43,18 @@ const catagorySlice = createSlice({
         setCategoryDetailTitle: (state, action: PayloadAction<string>) => {
             state.categoryDetailTitle = action.payload;
         },
-        setCatagoryList: (state, action: PayloadAction<string>) => {
+        setCatagoryList: (state, action: PayloadAction<any>) => {
             state.catagoryList = action.payload;
         },
-
+        setGridViewData: (state, action: PayloadAction<GridViewModel[]>) => {
+            state.gridViewData = action.payload;
+        },
 
     },
 });
 
 // export individual action creator functions
-export const { setCatagoryList, setCategoryTitle, setSubCategoryTitle, setCategoryDetailTitle } = catagorySlice.actions;
+export const { setCatagoryList, setCategoryTitle, setSubCategoryTitle, setCategoryDetailTitle, setGridViewData } = catagorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter
 export default catagorySlice.reducer;
