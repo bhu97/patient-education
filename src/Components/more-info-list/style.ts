@@ -7,6 +7,10 @@ export const style = StyleSheet.create({
     mainContainer: {
         flexDirection: 'column',
     },
+    container: {
+        flex: 1,
+        paddingBottom: BaseThemeStyle.paddings.containers,
+    },
     itemContainer: {
         flexDirection: 'row',
         borderWidth: 1,
@@ -40,21 +44,30 @@ export const style = StyleSheet.create({
         flex: 0.3,
         alignItems: 'flex-end',
     },
-    imageStyle:{ 
-        resizeMode: 'contain', 
-        height: 200, 
-        width: 'auto' 
-    
+    imageStyle: {
+        resizeMode: 'contain',
+        height: 200,
+        width: 'auto',
     },
-    flatSizeStyle:{ 
+    flatSizeStyle: {
         ...BaseThemeStyle.fonts.subtitle3,
-         color: BaseThemeStyle.colors.titleColor,
-        fontWeight: 'bold' 
+        color: BaseThemeStyle.colors.titleColor,
     },
     lineSeparator: {
         height: 20,
         width: '100%',
-    }
-
-
+    },
+    headerStyle: {
+        flex: 1,
+        height: 40,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        paddingBottom: BaseThemeStyle.paddings.formElements,
+        backgroundColor: BaseThemeStyle.colors.white,
+    },
+    titleStyle: {
+        ...BaseThemeStyle.fonts.h7,
+        color: BaseThemeStyle.colors.titleColor,
+    },
 });

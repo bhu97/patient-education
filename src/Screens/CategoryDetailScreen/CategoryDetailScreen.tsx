@@ -8,6 +8,7 @@ import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
 import MoreInfoList from '../../Components/more-info-list/more-info-list';
 import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
+import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
 import NavigationManager from '../../Helper/NavigationManager';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
@@ -55,7 +56,10 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
                             <ThumbnailGridView gridViewList={this.props.gridViewData} />
                         </View>
                         <View style={style.moreInfoContainer}>
-                            <MoreInfoList moreInfoList={this.props.moreInfoData} />
+                            <MoreInfoList
+                                title={BaseLocalization.moreInfoTitle}
+                                moreInfoList={this.props.moreInfoData}
+                            />
                         </View>
                     </View>
                 </CustomBody>

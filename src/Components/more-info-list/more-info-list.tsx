@@ -5,6 +5,7 @@ import CustomIcon from '../custom-icon/custom-icon';
 import { style } from './style';
 
 interface MoreInfoListProps {
+    title?: string;
     moreInfoList: MoreInfoListModel[];
 }
 
@@ -34,14 +35,26 @@ export default class MoreInfoList extends PureComponent<MoreInfoListProps> {
         );
     };
 
+    listHeader = () => {
+        return this.props.title != null && this.props.title != '' ? (
+            <View style={style.headerStyle}>
+                <Text style={style.titleStyle}>{this.props.title}</Text>
+            </View>
+        ) : null;
+    };
+
     render() {
         return (
-            <FlatList
-                nestedScrollEnabled
-                ItemSeparatorComponent={this.flatListItemSeparator}
-                data={this.props.moreInfoList}
-                renderItem={this.renderItem}
-            />
+            <View style={style.container}>
+                <FlatList
+                    nestedScrollEnabled
+                    ItemSeparatorComponent={this.flatListItemSeparator}
+                    data={this.props.moreInfoList}
+                    renderItem={this.renderItem}
+                    ListHeaderComponent={this.listHeader}
+                    stickyHeaderIndices={[0]}
+                />
+            </View>
         );
     }
 }

@@ -12,12 +12,11 @@
     "countryTitle": "User Country",
     "contentTitle":"Online Content",
     "updateTitle": "Update Now",
-    "selectCatgory": "Please select your category",
+    "selectCategory": "Please select your category",
     "appInformation": "App Information",
     "version": "Version",
     "modificationDate":"Modified date",
-    "contentUpdates":"Content Updates"
-
-    
+    "contentUpdates":"Content Updates",
+    "moreInformation": "More Information"
 
 }
