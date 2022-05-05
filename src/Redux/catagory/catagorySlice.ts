@@ -6,7 +6,6 @@ import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 
 // interface to declare all required variables
 export interface CatagoryState {
-
     catagoryList: [];
     categoryTitle: string;
     subCategoryTitle: string;
@@ -17,14 +16,12 @@ export interface CatagoryState {
 
 // to set initial value for all variable
 const initialState: CatagoryState = {
-
     catagoryList: [],
     categoryTitle: '',
     subCategoryTitle: '',
     categoryDetailTitle: '',
     gridViewData: gridViewData,
-    moreInfoData: moreInfoData
-
+    moreInfoData: moreInfoData,
 };
 
 // basic example slice done based on the docs
@@ -49,12 +46,12 @@ const catagorySlice = createSlice({
         setGridViewData: (state, action: PayloadAction<GridViewModel[]>) => {
             state.gridViewData = action.payload;
         },
-
     },
 });
 
 // export individual action creator functions
-export const { setCatagoryList, setCategoryTitle, setSubCategoryTitle, setCategoryDetailTitle, setGridViewData } = catagorySlice.actions;
+export const { setCatagoryList, setCategoryTitle, setSubCategoryTitle, setCategoryDetailTitle, setGridViewData } =
+    catagorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter
 export default catagorySlice.reducer;
