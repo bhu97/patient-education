@@ -2,6 +2,9 @@ const FontFamily = {
     LatoLight: 'Lato-Light',
     LatoRegular: 'Lato-Regular',
     LatoBold: 'Lato-Bold',
+    HelveticaNeueM: 'Helvetica Neue, Medium',
+    Helvetica65R: 'Helvetica 65 Medium, Regular',
+
 } as const;
 
 export const BaseThemeStyle = {
@@ -15,7 +18,7 @@ export const BaseThemeStyle = {
         gray: '#9E9E9E',
         lightGray: '#E5E7EC',
         white: '#FFFFFF',
-        blue: '#4389BC',
+         blue: '#4389BC',
         transparent: 'transparent',
         titleColor: '#071B45',
         olive: '#808000',
@@ -23,6 +26,7 @@ export const BaseThemeStyle = {
         tabBackGroundColor: '#2D9CDB',
         screenBackgroundColor: '#F2F3F5',
         listItemBackgroundColor: '#E5E7EC',
+        bordergrey:'#DCDCDC',
     },
     paddings: {
         bodyHorizontal: 0,
@@ -69,12 +73,12 @@ export const BaseThemeStyle = {
 
     fonts: {
         pageTitle: {
-            fontFamily: FontFamily.LatoBold,
-            fontSize: 37,
+            fontFamily: FontFamily.HelveticaNeueM,
+            fontSize: 30,
         },
         pageSubTitle: {
-            fontFamily: FontFamily.LatoRegular,
-            fontSize: 23,
+            fontFamily: FontFamily.HelveticaNeueM,
+            fontSize: 20,
         },
         listTitle: {
             fontFamily: FontFamily.LatoRegular,
@@ -121,12 +125,12 @@ export const BaseThemeStyle = {
             fontSize: 15,
         },
         subtitle0: {
-            fontFamily: FontFamily.LatoBold,
-            fontSize: 17,
+            fontFamily: FontFamily.Helvetica65R,
+            fontSize: 16,
         },
         subtitle1: {
-            fontFamily: FontFamily.LatoBold,
-            fontSize: 16,
+            fontFamily: FontFamily.HelveticaNeueM,
+            fontSize: 15,
         },
         subtitle2: {
             fontFamily: FontFamily.LatoBold,

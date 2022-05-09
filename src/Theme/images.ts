@@ -30,6 +30,8 @@ const Images = {
     illuHome: require(prefix + '/illu_home.png'),
     menuBlueDots: require(prefix + '/menu_blue_dots.png'),
     rightArrow: require(prefix + '/chevron_right.png'),
+    emptyImg: require(prefix + '/empty.png'),
+    favoritesHeaderImg: require(prefix + '/illu_favorites.png'),
 };
 
 /// ################################ Export ################################

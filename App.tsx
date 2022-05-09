@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { PureComponent } from 'react';
 import { Provider } from 'react-redux';
+import {LogBox, StatusBar} from 'react-native';
 import { LocalizationManager } from './src/Helper/Localization/LocalizationManager';
 import LogManager from './src/Helper/LogManager';
 import NavigationManager from './src/Helper/NavigationManager';
@@ -17,6 +18,7 @@ export default class App extends PureComponent {
 
     componentDidMount() {
         LogManager.debug('app loading', 'test');
+        LogBox.ignoreAllLogs();
     }
 
     render() {

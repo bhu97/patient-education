@@ -61,7 +61,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     render() {
         return (
             <MainContainer>
-                <CustomTopNav isShowImage={true} title={BaseLocalization.welcome} subTitle={BaseLocalization.selectCatgory} />
+                <CustomTopNav isShowImage={true} title={BaseLocalization.welcome} subTitle={BaseLocalization.selectCategory} />
                 <CustomBody>
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
