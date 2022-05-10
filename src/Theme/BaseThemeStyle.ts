@@ -81,8 +81,8 @@ export const BaseThemeStyle = {
             fontSize: 20,
         },
         listTitle: {
-            fontFamily: FontFamily.LatoRegular,
-            fontSize: 19,
+            fontFamily: FontFamily.Helvetica65R,
+            fontSize: 17,
         },
         h1: {
             fontFamily: FontFamily.LatoLight,

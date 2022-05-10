@@ -9,7 +9,7 @@ export const style = StyleSheet.create({
     
     },
     customcontainerview: {
-        backgroundColor: 'white',
+        backgroundColor: BaseThemeStyle.colors.white,
         flex: 0.8,
        
     },
@@ -20,10 +20,11 @@ export const style = StyleSheet.create({
     textStyle:{ 
         fontSize: 27, 
         fontWeight: 'bold', 
-        color: 'black' 
+        color: BaseThemeStyle.colors.black, 
     },
     plusIconstyle:{ 
-        marginLeft: 'auto' 
+        marginLeft: 'auto' ,
+
     },
 balanceContainer:{ 
     flex: 2, 

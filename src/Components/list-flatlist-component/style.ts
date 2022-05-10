@@ -3,7 +3,7 @@ import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 
 export const style = StyleSheet.create({
     crossIconstyle: {
-        backgroundColor: 'red',
+        backgroundColor: BaseThemeStyle.colors.danger,
         justifyContent: 'center',
         alignItems: 'flex-end',
         // height: 50,
@@ -16,7 +16,7 @@ export const style = StyleSheet.create({
         color: 'white',
     },
     listviewstyle: {
-        backgroundColor: BaseThemeStyle.colors.bordergrey,
+        backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
         flexDirection: 'row',
         paddingVertical: 20,
         paddingHorizontal: 3,
@@ -32,7 +32,7 @@ export const style = StyleSheet.create({
     textStyle: {
         fontSize: 23,
         fontWeight: 'bold',
-        color: BaseThemeStyle.colors.black,
+        color: BaseThemeStyle.colors.titleColor,
         paddingHorizontal: 23,
         justifyContent: 'center',
         alignItems: 'center',
@@ -51,7 +51,6 @@ export const style = StyleSheet.create({
         paddingVertical: 5, 
     },
     listStyle:{ 
-        paddingVertical: 10,
-        paddingHorizontal:10,
+     padding:10
     },
 });

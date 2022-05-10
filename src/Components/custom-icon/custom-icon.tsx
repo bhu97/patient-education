@@ -21,7 +21,7 @@ class CustomIcon extends React.PureComponent<CustomIconProps> {
     //default values to size, color and style
     static defaultProps = {
         animate: true,
-        color: BaseThemeStyle.colors.black,
+        color: BaseThemeStyle.colors.iconColor,
         size: 30,
         style: {},
     }

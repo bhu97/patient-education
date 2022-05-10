@@ -5,7 +5,7 @@ export const style = StyleSheet.create({
     container: {
         height: 125,
         backgroundColor: BaseThemeStyle.colors.white,
-        shadowColor: 'black',
+        shadowColor: BaseThemeStyle.colors.black,
         opacity: 1,
         shadowRadius: 2,
         flexDirection: 'row',

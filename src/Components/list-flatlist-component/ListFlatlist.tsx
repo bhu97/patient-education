@@ -15,31 +15,24 @@ const rightSwipeActions = () => {
 
 const Lists = ({ item }) => (
     <View style={style.listStyle}>
-                          
-                       
-    <Swipeable renderRightActions={rightSwipeActions}>
-        <View style={style.listviewstyle}>
-            <View style={style.mainIconstyle}>
-                <Icon name="text" size={30} bold color="blue" />
+        <Swipeable renderRightActions={rightSwipeActions}>
+            <View style={style.listviewstyle}>
+                <View style={style.mainIconstyle}>
+                    <Icon name="text" size={30} bold color="blue" />
+                </View>
+                <Text style={style.textStyle}>{item.text}</Text>
+                <View style={style.rightIconstyle}>
+                    <Icon name="chevron-thin-right" size={25} bold color="blue" />
+                </View>
             </View>
-            <Text style={style.textStyle}>{item.text}</Text>
-            <View style={style.rightIconstyle}>
-                <Icon name="chevron-thin-right" size={25} bold color="blue" />
-            </View>
-        </View>
-
-    </Swipeable>
+        </Swipeable>
     </View>
 );
 
 const ListFlatlist = () => {
     return (
-            <View style={style.containerView}>
-                <FlatList
-                    data={listitem}
-                    keyExtractor={(item) => item.id}
-                    renderItem={Lists}
-                />
+        <View style={style.containerView}>
+            <FlatList data={listitem} keyExtractor={(item) => item.id} renderItem={Lists} />
         </View>
     );
 };
