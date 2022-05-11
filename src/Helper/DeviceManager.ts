@@ -1,6 +1,6 @@
 import { Dimensions, NativeModules, Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import { DEVICE_CONSTANT } from '../Constant/HelperConstants';
+import { DEVICE_CONSTANT } from '../Constant/Constants';
 
 export class DeviceManager {
     public getMobileCode(): string {

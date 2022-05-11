@@ -1,8 +1,8 @@
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import I18n from 'i18n-js';
 import { I18nManager } from 'react-native';
-import deviceManager, { DeviceManager } from '../DeviceManager';
-import { LANGUAGE_CONSTANT } from '../../Constant/HelperConstants';
+import { LANGUAGE_CONSTANT } from '../../Constant/Constants';
+import deviceManager from '../DeviceManager';
 import en_US from './Locales/en_US.json';
 import gr from './Locales/gr.json';
 
