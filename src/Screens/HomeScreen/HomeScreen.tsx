@@ -8,24 +8,24 @@ import CustomBottomContainer from '../../Components/custom-bottom-container/cust
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
+import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
 import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
-import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
-import { setCatagoryList, setCategoryTitle } from '../../Redux/catagory/catagorySlice';
+import { setCategoryList, setCategoryTitle } from '../../Redux/catagory/catagorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
-import categoryData from '../../Json/category';
 
 interface HomePageProps {
     dispatch: Dispatch;
-    catagoryList: any;
-    setCategoryList: () => void;
+    mainList: any;
     navigation: any;
+    setTitleCategory: (string) => void;
+    setCategoryData: (string) => void;
 }
 
-interface HomePageState { }
+interface HomePageState {}
 
 class HomePage extends Component<HomePageProps, HomePageState> {
     constructor(props: HomePageProps) {
@@ -33,10 +33,11 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     }
 
     componentDidMount() {
-        this.props.setCategoryList(categoryData);
         //hide splash screen
+        console.log('component did mount home screen')
         setTimeout(() => {
             SplashScreen.hide();
+            // <FullScreenLoader isLoading/>
         }, 3000);
     }
 
@@ -49,24 +50,25 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     };
 
     onClick = (item) => {
-
-        //LogManager.error("selected category=", item.key);
-        //set category tiltle
-        this.props.setTileCategory(item.key);
-
-        //set category 
-        NavigationManager.navigate('CategoryScreen', { wholeData: item });
+        this.props.setTitleCategory(item.key);
+        this.props.setCategoryData(item);
+        NavigationManager.navigate('CategoryScreen');
     };
 
     render() {
+        console.log('render home screen')
         return (
             <MainContainer>
-                <CustomTopNav isShowImage={true} title={BaseLocalization.welcome} subTitle={BaseLocalization.selectCategory} />
+                <CustomTopNav
+                    isShowImage={true}
+                    title={BaseLocalization.welcome}
+                    subTitle={BaseLocalization.selectCategory}
+                />
                 <CustomBody>
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
                             <CustomFlatList
-                                catagoryList={this.props.catagoryList}
+                                catagoryList={this.props.mainList}
                                 onPressList={this.onClick}
                                 elementType="key"
                             />
@@ -89,14 +91,14 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    catagoryList: state.catagoryReducer.catagoryList,
+    mainList: state.catagoryReducer.mainList,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    setCategoryList: (data: any) => {
-        dispatch(setCatagoryList(data));
+    setCategoryData: (data: any) => {
+        dispatch(setCategoryList(data));
     },
-    setTileCategory: (titleText: String) => {
+    setTitleCategory: (titleText: string) => {
         dispatch(setCategoryTitle(titleText));
     },
 });

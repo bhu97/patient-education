@@ -8,7 +8,7 @@ export const style = StyleSheet.create({
     rectangleContainer: {
         width: BaseThemeStyle.dimensions.widths.breadCrumbSquare,
         height: BaseThemeStyle.dimensions.heights.breadCrumbSquare,
-        backgroundColor: BaseThemeStyle.colors.gray,
+        backgroundColor: BaseThemeStyle.colors.lightGray,
         justifyContent: 'center',
     },
     triangleContainer: {
@@ -24,11 +24,11 @@ export const style = StyleSheet.create({
     triangleRightContainer: {
         borderLeftColor: BaseThemeStyle.colors.transparent,
         borderRightColor: BaseThemeStyle.colors.transparent,
-        borderBottomColor: BaseThemeStyle.colors.gray,
+        borderBottomColor: BaseThemeStyle.colors.lightGray,
     },
     triangleLeftContainer: {
-        borderLeftColor: BaseThemeStyle.colors.gray,
-        borderRightColor: BaseThemeStyle.colors.gray,
+        borderLeftColor: BaseThemeStyle.colors.lightGray,
+        borderRightColor: BaseThemeStyle.colors.lightGray,
         borderBottomColor: BaseThemeStyle.colors.transparent,
     },
 

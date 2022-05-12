@@ -6,81 +6,80 @@ import CustomBottomContainer from '../../Components/custom-bottom-container/cust
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
+import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
-import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
-import { setCatagoryList, setSubCategoryTitle } from '../../Redux/catagory/catagorySlice';
+import { setSelectedCategory, setSubCategoryList, setSubCategoryTitle } from '../../Redux/catagory/catagorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
 interface CategoryScreenProps {
-    catagoryList: any;
+    mainList: any;
+    categoryList: Array<any>;
     navigation: any;
-    route: any;
-    mainTitle: string;
+    mainTitle: String;
+    setSubCategoryData: () => void;
+    setSelectedCategoryData: () => void;
+    setTitleCategory: () => void;
 }
 
 interface CategoryScreenState {
-    subCategory: [];
-    selectedCategory: any;
+    isLoading: boolean;
 }
 
 class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState> {
     constructor(props: CategoryScreenProps) {
         super(props);
         this.state = {
-            subCategory: [],
-            // title: this.props.route.params.wholeData.key,
-            selectedCategory: this.props.route.params.wholeData,
+            isLoading: true
         };
     }
-
+    componentDidMount() {
+        setTimeout(() => {
+          this.setState({isLoading:false});
+        }, 3000);
+    }
     goBack = () => {
         NavigationManager.goBack();
     };
 
-    componentDidMount(): void {
-        this.setState({ subCategory: this.state.selectedCategory.array });
-    }
-
     subCategoryRender = (item) => {
         if (item.subCategory) {
-           // LogManager.error("selected sub category=", item.value);
-            //set sub category tiltle
-            this.props.setTileSubCategory(item.value);
-
-            NavigationManager.navigate('SubCategoryScreen', {
-                wholeData: item,
-                selectedCategory: this.state.selectedCategory,
-            });
+            this.props.setTitleSubCategory(item.value);
+            this.props.setSubCategoryData(item);
+            this.props.setSelectedCategoryData(this.props.categoryList);
+            NavigationManager.navigate('SubCategoryScreen');
         } else Alert.alert('hi');
     };
 
     onHomeBredcrumCLick = () => {
-        NavigationManager.navigateAndClear("HomeScreen");
+        NavigationManager.navigateAndClear('HomeScreen');
     };
 
-   
-    onClickFirstList = () => {
-       
-    };
+    onClickFirstList = () => {};
 
     render() {
         return (
-            <MainContainer>
+            this.state.isLoading ? (
+                
+                <FullScreenLoader isLoading showSpinner/>
+
+            ):( 
+                <MainContainer>
                 <CustomTopNav back subTitle={this.props.mainTitle} onPressBack={this.goBack} />
                 <CustomBody>
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
                             <CustomFlatList
-                                catagoryList={this.props.catagoryList}
+                                catagoryList={this.props.mainList}
                                 elementType="key"
-                                selectedElement={this.state.selectedCategory}
+                                selectedElement={this.props.categoryList}
+                                disableClickOnFlatlist
                             />
                         </View>
                         <View style={style.SecondflatListViewConatiner}>
                             <CustomFlatList
-                                catagoryList={this.state.subCategory}
+                                catagoryList={this.props.categoryList.array}
                                 onPressList={this.subCategoryRender}
                                 elementType="value"
                             />
@@ -94,17 +93,26 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                     </View>
                 </CustomBottomContainer>
             </MainContainer>
+            )
+           
         );
     }
 }
 
 const mapStateToProps = (state: RootState) => ({
-    catagoryList: state.catagoryReducer.catagoryList,
+    mainList: state.catagoryReducer.mainList,
     mainTitle: state.catagoryReducer.categoryTitle,
+    categoryList: state.catagoryReducer.categoryList,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    setTileSubCategory: (titleText: string) => {
+    setSubCategoryData: (data: any) => {
+        dispatch(setSubCategoryList(data));
+    },
+    setSelectedCategoryData: (data: any) => {
+        dispatch(setSelectedCategory(data));
+    },
+    setTitleSubCategory: (titleText: String) => {
         dispatch(setSubCategoryTitle(titleText));
     },
 });

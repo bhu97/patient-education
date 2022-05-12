@@ -23,7 +23,7 @@ export default class FullScreenLoader extends PureComponent<FullScreenLoaderProp
                     <View accessible style={style.container}>
                         {this.props.showSpinner && (
                             <View style={style.indicatorContainer}>
-                                <ActivityIndicator size={'large'} color={BaseThemeStyle.colors.success} />
+                                <ActivityIndicator size={'large'} color={BaseThemeStyle.colors.blue} />
                             </View>
                         )}
                     </View>
