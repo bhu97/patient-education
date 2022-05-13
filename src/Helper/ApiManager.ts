@@ -1,55 +1,9 @@
 import axios from 'axios';
+import authenticationManager from '../Authentication/AuthenticationManager';
 import { envConfiguration } from './EnvConfigurations';
 import LogManager from './LogManager';
-import { NetworkManager } from './NetworkManager';
 
 class ApiManager {
-    /**
-     * Used to create request header
-     * @param headers
-     * @returns
-     */
-    private createHeaders(headers?: any) {
-        if (headers === null) {
-            headers = {};
-        }
-        headers = {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        };
-        return headers;
-    }
-
-    /**
-     *
-     * @param endPoint : Api end point name
-     * @param httpMethodName : Method name from HTTP Method from Helper constant file (like GET, POST)
-     */
-    apiCall(endPoint: string, httpMethodName: any, params?: any) {
-        //TODO: need to update to check n/w
-
-        LogManager.info('endPoint=', endPoint);
-        LogManager.debug('httpMethodName=', httpMethodName);
-        LogManager.warn('=>', `${envConfiguration.api.host}${endPoint}`);
-
-        return new Promise((resolve, reject) => {
-            axios({
-                method: httpMethodName,
-                url: envConfiguration.api.host + endPoint,
-                headers: this.createHeaders(),
-                params: params ? params : {},
-            })
-                .then(function ({ data }) {
-                    LogManager.info('API response success=', data);
-                    resolve(data);
-                })
-                .catch(function (error) {
-                    LogManager.error('API response error=', error);
-                    reject(error);
-                });
-        });
-    }
-
     /**
      *
      * @param endPoint
@@ -60,15 +14,39 @@ class ApiManager {
     async callApiToGetData(endPoint: string, httpMethodName: any, params?: any) {
         LogManager.info('endPoint=', endPoint);
         LogManager.debug('httpMethodName=', httpMethodName);
-        LogManager.warn('=>', `${envConfiguration.api.host}${endPoint}`);
 
-        let response = await axios({
-            method: httpMethodName,
-            url: envConfiguration.api.host + endPoint,
-            headers: this.createHeaders(),
-            params: params ? params : {},
-        });
-        LogManager.debug('callApiToGetData ', response);
+        if (params === null) {
+            params = {};
+        }
+
+        LogManager.info('params=', params);
+        const accessToken = await authenticationManager.getAccessToken();
+        LogManager.info('callApiToGetData token=', accessToken);
+
+        const headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+        };
+        LogManager.info('headers=', headers);
+
+        let response = null;
+        try {
+            response = await axios({
+                method: httpMethodName,
+                url: endPoint, // envConfiguration.api.host + endPoint,
+                headers: headers,
+                params: params ? params : {},
+            });
+            LogManager.info('response received=', response);
+        } catch (error) {
+            // any HTTP error is caught here
+            // can extend this implementation to customiz the error messages
+            // ex: dispatch(loadTodoError("Sorry can't talk to our servers right now"));
+            LogManager.info('catch response=', error);
+            response = null;
+        }
+        LogManager.debug('callApiToGetData return=', response);
         return response;
     }
 }

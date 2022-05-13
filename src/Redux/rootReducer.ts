@@ -1,11 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import postReducer from './posts/postSlice';
 import catagoryReducer from './catagory/catagorySlice';
+import appDataReducer from './app-data/appDataSlice';
 
 // assume that the message slice will be combined with other slices
 const rootReducer = combineReducers({
-    postReducer: postReducer,
-    catagoryReducer: catagoryReducer
+    catagoryReducer: catagoryReducer,
+    appDataReducer: appDataReducer,
 });
 
 // typescript type for the combined state

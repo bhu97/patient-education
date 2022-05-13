@@ -59,16 +59,14 @@ export const API_NAMES = {
     GRAPH_MAIL_ENDPOINT: 'v1.0/me/messages',
     GRAPH_DELTA_ENDPOINT:
         'https://graph.microsoft.com/v1.0/drives/b!EKRo7XQXvUyRuOIkA9DjxunkygQdu11AmW6wdTRwuw91Ixe2mdV7RoMnMBsg3DoG/root/delta?$select=id, sharepointIds, title, name, webUrl, fields, parentReference, file, lastModifiedDateTime, size',
-    GRAPH_DRIVEITEMS_ENDPOINT:
+    GRAPH_DRIVE_ITEMS_ENDPOINT:
         'https://graph.microsoft.com/v1.0/sites/ed68a410-1774-4cbd-91b8-e22403d0e3c6/lists/b6172375-d599-467b-8327-301b20dc3a06/items?$expand=fields, driveitem&$select=fields, id, contentType',
-    GRAPH_DRIVEITEM_ENDPOINT: (itemId: string) =>
-        `https://graph.microsoft.com/v1.0/sites/ed68a410-1774-4cbd-91b8-e22403d0e3c6/lists/b6172375-d599-467b-8327-301b20dc3a06/items/${itemId}?$expand=driveItem`,
-    GRAPH_LASTMODIFIED_DATE:
+    GRAPH_DRIVE_ITEM_ENDPOINT: `https://graph.microsoft.com/v1.0/sites/ed68a410-1774-4cbd-91b8-e22403d0e3c6/lists/b6172375-d599-467b-8327-301b20dc3a06/`,
+    //${itemId}?$expand=driveItem
+    GRAPH_LAST_MODIFIED_DATE:
         'https://graph.microsoft.com/v1.0/drives/b!EKRo7XQXvUyRuOIkA9DjxunkygQdu11AmW6wdTRwuw91Ixe2mdV7RoMnMBsg3DoG/root/delta?$top=1&$orderBy=lastModifiedDateTime+DESC',
-    GRAPH_THUMBNAILS_ENDPOINT: (uniqueId: string) =>
-        `https://graph.microsoft.com/v1.0/drives/b!EKRo7XQXvUyRuOIkA9DjxunkygQdu11AmW6wdTRwuw91Ixe2mdV7RoMnMBsg3DoG/items/${uniqueId}/children?$expand=thumbnails`,
-    GRAPH_ITEM_THUMBNAIL_ENDPOINT: (uniqueId: string) =>
-        `https://graph.microsoft.com/v1.0/drives/b!EKRo7XQXvUyRuOIkA9DjxunkygQdu11AmW6wdTRwuw91Ixe2mdV7RoMnMBsg3DoG/items/${uniqueId}?$expand=thumbnails`,
+    GRAPH_THUMBNAILS_ENDPOINT: `https://graph.microsoft.com/v1.0/drives/b!EKRo7XQXvUyRuOIkA9DjxunkygQdu11AmW6wdTRwuw91Ixe2mdV7RoMnMBsg3DoG/items/children`,
+    GRAPH_ITEM_THUMBNAIL_ENDPOINT: `https://graph.microsoft.com/v1.0/drives/b!EKRo7XQXvUyRuOIkA9DjxunkygQdu11AmW6wdTRwuw91Ixe2mdV7RoMnMBsg3DoG/items/`,
     // SCOPES
     GRAPH_SCOPES: [
         'offline_access', /// Needed to receive a refresh token

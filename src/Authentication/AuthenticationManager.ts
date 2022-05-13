@@ -10,6 +10,7 @@ import {
 } from 'react-native-app-auth';
 import { API_NAMES } from '../Constant/Constants';
 import { envConfiguration } from '../Helper/EnvConfigurations';
+import LogManager from '../Helper/LogManager';
 
 const serviceConfiguration: ServiceConfiguration = {
     authorizationEndpoint: API_NAMES.AUTHORIZATION_ENDPOINT,
@@ -35,34 +36,33 @@ const refreshConfig = {
     unit: 'minute',
 };
 
-export class AuthenticationManager {
+class AuthenticationManager {
     /**
      * @returns user token
      */
-    static getToken = async () => {
-        console.log('getToken called =');
+    getToken = async () => {
+        LogManager.info('getToken called =');
         try {
-            console.log(authConfig);
             const result = await authorize(authConfig);
+            LogManager.info('result=', authConfig);
             return result;
         } catch (error) {
-            console.error('error 2=', JSON.stringify(error));
+            LogManager.error('error getToken=', JSON.stringify(error));
         }
     };
 
     /**
      * @returns user token
      */
-    static login = async (): Promise<AuthorizeResult | undefined> => {
-        console.log('login called =');
+    login = async (): Promise<AuthorizeResult | undefined> => {
+        LogManager.info('login called =');
         try {
-            console.log(authConfig);
             const result = await authorize(authConfig);
-            console.log('result=', result);
+            LogManager.info('result=', result);
             this.setAuthorization(result);
             return result;
         } catch (error) {
-            console.error('error 1=', error);
+            LogManager.error('error login=', error);
         }
         return undefined;
     };
@@ -70,13 +70,12 @@ export class AuthenticationManager {
     /**
      * @returns authResult
      */
-    static refreshToken = async (authResult: AuthorizeResult): Promise<AuthorizeResult> => {
-        console.log('refreshToken called =');
+    refreshToken = async (authResult: AuthorizeResult): Promise<AuthorizeResult> => {
+        LogManager.info('refreshToken called =');
 
         const refreshResult = await refresh(authConfig, {
             refreshToken: authResult.refreshToken || '',
         });
-        console.log('refreshResult =', refreshResult);
         authResult.accessToken = refreshResult.accessToken;
 
         authResult.refreshToken = refreshResult.refreshToken || '';
@@ -88,53 +87,53 @@ export class AuthenticationManager {
         return authResult;
     };
 
-    static getAccessToken = async (): Promise<string | undefined> => {
-        console.log('getAccessToken called =');
+    getAccessToken = async (): Promise<string | undefined> => {
+        LogManager.info('getAccessToken called =');
         let authorization = await this.getAuthorization();
-        console.log('auth=', authorization);
+
         if (authorization) {
-            console.log('if 1', authorization);
+            LogManager.info('auth token exist');
             if (this.isAuthorizationExpired(authorization)) {
                 authorization = await this.refreshToken(authorization);
             }
             console.info('Azure AD - Answering request for access token with: ' + authorization.accessToken);
             return authorization.accessToken;
         } else {
-            console.log('else');
+            LogManager.info('auth token does not exist, call login');
             authorization = await this.login();
         }
 
         return undefined;
     };
 
-    static getAuthorization = async () => {
-        console.log('getAuthorization called..');
+    getAuthorization = async () => {
+        LogManager.info('getAuthorization called..');
         const raw = await AsyncStorage.getItem(storageKey);
-        console.log('raw =', JSON.parse(raw));
         if (raw) {
             return JSON.parse(raw);
         }
         return undefined;
     };
 
-    static setAuthorization = async (authorizationResult: AuthorizeResult) => {
-        console.log('setAuthorization called =');
+    setAuthorization = async (authorizationResult: AuthorizeResult) => {
+        LogManager.info('setAuthorization called =');
         const raw = JSON.stringify(authorizationResult);
-        console.log('raw=', raw);
         await AsyncStorage.setItem(storageKey, raw);
     };
 
-    static isAuthorizationExpired(authorization: AuthorizeResult): Boolean {
-        console.log('isAuthorizationExpired called =');
+    isAuthorizationExpired(authorization: AuthorizeResult): Boolean {
+        LogManager.info('isAuthorizationExpired called =');
         const expirationTimestamp = dayjs(authorization.accessTokenExpirationDate).subtract(
             refreshConfig.value,
             refreshConfig.unit,
         );
-        console.log('expirationTimestamp=', expirationTimestamp);
+        LogManager.info('expirationTimestamp=', expirationTimestamp);
         const currentTimestamp = dayjs();
-        console.log('currentTimestamp=', currentTimestamp);
+        LogManager.info('currentTimestamp=', currentTimestamp);
         return currentTimestamp.isAfter(expirationTimestamp) ? true : false;
     }
 }
 
-export default AuthenticationManager;
+//export default AuthenticationManager;
+const authenticationManager = new AuthenticationManager();
+export default authenticationManager;
