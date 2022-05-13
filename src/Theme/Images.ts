@@ -25,7 +25,7 @@ const Images = {
      * The Fresenius Netcare GmbH logo.
      * @type png
      */
-    superSignLogoWhite: require(prefix + 'Supersign_Logo_white.png'),
+    superSignLogoWhite: require(prefix + 'super_sign_logo.png'),
     topNavImageSettingScreen: require(prefix + 'setting_image.png'),
     illuHome: require(prefix + 'illu_home.png'),
     menuBlueDots: require(prefix + 'menu_blue_dots.png'),
