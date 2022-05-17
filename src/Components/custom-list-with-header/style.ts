@@ -29,6 +29,9 @@ export const style = StyleSheet.create({
         color: BaseThemeStyle.colors.titleColor,
         textAlign: 'left',
     },
+    listView:{
+        padding:5
+    },
     circleIconContainer: {
         backgroundColor: BaseThemeStyle.colors.white,
         width: iconCircleSize,
@@ -48,8 +51,41 @@ export const style = StyleSheet.create({
         ...BaseThemeStyle.fonts.listTitle,
         color: BaseThemeStyle.colors.titleColor,
     },
+    textStyleToolTip: {
+        ...BaseThemeStyle.fonts.listTitle,
+        color: BaseThemeStyle.colors.blue,
+    },
     iconContainer: {
-        flex: 0.3,
+         flex: 0.3,
         alignItems: 'flex-end',
     },
+    toolTipBorder:{
+        borderRadius: 12.5,
+    },
+    toolTipArrow:{
+        width: 16, height: 8
+    },
+    toolTipContainer:{
+     borderRadius: 10,justifyContent: 'center', alignItems: 'center',height:675
+    },
+    toolTipOptions:{
+        fontSize: 24, fontWeight: '500', padding: 10 , color:BaseThemeStyle.colors.blue
+    },
+    toolTipHeading:{
+        fontSize: 20, fontWeight: '500', padding: 5 
+    },
+    toolTipOptionSeperator:{
+        height: 1, width: 300, backgroundColor: 'black'
+    },
+    blueDotImage:{
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    rightArrow:{
+        width: '350%',
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
@@ -14,7 +14,6 @@ import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 import { setGridViewData } from '../../Redux/catagory/catagorySlice';
 import { RootState } from '../../Redux/rootReducer';
-import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface CategoryDetailScreenProps {

@@ -48,5 +48,35 @@ export const style = StyleSheet.create({
     sizeStyle: {
         ...BaseThemeStyle.fonts.subtitle3,
         color: BaseThemeStyle.colors.titleColor,
+    },
+     toolTipBorder:{
+        borderRadius: 12.5
+    },
+    toolTipArrow:{
+        width: 16, height: 8
+    },
+    toolTipContainer:{
+     borderRadius: 10,justifyContent: 'center', alignItems: 'center'
+    },
+    toolTipOptions:{
+        fontSize: 24, fontWeight: '500', padding: 10 , color:BaseThemeStyle.colors.blue
+    },
+    toolTipHeading:{
+        fontSize: 20, fontWeight: '500', padding: 5 
+    },
+    toolTipOptionSeperator:{
+        height: 1, width: 300, backgroundColor: 'black'
+    },
+    blueDotImage:{
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    rightArrow:{
+        width: '350%',
+        height: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
     }
+
 });

@@ -122,7 +122,6 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
     };
 
     render() {
-        // console.log('render custom flatlist', this.state.isVisibleObject);
         return (
             <View style={{ flex: 1 }}>
                 <FlatList

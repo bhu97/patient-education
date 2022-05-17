@@ -5,6 +5,7 @@ import { GridViewModel } from '../../Model/GridViewModel';
 import moreInfoData from '../../Json/moreinfojson';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 import category from '../../Json/category';
+import masteroptions from '../../Json/masteroptions';
 
 // interface to declare all required variables
 export interface CatagoryState {
@@ -17,6 +18,7 @@ export interface CatagoryState {
     categoryTitle: string;
     subCategoryTitle: string;
     categoryDetailTitle: string;
+    masterOptionsData: Array<any>;
 }
 
 // to set initial value for all variable
@@ -30,6 +32,7 @@ const initialState: CatagoryState = {
     categoryDetailTitle: '',
     gridViewData: gridViewData,
     moreInfoData: moreInfoData,
+    masterOptionsData:masteroptions,
 };
 
 // basic example slice done based on the docs
@@ -63,6 +66,9 @@ const catagorySlice = createSlice({
         setGridViewData: (state, action: PayloadAction<GridViewModel[]>) => {
             state.gridViewData = action.payload;
         },
+        setMasterOptionsData: (state, action: PayloadAction<GridViewModel[]>) => {
+            state.masterOptionsData = action.payload;
+        },
     },
 });
 
@@ -76,6 +82,7 @@ export const {
     setSubCategoryTitle,
     setCategoryDetailTitle,
     setGridViewData,
+    setMasterOptionsData
 } = catagorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

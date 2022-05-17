@@ -8,7 +8,6 @@ import CustomBottomContainer from '../../Components/custom-bottom-container/cust
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
-import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
 import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
 import NavigationManager from '../../Helper/NavigationManager';
@@ -33,11 +32,8 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     }
 
     componentDidMount() {
-        //hide splash screen
-        console.log('component did mount home screen')
         setTimeout(() => {
             SplashScreen.hide();
-            // <FullScreenLoader isLoading/>
         }, 3000);
     }
 
@@ -56,7 +52,6 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     };
 
     render() {
-        console.log('render home screen')
         return (
             <MainContainer>
                 <CustomTopNav

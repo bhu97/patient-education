@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Image, Text, View } from 'react-native';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import Tooltip from 'react-native-walkthrough-tooltip';
 import { GridViewModel } from '../../Model/GridViewModel';
 import CustomIcon from '../custom-icon/custom-icon';
 import { style } from './style';
@@ -7,34 +8,106 @@ import { style } from './style';
 interface ThumbnailGridViewProps {
     gridViewList: GridViewModel[];
 }
+interface ThumbnailGridViewState {
+    isVisibleObject: any;
+    update: any;
+}
 
-export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps> {
+export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailGridViewState> {
     constructor(props) {
         super(props);
+        this.state = {
+            isVisibleObject: {},
+            update: false,
+        };
     }
+    componentDidMount(): void {
+        let isVisibleArray = {};
+        this.props.gridViewList.map((item: any, index: any) => {
+            let setIndex = { index: index, isVisible: false };
+            isVisibleArray[index] = setIndex;
+        });
+        this.setState({ isVisibleObject: isVisibleArray });
+    }
+    setVisible = (index: any, indicator: boolean) => {
+        let isVisibleCheck = this.state.isVisibleObject[index];
+        isVisibleCheck.isVisible = indicator;
+        this.setState({ isVisibleObject: { ...this.state.isVisibleObject, isVisibleCheck }, update: {} });
+    };
 
+    getVisibility = (index: any) => {
+        return this.state.isVisibleObject[index]?.isVisible ? true : false;
+    };
     getImage = (imageName) => {
         return <Image resizeMode="contain" style={style.iconImageStyle} source={imageName} />;
     };
-
-    renderItem = ({ item }) => (
-        <View style={style.backgroundViewStyle}>
-            <Image style={style.imageStyle} source={item.imageName} />
-
-            <View style={style.itemContainer}>
-                <View style={style.textContainer}>
-                    <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
-                        {item.fileName}
-                    </Text>
-                </View>
-
-                <View style={style.iconContainer}>
+    download = () => {
+        console.log('Download Clicked');
+    };
+    removeLocally = () => {
+        console.log('Remove locally Clicked');
+    };
+    addRemoveFavourite = () => {
+        console.log('Add/Remove favourite Clicked');
+    };
+    getToolTip = (index, isVisibleIndicator) => {
+        return (
+            <Tooltip
+                contentStyle={style.toolTipBorder}
+                arrowSize={style.toolTipArrow}
+                isVisible={isVisibleIndicator}
+                content={
+                    <View style={style.toolTipContainer}>
+                        <Text style={style.toolTipHeading}>File Options</Text>
+                        {this.toolTipOptionSeparator()}
+                        <TouchableOpacity onPress={() => this.download()}>
+                            <Text style={style.toolTipOptions}>Download</Text>
+                        </TouchableOpacity>
+                        {this.toolTipOptionSeparator()}
+                        <TouchableOpacity onPress={() => this.removeLocally()}>
+                            <Text style={style.toolTipOptions}>Remove locally</Text>
+                        </TouchableOpacity>
+                        {this.toolTipOptionSeparator()}
+                        <TouchableOpacity onPress={() => this.addRemoveFavourite()}>
+                            <Text style={style.toolTipOptions}>Add/remove favourite</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
+                placement="right"
+                onClose={() => this.setVisible(index, false)}
+            >
+                <TouchableOpacity onPress={() => this.setVisible(index, true)}>
                     <CustomIcon name={'more-horizontal'} />
-                    <Text style={style.sizeStyle}>{item.fileSize}</Text>
+                </TouchableOpacity>
+            </Tooltip>
+        );
+    };
+
+    toolTipOptionSeparator = () => {
+        return <View style={style.toolTipOptionSeperator}></View>;
+    };
+
+    renderItem = ({ item, index }: any) => {
+        const isVisibleIndicator = this.getVisibility(index);
+        return (
+            <View style={style.backgroundViewStyle}>
+                <Image style={style.imageStyle} source={item.imageName} />
+
+                <View style={style.itemContainer}>
+                    <View style={style.textContainer}>
+                        <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
+                            {item.fileName}
+                        </Text>
+                    </View>
+
+                    <View style={style.iconContainer}>
+                        {this.getToolTip(index, isVisibleIndicator)}
+                        <Text style={style.sizeStyle}>{item.fileSize}</Text>
+                    </View>
                 </View>
             </View>
-        </View>
-    );
+        );
+    };
 
     render() {
         return (
@@ -45,6 +118,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                     numColumns={2}
                     columnWrapperStyle={{ flex: 1, justifyContent: 'space-between' }}
                     keyExtractor={(item, index) => index.toString()}
+                    extraData={this.state.update}
                 />
             </View>
         );
