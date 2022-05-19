@@ -1,12 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import I18n from 'i18n-js';
 import { I18nManager } from 'react-native';
-import { LANGUAGE_CONSTANT } from '../../Constant/Constants';
-import deviceManager from '../DeviceManager';
+import { LANGUAGE_CONSTANT } from '../Constant/Constants';
+import deviceManager from '../Helper/DeviceManager';
 import en_US from './Locales/en_US.json';
 import gr from './Locales/gr.json';
 
 export class LocalizationManager {
+    constructor() {
+        console.log('LocalizationManager constructor');
+    }
+
     /**
      *
      * @param newLanguage

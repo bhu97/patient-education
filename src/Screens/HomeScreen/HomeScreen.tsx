@@ -9,12 +9,13 @@ import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
-import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
+
 import NavigationManager from '../../Helper/NavigationManager';
 import { setCategoryList, setCategoryTitle } from '../../Redux/catagory/catagorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
 
 interface HomePageProps {
     dispatch: Dispatch;

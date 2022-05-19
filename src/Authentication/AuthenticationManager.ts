@@ -134,6 +134,5 @@ class AuthenticationManager {
     }
 }
 
-//export default AuthenticationManager;
 const authenticationManager = new AuthenticationManager();
 export default authenticationManager;

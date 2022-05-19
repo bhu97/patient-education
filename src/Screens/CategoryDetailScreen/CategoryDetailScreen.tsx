@@ -8,7 +8,7 @@ import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
 import MoreInfoList from '../../Components/more-info-list/more-info-list';
 import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
-import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
 import NavigationManager from '../../Helper/NavigationManager';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
