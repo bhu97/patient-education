@@ -17,10 +17,11 @@ interface CategoryScreenProps {
     mainList: any;
     categoryList: Array<any>;
     navigation: any;
-    mainTitle: String;
-    setSubCategoryData: () => void;
-    setSelectedCategoryData: () => void;
+    mainTitle: string;
+    setSubCategoryData: (any) => void;
+    setSelectedCategoryData: (any) => void;
     setTitleCategory: () => void;
+    setTitleSubCategory: (string) => void;
 }
 
 interface CategoryScreenState {
@@ -31,12 +32,12 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
     constructor(props: CategoryScreenProps) {
         super(props);
         this.state = {
-            isLoading: true
+            isLoading: true,
         };
     }
     componentDidMount() {
         setTimeout(() => {
-          this.setState({isLoading:false});
+            this.setState({ isLoading: false });
         }, 3000);
     }
     goBack = () => {
@@ -59,13 +60,10 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
     onClickFirstList = () => {};
 
     render() {
-        return (
-            this.state.isLoading ? (
-                
-                <FullScreenLoader isLoading showSpinner/>
-
-            ):( 
-                <MainContainer>
+        return this.state.isLoading ? (
+            <FullScreenLoader isLoading showSpinner />
+        ) : (
+            <MainContainer>
                 <CustomTopNav back subTitle={this.props.mainTitle} onPressBack={this.goBack} />
                 <CustomBody>
                     <View style={style.container}>
@@ -93,8 +91,6 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                     </View>
                 </CustomBottomContainer>
             </MainContainer>
-            )
-           
         );
     }
 }
@@ -112,7 +108,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     setSelectedCategoryData: (data: any) => {
         dispatch(setSelectedCategory(data));
     },
-    setTitleSubCategory: (titleText: String) => {
+    setTitleSubCategory: (titleText: string) => {
         dispatch(setSubCategoryTitle(titleText));
     },
 });

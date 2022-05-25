@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import LogManager from '../../Helper/LogManager';
 import {
-    fetchAdditionalMetadata,
-    fetchDelta,
+    fetchAllListItems,
+    fetchAllDriveItems,
     fetchItem,
     fetchItemThumbnail,
     fetchLastModifiedDate,
@@ -34,29 +34,29 @@ export const appDataSlice = createSlice({
             state.loading = false;
         });
 
-        builder.addCase(fetchAdditionalMetadata.pending, (state) => {
-            LogManager.info('api call fetchAdditionalMetadata pending', 'started');
+        builder.addCase(fetchAllListItems.pending, (state) => {
+            LogManager.info('api call fetchAllListItems pending', 'started');
             state.loading = true;
         });
-        builder.addCase(fetchAdditionalMetadata.fulfilled, (state, action) => {
-            LogManager.info('api call fetchAdditionalMetadata fulfilled', 'finished');
+        builder.addCase(fetchAllListItems.fulfilled, (state, action) => {
+            LogManager.info('api call fetchAllListItems fulfilled', 'finished');
             state.loading = false;
         });
-        builder.addCase(fetchAdditionalMetadata.rejected, (state) => {
-            LogManager.warn('api call fetchAdditionalMetadata rejected', 'error');
+        builder.addCase(fetchAllListItems.rejected, (state) => {
+            LogManager.warn('api call fetchAllListItems rejected', 'error');
             state.loading = false;
         });
 
-        builder.addCase(fetchDelta.pending, (state) => {
-            LogManager.info('api call fetchDelta pending', 'started');
+        builder.addCase(fetchAllDriveItems.pending, (state) => {
+            LogManager.info('api call fetchAllDriveItems pending', 'started');
             state.loading = true;
         });
-        builder.addCase(fetchDelta.fulfilled, (state, action) => {
-            LogManager.info('api call fetchDelta fulfilled', 'finished');
+        builder.addCase(fetchAllDriveItems.fulfilled, (state, action) => {
+            LogManager.info('api call fetchAllDriveItems fulfilled', 'finished');
             state.loading = false;
         });
-        builder.addCase(fetchDelta.rejected, (state) => {
-            LogManager.warn('api call fetchDelta rejected', 'error');
+        builder.addCase(fetchAllDriveItems.rejected, (state) => {
+            LogManager.warn('api call fetchAllDriveItems rejected', 'error');
             state.loading = false;
         });
 

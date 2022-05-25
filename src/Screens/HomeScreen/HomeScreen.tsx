@@ -16,6 +16,8 @@ import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
+import { fetchAllListItems, fetchAllDriveItems } from '../../Redux/app-data/appDataThunk';
+import databaseManager from '../../Database/DatabaseManager';
 
 interface HomePageProps {
     dispatch: Dispatch;
@@ -23,6 +25,8 @@ interface HomePageProps {
     navigation: any;
     setTitleCategory: (string) => void;
     setCategoryData: (string) => void;
+    getAllDriveItems: () => void;
+    getAllListItems: () => void;
 }
 
 interface HomePageState {}
@@ -43,8 +47,13 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     };
 
     onClickBredcrum1 = () => {
-        Alert.alert('on Click Bredcrum 1');
+        this.test();
     };
+
+    async test() {
+        await this.props.getAllDriveItems();
+        // await this.props.getAllListItems();
+    }
 
     onClick = (item) => {
         this.props.setTitleCategory(item.key);
@@ -78,7 +87,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                 </CustomBody>
                 <CustomBottomContainer>
                     <View style={style.botomView}>
-                        <CustomBredcrum title={'Home'} isFirstCrumb={true} />
+                        <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onClickBredcrum1} />
                     </View>
                 </CustomBottomContainer>
             </MainContainer>
@@ -96,6 +105,12 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setTitleCategory: (titleText: string) => {
         dispatch(setCategoryTitle(titleText));
+    },
+    getAllDriveItems: () => {
+        dispatch(fetchAllDriveItems());
+    },
+    getAllListItems: () => {
+        dispatch(fetchAllListItems());
     },
 });
 

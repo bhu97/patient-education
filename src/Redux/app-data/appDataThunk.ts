@@ -20,27 +20,29 @@ export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModified
     return response;
 });
 
-//to fetch delta
-export const fetchDelta = createAsyncThunk('appData/fetchDelta', async () => {
-    LogManager.debug('fetchDelta call started');
+//to Fetch Drive Items
+export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', async () => {
+    LogManager.debug('fetchDriveItems call started');
 
-    const response = await apiManager.callApiToGetData(API_NAMES.GRAPH_DELTA_ENDPOINT, HTTP_METHODS.GET);
-    LogManager.info('response=', response);
+    const responses = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
+    LogManager.info('responses=', responses);
 
-    LogManager.debug('fetchDelta call ended');
+    LogManager.debug('fetchDriveItems call ended');
 
-    return response;
+    return responses;
 });
 
 //to fetch meta delta
-export const fetchAdditionalMetadata = createAsyncThunk('appData/fetchAdditionalMetadata', async () => {
+export const fetchAllListItems = createAsyncThunk('appData/fetchAdditionalMetadata', async () => {
     LogManager.debug('fetchAdditionalMetadata call started');
 
-    const response = await apiManager.callApiToGetData(API_NAMES.GRAPH_DRIVE_ITEMS_ENDPOINT, HTTP_METHODS.GET);
-    LogManager.info('response=', response);
+    //    const response = await apiManager.callApiToGetData(API_NAMES.ADDITIONAL_META_DATA_ENDPOINT, HTTP_METHODS.GET);
+    //    LogManager.info('response=', response);
+    const responses = await fetchData(API_NAMES.ALL_LIST_ITEM_ENDPOINT);
+    LogManager.info('responses=', responses);
 
     LogManager.debug('fetchAdditionalMetadata call ended');
-    return response;
+    return responses;
 });
 
 //fetchItem
@@ -94,3 +96,34 @@ export const fetchThumbnail = createAsyncThunk('appData/fetchThumbnail', async (
     LogManager.debug('fetchThumbnail call ended');
     return response;
 });
+
+//fetch all data and return 1 response array
+const fetchData = async (url: string, params?: any): Promise<any[]> => {
+    if (params === null) {
+        params = {};
+    }
+    let allResponses = Array<any>();
+    console.log('performing request: ' + url);
+    const responses = await fetchNext(url, params, allResponses);
+    console.log('all response length: ' + allResponses.length);
+    return responses;
+};
+
+const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promise<any[]> => {
+    const response = await apiManager.callApiToGetData(endpoint, params);
+    console.log('response nextLink: ' + response['@odata.nextLink']);
+    console.log('response value: ' + response['value']);
+
+    if (response['@odata.nextLink']) {
+        const nextData = (await fetchNext(
+            response['@odata.nextLink'],
+            params,
+            data.concat(response['value']),
+        )) as Array<any>;
+        console.log('nextData: ' + nextData);
+        return nextData;
+    } else {
+        console.log('response.value: ' + response.value);
+        return data.concat(response['value']);
+    }
+};

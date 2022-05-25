@@ -4,13 +4,13 @@ import CustomBody from '../../Components/custom-body/custom-body';
 import CustomListWithHeader from '../../Components/custom-list-with-header/custom-list-with-header';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
-import { BaseLocalization } from '../../Helper/Localization/BaseLocalization';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
-interface SettingPageProps { }
+interface SettingPageProps {}
 
-interface SettingPageState { }
+interface SettingPageState {}
 
 class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     constructor(props: SettingPageProps) {
@@ -51,10 +51,6 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                     subTitle={BaseLocalization.settingSubTitle}
                     isShowImage={true}
                     imageName={Images.superSignLogoWhite}
-                // back
-                // onPressBack={() => {
-                //     console.log('back press');
-                // }}
                 />
                 <CustomBody>
                     <View style={style.mainContainer}>

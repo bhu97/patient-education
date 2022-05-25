@@ -19,9 +19,9 @@ interface SubCategoryScreenProps {
     selectedCategory: Array<any>;
     dispatch: Dispatch;
     navigation: any;
-    mainTitle: String;
-    categoryTitle: String;
-    setTitleCategory: () => void;
+    mainTitle: string;
+    categoryTitle: string;
+    setTitleCategoryDetails: (string) => void;
 }
 
 interface SubCategoryScreenState {
@@ -32,12 +32,12 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
     constructor(props: SubCategoryScreenProps) {
         super(props);
         this.state = {
-            isLoading:true
+            isLoading: true,
         };
     }
     componentDidMount() {
         setTimeout(() => {
-          this.setState({isLoading:false});
+            this.setState({ isLoading: false });
         }, 3000);
     }
     onClickFirstList = () => {};
@@ -59,12 +59,9 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
     };
 
     render() {
-        return (
-            this.state.isLoading ? (
-                
-                <FullScreenLoader isLoading showSpinner/>
-
-            ):( 
+        return this.state.isLoading ? (
+            <FullScreenLoader isLoading showSpinner />
+        ) : (
             <MainContainer>
                 <CustomTopNav back subTitle={this.props.categoryTitle} onPressBack={this.goBack} />
                 <CustomBody>
@@ -95,7 +92,6 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                     </View>
                 </CustomBottomContainer>
             </MainContainer>
-            )
         );
     }
 }
@@ -108,7 +104,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    setTitleCategoryDetails: (titleText: String) => {
+    setTitleCategoryDetails: (titleText: string) => {
         dispatch(setCategoryDetailTitle(titleText));
     },
 });

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import authenticationManager from '../Authentication/AuthenticationManager';
+import { HTTP_METHODS } from '../Constant/Constants';
 import { envConfiguration } from './EnvConfigurations';
 import LogManager from './LogManager';
 
@@ -11,12 +12,16 @@ class ApiManager {
      * @param params
      * @returns
      */
-    async callApiToGetData(endPoint: string, httpMethodName: any, params?: any) {
+    async callApiToGetData(endPoint: string, httpMethodName?: any, params?: any) {
         LogManager.info('endPoint=', endPoint);
         LogManager.debug('httpMethodName=', httpMethodName);
 
         if (params === null) {
             params = {};
+        }
+
+        if (httpMethodName === undefined || httpMethodName === null) {
+            httpMethodName = HTTP_METHODS.GET;
         }
 
         LogManager.info('params=', params);
@@ -47,7 +52,7 @@ class ApiManager {
             response = null;
         }
         LogManager.debug('callApiToGetData return=', response);
-        return response;
+        return response.data ? response.data : [];
     }
 }
 const apiManager = new ApiManager();
