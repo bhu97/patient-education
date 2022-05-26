@@ -1,3 +1,7 @@
+import { List } from 'realm';
+import { DriveItemModel } from '../Model/DriveItemModel';
+import { ListItemModel } from '../Model/ListItemModel';
+
 export const normalizeUrl = (url: string | undefined): string => {
     if (url) {
         const components = url.split('Shared%20Documents');
@@ -54,4 +58,26 @@ export const sanitizeWebUrl = (url: string): string | undefined => {
     let noWhitespace = noDriveInfo.trim();
     const sanitizedWebUrl = noWhitespace;
     return sanitizedWebUrl;
+};
+
+// get response data and map it to drive model structure
+export const createDriveModelData = (responseData: any) => {
+    let driveModelData: DriveItemModel[];
+
+    driveModelData = responseData.map((responseObject) => {
+        return DriveItemModel.generate(responseObject);
+    });
+
+    return driveModelData;
+};
+
+// get response data and map it to list model structure
+export const createListModelData = (responseData: any) => {
+    let listModelData: ListItemModel[];
+
+    listModelData = responseData.map((responseObject) => {
+        return ListItemModel.generate(responseObject);
+    });
+
+    return listModelData;
 };

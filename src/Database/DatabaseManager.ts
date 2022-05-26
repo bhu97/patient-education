@@ -1,7 +1,9 @@
 import Realm from 'realm';
 import { API_NAMES } from '../Constant/Constants';
+import { createDriveModelData } from '../Helper/Helper';
+import LogManager from '../Helper/LogManager';
 import { DriveItemModel } from '../Model/DriveItemModel';
-import { fetchAllDriveItems, fetchAllListItems } from '../Redux/app-data/appDataThunk';
+import { fetchAllDriveItems, fetchAllListItems, fetchData } from '../Redux/app-data/appDataThunk';
 import { DriveItemSchema, FavoriteGroupSchema, FavoriteSchema, UserSchema } from './Schema';
 
 export class DatabaseManager {
@@ -21,7 +23,7 @@ export class DatabaseManager {
     realm: Realm | undefined;
 
     constructor() {
-        console.log('Database constructor');
+        LogManager.info('Database constructor');
         //this.initializeDatabase();
     }
 
@@ -29,29 +31,42 @@ export class DatabaseManager {
      * Initialize Database with all schema
      */
     async initializeDatabase() {
-        console.log('initializeDatabase started');
+        LogManager.info('initializeDatabase started');
         try {
             this.realm = await Realm.open({
                 path: 'patienteducation',
                 schema: [DriveItemSchema, UserSchema, FavoriteSchema, FavoriteGroupSchema],
                 schemaVersion: 1,
             });
-            console.log('setup database');
-            console.log(this.realm.schema);
-            console.log('size=', this.realm.empty);
-            console.log('initializeDatabase finsihed');
+            LogManager.info('setup database');
             //basic setup
+            LogManager.info('size=', this.realm.empty);
 
             if (this.realm.empty) {
                 // if DB is empty download and update DB
-                console.log('DB is empty..');
-                //  const allDriveItems = await fetchAllDriveItems();
-                // const allListItems = await fetchAllListItems();
+                LogManager.info('DB is empty..');
+                const allDriveItems = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
+                LogManager.info('responses=', allDriveItems);
+
+                const driveModelData = createDriveModelData(allDriveItems);
+                LogManager.info('driveModelData=', driveModelData);
+
+                const allListItems = await fetchData(API_NAMES.ALL_LIST_ITEM_ENDPOINT);
+                LogManager.info('allListItems=', allListItems);
+                const listModelData = createDriveModelData(allDriveItems);
+                LogManager.info('listModelData=', listModelData);
+
+                await this.saveDriveItems(driveModelData);
+                LogManager.info('drive model saved=');
+
+                await this.saveDriveItems(listModelData);
+                LogManager.info('list model saved=');
             } else {
-                console.log('DB is not empty..');
+                LogManager.info('DB is not empty..');
             }
+            LogManager.info('initializeDatabase finsihed');
         } catch (error) {
-            console.log('initializeDatabase error=', error);
+            LogManager.error('initializeDatabase error=', error);
         }
     }
 
@@ -65,7 +80,7 @@ export class DatabaseManager {
         try {
             this.realm?.write(() => {
                 objects.forEach((object) => {
-                    console.log(object);
+                    LogManager.info(object);
                     this.realm?.create(type, object, Realm.UpdateMode.Modified);
                 });
             });
@@ -74,12 +89,12 @@ export class DatabaseManager {
         }
     }
 
-    async save(items: Array<any>): Promise<void> {
-        console.log(this.realm);
+    async saveDriveItems(items: Array<any>): Promise<void> {
+        LogManager.info('db=>', this.realm);
         try {
             this.realm?.write(() => {
                 items.forEach((driveItem) => {
-                    console.log(driveItem);
+                    LogManager.info(driveItem);
                     this.realm?.create('DriveItem', driveItem, Realm.UpdateMode.Modified);
                 });
                 //success()

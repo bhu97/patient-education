@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { API_NAMES, HTTP_METHODS } from '../../Constant/Constants';
 import apiManager from '../../Helper/ApiManager';
+import { createDriveModelData } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 
 /**
@@ -27,9 +28,10 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
     const responses = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
     LogManager.info('responses=', responses);
 
+    const driveModelData = createDriveModelData(responses);
     LogManager.debug('fetchDriveItems call ended');
 
-    return responses;
+    return driveModelData;
 });
 
 //to fetch meta delta
@@ -98,7 +100,7 @@ export const fetchThumbnail = createAsyncThunk('appData/fetchThumbnail', async (
 });
 
 //fetch all data and return 1 response array
-const fetchData = async (url: string, params?: any): Promise<any[]> => {
+export const fetchData = async (url: string, params?: any): Promise<any[]> => {
     if (params === null) {
         params = {};
     }
@@ -114,16 +116,17 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
     console.log('response nextLink: ' + response['@odata.nextLink']);
     console.log('response value: ' + response['value']);
 
-    if (response['@odata.nextLink']) {
-        const nextData = (await fetchNext(
-            response['@odata.nextLink'],
-            params,
-            data.concat(response['value']),
-        )) as Array<any>;
-        console.log('nextData: ' + nextData);
-        return nextData;
-    } else {
-        console.log('response.value: ' + response.value);
-        return data.concat(response['value']);
-    }
+    // if (response['@odata.nextLink']) {
+    //     const nextData = (await fetchNext(
+    //         response['@odata.nextLink'],
+    //         params,
+    //         data.concat(response['value']),
+    //     )) as Array<any>;
+    //     console.log('nextData: ' + nextData);
+    //     return nextData;
+    // } else {
+    //     console.log('response.value: ' + response.value);
+    //     return data.concat(response['value']);
+    // }
+    return data.concat(response['value']);
 };
