@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { API_NAMES, HTTP_METHODS } from '../../Constant/Constants';
 import apiManager from '../../Helper/ApiManager';
-import { createDriveModelData } from '../../Helper/Helper';
+import { createDriveModelData, createListModelData } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 
 /**
@@ -38,13 +38,14 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
 export const fetchAllListItems = createAsyncThunk('appData/fetchAdditionalMetadata', async () => {
     LogManager.debug('fetchAdditionalMetadata call started');
 
-    //    const response = await apiManager.callApiToGetData(API_NAMES.ADDITIONAL_META_DATA_ENDPOINT, HTTP_METHODS.GET);
-    //    LogManager.info('response=', response);
     const responses = await fetchData(API_NAMES.ALL_LIST_ITEM_ENDPOINT);
     LogManager.info('responses=', responses);
 
+    const listModelData = createListModelData(responses);
+    LogManager.debug('fetchDriveItems call ended');
+
     LogManager.debug('fetchAdditionalMetadata call ended');
-    return responses;
+    return listModelData;
 });
 
 //fetchItem
@@ -116,17 +117,17 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
     console.log('response nextLink: ' + response['@odata.nextLink']);
     console.log('response value: ' + response['value']);
 
-    // if (response['@odata.nextLink']) {
-    //     const nextData = (await fetchNext(
-    //         response['@odata.nextLink'],
-    //         params,
-    //         data.concat(response['value']),
-    //     )) as Array<any>;
-    //     console.log('nextData: ' + nextData);
-    //     return nextData;
-    // } else {
-    //     console.log('response.value: ' + response.value);
-    //     return data.concat(response['value']);
-    // }
+    if (response['@odata.nextLink']) {
+        const nextData = (await fetchNext(
+            response['@odata.nextLink'],
+            params,
+            data.concat(response['value']),
+        )) as Array<any>;
+        console.log('nextData: ' + nextData);
+        return nextData;
+    } else {
+        console.log('response.value: ' + response.value);
+        return data.concat(response['value']);
+    }
     return data.concat(response['value']);
 };

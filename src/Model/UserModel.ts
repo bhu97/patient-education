@@ -1,17 +1,19 @@
+import { API_NAMES } from '../Constant/Constants';
+
 //to declare all required variables
+export interface IUser {
+    id: string;
+    country: string | undefined;
+}
 
-export class UserModel {
-    id: number;
-    email: string;
-    first_name: string;
-    last_name: string;
-    avatar: string;
+export class UserModel implements IUser {
+    id: string = '0';
+    country: string;
 
-    // constructor(id: number, email: string, first_name: string, last_name: string, avatar: string) {
-    //     this.id = id;
-    //     this.email = email;
-    //     this.first_name = first_name;
-    //     this.last_name = last_name;
-    //     this.avatar = avatar;
-    // }
+    static generate(country: string) {
+        return {
+            id: API_NAMES.USER_ID,
+            country: country,
+        };
+    }
 }

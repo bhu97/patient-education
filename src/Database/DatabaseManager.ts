@@ -1,9 +1,7 @@
 import Realm from 'realm';
-import { API_NAMES } from '../Constant/Constants';
-import { createDriveModelData } from '../Helper/Helper';
+import { API_NAMES, BINARY_STRING } from '../Constant/Constants';
+import { base64ToArrayBuffer } from '../Helper/Helper';
 import LogManager from '../Helper/LogManager';
-import { DriveItemModel } from '../Model/DriveItemModel';
-import { fetchAllDriveItems, fetchAllListItems, fetchData } from '../Redux/app-data/appDataThunk';
 import { DriveItemSchema, FavoriteGroupSchema, FavoriteSchema, UserSchema } from './Schema';
 
 export class DatabaseManager {
@@ -21,142 +19,79 @@ export class DatabaseManager {
     };
 
     realm: Realm | undefined;
+    static dbInstance: DatabaseManager;
 
     constructor() {
-        LogManager.info('Database constructor');
-        //this.initializeDatabase();
+        console.log('Database constructor');
+        this.initializeRealm();
+    }
+    static getInstance() {
+        if (this.dbInstance == null) {
+            this.dbInstance = new DatabaseManager();
+        }
+        return this.dbInstance;
     }
 
     /**
      * Initialize Database with all schema
      */
-    async initializeDatabase() {
-        LogManager.info('initializeDatabase started');
+    initializeRealm() {
+        console.log('initializeRealm started');
         try {
-            this.realm = await Realm.open({
-                path: 'patienteducation',
+            //https://www.convertstring.com/EncodeDecode/HexEncode pass encryption key to URL to get hexcode
+            //use it to open Realm
+
+            this.realm = new Realm({
+                encryptionKey: base64ToArrayBuffer(BINARY_STRING),
                 schema: [DriveItemSchema, UserSchema, FavoriteSchema, FavoriteGroupSchema],
                 schemaVersion: 1,
+                migration: (_oldRealm, _newRealm) => {
+                    //app already release to app store and in next version if you update any field name or change
+                    //its data type then new app to work without failing we have to right code here in this
+                },
             });
-            LogManager.info('setup database');
-            //basic setup
-            LogManager.info('size=', this.realm.empty);
 
-            if (this.realm.empty) {
-                // if DB is empty download and update DB
-                LogManager.info('DB is empty..');
-                const allDriveItems = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
-                LogManager.info('responses=', allDriveItems);
-
-                const driveModelData = createDriveModelData(allDriveItems);
-                LogManager.info('driveModelData=', driveModelData);
-
-                const allListItems = await fetchData(API_NAMES.ALL_LIST_ITEM_ENDPOINT);
-                LogManager.info('allListItems=', allListItems);
-                const listModelData = createDriveModelData(allDriveItems);
-                LogManager.info('listModelData=', listModelData);
-
-                await this.saveDriveItems(driveModelData);
-                LogManager.info('drive model saved=');
-
-                await this.saveDriveItems(listModelData);
-                LogManager.info('list model saved=');
-            } else {
-                LogManager.info('DB is not empty..');
-            }
-            LogManager.info('initializeDatabase finsihed');
+            console.log(this.realm.schema);
+            console.log('initializeRealm finished');
         } catch (error) {
-            LogManager.error('initializeDatabase error=', error);
+            console.log('initializeRealm error=', error);
         }
     }
 
-    async superSave(item: Object): Promise<void> {
-        this.realm?.write(() => {
-            this.realm?.create(item.constructor.name, item, Realm.UpdateMode.Modified);
-        });
-    }
-
-    async saveObjects(objects: any[], type: string) {
+    public createEntity = async (schemaName: string, data: any) => {
         try {
-            this.realm?.write(() => {
-                objects.forEach((object) => {
-                    LogManager.info(object);
-                    this.realm?.create(type, object, Realm.UpdateMode.Modified);
-                });
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    async saveDriveItems(items: Array<any>): Promise<void> {
-        LogManager.info('db=>', this.realm);
-        try {
-            this.realm?.write(() => {
-                items.forEach((driveItem) => {
-                    LogManager.info(driveItem);
-                    this.realm?.create('DriveItem', driveItem, Realm.UpdateMode.Modified);
-                });
-                //success()
-            });
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    async get<T extends Realm.Object>(name: string, query?: string | undefined) {
-        if (this.realm) {
-            if (query) {
-                return Array.from(this.realm.objects<T>(name).filtered(query));
-            } else {
-                return Array.from(this.realm.objects<T>(name));
-            }
-        }
-    }
-
-    getOne<T>(name: string, query?: string | undefined): T | undefined {
-        if (this.realm) {
-            if (query) {
-                const results = this.realm.objects<T>(name).filtered(query);
-                return Array.from(results)[0];
-            } else {
-                const results = this.realm.objects<T>(name);
-                return Array.from(results)[0];
-            }
-        }
-    }
-
-    async delete<T extends Realm.Object>(name: string, query?: string | undefined) {
-        return new Promise<void>((success, _) => {
-            this.realm?.write(() => {
-                if (query) {
-                    const results = this.realm?.objects<T>(name).filtered(query);
-                    this.realm?.delete(results);
-                    success();
+            this.realm.write(async () => {
+                if (data?.length > 0) {
+                    for (let i = 0, total = data.length; i < total; i++) {
+                        this.realm.create(schemaName, data[i], Realm.UpdateMode.All);
+                    }
                 } else {
-                    const results = this.realm?.objects<T>(name);
-                    this.realm?.delete(results);
-                    success();
+                    this.realm.create(schemaName, data, Realm.UpdateMode.All);
                 }
             });
-        });
-    }
-
-    hasValidLocalData(): boolean {
-        const driveItemResults = this.realm?.objects('DriveItem');
-        const userResults = this.realm?.objects('User');
-
-        if (driveItemResults && userResults) {
-            return driveItemResults.length > 0 && userResults.length > 0;
+        } catch (error) {
+            LogManager.info('createEntity--->', error);
+            return '';
         }
+    };
 
-        return false;
-    }
+    public getEntities = (schemaName: string, query?: string) => {
+        try {
+            if (query) {
+                let queryResult = this.realm.objects(schemaName).filtered(query);
+                let copyOfJsonArray = Array.from(queryResult);
+                return this.copyRealmObject(copyOfJsonArray);
+            } else {
+                let copyOfJsonArray = Array.from(this.realm.objects(schemaName));
+                return this.copyRealmObject(copyOfJsonArray);
+            }
+        } catch (error) {
+            LogManager.error('getEntities--->', error);
+            return [];
+        }
+    };
 
-    // async removeAllDriveItems(): Promise<void> {
-    //   return await db.driveItems.clear()
-    // }
+    public copyRealmObject = (item: any) => {
+        return JSON.parse(JSON.stringify(item)); //refReplacer(item)};
+    };
 }
-
-const databaseManager = new DatabaseManager();
-export default databaseManager;

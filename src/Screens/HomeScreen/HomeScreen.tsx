@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Image, View } from 'react-native';
+import { Image, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -9,24 +9,34 @@ import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import MainContainer from '../../Components/main-container/main-container';
-
+import { API_NAMES } from '../../Constant/Constants';
+import { DatabaseManager } from '../../Database/DatabaseManager';
+import dbHelper from '../../Database/DBHelper';
+import { DriveItemSchema } from '../../Database/Schema';
+import { createDriveModelData, createListModelData } from '../../Helper/Helper';
+import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
+import LocalizationManager from '../../Localization/LocalizationManager';
+import { DriveItemModel } from '../../Model/DriveItemModel';
+import { ListItemModel } from '../../Model/ListItemModel';
+import { setAllDriveResponse, setAllListResponse } from '../../Redux/app-data/appDataSlice';
+import { fetchData } from '../../Redux/app-data/appDataThunk';
 import { setCategoryList, setCategoryTitle } from '../../Redux/catagory/catagorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
-import { fetchAllListItems, fetchAllDriveItems } from '../../Redux/app-data/appDataThunk';
-import databaseManager from '../../Database/DatabaseManager';
 
 interface HomePageProps {
+    driveItems: any;
+    listItems: any;
     dispatch: Dispatch;
     mainList: any;
     navigation: any;
-    setTitleCategory: (string) => void;
-    setCategoryData: (string) => void;
-    getAllDriveItems: () => void;
-    getAllListItems: () => void;
+    setTitleCategory: (title: string) => void;
+    setCategoryData: (data: any) => void;
+    setAllDriveItems: (data: DriveItemModel[]) => void;
+    setAllListItems: (data: ListItemModel[]) => void;
 }
 
 interface HomePageState {}
@@ -37,9 +47,57 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            SplashScreen.hide();
-        }, 3000);
+        this.initializeApp();
+    }
+
+    async initializeApp() {
+        SplashScreen.hide();
+
+        const userData = await dbHelper.getUser();
+        LogManager.debug('userData', userData);
+        if (!userData) {
+            //user not present fetch all data and save it DB
+
+            LogManager.debug('fetch all drive starts=');
+
+            const driveItems = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
+            LogManager.info('responses driveItems=', driveItems);
+
+            const driveModelData = createDriveModelData(driveItems);
+            LogManager.info('driveModelData=', driveModelData);
+
+            //set it to redux for future use
+            this.props.setAllDriveItems(driveModelData);
+
+            const listItems = await fetchData(API_NAMES.ALL_LIST_ITEM_ENDPOINT);
+            LogManager.info('responses list Item=', listItems);
+
+            const listModelData = createListModelData(listItems);
+            LogManager.debug('listModelData=', listModelData);
+
+            LogManager.debug('fetch all drive ends=', driveModelData);
+
+            //set it to redux for future use
+            this.props.setAllListItems(listModelData);
+
+            //insert drive items and list items to DB
+            LogManager.debug('insert DB stars=');
+
+            await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, driveModelData);
+
+            await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, listModelData);
+
+            LogManager.debug('insert DB ends=');
+
+            // create user into DB
+            const userCountry = dbHelper.createUserIfEmpty();
+
+            LogManager.debug('userCountry=', userCountry);
+            //TODO: set it in redux
+        } else {
+            // db present load data from database to redux
+            LogManager.debug('valid db present');
+        }
     }
 
     goBack = () => {
@@ -51,7 +109,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     };
 
     async test() {
-        await this.props.getAllDriveItems();
+        //await this.props.getAllDriveItems();
         // await this.props.getAllListItems();
     }
 
@@ -97,6 +155,8 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 
 const mapStateToProps = (state: RootState) => ({
     mainList: state.catagoryReducer.mainList,
+    driveItems: state.appDataReducer.allDriveResponse,
+    listItems: state.appDataReducer.allListResponse,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -106,11 +166,17 @@ const mapDispatchToProps = (dispatch: any) => ({
     setTitleCategory: (titleText: string) => {
         dispatch(setCategoryTitle(titleText));
     },
-    getAllDriveItems: () => {
-        dispatch(fetchAllDriveItems());
+    // getAllDriveItems: () => {
+    //     dispatch(fetchAllDriveItems());
+    // },
+    // getAllListItems: () => {
+    //     dispatch(fetchAllListItems());
+    // },
+    setAllDriveItems: (response: DriveItemModel[]) => {
+        dispatch(setAllDriveResponse(response));
     },
-    getAllListItems: () => {
-        dispatch(fetchAllListItems());
+    setAllListItems: (response: ListItemModel[]) => {
+        dispatch(setAllListResponse(response));
     },
 });
 

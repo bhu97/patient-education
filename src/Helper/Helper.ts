@@ -81,3 +81,15 @@ export const createListModelData = (responseData: any) => {
 
     return listModelData;
 };
+
+export const base64ToArrayBuffer = (binaryString: string) => {
+    let len = binaryString.length;
+
+    let bytes = new Uint8Array(len);
+
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    return bytes.buffer;
+};

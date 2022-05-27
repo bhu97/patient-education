@@ -54,7 +54,7 @@ class AuthenticationManager {
     /**
      * @returns user token
      */
-    login = async (): Promise<AuthorizeResult | undefined> => {
+    login = async () => {
         LogManager.info('login called =');
         try {
             const result = await authorize(authConfig);
@@ -70,7 +70,7 @@ class AuthenticationManager {
     /**
      * @returns authResult
      */
-    refreshToken = async (authResult: AuthorizeResult): Promise<AuthorizeResult> => {
+    refreshToken = async (authResult: AuthorizeResult) => {
         LogManager.info('refreshToken called =');
 
         const refreshResult = await refresh(authConfig, {
@@ -87,17 +87,20 @@ class AuthenticationManager {
         return authResult;
     };
 
-    getAccessToken = async (): Promise<string | undefined> => {
+    getAccessToken = async () => {
         LogManager.info('getAccessToken called =');
         let authorization = await this.getAuthorization();
 
         if (authorization) {
             LogManager.info('auth token exist');
             if (this.isAuthorizationExpired(authorization)) {
+                console.info('expired need new token: ');
                 authorization = await this.refreshToken(authorization);
+                return authorization.accessToken;
+            } else {
+                console.info('Azure AD - Answering request for access token with: ' + authorization.accessToken);
+                return authorization.accessToken;
             }
-            console.info('Azure AD - Answering request for access token with: ' + authorization.accessToken);
-            return authorization.accessToken;
         } else {
             LogManager.info('auth token does not exist, call login');
             authorization = await this.login();
