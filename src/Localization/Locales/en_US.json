@@ -1,0 +1,22 @@
+{
+    "welcome": "Welcome",
+    "howAreYou": "How are you",
+    "noInternetConnection": "The device is not connected to the internet. Please check connectivity and try again.",
+    "favoriteTitle": "Patient Priority Topics",
+    "favoriteSubTitle": "Create lists and store your files in them.",
+    "settingTitle": "Settings",
+    "settingSubTitle": "All setting options and contact information for the Patient Education App.",
+    "generalTitle": "General content problem:",
+    "technicalTitle": "Technical support:",
+    "contact": "Contacts",
+    "countryTitle": "User Country",
+    "contentTitle":"Online Content",
+    "updateTitle": "Update Now",
+    "selectCategory": "Please select your category",
+    "appInformation": "App Information",
+    "version": "Version",
+    "modificationDate":"Modified date",
+    "contentUpdates":"Content Updates",
+    "moreInformation": "More Information"
+
+}

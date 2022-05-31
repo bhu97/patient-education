@@ -1,0 +1,17 @@
+{
+    "welcome": "Willkommen",
+    "howAreYou": "Wie geht es dir",
+    "noInternetConnection": "Das Gerät ist nicht mit dem Internet verbunden. Bitte überprüfen Sie die Verbindung und versuchen Sie es erneut.",
+    "favoriteTitle":"Prioritätsthemen für Patienten",
+    "favoriteSubTitle": "Erstellen Sie Listen und speichern Sie Ihre Dateien darin.",
+    "settingTitle": "die Einstellungen",
+    "settingSubTitle": "Alle Einstellungsmöglichkeiten und Kontaktdaten zur Patientenaufklärungs-App.",
+    "generalTitle": "Allgemeines Inhaltsproblem:",
+    "technicalTitle": "Technischer Support:",
+    "contact": "Kontakt",
+    "countryTitle": "Benutzerland",
+    "contentTitle":"Online-Inhalte",
+    "updateTitle": "Jetzt aktualisierens",
+    "selectCategory": "Bitte wählen Sie Ihre Kategorie aus",
+    "moreInformation": "Mehr Informationen"
+}
