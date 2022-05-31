@@ -53,7 +53,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         } else Alert.alert('hi');
     };
 
-    onHomeBredcrumCLick = () => {
+    onHomeBredcrumClick = () => {
         NavigationManager.navigateAndClear('HomeScreen');
     };
 
@@ -69,15 +69,15 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
                             <CustomFlatList
-                                catagoryList={this.props.mainList}
+                                categoryList={this.props.mainList}
                                 elementType="key"
                                 selectedElement={this.props.categoryList}
-                                disableClickOnFlatlist
+                                disableClickOnFlatList
                             />
                         </View>
                         <View style={style.SecondflatListViewConatiner}>
                             <CustomFlatList
-                                catagoryList={this.props.categoryList.array}
+                                categoryList={this.props.categoryList.array}
                                 onPressList={this.subCategoryRender}
                                 elementType="value"
                             />
@@ -86,8 +86,8 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                 </CustomBody>
                 <CustomBottomContainer>
                     <View style={style.botomView}>
-                        <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onHomeBredcrumCLick} />
-                        <CustomBredcrum title={this.props.mainTitle} onPress={this.onClickBredcrum1} />
+                        <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onHomeBredcrumClick} />
+                        <CustomBredcrum title={this.props.mainTitle} />
                     </View>
                 </CustomBottomContainer>
             </MainContainer>

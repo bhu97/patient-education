@@ -6,6 +6,7 @@ import moreInfoData from '../../Json/moreinfojson';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 import category from '../../Json/category';
 import masteroptions from '../../Json/masteroptions';
+import { DriveItemModel } from '../../Model/DriveItemModel';
 
 // interface to declare all required variables
 export interface CatagoryState {
@@ -23,7 +24,7 @@ export interface CatagoryState {
 
 // to set initial value for all variable
 const initialState: CatagoryState = {
-    mainList: category,
+    mainList: [],
     categoryList: [],
     subCategoryList: [],
     selectedCategory: [],
@@ -32,7 +33,7 @@ const initialState: CatagoryState = {
     categoryDetailTitle: '',
     gridViewData: gridViewData,
     moreInfoData: moreInfoData,
-    masterOptionsData:masteroptions,
+    masterOptionsData: masteroptions,
 };
 
 // basic example slice done based on the docs
@@ -42,18 +43,22 @@ const catagorySlice = createSlice({
     initialState,
 
     reducers: {
+        // set title once category is selected
         setCategoryTitle: (state, action: PayloadAction<string>) => {
             state.categoryTitle = action.payload;
         },
+        //set root items (main category list)
+        setMainCategoryList: (state, action: PayloadAction<DriveItemModel[]>) => {
+            state.mainList = action.payload;
+        },
+
         setSubCategoryTitle: (state, action: PayloadAction<string>) => {
             state.subCategoryTitle = action.payload;
         },
         setCategoryDetailTitle: (state, action: PayloadAction<string>) => {
             state.categoryDetailTitle = action.payload;
         },
-        setMainList: (state, action: PayloadAction<any>) => {
-            state.mainList = action.payload;
-        },
+
         setCategoryList: (state, action: PayloadAction<any>) => {
             state.categoryList = action.payload;
         },
@@ -74,7 +79,7 @@ const catagorySlice = createSlice({
 
 // export individual action creator functions
 export const {
-    setMainList,
+    setMainCategoryList,
     setCategoryList,
     setSubCategoryList,
     setSelectedCategory,
@@ -82,7 +87,7 @@ export const {
     setSubCategoryTitle,
     setCategoryDetailTitle,
     setGridViewData,
-    setMasterOptionsData
+    setMasterOptionsData,
 } = catagorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

@@ -6,12 +6,12 @@ import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface customFlatListProps {
-    catagoryList: any;
+    categoryList: any;
     onPressList?: any;
     elementType: string;
     selectedElement?: any;
     onPressTool?: any;
-    disableClickOnFlatlist?: boolean;
+    disableClickOnFlatList?: boolean;
 }
 interface customFlatListState {
     isVisibleObject: any;
@@ -29,7 +29,7 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
 
     componentDidMount(): void {
         let isVisibleArray = {};
-        this.props.catagoryList.map((item: any, index: any) => {
+        this.props.categoryList.map((item: any, index: any) => {
             let setIndex = { index: index, isVisible: false };
             isVisibleArray[index] = setIndex;
         });
@@ -92,7 +92,7 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
     };
     onPressListItem = (item) => {
         {
-            !this.props.disableClickOnFlatlist ? this.props.onPressList(item) : null;
+            !this.props.disableClickOnFlatList ? this.props.onPressList(item) : null;
         }
     };
 
@@ -108,7 +108,7 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
         return (
             <View style={{ ...style.listItemContainer, backgroundColor: backgroundColor }}>
                 <Text numberOfLines={2} style={style.textStyle}>
-                    {item[this.props.elementType]}
+                    {item.title}
                 </Text>
 
                 <View style={style.iamgeViewStyle}>
@@ -127,7 +127,7 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
                 <FlatList
                     nestedScrollEnabled
                     ItemSeparatorComponent={this.flatListItemSeparator}
-                    data={this.props.catagoryList}
+                    data={this.props.categoryList}
                     renderItem={this.renderItem}
                     extraData={this.state.update}
                 />

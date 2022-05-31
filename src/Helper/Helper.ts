@@ -1,5 +1,5 @@
 import { List } from 'realm';
-import { DriveItemModel } from '../Model/DriveItemModel';
+import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
 import { ListItemModel } from '../Model/ListItemModel';
 
 export const normalizeUrl = (url: string | undefined): string => {
@@ -92,4 +92,18 @@ export const base64ToArrayBuffer = (binaryString: string) => {
     }
 
     return bytes.buffer;
+};
+
+export const filterVersionFiles = (driveItems: IDriveItem[]): IDriveItem[] => {
+    return driveItems
+        .filter((driveItem) => driveItem.name !== '.light')
+        .filter((driveItem) => driveItem.name !== '.flex');
+};
+
+export const filterWhitelistFiles = (driveItems: IDriveItem[]): IDriveItem[] => {
+    return driveItems.filter((driveItem) => driveItem.name !== 'whitelist.txt');
+};
+
+export const filterLinkedFilesFolder = (driveItems: IDriveItem[]): IDriveItem[] => {
+    return driveItems.filter((driveItem) => driveItem.name !== 'Linked Files');
 };

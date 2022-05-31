@@ -68,16 +68,16 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
                             <CustomFlatList
-                                catagoryList={this.props.selectedCategory.array}
+                                categoryList={this.props.selectedCategory.array}
                                 onPressList={this.onClickFirstList}
                                 elementType="value"
                                 selectedElement={this.props.subCategoryList}
-                                disableClickOnFlatlist
+                                disableClickOnFlatList
                             />
                         </View>
                         <View style={style.SecondflatListViewConatiner}>
                             <CustomFlatList
-                                catagoryList={this.props.subCategoryList.subCategory}
+                                categoryList={this.props.subCategoryList.subCategory}
                                 onPressList={this.onClickSecondList}
                                 elementType="options"
                             />

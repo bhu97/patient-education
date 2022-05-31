@@ -34,16 +34,16 @@ export const LANGUAGE_CONSTANT = {
         { key: 'gr', label: 'German', shortLabel: 'gr' },
     ],
 };
+//this is used to encrypt db in phone
 export const BINARY_STRING = 'q4t7w!z%C*F-JaNcRfUjXn2r5u8x/A?D(G+KbPeSgVkYp3s6v9y$B&E)H@McQfTj';
 
 //decode key for realm to open: 7134743777217A25432A462D4A614E635266556A586E3272357538782F413F4428472B4B6250655367566B5970337336763979244226452948404D635166546A
 
 export const API_NAMES = {
-    ROOT_PATH: '/teams/FMETS0447212/',
     ROOT_ID: '01GX2IG4N6Y2GOVW7725BZO354PWSELRRZ',
     USER_ID: '0',
     FIRST_LEVEL_PATH: '/teams/FMETS0269990/Shared%20Documents/',
-    ROOT_WEB_URL: 'https://fresenius.sharepoint.com/teams/FMETS0447212/Shared%20Documents/',
+    ROOT_WEB_URL: 'https://fresenius.sharepoint.com/teams/FMETS0269990/Shared%20Documents/',
     ROOT_LOGIN_URL: 'https://fresenius.sharepoint.com/',
     ROOT_LOGOUT_URL: 'https://fresenius.sharepoint.com/_layouts/15/SignOut.aspx',
 

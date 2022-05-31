@@ -1,5 +1,7 @@
 import { API_NAMES } from '../Constant/Constants';
+import { filterVersionFiles, filterWhitelistFiles, filterLinkedFilesFolder } from '../Helper/Helper';
 import LogManager from '../Helper/LogManager';
+import { DriveItemModel } from '../Model/DriveItemModel';
 import { IUser, UserModel } from '../Model/UserModel';
 import { DatabaseManager } from './DatabaseManager';
 import { DriveItemSchema, UserSchema } from './Schema';
@@ -72,6 +74,45 @@ export class DBhelper {
             }
         }
         return userCountry;
+    }
+
+    async getRootItemsForCountry(countryCode: string): Promise<DriveItemModel[]> {
+        const rootItems = await DatabaseManager.getInstance().getEntities(
+            DriveItemSchema.name,
+            `webUrl == '${API_NAMES.ROOT_WEB_URL + countryCode}'`,
+        );
+        LogManager.debug('rootItems=', rootItems);
+
+        if (rootItems.length > 0) {
+            //map 0 index to drive item model
+            let rootItem = rootItems[0] as DriveItemModel;
+
+            //get all matching drive items
+            let rootItemData = DatabaseManager.getInstance().getEntities(
+                DriveItemSchema.name,
+                `parentReferenceId == '${rootItem.uniqueId}'`,
+            );
+            LogManager.debug('rootItemData original=', rootItemData);
+
+            //RULE : filter out all files that start with a dot e.g. .flex
+            rootItemData = filterVersionFiles(rootItemData);
+            LogManager.debug('rootItemData flex/light filter =', rootItemData);
+
+            //RULE : filter out all files that start with a dot e.g.  any whitelist.txt
+            rootItemData = filterWhitelistFiles(rootItemData);
+            LogManager.debug('rootItemData whitelist filter =', rootItemData);
+
+            //RULE: filter out any folder that is named Linked Files
+            rootItemData = filterLinkedFilesFolder(rootItemData);
+            console.log('rootItemData Linked filter=', rootItemData);
+
+            LogManager.debug('rootItemData final=', rootItemData);
+            return rootItemData;
+        } else {
+            //TODO: add no data condition
+            LogManager.debug('no data for ', countryCode);
+            return [];
+        }
     }
 }
 
