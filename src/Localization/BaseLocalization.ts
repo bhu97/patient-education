@@ -6,6 +6,7 @@ import { LocalizationManager } from './LocalizationManager';
  */
 export const BaseLocalization = {
     welcome: LocalizationManager.getLocalizedStrings('welcome'),
+    pleaseWait: LocalizationManager.getLocalizedStrings('pleaseWait'),
     howAreYou: LocalizationManager.getLocalizedStrings('howAreYou'),
     noInternetConnection: LocalizationManager.getLocalizedStrings('noInternetConnection'),
     favoriteTitle: LocalizationManager.getLocalizedStrings('favoriteTitle'),

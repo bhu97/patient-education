@@ -1,5 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, Text } from 'react-native';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import { style } from './style';
 
@@ -24,6 +25,7 @@ export default class FullScreenLoader extends PureComponent<FullScreenLoaderProp
                         {this.props.showSpinner && (
                             <View style={style.indicatorContainer}>
                                 <ActivityIndicator size={'large'} color={BaseThemeStyle.colors.blue} />
+                                <Text>{BaseLocalization.pleaseWait}</Text>
                             </View>
                         )}
                     </View>

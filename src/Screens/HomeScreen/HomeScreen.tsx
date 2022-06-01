@@ -7,6 +7,7 @@ import CustomBottomContainer from '../../Components/custom-bottom-container/cust
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
+import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
 import { API_NAMES } from '../../Constant/Constants';
 import { DatabaseManager } from '../../Database/DatabaseManager';
@@ -18,27 +19,34 @@ import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { fetchData } from '../../Redux/app-data/appDataThunk';
-import { setCategoryTitle, setMainCategoryList } from '../../Redux/catagory/catagorySlice';
+import { setMainCategoryItem, setMainCategoryList } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface HomePageProps {
-    mainList: any;
-    setTitleCategory: (title: string) => void;
-    //setCategoryData: (data: any) => void;
+    mainList: DriveItemModel[];
+    setMainCategoryItem: (selectedItem: DriveItemModel) => void;
     setMainList: (data: DriveItemModel[]) => void;
 }
 
-interface HomePageState {}
+interface HomePageState {
+    isLoading: boolean;
+}
 
 class HomePage extends Component<HomePageProps, HomePageState> {
     constructor(props: HomePageProps) {
         super(props);
+        this.state = {
+            isLoading: true,
+        };
     }
 
     componentDidMount() {
         this.initializeApp();
+        setTimeout(() => {
+            this.setState({ isLoading: false });
+        }, 5000);
     }
 
     async initializeApp() {
@@ -84,7 +92,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
             LogManager.debug('valid db present');
         }
 
-        //await dbHelper.createUser('GBR');
+        await dbHelper.createUser('master');
         const mainCategoryData = await dbHelper.getRootItemsForCountry(userData.country);
         LogManager.debug('mainCategoryData=', mainCategoryData);
         this.props.setMainList(mainCategoryData);
@@ -95,13 +103,15 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     };
 
     onClick = (item) => {
-        this.props.setTitleCategory(item.key);
-        //this.props.setCategoryData(item);
+        LogManager.info('selected item=>', item);
+        this.props.setMainCategoryItem(item);
         NavigationManager.navigate('CategoryScreen');
     };
 
     render() {
-        return (
+        return this.state.isLoading ? (
+            <FullScreenLoader isLoading showSpinner />
+        ) : (
             <MainContainer>
                 <CustomTopNav
                     isShowImage={true}
@@ -137,15 +147,15 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    mainList: state.catagoryReducer.mainList,
+    mainList: state.categoryReducer.mainList,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    setTitleCategory: (titleText: string) => {
-        dispatch(setCategoryTitle(titleText));
-    },
     setMainList: (rootItems: DriveItemModel[]) => {
         dispatch(setMainCategoryList(rootItems));
+    },
+    setMainCategoryItem: (selectedItems: DriveItemModel) => {
+        dispatch(setMainCategoryItem(selectedItems));
     },
 });
 

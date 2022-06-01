@@ -91,7 +91,7 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
 }
 
 const mapStateToProps = (state: RootState) => ({
-    masterOptions: state.catagoryReducer.masterOptionsData,
+    masterOptions: state.categoryReducer.masterOptionsData,
 });
 
 export default connect(mapStateToProps)(CustomListWithHeader);

@@ -1,6 +1,7 @@
 import { List } from 'realm';
 import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
 import { ListItemModel } from '../Model/ListItemModel';
+import LogManager from './LogManager';
 
 export const normalizeUrl = (url: string | undefined): string => {
     if (url) {
@@ -94,16 +95,31 @@ export const base64ToArrayBuffer = (binaryString: string) => {
     return bytes.buffer;
 };
 
-export const filterVersionFiles = (driveItems: IDriveItem[]): IDriveItem[] => {
+export const applyDriveItemFilter = (driveItems: IDriveItem[]): IDriveItem[] => {
+    //RULE : filter out all files that start with a dot e.g. .flex
+    driveItems = filterVersionFiles(driveItems);
+    LogManager.debug('rootItemData flex/light filter =', driveItems);
+
+    //RULE : filter out all files that start with a dot e.g.  any whitelist.txt
+    driveItems = filterWhitelistFiles(driveItems);
+    LogManager.debug('rootItemData whitelist filter =', driveItems);
+
+    //RULE: filter out any folder that is named Linked Files
+    driveItems = filterLinkedFilesFolder(driveItems);
+    console.log('rootItemData Linked filter=', driveItems);
+
+    return driveItems;
+};
+const filterVersionFiles = (driveItems: IDriveItem[]): IDriveItem[] => {
     return driveItems
         .filter((driveItem) => driveItem.name !== '.light')
         .filter((driveItem) => driveItem.name !== '.flex');
 };
 
-export const filterWhitelistFiles = (driveItems: IDriveItem[]): IDriveItem[] => {
+const filterWhitelistFiles = (driveItems: IDriveItem[]): IDriveItem[] => {
     return driveItems.filter((driveItem) => driveItem.name !== 'whitelist.txt');
 };
 
-export const filterLinkedFilesFolder = (driveItems: IDriveItem[]): IDriveItem[] => {
+const filterLinkedFilesFolder = (driveItems: IDriveItem[]): IDriveItem[] => {
     return driveItems.filter((driveItem) => driveItem.name !== 'Linked Files');
 };

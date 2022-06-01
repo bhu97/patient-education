@@ -8,20 +8,26 @@ import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
+import dbHelper from '../../Database/DBHelper';
+import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
-import { setSelectedCategory, setSubCategoryList, setSubCategoryTitle } from '../../Redux/catagory/catagorySlice';
+import { DriveItemModel } from '../../Model/DriveItemModel';
+import { setCategoryItem, setCategoryList } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
 interface CategoryScreenProps {
-    mainList: any;
-    categoryList: Array<any>;
-    navigation: any;
-    mainTitle: string;
-    setSubCategoryData: (any) => void;
-    setSelectedCategoryData: (any) => void;
-    setTitleCategory: () => void;
-    setTitleSubCategory: (string) => void;
+    // main category screen array
+    mainList: DriveItemModel[];
+    // category screen array
+    categoryList: DriveItemModel[];
+    //selected category item
+    mainCategoryItem: DriveItemModel;
+    //set category list for selected item
+    setCategoryList: (data: DriveItemModel[]) => void;
+
+    //set
+    setCategoryItem: (selectedCategoryItem: DriveItemModel) => void;
 }
 
 interface CategoryScreenState {
@@ -39,18 +45,22 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         setTimeout(() => {
             this.setState({ isLoading: false });
         }, 3000);
+        this.getCategoryData();
     }
+
+    async getCategoryData() {
+        const categoryData = await dbHelper.getForSelectedCategory(this.props.mainCategoryItem);
+        LogManager.debug('categoryData=', categoryData);
+        this.props.setCategoryList(categoryData);
+    }
+
     goBack = () => {
         NavigationManager.goBack();
     };
 
     subCategoryRender = (item) => {
-        if (item.subCategory) {
-            this.props.setTitleSubCategory(item.value);
-            this.props.setSubCategoryData(item);
-            this.props.setSelectedCategoryData(this.props.categoryList);
-            NavigationManager.navigate('SubCategoryScreen');
-        } else Alert.alert('hi');
+        this.props.setCategoryItem(item);
+        NavigationManager.navigate('SubCategoryScreen');
     };
 
     onHomeBredcrumClick = () => {
@@ -64,7 +74,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
-                <CustomTopNav back subTitle={this.props.mainTitle} onPressBack={this.goBack} />
+                <CustomTopNav back subTitle={this.props.mainCategoryItem.title} onPressBack={this.goBack} />
                 <CustomBody>
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
@@ -77,7 +87,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                         </View>
                         <View style={style.SecondflatListViewConatiner}>
                             <CustomFlatList
-                                categoryList={this.props.categoryList.array}
+                                categoryList={this.props.categoryList}
                                 onPressList={this.subCategoryRender}
                                 elementType="value"
                             />
@@ -87,7 +97,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                 <CustomBottomContainer>
                     <View style={style.botomView}>
                         <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onHomeBredcrumClick} />
-                        <CustomBredcrum title={this.props.mainTitle} />
+                        <CustomBredcrum title={this.props.mainCategoryItem.title} />
                     </View>
                 </CustomBottomContainer>
             </MainContainer>
@@ -96,20 +106,19 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
 }
 
 const mapStateToProps = (state: RootState) => ({
-    mainList: state.catagoryReducer.mainList,
-    mainTitle: state.catagoryReducer.categoryTitle,
-    categoryList: state.catagoryReducer.categoryList,
+    //
+    mainList: state.categoryReducer.mainList,
+    categoryList: state.categoryReducer.categoryList,
+    mainCategoryItem: state.categoryReducer.mainCategoryItem,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    setSubCategoryData: (data: any) => {
-        dispatch(setSubCategoryList(data));
+    //
+    setCategoryList: (categoryData: DriveItemModel[]) => {
+        dispatch(setCategoryList(categoryData));
     },
-    setSelectedCategoryData: (data: any) => {
-        dispatch(setSelectedCategory(data));
-    },
-    setTitleSubCategory: (titleText: string) => {
-        dispatch(setSubCategoryTitle(titleText));
+    setCategoryItem: (selectedCategoryItems: DriveItemModel) => {
+        dispatch(setCategoryItem(selectedCategoryItems));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryScreen);

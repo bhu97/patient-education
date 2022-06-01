@@ -12,7 +12,7 @@ import { BaseLocalization } from '../../Localization/BaseLocalization';
 import NavigationManager from '../../Helper/NavigationManager';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
-import { setGridViewData } from '../../Redux/catagory/catagorySlice';
+import { setGridViewData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
@@ -78,11 +78,11 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
 }
 
 const mapStateToProps = (state: RootState) => ({
-    detailsTitle: state.catagoryReducer.categoryDetailTitle,
-    categoryTitle: state.catagoryReducer.subCategoryTitle,
-    mainTitle: state.catagoryReducer.categoryTitle,
-    gridViewData: state.catagoryReducer.gridViewData,
-    moreInfoData: state.catagoryReducer.moreInfoData,
+    detailsTitle: state.categoryReducer.categoryDetailTitle,
+    categoryTitle: state.categoryReducer.subCategoryTitle,
+    mainTitle: state.categoryReducer.categoryTitle,
+    gridViewData: state.categoryReducer.gridViewData,
+    moreInfoData: state.categoryReducer.moreInfoData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

@@ -1,7 +1,7 @@
 import { API_NAMES } from '../Constant/Constants';
-import { filterVersionFiles, filterWhitelistFiles, filterLinkedFilesFolder } from '../Helper/Helper';
+import { applyDriveItemFilter } from '../Helper/Helper';
 import LogManager from '../Helper/LogManager';
-import { DriveItemModel } from '../Model/DriveItemModel';
+import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
 import { IUser, UserModel } from '../Model/UserModel';
 import { DatabaseManager } from './DatabaseManager';
 import { DriveItemSchema, UserSchema } from './Schema';
@@ -58,7 +58,7 @@ export class DBhelper {
         const countries = await this.getAllAvailableCountries();
         console.log(countries);
 
-        let userCountry = countries[1];
+        let userCountry = 'GBR'; //countries[1];
         if (!user) {
             // first time so create user
             await this.createUser(userCountry);
@@ -76,6 +76,11 @@ export class DBhelper {
         return userCountry;
     }
 
+    /**
+     * get all data in array of drive model for particular country
+     * @param countryCode
+     * @returns [] of Drive model if success
+     */
     async getRootItemsForCountry(countryCode: string): Promise<DriveItemModel[]> {
         const rootItems = await DatabaseManager.getInstance().getEntities(
             DriveItemSchema.name,
@@ -94,25 +99,36 @@ export class DBhelper {
             );
             LogManager.debug('rootItemData original=', rootItemData);
 
-            //RULE : filter out all files that start with a dot e.g. .flex
-            rootItemData = filterVersionFiles(rootItemData);
-            LogManager.debug('rootItemData flex/light filter =', rootItemData);
-
-            //RULE : filter out all files that start with a dot e.g.  any whitelist.txt
-            rootItemData = filterWhitelistFiles(rootItemData);
-            LogManager.debug('rootItemData whitelist filter =', rootItemData);
-
-            //RULE: filter out any folder that is named Linked Files
-            rootItemData = filterLinkedFilesFolder(rootItemData);
-            console.log('rootItemData Linked filter=', rootItemData);
+            //Apply all filter on drive item data
+            rootItemData = applyDriveItemFilter(rootItemData);
 
             LogManager.debug('rootItemData final=', rootItemData);
+
             return rootItemData;
         } else {
             //TODO: add no data condition
             LogManager.debug('no data for ', countryCode);
             return [];
         }
+    }
+
+    //
+    async getForSelectedCategory(selectedItem: IDriveItem): Promise<DriveItemModel[]> {
+        //get all matching drive items
+        let itemData = DatabaseManager.getInstance().getEntities(
+            DriveItemSchema.name,
+            `parentReferenceId == '${selectedItem.uniqueId}'`,
+        );
+        LogManager.debug('getForSelectedCategory itemData original=', itemData);
+
+        LogManager.debug('rootItemData original=', itemData);
+
+        //Apply all filter on drive item data
+        itemData = applyDriveItemFilter(itemData);
+
+        LogManager.debug('rootItemData final=', itemData);
+
+        return itemData;
     }
 }
 

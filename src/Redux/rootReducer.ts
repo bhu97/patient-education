@@ -1,10 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import catagoryReducer from './catagory/catagorySlice';
+import categoryReducer from './category/categorySlice';
 import appDataReducer from './app-data/appDataSlice';
 
 // assume that the message slice will be combined with other slices
 const rootReducer = combineReducers({
-    catagoryReducer: catagoryReducer,
+    categoryReducer: categoryReducer,
     appDataReducer: appDataReducer,
 });
 

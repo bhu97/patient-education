@@ -1,5 +1,6 @@
 {
     "welcome": "Welcome",
+    "pleaseWait": "Loading, Please wait",
     "howAreYou": "How are you",
     "noInternetConnection": "The device is not connected to the internet. Please check connectivity and try again.",
     "favoriteTitle": "Patient Priority Topics",
