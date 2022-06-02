@@ -15,22 +15,57 @@ import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 import { setGridViewData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
+import dbHelper from '../../Database/DBHelper';
+import LogManager from '../../Helper/LogManager';
+import { DriveItemModel } from '../../Model/DriveItemModel';
+import { createGridModelData } from '../../Helper/Helper';
+import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
+import { API_NAMES } from '../../Constant/Constants';
+import { fetchAllThumbnails, fetchData, fetchThumbnail } from '../../Redux/app-data/appDataThunk';
 
 interface CategoryDetailScreenProps {
-    detailsTitle: string;
-    mainTitle: string;
-    categoryTitle: string;
-    subCategoryTitle: string;
-    setGridViewList: () => void;
     gridViewData: GridViewModel[];
     moreInfoData: MoreInfoListModel[];
+    //selected category item
+    mainCategoryItem: DriveItemModel;
+    //selected category item
+    categoryItem: DriveItemModel;
+    //selected sub category item
+    subCategoryItem: DriveItemModel;
+    //set grid list for selected item
+    setGridViewList: (data: GridViewModel[]) => void;
 }
 
-interface CategoryDetailScreenState {}
+interface CategoryDetailScreenState {
+    isLoading: boolean;
+}
 
 class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, CategoryDetailScreenState> {
     constructor(props: CategoryDetailScreenProps) {
         super(props);
+        this.state = {
+            isLoading: true,
+        };
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({ isLoading: false });
+        }, 3000);
+        this.getCategoryDetailData();
+    }
+
+    async getCategoryDetailData() {
+        const categoryDetailData = await dbHelper.getForSelectedCategory(this.props.subCategoryItem);
+        LogManager.debug('categoryDetailData=', categoryDetailData);
+
+        const thumbnailList = await fetchAllThumbnails(this.props.subCategoryItem.uniqueId);
+        LogManager.info('responses list Item=', thumbnailList);
+
+        const gridData = await createGridModelData(categoryDetailData, thumbnailList);
+        LogManager.debug('gridData=', gridData);
+
+        this.props.setGridViewList(gridData);
     }
 
     goToHomeScreen = () => {
@@ -46,14 +81,18 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
     };
 
     render() {
-        return (
+        return this.state.isLoading ? (
+            <FullScreenLoader isLoading showSpinner />
+        ) : (
             <MainContainer>
-                <CustomTopNav back subTitle={this.props.detailsTitle} onPressBack={this.goBack} />
+                <CustomTopNav back subTitle={this.props.subCategoryItem.title} onPressBack={this.goBack} />
                 <CustomBody>
                     <View style={style.mainContainer}>
-                        <View style={style.fileContainer}>
-                            <ThumbnailGridView gridViewList={this.props.gridViewData} />
-                        </View>
+                        {this.props.gridViewData && (
+                            <View style={style.fileContainer}>
+                                <ThumbnailGridView gridViewList={this.props.gridViewData} />
+                            </View>
+                        )}
                         <View style={style.moreInfoContainer}>
                             <MoreInfoList
                                 title={BaseLocalization.moreInfoTitle}
@@ -66,9 +105,12 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
                     <CustomBottomContainer>
                         <View style={style.botomView}>
                             <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.goToHomeScreen} />
-                            <CustomBredcrum title={this.props.mainTitle} onPress={this.gotoCategoryScreen} />
-                            <CustomBredcrum title={this.props.categoryTitle} onPress={this.goBack} />
-                            <CustomBredcrum title={this.props.detailsTitle} />
+                            <CustomBredcrum
+                                title={this.props.mainCategoryItem.title}
+                                onPress={this.gotoCategoryScreen}
+                            />
+                            <CustomBredcrum title={this.props.categoryItem.title} onPress={this.goBack} />
+                            <CustomBredcrum title={this.props.subCategoryItem.title} />
                         </View>
                     </CustomBottomContainer>
                 </CustomBottomContainer>
@@ -78,16 +120,16 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
 }
 
 const mapStateToProps = (state: RootState) => ({
-    detailsTitle: state.categoryReducer.categoryDetailTitle,
-    categoryTitle: state.categoryReducer.subCategoryTitle,
-    mainTitle: state.categoryReducer.categoryTitle,
     gridViewData: state.categoryReducer.gridViewData,
     moreInfoData: state.categoryReducer.moreInfoData,
+    mainCategoryItem: state.categoryReducer.mainCategoryItem,
+    categoryItem: state.categoryReducer.categoryItem,
+    subCategoryItem: state.categoryReducer.subCategoryItem,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    setGridViewList: () => {
-        dispatch(setGridViewData());
+    setGridViewList: (gridData: GridViewModel[]) => {
+        dispatch(setGridViewData(gridData));
     },
 });
 

@@ -70,9 +70,11 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
     onClickFirstList = () => {};
 
     onClickSecondList = (item) => {
-        // console.log(item);
+        console.log(item);
         // this.props.setTitleCategoryDetails(item.options);
         // NavigationManager.navigate('CategoryDetailScreen');
+        this.props.setSubCategoryItem(item);
+        NavigationManager.navigate('CategoryDetailScreen');
     };
 
     goToHomeScreen = () => {

@@ -32,6 +32,7 @@ const Images = {
     rightArrow: require(prefix + 'chevron_right.png'),
     emptyImg: require(prefix + 'empty.png'),
     favoritesHeaderImg: require(prefix + 'illu_favorites.png'),
+    emptyThumbnail: require(prefix + 'empty_thumbnail.png'),
 };
 
 /// ################################ Export ################################

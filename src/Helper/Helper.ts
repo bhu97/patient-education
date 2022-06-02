@@ -1,6 +1,25 @@
-import { List } from 'realm';
+import {
+    AnyFile,
+    DOC,
+    DOCX,
+    JPEG,
+    JPG,
+    MP3,
+    MP4,
+    OGG,
+    PDF,
+    PNG,
+    PPT,
+    PPTX,
+    TXT,
+    XLS,
+    XLSX,
+    XML,
+} from '../../assets/extensions';
 import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
+import { GridViewModel } from '../Model/GridViewModel';
 import { ListItemModel } from '../Model/ListItemModel';
+import { Thumbnail } from '../Model/Thumbnail';
 import LogManager from './LogManager';
 
 export const normalizeUrl = (url: string | undefined): string => {
@@ -83,6 +102,24 @@ export const createListModelData = (responseData: any) => {
     return listModelData;
 };
 
+// get response data and map it to list model structure
+export const createGridModelData = async (responseData: any, thumbnailResponse: any) => {
+    let gridModelData: GridViewModel[];
+
+    const ThumbnailData = thumbnailResponse.map((thumbnailObj) => {
+        return Thumbnail.generate(thumbnailObj);
+    });
+    console.log('createGridModelData ThumbnailData=>', ThumbnailData);
+
+    gridModelData = responseData.map((responseObject: any) => {
+        const thumbnailObj = ThumbnailData.find((x) => x.uniqueId === responseObject.uniqueId);
+
+        return GridViewModel.generate(responseObject, thumbnailObj);
+    });
+    console.log('createGridModelData gridModelData=>', gridModelData);
+    return gridModelData;
+};
+
 export const base64ToArrayBuffer = (binaryString: string) => {
     let len = binaryString.length;
 
@@ -123,3 +160,57 @@ const filterWhitelistFiles = (driveItems: IDriveItem[]): IDriveItem[] => {
 const filterLinkedFilesFolder = (driveItems: IDriveItem[]): IDriveItem[] => {
     return driveItems.filter((driveItem) => driveItem.name !== 'Linked Files');
 };
+
+export function getIconByExtension(fileName?: string) {
+    const extension = getExtension(fileName);
+    switch (extension?.toUpperCase()) {
+        default:
+            return AnyFile;
+        case 'DOC':
+            return DOC;
+        case 'DOCX':
+            return DOCX;
+        case 'JPEG':
+            return JPEG;
+        case 'JPG':
+            return JPG;
+        case 'MP3':
+            return MP3;
+        case 'MP4':
+            return MP4;
+        case 'OGG':
+            return OGG;
+        case 'PDF':
+            return PDF;
+        case 'PNG':
+            return PNG;
+        case 'PPT':
+            return PPT;
+        case 'PPTX':
+            return PPTX;
+        case 'TXT':
+            return TXT;
+        case 'XLS':
+            return XLS;
+        case 'XLSX':
+            return XLSX;
+        case 'XML':
+            return XML;
+    }
+}
+
+export function getFileSizeLiteral(fileSize: number) {
+    if (fileSize < 1024) {
+        return `${fileSize}\u00A0B`;
+    }
+    const kilo = Math.floor(fileSize / 10.24) / 100;
+    if (kilo < 1024) {
+        return `${kilo}\u00A0KB`;
+    }
+    const mega = Math.floor(kilo / 10.24) / 100;
+    if (mega < 1024) {
+        return `${mega}\u00A0MB`;
+    }
+    const giga = Math.floor(mega / 10.24) / 100;
+    return `${giga}\u00A0GB`;
+}

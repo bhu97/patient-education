@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import { GridViewModel } from '../../Model/GridViewModel';
+import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
 import { style } from './style';
 
@@ -88,15 +89,32 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
     };
 
     renderItem = ({ item, index }: any) => {
+        console.log('ThumbnailGridView item=>', item);
         const isVisibleIndicator = this.getVisibility(index);
+        const imagePath = item.largeUrl ? item.largeUrl : Images.favoritesHeaderImg;
         return (
             <View style={style.backgroundViewStyle}>
-                <Image style={style.imageStyle} source={item.imageName} />
+                <Image style={style.imageStyle} source={{ uri: item.largeUrl }} />
+
+                {/* <View style={{ margin: 5, width: 160, height: 200 }}>
+                    <Image
+                        resizeMode="cover"
+                        style={{
+                            flex: 1,
+                            borderRadius: 5,
+                        }}
+                        source={{ uri: item.largeUrl }}
+                    />
+                     {item.fileExtension}
+                    <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
+                        {item.title}
+                    </Text>
+                </View> */}
 
                 <View style={style.itemContainer}>
                     <View style={style.textContainer}>
                         <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
-                            {item.fileName}
+                            {item.title}
                         </Text>
                     </View>
 

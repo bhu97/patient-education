@@ -37,7 +37,7 @@ const initialState: CategoryState = {
     categoryTitle: '',
     subCategoryTitle: '',
     categoryDetailTitle: '',
-    gridViewData: gridViewData,
+    gridViewData: [],
     moreInfoData: moreInfoData,
     masterOptionsData: masteroptions,
     //
@@ -91,10 +91,7 @@ const categorySlice = createSlice({
             state.subCategoryItem = action.payload;
         },
 
-        setCategoryDetailTitle: (state, action: PayloadAction<string>) => {
-            state.categoryDetailTitle = action.payload;
-        },
-
+        //grid view on category detail screen
         setGridViewData: (state, action: PayloadAction<GridViewModel[]>) => {
             state.gridViewData = action.payload;
         },
@@ -106,7 +103,6 @@ const categorySlice = createSlice({
 
 // export individual action creator functions
 export const {
-    setCategoryDetailTitle,
     setGridViewData,
     setMasterOptionsData,
 

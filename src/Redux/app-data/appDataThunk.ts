@@ -85,12 +85,12 @@ export const fetchItemThumbnail = createAsyncThunk('appData/fetchItemThumbnail',
 });
 
 //fetch Thumbnail
-export const fetchThumbnail = createAsyncThunk('appData/fetchThumbnail', async (itemId: string) => {
-    LogManager.debug('fetchThumbnail call started itemId=', itemId);
+export const fetchThumbnail = createAsyncThunk('appData/fetchThumbnail', async (uniqueId: string) => {
+    LogManager.debug('fetchThumbnail call started uniqueId=', uniqueId);
 
     const params = {
         expand: 'thumbnails',
-        uniqueId: itemId,
+        uniqueId: uniqueId,
     };
 
     const response = await apiManager.callApiToGetData(API_NAMES.GRAPH_THUMBNAILS_ENDPOINT, HTTP_METHODS.GET, params);
@@ -99,6 +99,21 @@ export const fetchThumbnail = createAsyncThunk('appData/fetchThumbnail', async (
     LogManager.debug('fetchThumbnail call ended');
     return response;
 });
+
+//fetch all data and return 1 response array
+export const fetchAllThumbnails = async (uniqueId: string): Promise<any[]> => {
+    LogManager.debug('fetchAllThumbnails call started uniqueId=', uniqueId);
+
+    const response = await apiManager.callApiToGetData(
+        API_NAMES.GRAPH_THUMBNAILS_ENDPOINT(uniqueId),
+        HTTP_METHODS.GET,
+        {},
+    );
+    LogManager.info('response=', response);
+
+    LogManager.debug('fetchAllThumbnails call ended');
+    return response['value'];
+};
 
 //fetch all data and return 1 response array
 export const fetchData = async (url: string, params?: any): Promise<any[]> => {
