@@ -31,7 +31,11 @@ export const style = StyleSheet.create({
         borderWidth: 2,
         margin: BaseThemeStyle.margin.containers,
     },
-    textContainer: {
+    folderTextContainer: {
+        marginHorizontal: BaseThemeStyle.margin.formElements,
+        flex: 0.8,
+    },
+    fileTextContainer: {
         marginHorizontal: BaseThemeStyle.margin.formElements,
         flex: 0.6,
     },

@@ -1,12 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { object } from 'prop-types';
-import gridViewData from '../../Json/gridviewjson';
-import { GridViewModel } from '../../Model/GridViewModel';
-import moreInfoData from '../../Json/moreinfojson';
-import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
-import category from '../../Json/category';
-import masteroptions from '../../Json/masteroptions';
 import { DriveItemModel, IDriveItem } from '../../Model/DriveItemModel';
+import { GridViewModel } from '../../Model/GridViewModel';
+import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 
 // interface to declare all required variables
 export interface CategoryState {
@@ -17,7 +12,6 @@ export interface CategoryState {
     categoryTitle: string;
     subCategoryTitle: string;
     categoryDetailTitle: string;
-    masterOptionsData: Array<any>;
 
     // used for / on home screen
     mainList: Array<any>;
@@ -28,6 +22,9 @@ export interface CategoryState {
     // used for / on sub category screen
     subCategoryList: Array<any>;
     subCategoryItem: IDriveItem;
+
+    //
+    moreInfoScreenData: string[];
 }
 
 // to set initial value for all variable
@@ -38,9 +35,8 @@ const initialState: CategoryState = {
     subCategoryTitle: '',
     categoryDetailTitle: '',
     gridViewData: [],
-    moreInfoData: moreInfoData,
-    masterOptionsData: masteroptions,
-    //
+    moreInfoData: [],
+
     mainList: [],
     mainCategoryItem: {
         uniqueId: '0',
@@ -52,6 +48,7 @@ const initialState: CategoryState = {
     subCategoryItem: {
         uniqueId: '0',
     },
+    moreInfoScreenData: [],
 };
 
 // basic example slice done based on the docs
@@ -95,24 +92,28 @@ const categorySlice = createSlice({
         setGridViewData: (state, action: PayloadAction<GridViewModel[]>) => {
             state.gridViewData = action.payload;
         },
-        setMasterOptionsData: (state, action: PayloadAction<GridViewModel[]>) => {
-            state.masterOptionsData = action.payload;
+        setMoreInfoData: (state, action: PayloadAction<MoreInfoListModel[]>) => {
+            state.moreInfoData = action.payload;
+        },
+
+        setMoreInfoScreenData: (state, action: PayloadAction<string[]>) => {
+            console.log('setMoreInfoScreenData =>', action.payload);
+            state.moreInfoScreenData = action.payload;
         },
     },
 });
 
 // export individual action creator functions
 export const {
-    setGridViewData,
-    setMasterOptionsData,
-
-    //
     setMainCategoryList,
     setMainCategoryItem,
     setCategoryList,
     setCategoryItem,
     setSubCategoryList,
     setSubCategoryItem,
+    setGridViewData,
+    setMoreInfoData,
+    setMoreInfoScreenData,
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

@@ -12,13 +12,13 @@ import { BaseLocalization } from '../../Localization/BaseLocalization';
 import NavigationManager from '../../Helper/NavigationManager';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
-import { setGridViewData } from '../../Redux/category/categorySlice';
+import { setGridViewData, setMoreInfoData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 import dbHelper from '../../Database/DBHelper';
 import LogManager from '../../Helper/LogManager';
 import { DriveItemModel } from '../../Model/DriveItemModel';
-import { createGridModelData } from '../../Helper/Helper';
+import { createGridModelData, linkedUrlListToArray, normalizeUrl } from '../../Helper/Helper';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import { API_NAMES } from '../../Constant/Constants';
 import { fetchAllThumbnails, fetchData, fetchThumbnail } from '../../Redux/app-data/appDataThunk';
@@ -34,6 +34,8 @@ interface CategoryDetailScreenProps {
     subCategoryItem: DriveItemModel;
     //set grid list for selected item
     setGridViewList: (data: GridViewModel[]) => void;
+    //set more info list for selected item
+    setMoreInfoList: (data: MoreInfoListModel[]) => void;
 }
 
 interface CategoryDetailScreenState {
@@ -66,6 +68,15 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
         LogManager.debug('gridData=', gridData);
 
         this.props.setGridViewList(gridData);
+
+        if (this.props.subCategoryItem.linkedFolders != null || this.props.subCategoryItem.linkedFolders != '') {
+            const linkedItemData = linkedUrlListToArray(this.props.subCategoryItem.linkedFolders);
+            LogManager.debug('linkedItemData=', linkedItemData);
+
+            const moreInfoData = await dbHelper.getItemsForContentPageWebUrls(linkedItemData);
+            console.log('moreInfoData=', moreInfoData);
+            this.props.setMoreInfoList(moreInfoData);
+        }
     }
 
     goToHomeScreen = () => {
@@ -130,6 +141,9 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: any) => ({
     setGridViewList: (gridData: GridViewModel[]) => {
         dispatch(setGridViewData(gridData));
+    },
+    setMoreInfoList: (moreInfoData: MoreInfoListModel[]) => {
+        dispatch(setMoreInfoData(moreInfoData));
     },
 });
 

@@ -68,13 +68,10 @@ export const fetchItem = createAsyncThunk('appData/fetchItem', async (itemId: st
 export const fetchItemThumbnail = createAsyncThunk('appData/fetchItemThumbnail', async (itemId: string) => {
     LogManager.debug('fetchItemThumbnail call started itemId=', itemId);
 
-    const params = {
-        expand: 'thumbnails',
-        uniqueId: itemId,
-    };
+    const params = {};
 
     const response = await apiManager.callApiToGetData(
-        API_NAMES.GRAPH_ITEM_THUMBNAIL_ENDPOINT,
+        API_NAMES.GRAPH_ITEM_THUMBNAIL_ENDPOINT(itemId),
         HTTP_METHODS.GET,
         params,
     );
@@ -88,12 +85,13 @@ export const fetchItemThumbnail = createAsyncThunk('appData/fetchItemThumbnail',
 export const fetchThumbnail = createAsyncThunk('appData/fetchThumbnail', async (uniqueId: string) => {
     LogManager.debug('fetchThumbnail call started uniqueId=', uniqueId);
 
-    const params = {
-        expand: 'thumbnails',
-        uniqueId: uniqueId,
-    };
+    const params = {};
 
-    const response = await apiManager.callApiToGetData(API_NAMES.GRAPH_THUMBNAILS_ENDPOINT, HTTP_METHODS.GET, params);
+    const response = await apiManager.callApiToGetData(
+        API_NAMES.GRAPH_THUMBNAILS_ENDPOINT(uniqueId),
+        HTTP_METHODS.GET,
+        params,
+    );
     LogManager.info('response=', response);
 
     LogManager.debug('fetchThumbnail call ended');
@@ -144,5 +142,4 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
         console.log('response.value: ' + response.value);
         return data.concat(response['value']);
     }
-    return data.concat(response['value']);
 };

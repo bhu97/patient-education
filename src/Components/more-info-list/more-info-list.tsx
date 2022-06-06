@@ -23,13 +23,18 @@ export default class MoreInfoList extends PureComponent<MoreInfoListProps> {
             <View style={style.mainContainer}>
                 <View style={style.itemContainer}>
                     <View style={style.circleIconContainer}>{<CustomIcon name={item.iconName} />}</View>
-                    <View style={style.textContainer}>
-                        <Text style={style.textStyle}>{item.fileName}</Text>
-                    </View>
-                    <View style={style.iconContainer}>
-                        <CustomIcon name={'more-horizontal'} />
-                        <Text style={style.flatSizeStyle}>{item.fileSize}</Text>
-                    </View>
+                    {item.isFolder && (
+                        <View style={style.folderTextContainer}>
+                            <Text style={style.textStyle}>{item.title}</Text>
+                        </View>
+                    )}
+
+                    {!item.isFolder && (
+                        <View style={style.iconContainer}>
+                            <CustomIcon name={'more-horizontal'} />
+                            <Text style={style.flatSizeStyle}>{item.fileSize}</Text>
+                        </View>
+                    )}
                 </View>
             </View>
         );

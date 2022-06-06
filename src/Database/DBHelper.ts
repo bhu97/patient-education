@@ -1,7 +1,8 @@
 import { API_NAMES } from '../Constant/Constants';
-import { applyDriveItemFilter } from '../Helper/Helper';
+import { applyDriveItemFilter, normalizeUrl, notEmpty } from '../Helper/Helper';
 import LogManager from '../Helper/LogManager';
 import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
+import { MoreInfoListModel } from '../Model/MoreInfoListModel';
 import { IUser, UserModel } from '../Model/UserModel';
 import { DatabaseManager } from './DatabaseManager';
 import { DriveItemSchema, UserSchema } from './Schema';
@@ -53,10 +54,10 @@ export class DBhelper {
      */
     async createUserIfEmpty(): Promise<string> {
         const user = await this.getUser();
-        console.log(user);
+        LogManager.info('user=', user);
 
         const countries = await this.getAllAvailableCountries();
-        console.log(countries);
+        LogManager.info('countries=', countries);
 
         let userCountry = 'GBR'; //countries[1];
         if (!user) {
@@ -129,6 +130,62 @@ export class DBhelper {
         LogManager.debug('rootItemData final=', itemData);
 
         return itemData;
+    }
+
+    async getItemsForContentPageWebUrls(webUrls: string[]): Promise<MoreInfoListModel[]> {
+        /*      let items = await DatabaseManager.getInstance().getEntities(
+            DriveItemSchema.name,
+            `contentType == 'Document Set'`,
+        );
+        
+        LogManager.info('items=', items);
+
+        let itemsForWeb: IDriveItem[] = [];
+        for (let webUrl of webUrls) {
+            let item = items.filter((driveItem) => {
+                if (driveItem.webUrl) {
+                    return driveItem.webUrl.includes(normalizeUrl(webUrl));
+                }
+                return false;
+            });
+
+            itemsForWeb.push(item[0]);
+        }
+*/
+        let itemsForWeb: IDriveItem[] = [];
+        for (let webUrl of webUrls) {
+            let items = DatabaseManager.getInstance().getEntities(
+                DriveItemSchema.name,
+                'webUrl CONTAINS ' + `'${normalizeUrl(webUrl)}' && contentType == 'Document Set'`,
+            );
+            LogManager.info('items=', items);
+            itemsForWeb.push(items[0]);
+        }
+
+        LogManager.info('itemsForWeb=', itemsForWeb);
+        let moreInfoData = [];
+        if (itemsForWeb.length > 0) {
+            for (let itemForWeb of itemsForWeb) {
+                let itemData = DatabaseManager.getInstance().getEntities(
+                    DriveItemSchema.name,
+                    `uniqueId == '${itemForWeb.uniqueId}'`,
+                );
+
+                LogManager.debug('itemData original=', itemData[0]);
+
+                let moreInfoObj = {
+                    uniqueId: itemData[0].uniqueId,
+                    title: itemData[0].title,
+                    webUrl: itemForWeb.webUrl,
+                    isFolder: true,
+                    fileSize: 0,
+                };
+                moreInfoData.push(moreInfoObj);
+            }
+            return moreInfoData;
+        } else {
+            return [];
+        }
     }
 }
 

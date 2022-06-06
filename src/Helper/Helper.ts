@@ -145,8 +145,12 @@ export const applyDriveItemFilter = (driveItems: IDriveItem[]): IDriveItem[] => 
     driveItems = filterLinkedFilesFolder(driveItems);
     console.log('rootItemData Linked filter=', driveItems);
 
+    // driveItems = createDriveModelData(driveItems);
+    // console.log('rootItemData createDriveModelData=', driveItems);
+
     return driveItems;
 };
+
 const filterVersionFiles = (driveItems: IDriveItem[]): IDriveItem[] => {
     return driveItems
         .filter((driveItem) => driveItem.name !== '.light')
@@ -213,4 +217,9 @@ export function getFileSizeLiteral(fileSize: number) {
     }
     const giga = Math.floor(mega / 10.24) / 100;
     return `${giga}\u00A0GB`;
+}
+
+//get linked item list in array
+export function linkedUrlListToArray(urlListText: string): string[] {
+    return urlListText.split(',').map((url) => url.trim());
 }
