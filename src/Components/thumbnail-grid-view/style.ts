@@ -14,9 +14,16 @@ export const style = StyleSheet.create({
         borderColor: BaseThemeStyle.colors.gray,
     },
     imageStyle: {
-        resizeMode: 'contain',
+     resizeMode: 'stretch',
         height: 200,
-        width: 'auto'
+        width: 'auto',
+        opacity:1
+    },
+    svgIconStyle:{
+        position:'absolute',
+        top:80,
+        zIndex:5,
+        marginLeft:110,
     },
     iconImageStyle: {
         height: 20,

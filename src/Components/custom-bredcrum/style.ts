@@ -5,6 +5,10 @@ export const style = StyleSheet.create({
     mainContainer: {
         flexDirection: 'row',
     },
+    mainContainer1: {
+        flexDirection: 'row',
+        backgroundColor:'red'
+    },
     rectangleContainer: {
         width: BaseThemeStyle.dimensions.widths.breadCrumbSquare,
         height: BaseThemeStyle.dimensions.heights.breadCrumbSquare,
@@ -20,16 +24,19 @@ export const style = StyleSheet.create({
         borderBottomWidth: BaseThemeStyle.dimensions.widths.breadCrumbBorder * 2,
         borderStyle: 'solid',
         transform: [{ rotate: '90deg' }],
+        
     },
     triangleRightContainer: {
         borderLeftColor: BaseThemeStyle.colors.transparent,
         borderRightColor: BaseThemeStyle.colors.transparent,
         borderBottomColor: BaseThemeStyle.colors.lightGray,
+        alignContent:'flex-end'
     },
     triangleLeftContainer: {
         borderLeftColor: BaseThemeStyle.colors.lightGray,
         borderRightColor: BaseThemeStyle.colors.lightGray,
         borderBottomColor: BaseThemeStyle.colors.transparent,
+        alignItems:'flex-end'
     },
 
     headerText: {

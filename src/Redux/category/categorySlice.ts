@@ -22,7 +22,8 @@ export interface CategoryState {
     // used for / on sub category screen
     subCategoryList: Array<any>;
     subCategoryItem: IDriveItem;
-
+    countryListData: Array<any>;
+    selectedCountry: string;
     //
     moreInfoScreenData: string[];
 }
@@ -36,6 +37,8 @@ const initialState: CategoryState = {
     categoryDetailTitle: '',
     gridViewData: [],
     moreInfoData: [],
+    countryListData:[],
+    selectedCountry: 'MASTER_ENG',
 
     mainList: [],
     mainCategoryItem: {
@@ -100,6 +103,12 @@ const categorySlice = createSlice({
             console.log('setMoreInfoScreenData =>', action.payload);
             state.moreInfoScreenData = action.payload;
         },
+        setCountryListData: (state, action: PayloadAction<any>) => {
+            state.countryListData = action.payload;
+        },
+        setSelectedCountry: (state, action: PayloadAction<any>) => {
+            state.selectedCountry = action.payload;
+        },
     },
 });
 
@@ -114,6 +123,8 @@ export const {
     setGridViewData,
     setMoreInfoData,
     setMoreInfoScreenData,
+    setCountryListData,
+    setSelectedCountry
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

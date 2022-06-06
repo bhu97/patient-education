@@ -18,6 +18,7 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
+import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchData } from '../../Redux/app-data/appDataThunk';
 import { setMainCategoryItem, setMainCategoryList } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
@@ -28,17 +29,17 @@ interface HomePageProps {
     mainList: DriveItemModel[];
     setMainCategoryItem: (selectedItem: DriveItemModel) => void;
     setMainList: (data: DriveItemModel[]) => void;
+    setIsLoading: (boolean) => void;
+    appDataLoading:boolean;
 }
 
 interface HomePageState {
-    isLoading: boolean;
 }
 
 class HomePage extends Component<HomePageProps, HomePageState> {
     constructor(props: HomePageProps) {
         super(props);
         this.state = {
-            isLoading: true,
         };
     }
 
@@ -51,7 +52,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 
     async initializeApp() {
         SplashScreen.hide();
-
+this.props.setIsLoading(true);
         const userData = await dbHelper.getUser();
         LogManager.debug('userData', userData);
         if (!userData) {
@@ -96,6 +97,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         const mainCategoryData = await dbHelper.getRootItemsForCountry(userData.country);
         LogManager.debug('mainCategoryData=', mainCategoryData);
         this.props.setMainList(mainCategoryData);
+        this.props.setIsLoading(false);
     }
 
     goBack = () => {
@@ -103,13 +105,15 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     };
 
     onClick = (item) => {
+        console.log('home pe konsa click hua hai',item)
         LogManager.info('selected item=>', item);
         this.props.setMainCategoryItem(item);
         NavigationManager.navigate('CategoryScreen');
     };
 
     render() {
-        return this.state.isLoading ? (
+        // console.log("checking loader",this.props.appDataLoading)
+        return this.props.appDataLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
@@ -125,7 +129,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                                 <CustomFlatList
                                     categoryList={this.props.mainList}
                                     onPressList={this.onClick}
-                                    elementType="key"
+                                    elementType="name"
                                 />
                             )}
                         </View>
@@ -138,7 +142,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                 </CustomBody>
                 <CustomBottomContainer>
                     <View style={style.bottomView}>
-                        <CustomBredcrum title={'Home'} isFirstCrumb={true} />
+                        <CustomBredcrum title={'Home'} isFirstCrumb={true} isClickDisable/>
                     </View>
                 </CustomBottomContainer>
             </MainContainer>
@@ -148,6 +152,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 
 const mapStateToProps = (state: RootState) => ({
     mainList: state.categoryReducer.mainList,
+    appDataLoading:state.appDataReducer.appDataLoading
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -157,6 +162,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     setMainCategoryItem: (selectedItems: DriveItemModel) => {
         dispatch(setMainCategoryItem(selectedItems));
     },
+    setIsLoading : (value: boolean) => {
+       dispatch(setAppDataLoading(value));
+    }
 });
 
 //export default HomePage;

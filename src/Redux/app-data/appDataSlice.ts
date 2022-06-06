@@ -11,8 +11,8 @@ export const appDataSlice = createSlice({
     name: 'appData',
     initialState,
     reducers: {
-        clearData: (state) => {
-            state.appDataLoading = false;
+        setAppDataLoading: (state, action: PayloadAction<boolean>) => {
+            state.appDataLoading = action.payload;
         },
     },
 
@@ -62,9 +62,9 @@ export const appDataSlice = createSlice({
         builder.addCase(fetchItemThumbnail.rejected, (state) => {
             LogManager.warn('api call fetchItemThumbnail rejected', 'error');
         });
-    },
+    }
 });
 
-export const { clearData } = appDataSlice.actions;
+export const { setAppDataLoading } = appDataSlice.actions;
 
 export default appDataSlice.reducer;

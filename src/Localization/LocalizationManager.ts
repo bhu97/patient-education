@@ -51,23 +51,25 @@ export class LocalizationManager {
         I18n.translations = { en_US, gr };
         I18n.locale = LANGUAGE_CONSTANT.DEFAULT_LANGUAGE;
 
+        console.log('device language', deviceManager.deviceLanguage());
         const currentLanguage = await AsyncStorage.getItem(LANGUAGE_CONSTANT.APP_LANGUAGE);
+        console.log('app language', currentLanguage);
         if (currentLanguage) {
             LocalizationManager.setAppLanguage(currentLanguage);
         } else {
-            //default language supported by app
-            let localeLanguageCode = LANGUAGE_CONSTANT.DEFAULT_LANGUAGE;
-
             //get short label of all supported language , this is as per device language return like en_us(english_usa), mr_in(marathi indiaa)
             const supportedLanguaage = LANGUAGE_CONSTANT.LANGUAGES.map((item) => item.shortLabel);
-
+            //check if device language is not supported by app, if yes set default language to local language
+            if (!supportedLanguaage.includes(deviceManager.deviceLanguage())) {
+                var localeLanguageCode = LANGUAGE_CONSTANT.DEFAULT_LANGUAGE;
+            }
             //check if device language is supported by app, if yes set it to local language
             if (supportedLanguaage.includes(deviceManager.deviceLanguage())) {
                 localeLanguageCode = deviceManager.deviceLanguage();
             }
-
             // set language
             LocalizationManager.setAppLanguage(localeLanguageCode);
+            console.log('locale language', localeLanguageCode);
         }
     };
 }

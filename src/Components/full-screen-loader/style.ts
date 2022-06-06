@@ -16,12 +16,17 @@ export const style = StyleSheet.create({
         justifyContent: 'center'
     },
     indicatorContainer: {
-        width: 96,
-        height: 96,
-        backgroundColor: BaseThemeStyle.colors.gray,
+        width: 100,
+        height: 100,
+        backgroundColor: BaseThemeStyle.colors.lightGray,
         opacity: .8,
         borderRadius: BaseThemeStyle.dimensions.borderRadiuses.containers,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    textStyle:{
+        fontSize:22,
+        color: BaseThemeStyle.colors.blue,
+        marginTop:20
     }
 });

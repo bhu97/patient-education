@@ -12,6 +12,7 @@ import dbHelper from '../../Database/DBHelper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { DriveItemModel } from '../../Model/DriveItemModel';
+import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { setSubCategoryItem, setSubCategoryList } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
@@ -41,30 +42,32 @@ interface SubCategoryScreenProps {
 
     //set
     setSubCategoryItem: (selectedCategoryItem: DriveItemModel) => void;
+    isLoading: boolean;
+    setIsLoading: (boolean) => void;
 }
 
 interface SubCategoryScreenState {
-    isLoading: boolean;
+ 
 }
 
 class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScreenState> {
     constructor(props: SubCategoryScreenProps) {
         super(props);
         this.state = {
-            isLoading: true,
+         
         };
     }
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({ isLoading: false });
-        }, 3000);
+        this.props.setIsLoading(true);
         this.getCategoryData();
     }
 
     async getCategoryData() {
+      
         const subCategoryData = await dbHelper.getForSelectedCategory(this.props.categoryItem);
         LogManager.debug('subCategoryData=', subCategoryData);
         this.props.setSubCategoryList(subCategoryData);
+        this.props.setIsLoading(false);
     }
 
     onClickFirstList = () => {};
@@ -86,7 +89,7 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
     };
 
     render() {
-        return this.state.isLoading ? (
+        return this.props.isLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
@@ -97,8 +100,8 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                             <CustomFlatList
                                 categoryList={this.props.categoryList}
                                 onPressList={this.onClickFirstList}
-                                elementType="value"
-                                // selectedElement={this.props.subCategoryList}
+                                elementType="name"
+                                selectedElement={this.props.subCategoryList}
                                 disableClickOnFlatList
                             />
                         </View>
@@ -115,7 +118,7 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                     <View style={style.botomView}>
                         <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.goToHomeScreen} />
                         <CustomBredcrum title={this.props.mainCategoryItem.title} onPress={this.goBack} />
-                        <CustomBredcrum title={this.props.categoryItem.title} />
+                        <CustomBredcrum title={this.props.categoryItem.title} isClickDisable/>
                     </View>
                 </CustomBottomContainer>
             </MainContainer>
@@ -128,6 +131,7 @@ const mapStateToProps = (state: RootState) => ({
     categoryItem: state.categoryReducer.categoryItem,
     categoryList: state.categoryReducer.categoryList,
     subCategoryList: state.categoryReducer.subCategoryList,
+    isLoading:state.appDataReducer.appDataLoading
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -138,5 +142,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     setSubCategoryItem: (selectedCategoryItems: DriveItemModel) => {
         dispatch(setSubCategoryItem(selectedCategoryItems));
     },
+    setIsLoading : (value: boolean) => {
+        dispatch(setAppDataLoading(value));
+     }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SubCategoryScreen);

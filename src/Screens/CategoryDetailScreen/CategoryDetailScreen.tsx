@@ -22,6 +22,7 @@ import { createGridModelData, linkedUrlListToArray, normalizeUrl } from '../../H
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import { API_NAMES } from '../../Constant/Constants';
 import { fetchAllThumbnails, fetchData, fetchThumbnail } from '../../Redux/app-data/appDataThunk';
+import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 
 interface CategoryDetailScreenProps {
     gridViewData: GridViewModel[];
@@ -36,28 +37,26 @@ interface CategoryDetailScreenProps {
     setGridViewList: (data: GridViewModel[]) => void;
     //set more info list for selected item
     setMoreInfoList: (data: MoreInfoListModel[]) => void;
+    isLoading: boolean;
+    setIsLoading: (boolean) => void;
 }
 
 interface CategoryDetailScreenState {
-    isLoading: boolean;
 }
 
 class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, CategoryDetailScreenState> {
     constructor(props: CategoryDetailScreenProps) {
         super(props);
         this.state = {
-            isLoading: true,
         };
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({ isLoading: false });
-        }, 3000);
         this.getCategoryDetailData();
     }
 
     async getCategoryDetailData() {
+        this.props.setIsLoading(true);
         const categoryDetailData = await dbHelper.getForSelectedCategory(this.props.subCategoryItem);
         LogManager.debug('categoryDetailData=', categoryDetailData);
 
@@ -77,6 +76,7 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
             console.log('moreInfoData=', moreInfoData);
             this.props.setMoreInfoList(moreInfoData);
         }
+        this.props.setIsLoading(false);
     }
 
     goToHomeScreen = () => {
@@ -92,7 +92,7 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
     };
 
     render() {
-        return this.state.isLoading ? (
+        return this.props.isLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
@@ -121,7 +121,7 @@ class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, Cate
                                 onPress={this.gotoCategoryScreen}
                             />
                             <CustomBredcrum title={this.props.categoryItem.title} onPress={this.goBack} />
-                            <CustomBredcrum title={this.props.subCategoryItem.title} />
+                            <CustomBredcrum title={this.props.subCategoryItem.title} isClickDisable />
                         </View>
                     </CustomBottomContainer>
                 </CustomBottomContainer>
@@ -136,6 +136,7 @@ const mapStateToProps = (state: RootState) => ({
     mainCategoryItem: state.categoryReducer.mainCategoryItem,
     categoryItem: state.categoryReducer.categoryItem,
     subCategoryItem: state.categoryReducer.subCategoryItem,
+    isLoading: state.appDataReducer.appDataLoading,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -144,6 +145,10 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setMoreInfoList: (moreInfoData: MoreInfoListModel[]) => {
         dispatch(setMoreInfoData(moreInfoData));
+    },
+
+    setIsLoading: (value: boolean) => {
+        dispatch(setAppDataLoading(value));
     },
 });
 

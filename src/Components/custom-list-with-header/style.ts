@@ -53,7 +53,7 @@ export const style = StyleSheet.create({
     },
     textStyleToolTip: {
         ...BaseThemeStyle.fonts.listTitle,
-        color: BaseThemeStyle.colors.blue,
+        color: BaseThemeStyle.colors.titleColor,
     },
     iconContainer: {
          flex: 0.3,
@@ -66,7 +66,7 @@ export const style = StyleSheet.create({
         width: 16, height: 8
     },
     toolTipContainer:{
-     borderRadius: 10,justifyContent: 'center', alignItems: 'center',height:675
+     borderRadius: 10,justifyContent: 'center', alignItems: 'center',height:650
     },
     toolTipOptions:{
         fontSize: 24, fontWeight: '500', padding: 10 , color:BaseThemeStyle.colors.blue

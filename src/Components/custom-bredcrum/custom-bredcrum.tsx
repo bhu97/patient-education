@@ -6,6 +6,7 @@ interface CustomBredcrumProps {
     title: string;
     onPress?: () => void;
     isFirstCrumb?: boolean | false;
+    isClickDisable?: boolean | false;
 }
 interface CustomBredcrumState {}
 
@@ -13,35 +14,53 @@ export default class CustomBredcrum extends PureComponent<CustomBredcrumProps, C
     constructor(props: CustomBredcrumProps) {
         super(props);
     }
+    firstBreadCrumbContent = () => {
+        return (
+            <View style={style.mainContainer}>
+                <View style={style.rectangleContainer}>
+                    <Text style={style.headerText} numberOfLines={1} ellipsizeMode="tail">
+                        {this.props.title}
+                    </Text>
+                </View>
+                <View style={[style.triangleContainer, style.triangleRightContainer]} />
+            </View>
+        );
+    };
 
     firstBreadCrumb = () => {
         return (
-            <TouchableOpacity onPress={this.props.onPress}>
-                <View style={style.mainContainer}>
-                    <View style={style.rectangleContainer}>
-                        <Text style={style.headerText} numberOfLines={1} ellipsizeMode="tail">
-                            {this.props.title}
-                        </Text>
-                    </View>
-                    <View style={[style.triangleContainer, style.triangleRightContainer]} />
+            <>
+                {this.props.isClickDisable ? (
+                    this.firstBreadCrumbContent()
+                ) : (
+                    <TouchableOpacity onPress={this.props.onPress}>{this.firstBreadCrumbContent()}</TouchableOpacity>
+                )}
+            </>
+        );
+    };
+    lastBreadCrumbContent = () => {
+        return (
+            <View style={style.mainContainer}>
+                <View style={[style.triangleContainer, style.triangleLeftContainer]} />
+                <View style={style.rectangleContainer}>
+                    <Text style={style.headerText} numberOfLines={1} ellipsizeMode="tail">
+                        {this.props.title}
+                    </Text>
                 </View>
-            </TouchableOpacity>
+                <View style={[style.triangleContainer, style.triangleRightContainer]} />
+            </View>
         );
     };
 
     lastBreadCrumb = () => {
         return (
-            <TouchableOpacity onPress={this.props.onPress}>
-                <View style={style.mainContainer}>
-                    <View style={[style.triangleContainer, style.triangleLeftContainer]} />
-                    <View style={style.rectangleContainer}>
-                        <Text style={style.headerText} numberOfLines={1} ellipsizeMode="tail">
-                            {this.props.title}
-                        </Text>
-                    </View>
-                    <View style={[style.triangleContainer, style.triangleRightContainer]} />
-                </View>
-            </TouchableOpacity>
+            <>
+                {this.props.isClickDisable ? (
+                    this.lastBreadCrumbContent()
+                ) : (
+                    <TouchableOpacity onPress={this.props.onPress}>{this.lastBreadCrumbContent()}</TouchableOpacity>
+                )}
+            </>
         );
     };
 

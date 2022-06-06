@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
+import { PNG } from '../../../assets/extensions/PNG';
+import { getIconByExtension } from '../../Helper/Helper';
 import { GridViewModel } from '../../Model/GridViewModel';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
@@ -91,11 +93,15 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
     renderItem = ({ item, index }: any) => {
         console.log('ThumbnailGridView item=>', item);
         const isVisibleIndicator = this.getVisibility(index);
-        const imagePath = item.largeUrl ? item.largeUrl : Images.favoritesHeaderImg;
         return (
             <View style={style.backgroundViewStyle}>
-                <Image style={style.imageStyle} source={{ uri: item.largeUrl }} />
+                {item.largeUrl ? (
+                    <Image style={style.imageStyle} source={{ uri: item.largeUrl }} />
+                ) : (
+                    <Image style={style.imageStyle} source={Images.emptyThumbnail} />
+                )}
 
+                <View style={style.svgIconStyle}>{getIconByExtension(item.name)}</View>
                 {/* <View style={{ margin: 5, width: 160, height: 200 }}>
                     <Image
                         resizeMode="cover"
