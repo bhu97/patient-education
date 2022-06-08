@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
+import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
@@ -18,14 +19,6 @@ import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
 interface SubCategoryScreenProps {
-    // subCategoryList: Array<any>;
-    // selectedCategory: Array<any>;
-    // dispatch: Dispatch;
-    // navigation: any;
-    // mainTitle: string;
-    // categoryTitle: string;
-    // setTitleCategoryDetails: (string) => void;
-
     //selected category item
     mainCategoryItem: DriveItemModel;
     //selected category item
@@ -47,14 +40,14 @@ interface SubCategoryScreenProps {
 }
 
 interface SubCategoryScreenState {
- 
+    breadCrumbList: any;
 }
 
 class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScreenState> {
     constructor(props: SubCategoryScreenProps) {
         super(props);
         this.state = {
-         
+            breadCrumbList: [],
         };
     }
     componentDidMount() {
@@ -63,29 +56,54 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
     }
 
     async getCategoryData() {
-      
         const subCategoryData = await dbHelper.getForSelectedCategory(this.props.categoryItem);
         LogManager.debug('subCategoryData=', subCategoryData);
         this.props.setSubCategoryList(subCategoryData);
+
+        //create breadcrumb array
+        let breadCrumbList = [
+            {
+                id: 0,
+                title: 'Home',
+                isFirstCrumb: true,
+            },
+            {
+                id: 1,
+                title: this.props.mainCategoryItem.title,
+                isFirstCrumb: false,
+            },
+            {
+                id: 2,
+                title: this.props.categoryItem.title,
+                isFirstCrumb: false,
+                isDisabled: true,
+            },
+        ];
+
+        this.setState({
+            breadCrumbList: breadCrumbList,
+        });
+
         this.props.setIsLoading(false);
     }
 
-    onClickFirstList = () => {};
+    onClickFirstList = (item) => {};
 
     onClickSecondList = (item) => {
         console.log(item);
-        // this.props.setTitleCategoryDetails(item.options);
-        // NavigationManager.navigate('CategoryDetailScreen');
         this.props.setSubCategoryItem(item);
         NavigationManager.navigate('CategoryDetailScreen');
     };
 
-    goToHomeScreen = () => {
-        NavigationManager.navigateAndClear('HomeScreen');
-    };
-
-    goBack = () => {
-        NavigationManager.goBack();
+    breadcrumbClick = (item: any) => {
+        console.log('item =>', item);
+        if (item.id === 0) {
+            //home click
+            NavigationManager.navigateAndClear('HomeScreen');
+        } else if (item.id === 1) {
+            //category item clicked
+            NavigationManager.goBack();
+        }
     };
 
     render() {
@@ -115,11 +133,9 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                     </View>
                 </CustomBody>
                 <CustomBottomContainer>
-                    <View style={style.botomView}>
-                        <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.goToHomeScreen} />
-                        <CustomBredcrum title={this.props.mainCategoryItem.title} onPress={this.goBack} />
-                        <CustomBredcrum title={this.props.categoryItem.title} isClickDisable/>
-                    </View>
+                    {this.state.breadCrumbList.length > 0 && (
+                        <BreadcrumbFlatList breadCrumbList={this.state.breadCrumbList} onPress={this.breadcrumbClick} />
+                    )}
                 </CustomBottomContainer>
             </MainContainer>
         );
@@ -131,7 +147,7 @@ const mapStateToProps = (state: RootState) => ({
     categoryItem: state.categoryReducer.categoryItem,
     categoryList: state.categoryReducer.categoryList,
     subCategoryList: state.categoryReducer.subCategoryList,
-    isLoading:state.appDataReducer.appDataLoading
+    isLoading: state.appDataReducer.appDataLoading,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -142,8 +158,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     setSubCategoryItem: (selectedCategoryItems: DriveItemModel) => {
         dispatch(setSubCategoryItem(selectedCategoryItems));
     },
-    setIsLoading : (value: boolean) => {
+    setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
-     }
+    },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SubCategoryScreen);

@@ -106,13 +106,13 @@ export const createListModelData = (responseData: any) => {
 export const createGridModelData = async (responseData: any, thumbnailResponse: any) => {
     let gridModelData: GridViewModel[];
 
-    const ThumbnailData = thumbnailResponse.map((thumbnailObj) => {
+    const ThumbnailData = thumbnailResponse.map((thumbnailObj: any) => {
         return Thumbnail.generate(thumbnailObj);
     });
     console.log('createGridModelData ThumbnailData=>', ThumbnailData);
 
     gridModelData = responseData.map((responseObject: any) => {
-        const thumbnailObj = ThumbnailData.find((x) => x.uniqueId === responseObject.uniqueId);
+        const thumbnailObj = ThumbnailData.find((x: any) => x.uniqueId === responseObject.uniqueId);
 
         return GridViewModel.generate(responseObject, thumbnailObj);
     });

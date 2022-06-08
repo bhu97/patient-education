@@ -25,7 +25,7 @@ export interface CategoryState {
     countryListData: Array<any>;
     selectedCountry: string;
     //
-    moreInfoScreenData: string[];
+    moreInfoScreenData: MoreInfoListModel[];
 }
 
 // to set initial value for all variable
@@ -37,7 +37,7 @@ const initialState: CategoryState = {
     categoryDetailTitle: '',
     gridViewData: [],
     moreInfoData: [],
-    countryListData:[],
+    countryListData: [],
     selectedCountry: 'MASTER_ENG',
 
     mainList: [],
@@ -99,7 +99,7 @@ const categorySlice = createSlice({
             state.moreInfoData = action.payload;
         },
 
-        setMoreInfoScreenData: (state, action: PayloadAction<string[]>) => {
+        setMoreInfoScreenData: (state, action: PayloadAction<MoreInfoListModel[]>) => {
             console.log('setMoreInfoScreenData =>', action.payload);
             state.moreInfoScreenData = action.payload;
         },
@@ -124,7 +124,7 @@ export const {
     setMoreInfoData,
     setMoreInfoScreenData,
     setCountryListData,
-    setSelectedCountry
+    setSelectedCountry,
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

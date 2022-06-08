@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Linking, Text, TouchableOpacity, View } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
-import { PNG } from '../../../assets/extensions/PNG';
 import { getIconByExtension } from '../../Helper/Helper';
+import LogManager from '../../Helper/LogManager';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
@@ -50,7 +51,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
     removeLocally = () => {
         console.log('Remove locally Clicked');
     };
-    addRemoveFavourite = () => {
+    addRemoveFavorite = () => {
         console.log('Add/Remove favourite Clicked');
     };
     getToolTip = (index, isVisibleIndicator) => {
@@ -61,18 +62,18 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                 isVisible={isVisibleIndicator}
                 content={
                     <View style={style.toolTipContainer}>
-                        <Text style={style.toolTipHeading}>File Options</Text>
+                        <Text style={style.toolTipHeading}>{BaseLocalization.fileOptions}</Text>
                         {this.toolTipOptionSeparator()}
                         <TouchableOpacity onPress={() => this.download()}>
-                            <Text style={style.toolTipOptions}>Download</Text>
+                            <Text style={style.toolTipOptions}>{BaseLocalization.download}</Text>
                         </TouchableOpacity>
                         {this.toolTipOptionSeparator()}
                         <TouchableOpacity onPress={() => this.removeLocally()}>
-                            <Text style={style.toolTipOptions}>Remove locally</Text>
+                            <Text style={style.toolTipOptions}> {BaseLocalization.removeLocally}</Text>
                         </TouchableOpacity>
                         {this.toolTipOptionSeparator()}
-                        <TouchableOpacity onPress={() => this.addRemoveFavourite()}>
-                            <Text style={style.toolTipOptions}>Add/remove favourite</Text>
+                        <TouchableOpacity onPress={() => this.addRemoveFavorite()}>
+                            <Text style={style.toolTipOptions}>{BaseLocalization.addRemoveFavorite}</Text>
                         </TouchableOpacity>
                     </View>
                 }
@@ -90,33 +91,35 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
         return <View style={style.toolTipOptionSeperator}></View>;
     };
 
+    loadDocument = (item: GridViewModel) => {
+        LogManager.info('url item=', item);
+
+        //Android Webview cannot display PDF files. There is an issue related to this problem.
+        //https://stackoverflow.com/questions/58155621/react-native-webview-for-android-not-displaying-pdf-and-word-files
+        Linking.canOpenURL(item.webUrl).then((supported) => {
+            if (supported) {
+                Linking.openURL(item.webUrl);
+            } else {
+                console.log("Don't know how to open URI: " + item.webUrl);
+            }
+        });
+
+        //const webUrl = `'http://docs.google.com/gview?embedded=true&url=${item.webUrl}'`;
+    };
+
     renderItem = ({ item, index }: any) => {
-        console.log('ThumbnailGridView item=>', item);
         const isVisibleIndicator = this.getVisibility(index);
         return (
             <View style={style.backgroundViewStyle}>
-                {item.largeUrl ? (
-                    <Image style={style.imageStyle} source={{ uri: item.largeUrl }} />
-                ) : (
-                    <Image style={style.imageStyle} source={Images.emptyThumbnail} />
-                )}
+                <TouchableOpacity onPress={() => this.loadDocument(item)}>
+                    {item.largeUrl ? (
+                        <Image style={style.imageStyle} source={{ uri: item.largeUrl }} />
+                    ) : (
+                        <Image style={style.imageStyle} source={Images.emptyThumbnail} />
+                    )}
 
-                <View style={style.svgIconStyle}>{getIconByExtension(item.name)}</View>
-                {/* <View style={{ margin: 5, width: 160, height: 200 }}>
-                    <Image
-                        resizeMode="cover"
-                        style={{
-                            flex: 1,
-                            borderRadius: 5,
-                        }}
-                        source={{ uri: item.largeUrl }}
-                    />
-                     {item.fileExtension}
-                    <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
-                        {item.title}
-                    </Text>
-                </View> */}
-
+                    <View style={style.svgIconStyle}>{getIconByExtension(item.name)}</View>
+                </TouchableOpacity>
                 <View style={style.itemContainer}>
                     <View style={style.textContainer}>
                         <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, View } from 'react-native';
 import { connect } from 'react-redux';
+import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
 import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
@@ -34,33 +35,51 @@ interface CategoryScreenProps {
 }
 
 interface CategoryScreenState {
-    
+    breadCrumbList: any;
 }
 
 class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState> {
     constructor(props: CategoryScreenProps) {
         super(props);
         this.state = {
+            breadCrumbList: [],
         };
     }
     componentDidMount() {
-        // setTimeout(() => {
-        //     this.setState({ isLoading: false });
-        // }, 3000);
         this.getCategoryData();
     }
 
     async getCategoryData() {
         this.props.setIsLoading(true);
-        console.log('konsa click hua hai',this.props.mainCategoryItem)
         const categoryData = await dbHelper.getForSelectedCategory(this.props.mainCategoryItem);
         LogManager.debug('categoryData=', categoryData);
         this.props.setCategoryList(categoryData);
         this.props.setIsLoading(false);
+
+        //create breadcrumb array
+        let breadCrumbList = [
+            {
+                id: 0,
+                title: 'Home',
+                isFirstCrumb: true,
+            },
+            {
+                id: 1,
+                title: this.props.mainCategoryItem.title,
+                isFirstCrumb: false,
+                isDisabled: true,
+            },
+        ];
+
+        this.setState({
+            breadCrumbList: breadCrumbList,
+        });
     }
 
     goBack = () => {
-        NavigationManager.goBack();
+        this.props.setCategoryList([]);
+
+        NavigationManager.navigateAndClear('HomeScreen');
     };
 
     subCategoryRender = (item) => {
@@ -68,14 +87,15 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         NavigationManager.navigate('SubCategoryScreen');
     };
 
-    onHomeBredcrumClick = () => {
-        NavigationManager.navigateAndClear('HomeScreen');
+    breadcrumbClick = (item: any) => {
+        console.log('item =>', item);
+        if (item.id === 0) {
+            //home click
+            NavigationManager.navigateAndClear('HomeScreen');
+        }
     };
 
-    onClickFirstList = () => {};
-
     render() {
-        console.log("checking loader",this.props.isLoading)
         return this.props.isLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
@@ -101,10 +121,9 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                     </View>
                 </CustomBody>
                 <CustomBottomContainer>
-                    <View style={style.botomView}>
-                        <CustomBredcrum title={'Home'} isFirstCrumb={true} onPress={this.onHomeBredcrumClick} />
-                        <CustomBredcrum title={this.props.mainCategoryItem.title} isClickDisable/>
-                    </View>
+                    {this.state.breadCrumbList.length > 0 && (
+                        <BreadcrumbFlatList breadCrumbList={this.state.breadCrumbList} onPress={this.breadcrumbClick} />
+                    )}
                 </CustomBottomContainer>
             </MainContainer>
         );
@@ -116,7 +135,7 @@ const mapStateToProps = (state: RootState) => ({
     mainList: state.categoryReducer.mainList,
     categoryList: state.categoryReducer.categoryList,
     mainCategoryItem: state.categoryReducer.mainCategoryItem,
-    isLoading: state.appDataReducer.appDataLoading
+    isLoading: state.appDataReducer.appDataLoading,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -127,8 +146,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     setCategoryItem: (selectedCategoryItems: DriveItemModel) => {
         dispatch(setCategoryItem(selectedCategoryItems));
     },
-    setIsLoading : (value: boolean) => {
+    setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
-     }
+    },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryScreen);

@@ -9,7 +9,8 @@ export const style = StyleSheet.create({
     },
     container: {
         flex: 1,
-        paddingBottom: BaseThemeStyle.paddings.containers,
+        padding: BaseThemeStyle.paddings.formElements,
+        backgroundColor: BaseThemeStyle.colors.white,
     },
     itemContainer: {
         flexDirection: 'row',

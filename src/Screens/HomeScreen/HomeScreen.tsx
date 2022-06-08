@@ -4,7 +4,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
-import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
+import CustomBreadcrumb from '../../Components/custom-breadcrumb/custom-breadcrumb';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
@@ -30,17 +30,15 @@ interface HomePageProps {
     setMainCategoryItem: (selectedItem: DriveItemModel) => void;
     setMainList: (data: DriveItemModel[]) => void;
     setIsLoading: (boolean) => void;
-    appDataLoading:boolean;
+    appDataLoading: boolean;
 }
 
-interface HomePageState {
-}
+interface HomePageState {}
 
 class HomePage extends Component<HomePageProps, HomePageState> {
     constructor(props: HomePageProps) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
     }
 
     componentDidMount() {
@@ -52,7 +50,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 
     async initializeApp() {
         SplashScreen.hide();
-this.props.setIsLoading(true);
+        this.props.setIsLoading(true);
         const userData = await dbHelper.getUser();
         LogManager.debug('userData', userData);
         if (!userData) {
@@ -105,14 +103,12 @@ this.props.setIsLoading(true);
     };
 
     onClick = (item) => {
-        console.log('home pe konsa click hua hai',item)
         LogManager.info('selected item=>', item);
         this.props.setMainCategoryItem(item);
         NavigationManager.navigate('CategoryScreen');
     };
 
     render() {
-        // console.log("checking loader",this.props.appDataLoading)
         return this.props.appDataLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
@@ -142,7 +138,7 @@ this.props.setIsLoading(true);
                 </CustomBody>
                 <CustomBottomContainer>
                     <View style={style.bottomView}>
-                        <CustomBredcrum title={'Home'} isFirstCrumb={true} isClickDisable/>
+                        <CustomBreadcrumb title={'Home'} isFirstCrumb={true} />
                     </View>
                 </CustomBottomContainer>
             </MainContainer>
@@ -152,7 +148,7 @@ this.props.setIsLoading(true);
 
 const mapStateToProps = (state: RootState) => ({
     mainList: state.categoryReducer.mainList,
-    appDataLoading:state.appDataReducer.appDataLoading
+    appDataLoading: state.appDataReducer.appDataLoading,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -162,9 +158,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     setMainCategoryItem: (selectedItems: DriveItemModel) => {
         dispatch(setMainCategoryItem(selectedItems));
     },
-    setIsLoading : (value: boolean) => {
-       dispatch(setAppDataLoading(value));
-    }
+    setIsLoading: (value: boolean) => {
+        dispatch(setAppDataLoading(value));
+    },
 });
 
 //export default HomePage;

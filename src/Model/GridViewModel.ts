@@ -1,4 +1,4 @@
-import { getFileSizeLiteral, getIconByExtension } from '../Helper/Helper';
+import { getExtension, getFileSizeLiteral } from '../Helper/Helper';
 
 //to declare all required variables
 export interface IGridViewModel {
@@ -49,7 +49,7 @@ export class GridViewModel {
         object.title = item.title;
         object.name = item.name;
         object.fileSize = getFileSizeLiteral(item.fileSize);
-        object.fileExtension = getIconByExtension(item.name);
+        object.fileExtension = getExtension(item.name);
         object.smallUrl = thumbnails.smallUrl ? thumbnails.smallUrl : '';
         object.mediumUrl = thumbnails.mediumUrl ? thumbnails.mediumUrl : '';
         object.largeUrl = thumbnails.smallUrl ? thumbnails.largeUrl : '';

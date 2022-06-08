@@ -18,6 +18,10 @@
     "version": "Version",
     "modificationDate":"Modified date",
     "contentUpdates":"Content Updates",
-    "moreInformation": "More Information"
+    "moreInformation": "More Information",
+    "addRemoveFavorite":"Add/remove favorite",
+    "removeLocally": "Remove locally",
+    "download":"Download",
+    "fileOptions":"File Options"
 
 }

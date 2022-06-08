@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, Alert, FlatList, ScrollView, Button, Image } from 'react-native';
-import { style } from './style';
+import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import ListFlatlist from '../list-flatlist-component/ListFlatlist';
-import FileContainer from '../custom-file-container/FileContainer';
-import BalanceFileContainer from '../balance-file-container/BalanceFileContainer';
-import ThumbnailGridView from '../thumbnail-grid-view/thumbnail-grid-view';
+import { GridViewModel } from '../../Model/GridViewModel';
 import Images from '../../Theme/Images';
+import BalanceFileContainer from '../balance-file-container/BalanceFileContainer';
+import ListFlatlist from '../list-flatlist-component/ListFlatlist';
+import { style } from './style';
 
 interface CategoryDetailScreenState {
     dummyData: GridViewModel[];

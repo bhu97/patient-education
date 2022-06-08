@@ -114,7 +114,7 @@ export class DBhelper {
     }
 
     //
-    async getForSelectedCategory(selectedItem: IDriveItem): Promise<DriveItemModel[]> {
+    async getForSelectedCategory(selectedItem: any): Promise<DriveItemModel[]> {
         //get all matching drive items
         let itemData = DatabaseManager.getInstance().getEntities(
             DriveItemSchema.name,

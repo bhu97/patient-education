@@ -3,14 +3,13 @@ import React from 'react';
 import CategoryDetailScreen from '../Screens/CategoryDetailScreen/CategoryDetailScreen';
 import CategoryScreen from '../Screens/CategoryScreen/CategoryScreen';
 import HomeScreen from '../Screens/HomeScreen/HomeScreen';
+import MoreInfoScreen from '../Screens/MoreInfoScreen/MoreInfoScreen';
 import SubCategoryScreen from '../Screens/SubCategoryScreen/SubCategoryScreen';
 import { BaseThemeStyle } from '../Theme/BaseThemeStyle';
-
 
 const Stack = createStackNavigator();
 
 function HomeStack() {
-
     return (
         <Stack.Navigator
             initialRouteName="HomeScreen"
@@ -25,11 +24,9 @@ function HomeStack() {
             <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
             <Stack.Screen name="SubCategoryScreen" component={SubCategoryScreen} />
             <Stack.Screen name="CategoryDetailScreen" component={CategoryDetailScreen} />
+            <Stack.Screen name="MoreInfoScreen" component={MoreInfoScreen} />
         </Stack.Navigator>
-
     );
-
 }
-
 
 export default HomeStack;

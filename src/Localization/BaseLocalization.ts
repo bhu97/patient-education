@@ -25,4 +25,8 @@ export const BaseLocalization = {
     modificationDate: LocalizationManager.getLocalizedStrings('modificationDate'),
     contentUpdates: LocalizationManager.getLocalizedStrings('contentUpdates'),
     moreInfoTitle: LocalizationManager.getLocalizedStrings('moreInformation'),
+    addRemoveFavorite: LocalizationManager.getLocalizedStrings('addRemoveFavorite'),
+    removeLocally: LocalizationManager.getLocalizedStrings('removeLocally'),
+    download: LocalizationManager.getLocalizedStrings('download'),
+    fileOptions: LocalizationManager.getLocalizedStrings('fileOptions'),
 };

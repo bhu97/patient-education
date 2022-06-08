@@ -14,5 +14,9 @@
     "contentTitle":"Online-Inhalte",
     "updateTitle": "Jetzt aktualisierens",
     "selectCategory": "Bitte wählen Sie Ihre Kategorie aus",
-    "moreInformation": "Mehr Informationen"
+    "moreInformation": "Mehr Informationen",
+    "addRemoveFavorite":"Favorit hinzufügen/entfernen",
+    "removeLocally": "Lokal entfernen",
+    "download":"Download",
+    "fileOptions":"Dateioptionen"
 }
