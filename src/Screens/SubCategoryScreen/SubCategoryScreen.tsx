@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
-import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
@@ -14,7 +13,7 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { setSubCategoryItem, setSubCategoryList } from '../../Redux/category/categorySlice';
+import { clearCategoryData, clearMainListData, clearSubCategoryData, setSubCategoryItem, setSubCategoryList } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
@@ -37,6 +36,9 @@ interface SubCategoryScreenProps {
     setSubCategoryItem: (selectedCategoryItem: DriveItemModel) => void;
     isLoading: boolean;
     setIsLoading: (boolean) => void;
+    clearMainListData: () => void;
+    clearCategoryData: () => void;
+    clearSubCategoryData: () => void;
 }
 
 interface SubCategoryScreenState {
@@ -96,14 +98,25 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
     };
 
     breadcrumbClick = (item: any) => {
+      
         console.log('item =>', item);
         if (item.id === 0) {
             //home click
             NavigationManager.navigateAndClear('HomeScreen');
+            this.props.clearMainListData();
+            this.props.clearCategoryData();
+            this.props.clearSubCategoryData();
         } else if (item.id === 1) {
             //category item clicked
             NavigationManager.goBack();
+            this.props.clearCategoryData();
+            this.props.clearSubCategoryData();
         }
+    };
+    goBack = () => {
+        this.props.clearCategoryData();
+        this.props.clearSubCategoryData();
+        NavigationManager.goBack();
     };
 
     render() {
@@ -160,6 +173,15 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
+    },
+    clearCategoryData: (value:any) => {
+        dispatch(clearCategoryData(value));
+    },
+    clearSubCategoryData: (value:any) => {
+        dispatch(clearSubCategoryData(value));
+    },
+    clearMainListData: (value:any) => {
+        dispatch(clearMainListData(value));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SubCategoryScreen);

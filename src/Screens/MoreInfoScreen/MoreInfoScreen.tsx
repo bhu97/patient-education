@@ -55,9 +55,6 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({ isLoading: false });
-        }, 3000);
         this.loadScreenData();
     }
 

@@ -63,15 +63,15 @@ const categorySlice = createSlice({
     reducers: {
         //When navigating back from screen call this function to clear category list data
         clearCategoryData: (state, action: PayloadAction<[]>) => {
-            // state.categoryList=[];
+            state.categoryList=[];
         },
           //When navigating back from screen call this function to clear main list data
           clearMainListData: (state, action: PayloadAction<[]>) => {
-            // state.mainList=[];
+            state.mainList=[];
         },
           //When navigating back from screen call this function to clear sub-category list data
           clearSubCategoryData: (state, action: PayloadAction<[]>) => {
-            // state.subCategoryList=[];
+            state.subCategoryList=[];
         },
           //When navigating back from screen call this function to clear category details page data
           clearCategoryDetailsData: (state, action: PayloadAction<[]>) => {
