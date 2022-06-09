@@ -94,7 +94,6 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                                 <CustomFlatList
                                     categoryList={this.props.mainList}
                                     onPressList={this.onClick}
-                                    elementType="name"
                                 />
                             )}
                         </View>

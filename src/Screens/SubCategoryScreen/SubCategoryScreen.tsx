@@ -114,8 +114,6 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
         }
     };
     goBack = () => {
-        this.props.clearCategoryData();
-        this.props.clearSubCategoryData();
         NavigationManager.goBack();
     };
 
@@ -131,7 +129,6 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                             <CustomFlatList
                                 categoryList={this.props.categoryList}
                                 onPressList={this.onClickFirstList}
-                                elementType="name"
                                 selectedElement={this.props.subCategoryList}
                                 disableClickOnFlatList
                             />
@@ -140,7 +137,6 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                             <CustomFlatList
                                 categoryList={this.props.subCategoryList}
                                 onPressList={this.onClickSecondList}
-                                elementType="options"
                             />
                         </View>
                     </View>
