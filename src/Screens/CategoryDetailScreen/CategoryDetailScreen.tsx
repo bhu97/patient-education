@@ -19,7 +19,15 @@ import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
-import { clearCategoryData, clearCategoryDetailsData, clearMainListData, clearSubCategoryData, setGridViewData, setMoreInfoData, setMoreInfoScreenData } from '../../Redux/category/categorySlice';
+import {
+    clearCategoryData,
+    clearCategoryDetailsData,
+    clearMainListData,
+    clearSubCategoryData,
+    setGridViewData,
+    setMoreInfoData,
+    setMoreInfoScreenData,
+} from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
@@ -67,7 +75,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         LogManager.debug('categoryDetailData=', categoryDetailData);
 
         const thumbnailList = await fetchAllThumbnails(this.props.subCategoryItem.uniqueId);
-        LogManager.info('responses list Item=', thumbnailList);
+        LogManager.debug('responses list Item=', thumbnailList);
 
         const gridData = await createGridModelData(categoryDetailData, thumbnailList);
         LogManager.debug('gridData=', gridData);
@@ -79,7 +87,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             LogManager.debug('linkedItemData=', linkedItemData);
 
             const moreInfoData = await dbHelper.getItemsForContentPageWebUrls(linkedItemData);
-            console.log('moreInfoData=', moreInfoData);
+            console.debug('moreInfoData=', moreInfoData);
             this.props.setMoreInfoList(moreInfoData);
         }
 
@@ -212,16 +220,16 @@ const mapDispatchToProps = (dispatch: any) => ({
     setMoreInfoScreenData: (data: MoreInfoListModel[]) => {
         dispatch(setMoreInfoScreenData(data));
     },
-    clearCategoryData: (value:any) => {
+    clearCategoryData: (value: any) => {
         dispatch(clearCategoryData(value));
     },
-    clearSubCategoryData: (value:any) => {
+    clearSubCategoryData: (value: any) => {
         dispatch(clearSubCategoryData(value));
     },
-    clearMainListData: (value:any) => {
+    clearMainListData: (value: any) => {
         dispatch(clearMainListData(value));
     },
-    clearCategoryDetailsData: (value:any)  => {
+    clearCategoryDetailsData: (value: any) => {
         dispatch(clearCategoryDetailsData(value));
     },
 });

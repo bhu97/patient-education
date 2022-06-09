@@ -4,7 +4,6 @@ const FontFamily = {
     LatoBold: 'Lato-Bold',
     HelveticaNeueM: 'Helvetica Neue, Medium',
     Helvetica65R: 'Helvetica 65 Medium, Regular',
-
 } as const;
 
 export const BaseThemeStyle = {
@@ -18,7 +17,7 @@ export const BaseThemeStyle = {
         gray: '#9E9E9E',
         lightGray: '#E5E7EC',
         white: '#FFFFFF',
-         blue: '#4389BC',
+        blue: '#4389BC',
         transparent: 'transparent',
         titleColor: '#071B45',
         olive: '#808000',
@@ -26,7 +25,7 @@ export const BaseThemeStyle = {
         tabBackGroundColor: '#2D9CDB',
         screenBackgroundColor: '#F2F3F5',
         listItemBackgroundColor: '#E5E7EC',
-        bordergrey:'#DCDCDC',
+        bordergrey: '#DCDCDC',
     },
     paddings: {
         bodyHorizontal: 0,

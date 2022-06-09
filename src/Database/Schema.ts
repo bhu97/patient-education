@@ -34,7 +34,12 @@ export const UserSchema = {
     primaryKey: 'id',
     properties: {
         id: 'string',
-        country: 'string?',
+        uniqueId: 'string',
+        countryTitle: 'string',
+        countryName: 'string',
+        timeLastModified: 'string',
+        webUrl: 'string',
+        parentReferenceId: 'string',
     },
 };
 

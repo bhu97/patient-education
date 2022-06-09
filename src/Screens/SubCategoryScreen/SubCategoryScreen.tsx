@@ -13,7 +13,13 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { clearCategoryData, clearMainListData, clearSubCategoryData, setSubCategoryItem, setSubCategoryList } from '../../Redux/category/categorySlice';
+import {
+    clearCategoryData,
+    clearMainListData,
+    clearSubCategoryData,
+    setSubCategoryItem,
+    setSubCategoryList,
+} from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
@@ -98,7 +104,6 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
     };
 
     breadcrumbClick = (item: any) => {
-      
         console.log('item =>', item);
         if (item.id === 0) {
             //home click
@@ -128,15 +133,14 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                         <View style={style.flatListViewConatiner}>
                             <CustomFlatList
                                 categoryList={this.props.categoryList}
-                                onPressList={this.onClickFirstList}
-                                selectedElement={this.props.subCategoryList}
-                                disableClickOnFlatList
+                                selectedElement={this.props.categoryItem}
+                                isDisabled={true}
                             />
                         </View>
                         <View style={style.SecondflatListViewConatiner}>
                             <CustomFlatList
                                 categoryList={this.props.subCategoryList}
-                                onPressList={this.onClickSecondList}
+                                onPressListItem={this.onClickSecondList}
                             />
                         </View>
                     </View>
@@ -170,13 +174,13 @@ const mapDispatchToProps = (dispatch: any) => ({
     setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
     },
-    clearCategoryData: (value:any) => {
+    clearCategoryData: (value: any) => {
         dispatch(clearCategoryData(value));
     },
-    clearSubCategoryData: (value:any) => {
+    clearSubCategoryData: (value: any) => {
         dispatch(clearSubCategoryData(value));
     },
-    clearMainListData: (value:any) => {
+    clearMainListData: (value: any) => {
         dispatch(clearMainListData(value));
     },
 });

@@ -13,7 +13,12 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { clearCategoryData, clearMainListData, setCategoryItem, setCategoryList } from '../../Redux/category/categorySlice';
+import {
+    clearCategoryData,
+    clearMainListData,
+    setCategoryItem,
+    setCategoryList,
+} from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
@@ -108,15 +113,15 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
                             <CustomFlatList
+                                isDisabled={true}
                                 categoryList={this.props.mainList}
-                                selectedElement={this.props.categoryList}
-                                disableClickOnFlatList
+                                selectedElement={this.props.mainCategoryItem}
                             />
                         </View>
                         <View style={style.SecondflatListViewConatiner}>
                             <CustomFlatList
                                 categoryList={this.props.categoryList}
-                                onPressList={this.subCategoryRender}     
+                                onPressListItem={this.subCategoryRender}
                             />
                         </View>
                     </View>
@@ -150,10 +155,10 @@ const mapDispatchToProps = (dispatch: any) => ({
     setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
     },
-    clearCategoryData: (value:any) => {
+    clearCategoryData: (value: any) => {
         dispatch(clearCategoryData(value));
     },
-    clearMainListData: (value:any) => {
+    clearMainListData: (value: any) => {
         dispatch(clearMainListData(value));
     },
 });

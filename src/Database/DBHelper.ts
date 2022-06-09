@@ -3,7 +3,7 @@ import { applyDriveItemFilter, normalizeUrl, notEmpty } from '../Helper/Helper';
 import LogManager from '../Helper/LogManager';
 import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
 import { MoreInfoListModel } from '../Model/MoreInfoListModel';
-import { IUser, UserModel } from '../Model/UserModel';
+import { IUserModel, UserModel } from '../Model/UserModel';
 import { DatabaseManager } from './DatabaseManager';
 import { DriveItemSchema, UserSchema } from './Schema';
 
@@ -12,39 +12,56 @@ export class DBhelper {
      * get all available country list for the drive DB
      * @returns country array if success or null
      */
-    async getAllAvailableCountries(): Promise<string[] | null> {
+    async getAllAvailableCountries(): Promise<UserModel[] | null> {
         const countryData = DatabaseManager.getInstance().getEntities(
             DriveItemSchema.name,
             `parentReferenceId == '${API_NAMES.ROOT_ID}'`,
         );
         LogManager.debug('countryData=', countryData);
 
-        const driveItemsNoMaster = countryData?.filter(
-            (driveItem) => driveItem.name! !== DatabaseManager.getInstance().kMasterFolderName,
-        );
-        if (driveItemsNoMaster) {
-            return driveItemsNoMaster
-                ?.flatMap((driveItem) => driveItem.name!)
-                .sort((name1, name2) => name1.localeCompare(name2));
+        let userCountryModelData = [];
+        for (let countryObject of countryData) {
+            userCountryModelData.push(UserModel.generate(countryObject));
         }
-        return null;
+        LogManager.debug('userCountryModelData=', userCountryModelData);
+
+        const userModelData = userCountryModelData.filter(function (userCountryModelObject) {
+            if (userCountryModelObject.countryTitle && userCountryModelObject.countryName) {
+                return UserModel.generate(userCountryModelObject);
+            }
+        });
+        LogManager.debug('userModelData=', userModelData);
+
+        userModelData.sort((a, b) => a.countryName.localeCompare(b.countryName));
+
+        // const driveItemsNoMaster = countryData?.filter(
+        //     (driveItem) => driveItem.name! !== DatabaseManager.getInstance().kMasterFolderName,
+        // );
+        // LogManager.debug('driveItemsNoMaster=', driveItemsNoMaster);
+
+        // if (driveItemsNoMaster) {
+        //     return driveItemsNoMaster
+        //         ?.flatMap((driveItem) => driveItem.name!)
+        //         .sort((name1, name2) => name1.localeCompare(name2));
+        // }
+        return userModelData;
     }
 
     /**
      * get user data from user DB
      * @returns
      */
-    async getUser(): Promise<IUser | null> {
+    async getUser(): Promise<IUserModel | null> {
         const user = await DatabaseManager.getInstance().getEntities(UserSchema.name, `id == '${API_NAMES.USER_ID}'`);
         return user[0];
     }
 
     /**
      * cretae user into DB with country code
-     * @param country
+     * @param userDetails
      */
-    async createUser(country: string) {
-        await DatabaseManager.getInstance().createEntity(UserSchema.name, UserModel.generate(country));
+    async createUser(userDetails: UserModel) {
+        await DatabaseManager.getInstance().createEntity(UserSchema.name, userDetails);
     }
 
     /**
@@ -52,40 +69,41 @@ export class DBhelper {
      * if exist return country code
      * @returns
      */
-    async createUserIfEmpty(): Promise<string> {
-        const user = await this.getUser();
-        LogManager.info('user=', user);
+    async createUserIfEmpty(): Promise<UserModel> {
+        const userCountry = await this.getUser();
+        LogManager.info('userCountry=', userCountry);
 
         const countries = await this.getAllAvailableCountries();
         LogManager.info('countries=', countries);
 
-        let userCountry = 'MASTER'; //countries[1];
-        if (!user) {
+        var defaultUserCountry = countries.find((item) => item.countryName.toLocaleLowerCase() === 'master');
+        LogManager.info('defaultUserCountry=', defaultUserCountry);
+
+        if (!userCountry) {
             // first time so create user
-            await this.createUser(userCountry);
+            await this.createUser(defaultUserCountry);
         } else {
             // in case there is no country selected although we have a user
             //we select some country
-            if (user.country == '') {
-                if (countries && countries.length > 0) {
-                    await this.createUser(userCountry);
+            if (userCountry.countryName == '') {
+                if (defaultUserCountry) {
+                    await this.createUser(defaultUserCountry);
                 }
-            } else {
-                userCountry = user.country;
             }
         }
-        return userCountry;
+        //return default user
+        return defaultUserCountry;
     }
 
     /**
      * get all data in array of drive model for particular country
-     * @param countryCode
+     * @param userCountryModel
      * @returns [] of Drive model if success
      */
-    async getRootItemsForCountry(countryCode: string): Promise<DriveItemModel[]> {
+    async getRootItemsForCountry(userCountryModel: UserModel): Promise<DriveItemModel[]> {
         const rootItems = await DatabaseManager.getInstance().getEntities(
             DriveItemSchema.name,
-            `webUrl == '${API_NAMES.ROOT_WEB_URL + 'Master'}'`,
+            `webUrl == '${userCountryModel.webUrl}'`,
         );
         LogManager.debug('rootItems=', rootItems);
 
@@ -108,7 +126,7 @@ export class DBhelper {
             return rootItemData;
         } else {
             //TODO: add no data condition
-            LogManager.debug('no data for ', countryCode);
+            LogManager.debug('no data for ', userCountryModel);
             return [];
         }
     }

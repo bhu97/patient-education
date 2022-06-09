@@ -69,7 +69,7 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         LogManager.debug('categoryDetailData on More=', categoryDetailData);
 
         const thumbnailList = await fetchAllThumbnails(currentMoreInfoObject.uniqueId);
-        LogManager.info('responses list Item on More=', thumbnailList);
+        LogManager.debug('responses list Item on More=', thumbnailList);
 
         const gridData = await createGridModelData(categoryDetailData, thumbnailList);
         LogManager.debug('gridData=', gridData);

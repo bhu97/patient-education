@@ -6,6 +6,8 @@ import { DriveItemSchema } from '../../Database/Schema';
 import apiManager from '../../Helper/ApiManager';
 import { createDriveModelData, createListModelData } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
+import { setMainCategoryList } from '../category/categorySlice';
+import { dispatchState } from '../store';
 
 /**
  * createAsyncThunk receives two arguments
@@ -47,23 +49,16 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
 
     LogManager.debug('insert DB stars 2=');
     await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, listModelData);
-    LogManager.debug('insert DB end 1=');
+    LogManager.debug('insert DB end 2=');
 
     // create user into DB
-    const userCountry = await dbHelper.createUserIfEmpty();
-    LogManager.debug('userCountry=', userCountry);
+    const userDetails = await dbHelper.createUserIfEmpty();
+    LogManager.debug('userDetails=', userDetails);
 
-    const mainCategoryData = await dbHelper.getRootItemsForCountry(userCountry);
+    const mainCategoryData = await dbHelper.getRootItemsForCountry(userDetails);
     LogManager.debug('mainCategoryData=', mainCategoryData);
-    //this.props.setMainList(mainCategoryData);
 
-    // const completeData = driveModelData.map((item, i) => {
-    //     if (item.uniqueId === listModelData[i].uniqueId) {
-    //         //merging two objects
-    //         return Object.assign({}, item, listModelData[i]);
-    //     }
-    // });
-    // LogManager.debug('completeData=', completeData);
+    dispatchState(setMainCategoryList(mainCategoryData));
 
     LogManager.debug('fetchDriveItems call ended');
 
@@ -80,9 +75,9 @@ export const fetchItem = createAsyncThunk('appData/fetchItem', async (itemId: st
     };
 
     const response = await apiManager.callApiToGetData(API_NAMES.GRAPH_DRIVE_ITEM_ENDPOINT, HTTP_METHODS.GET, params);
-    LogManager.info('response=', response);
+    LogManager.debug('response=', response);
 
-    LogManager.debug('fetchItem call ended');
+    LogManager.info('fetchItem call ended');
     return response;
 });
 
@@ -97,9 +92,9 @@ export const fetchItemThumbnail = createAsyncThunk('appData/fetchItemThumbnail',
         HTTP_METHODS.GET,
         params,
     );
-    LogManager.info('response=', response);
+    LogManager.debug('response=', response);
 
-    LogManager.debug('fetchItemThumbnail call ended');
+    LogManager.info('fetchItemThumbnail call ended');
     return response;
 });
 
@@ -114,9 +109,9 @@ export const fetchThumbnail = createAsyncThunk('appData/fetchThumbnail', async (
         HTTP_METHODS.GET,
         params,
     );
-    LogManager.info('response=', response);
+    LogManager.debug('response=', response);
 
-    LogManager.debug('fetchThumbnail call ended');
+    LogManager.info('fetchThumbnail call ended');
     return response;
 });
 
@@ -129,9 +124,9 @@ export const fetchAllThumbnails = async (uniqueId: string): Promise<any[]> => {
         HTTP_METHODS.GET,
         {},
     );
-    LogManager.info('response=', response);
+    LogManager.debug('response=', response);
 
-    LogManager.debug('fetchAllThumbnails call ended');
+    LogManager.info('fetchAllThumbnails call ended');
     return response['value'];
 };
 
@@ -141,16 +136,14 @@ export const fetchData = async (url: string, params?: any): Promise<any[]> => {
         params = {};
     }
     let allResponses = Array<any>();
-    console.log('performing request: ' + url);
+    LogManager.info('performing request: ', url);
     const responses = await fetchNext(url, params, allResponses);
-    console.log('all response length: ' + allResponses.length);
+    LogManager.debug('all response length: ' + allResponses.length);
     return responses;
 };
 
 const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promise<any[]> => {
     const response = await apiManager.callApiToGetData(endpoint, params);
-    console.log('response nextLink: ' + response['@odata.nextLink']);
-    console.log('response value: ' + response['value']);
 
     if (response['@odata.nextLink']) {
         const nextData = (await fetchNext(

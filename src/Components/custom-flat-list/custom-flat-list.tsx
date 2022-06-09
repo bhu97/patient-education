@@ -1,76 +1,26 @@
 import React, { PureComponent } from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
-import Tooltip from 'react-native-walkthrough-tooltip';
+import { DriveItemModel } from '../../Model/DriveItemModel';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
-interface customFlatListProps {
+interface CustomFlatListProps {
     categoryList: any;
-    onPressList?: any;
-    selectedElement?: any;
-    onPressTool?: any;
-    disableClickOnFlatList?: boolean;
+    isDisabled?: boolean;
+    onPressListItem?: (item: any) => void;
+    selectedElement?: DriveItemModel;
 }
-interface customFlatListState {
-    isVisibleObject: any;
-    update: any;
-}
+interface CustomFlatListState {}
 
-export default class customFlatList extends PureComponent<customFlatListProps, customFlatListState> {
-    constructor(props: customFlatListProps) {
+export default class CustomFlatList extends PureComponent<CustomFlatListProps, CustomFlatListState> {
+    constructor(props: CustomFlatListProps) {
         super(props);
-        this.state = {
-            isVisibleObject: {},
-            update: false,
-        };
-    }
-
-    componentDidMount(): void {
-        let isVisibleArray = {};
-        this.props.categoryList?.map((item: any, index: any) => {
-            let setIndex = { index: index, isVisible: false };
-            isVisibleArray[index] = setIndex;
-        });
-        this.setState({ isVisibleObject: isVisibleArray });
+        this.state = {};
     }
 
     getImage = (imageName) => {
         return <Image resizeMode="contain" style={style.imageStyle} source={imageName} />;
-    };
-    download = () => {
-        console.log('Download Clicked');
-    };
-    remove = () => {
-        console.log('Remove locally Clicked');
-    };
-    getToolTip = (index, isVisibleIndicator) => {
-        return (
-            <Tooltip
-                contentStyle={style.toolTipBorder}
-                arrowSize={style.toolTipArrow}
-                isVisible={isVisibleIndicator}
-                content={
-                    <View style={style.toolTipContainer}>
-                        <Text style={style.toolTipHeading}>File Options</Text>
-                        {this.toolTipOptionSeparator()}
-                        <TouchableOpacity onPress={() => this.download()}>
-                            <Text style={style.toolTipOptions}>Download Folder</Text>
-                        </TouchableOpacity>
-                        {this.toolTipOptionSeparator()}
-                        <TouchableOpacity onPress={() => this.remove()}>
-                            <Text style={style.toolTipOptions}>Remove Local Files</Text>
-                        </TouchableOpacity>
-                    </View>
-                }
-                placement="bottom"
-                onClose={() => this.setVisible(index, false)}
-            >
-                <TouchableOpacity onPress={() => this.setVisible(index, true)}>
-                    <View style={style.blueDotImage}>{this.getImage(Images.menuBlueDots)}</View>
-                </TouchableOpacity>
-            </Tooltip>
-        );
     };
 
     flatListItemSeparator = () => {
@@ -80,31 +30,18 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
         return <View style={style.toolTipOptionSeperator}></View>;
     };
 
-    setVisible = (index: any, indicator: boolean) => {
-        let isVisibleCheck = this.state.isVisibleObject[index];
-        isVisibleCheck.isVisible = indicator;
-        this.setState({ isVisibleObject: { ...this.state.isVisibleObject, isVisibleCheck }, update: {} });
-    };
-
-    getVisibility = (index: any) => {
-        return this.state.isVisibleObject[index]?.isVisible ? true : false;
-    };
-    onPressListItem = (item) => {
-        {
-            !this.props.disableClickOnFlatList ? this.props.onPressList(item) : null;
-        }
+    onPress = (item: any, index: number) => {
+        console.log('onPressListItem item=>>', item);
+        this.props.onPressListItem(item);
     };
 
     renderItem = ({ item, index }: any) => {
-        // console.log('pura data', item.name);
-        // console.log('selected data', this.props.selectedElement);
-        const backgroundColor = this.props.selectedElement
-            ? item.name === this.props.selectedElement
-                ? BaseThemeStyle.colors.lightGray
-                : BaseThemeStyle.colors.white
-            : BaseThemeStyle.colors.white;
-
-        const isVisibleIndicator = this.getVisibility(index);
+        const backgroundColor =
+            this.props.selectedElement === item // check if item matched with selected item
+                ? BaseThemeStyle.colors.gray // then selected color
+                : this.props.isDisabled // else if list disabled
+                ? BaseThemeStyle.colors.listItemBackgroundColor // then light color
+                : BaseThemeStyle.colors.white; // else default color
 
         return (
             <View style={{ ...style.listItemContainer, backgroundColor: backgroundColor }}>
@@ -112,9 +49,11 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
                     {item.title}
                 </Text>
 
-                <View style={style.iamgeViewStyle}>
-                    {this.getToolTip(index, isVisibleIndicator)}
-                    <TouchableOpacity onPress={() => this.onPressListItem(item)}>
+                <View style={style.imageViewStyle}>
+                    <TouchableOpacity
+                        disabled={this.props.isDisabled ? true : false}
+                        onPress={() => this.onPress(item, index)}
+                    >
                         <View style={style.rightArrow}>{this.getImage(Images.rightArrow)}</View>
                     </TouchableOpacity>
                 </View>
@@ -130,7 +69,6 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
                     ItemSeparatorComponent={this.flatListItemSeparator}
                     data={this.props.categoryList}
                     renderItem={this.renderItem}
-                    extraData={this.state.update}
                 />
             </View>
         );
