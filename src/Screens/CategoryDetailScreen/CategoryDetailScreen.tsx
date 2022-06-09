@@ -220,17 +220,17 @@ const mapDispatchToProps = (dispatch: any) => ({
     setMoreInfoScreenData: (data: MoreInfoListModel[]) => {
         dispatch(setMoreInfoScreenData(data));
     },
-    clearCategoryData: (value: any) => {
-        dispatch(clearCategoryData(value));
+    clearCategoryData: () => {
+        dispatch(clearCategoryData());
     },
-    clearSubCategoryData: (value: any) => {
-        dispatch(clearSubCategoryData(value));
+    clearSubCategoryData: () => {
+        dispatch(clearSubCategoryData());
     },
-    clearMainListData: (value: any) => {
-        dispatch(clearMainListData(value));
+    clearMainListData: () => {
+        dispatch(clearMainListData());
     },
-    clearCategoryDetailsData: (value: any) => {
-        dispatch(clearCategoryDetailsData(value));
+    clearCategoryDetailsData: () => {
+        dispatch(clearCategoryDetailsData());
     },
 });
 
