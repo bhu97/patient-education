@@ -40,10 +40,14 @@ export const BINARY_STRING = 'q4t7w!z%C*F-JaNcRfUjXn2r5u8x/A?D(G+KbPeSgVkYp3s6v9
 //decode key for realm to open: 7134743777217A25432A462D4A614E635266556A586E3272357538782F413F4428472B4B6250655367566B5970337336763979244226452948404D635166546A
 
 export const API_NAMES = {
-    ROOT_ID: '01GX2IG4N6Y2GOVW7725BZO354PWSELRRZ',
+    //ROOT_ID: '01GX2IG4N6Y2GOVW7725BZO354PWSELRRZ',
+
+    //https://fresenius.sharepoint.com/teams/FMETS0447212/Shared%20Documents/Forms/AllItems.aspx?id=%2Fteams%2FFMETS0447212%2FShared%20Documents%2FMaster&viewid=4ab2f2cd%2D2e01%2D42b8%2D8821%2D8f7b0f8b59d3
+
+    ROOT_ID: '01CF5DFEN6Y2GOVW7725BZO354PWSELRRZ',
     USER_ID: '0',
-    FIRST_LEVEL_PATH: '/teams/FMETS0269990/Shared%20Documents/',
-    ROOT_WEB_URL: 'https://fresenius.sharepoint.com/teams/FMETS0269990/Shared%20Documents/',
+    FIRST_LEVEL_PATH: '/teams/FMETS0447212/Shared%20Documents/',
+    ROOT_WEB_URL: 'https://fresenius.sharepoint.com/teams/FMETS0447212/Shared%20Documents/',
     ROOT_LOGIN_URL: 'https://fresenius.sharepoint.com/',
     ROOT_LOGOUT_URL: 'https://fresenius.sharepoint.com/_layouts/15/SignOut.aspx',
 
@@ -58,27 +62,34 @@ export const API_NAMES = {
     AAD_ENDPOINT_HOST: 'https://login.microsoftonline.com/',
     GRAPH_ENDPOINT_HOST: 'https://graph.microsoft.com/',
 
+    DRIVE_ID: 'b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL',
+    SITE_ID: 'ce9ddfbf-3e3c-4569-952c-2366b6352bba',
+    LIST_ID: 'c5c38f36-9e7d-4f3a-8049-094782193c0b',
     // RESOURCES
     // GRAPH_ME_ENDPOINT: 'v1.0/me',
     // GRAPH_MAIL_ENDPOINT: 'v1.0/me/messages',
 
+    //
+    FETCH_DATA_URL:
+        'https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/root/delta?$select=id,name,@microsoft.graph.downloadUrl,sharepointIds,name,file,folder,parentReference,createdDateTime,lastModifiedDateTime,webUrl,fields,size',
+
     //all folder and its sub folder and files
     ALL_DRIVE_ITEM_ENDPOINT:
-        'https://graph.microsoft.com/v1.0/drives/b!EKRo7XQXvUyRuOIkA9DjxunkygQdu11AmW6wdTRwuw91Ixe2mdV7RoMnMBsg3DoG/root/delta?$select=id, sharepointIds, title, name, webUrl, fields, parentReference, file, lastModifiedDateTime, size',
+        'https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/root/delta?$select=id, sharepointIds, title, name, webUrl, fields, parentReference, file, lastModifiedDateTime, size',
 
     //get title, linked file / folder  and other content specific to drive it
     ALL_LIST_ITEM_ENDPOINT:
-        'https://graph.microsoft.com/v1.0/sites/ed68a410-1774-4cbd-91b8-e22403d0e3c6/lists/b6172375-d599-467b-8327-301b20dc3a06/items?$expand=fields, driveitem&$select=fields, id, contentType',
+        'https://graph.microsoft.com/v1.0/sites/ce9ddfbf-3e3c-4569-952c-2366b6352bba/lists/c5c38f36-9e7d-4f3a-8049-094782193c0b/items?$expand=fields, driveitem&$select=fields, id, contentType',
 
     // get item details for drive
-    GRAPH_DRIVE_ITEM_ENDPOINT: `https://graph.microsoft.com/v1.0/sites/ed68a410-1774-4cbd-91b8-e22403d0e3c6/lists/b6172375-d599-467b-8327-301b20dc3a06/`,
+    GRAPH_DRIVE_ITEM_ENDPOINT: `https://graph.microsoft.com/v1.0/sites/ce9ddfbf-3e3c-4569-952c-2366b6352bba/lists/c5c38f36-9e7d-4f3a-8049-094782193c0b/`,
     GRAPH_LAST_MODIFIED_DATE:
-        'https://graph.microsoft.com/v1.0/drives/b!EKRo7XQXvUyRuOIkA9DjxunkygQdu11AmW6wdTRwuw91Ixe2mdV7RoMnMBsg3DoG/root/delta?$top=1&$orderBy=lastModifiedDateTime+DESC',
+        'https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/root/delta?$top=1&$orderBy=lastModifiedDateTime+DESC',
     // SCOPES
     GRAPH_THUMBNAILS_ENDPOINT: (uniqueId: string) =>
-        `https://graph.microsoft.com/v1.0/drives/b!EKRo7XQXvUyRuOIkA9DjxunkygQdu11AmW6wdTRwuw91Ixe2mdV7RoMnMBsg3DoG/items/${uniqueId}/children?$expand=thumbnails`,
+        `https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/items/${uniqueId}/children?$expand=thumbnails`,
     GRAPH_ITEM_THUMBNAIL_ENDPOINT: (uniqueId: string) =>
-        `https://graph.microsoft.com/v1.0/drives/b!EKRo7XQXvUyRuOIkA9DjxunkygQdu11AmW6wdTRwuw91Ixe2mdV7RoMnMBsg3DoG/items/${uniqueId}?$expand=thumbnails`,
+        `https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/items/${uniqueId}?$expand=thumbnails`,
 
     GRAPH_SCOPES: [
         'offline_access', /// Needed to receive a refresh token

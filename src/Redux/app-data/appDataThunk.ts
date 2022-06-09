@@ -1,5 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { API_NAMES, HTTP_METHODS } from '../../Constant/Constants';
+import { DatabaseManager } from '../../Database/DatabaseManager';
+import dbHelper from '../../Database/DBHelper';
+import { DriveItemSchema } from '../../Database/Schema';
 import apiManager from '../../Helper/ApiManager';
 import { createDriveModelData, createListModelData } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
@@ -21,31 +24,50 @@ export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModified
     return response;
 });
 
-//to Fetch Drive Items
+//to fetch meta delta
 export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', async () => {
     LogManager.debug('fetchDriveItems call started');
 
-    const responses = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
-    LogManager.info('responses=', responses);
+    const driveItems = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
+    LogManager.info('responses driveItems=', driveItems);
 
-    const driveModelData = createDriveModelData(responses);
+    const driveModelData = createDriveModelData(driveItems);
+    LogManager.info('driveModelData=', driveModelData);
+
+    //add drive item to db
+    LogManager.debug('insert DB stars 1=');
+    await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, driveModelData);
+    LogManager.debug('insert DB end 1=');
+
+    const listItems = await fetchData(API_NAMES.ALL_LIST_ITEM_ENDPOINT);
+    LogManager.info('responses list Item=', listItems);
+
+    const listModelData = createListModelData(listItems);
+    LogManager.debug('listModelData=', listModelData);
+
+    LogManager.debug('insert DB stars 2=');
+    await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, listModelData);
+    LogManager.debug('insert DB end 1=');
+
+    // create user into DB
+    const userCountry = await dbHelper.createUserIfEmpty();
+    LogManager.debug('userCountry=', userCountry);
+
+    const mainCategoryData = await dbHelper.getRootItemsForCountry(userCountry);
+    LogManager.debug('mainCategoryData=', mainCategoryData);
+    //this.props.setMainList(mainCategoryData);
+
+    // const completeData = driveModelData.map((item, i) => {
+    //     if (item.uniqueId === listModelData[i].uniqueId) {
+    //         //merging two objects
+    //         return Object.assign({}, item, listModelData[i]);
+    //     }
+    // });
+    // LogManager.debug('completeData=', completeData);
+
     LogManager.debug('fetchDriveItems call ended');
 
-    return driveModelData;
-});
-
-//to fetch meta delta
-export const fetchAllListItems = createAsyncThunk('appData/fetchAdditionalMetadata', async () => {
-    LogManager.debug('fetchAdditionalMetadata call started');
-
-    const responses = await fetchData(API_NAMES.ALL_LIST_ITEM_ENDPOINT);
-    LogManager.info('responses=', responses);
-
-    const listModelData = createListModelData(responses);
-    LogManager.debug('fetchDriveItems call ended');
-
-    LogManager.debug('fetchAdditionalMetadata call ended');
-    return listModelData;
+    return mainCategoryData;
 });
 
 //fetchItem

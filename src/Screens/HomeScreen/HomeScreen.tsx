@@ -9,17 +9,13 @@ import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
-import { API_NAMES } from '../../Constant/Constants';
-import { DatabaseManager } from '../../Database/DatabaseManager';
 import dbHelper from '../../Database/DBHelper';
-import { DriveItemSchema } from '../../Database/Schema';
-import { createDriveModelData, createListModelData } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { fetchData } from '../../Redux/app-data/appDataThunk';
+import { fetchAllDriveItems } from '../../Redux/app-data/appDataThunk';
 import { setMainCategoryItem, setMainCategoryList } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
@@ -31,6 +27,7 @@ interface HomePageProps {
     setMainList: (data: DriveItemModel[]) => void;
     setIsLoading: (boolean) => void;
     appDataLoading: boolean;
+    fetchData: () => void;
 }
 
 interface HomePageState {}
@@ -43,55 +40,27 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 
     componentDidMount() {
         this.initializeApp();
-        setTimeout(() => {
-            this.setState({ isLoading: false });
-        }, 5000);
     }
 
     async initializeApp() {
         SplashScreen.hide();
-        this.props.setIsLoading(true);
+        // this.props.setIsLoading(true);
         const userData = await dbHelper.getUser();
         LogManager.debug('userData', userData);
+
         if (!userData) {
             //user not present fetch all data and save it DB
 
-            LogManager.debug('fetch all drive starts=');
+            this.props.fetchData();
 
-            const driveItems = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
-            LogManager.info('responses driveItems=', driveItems);
-
-            const driveModelData = createDriveModelData(driveItems);
-            LogManager.info('driveModelData=', driveModelData);
-
-            const listItems = await fetchData(API_NAMES.ALL_LIST_ITEM_ENDPOINT);
-            LogManager.info('responses list Item=', listItems);
-
-            const listModelData = createListModelData(listItems);
-            LogManager.debug('listModelData=', listModelData);
-
-            LogManager.debug('fetch all drive ends=', driveModelData);
-
-            //insert drive items and list items to DB
-            LogManager.debug('insert DB stars=');
-
-            await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, driveModelData);
-
-            await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, listModelData);
-
-            LogManager.debug('insert DB ends=');
-
-            // create user into DB
-            const userCountry = dbHelper.createUserIfEmpty();
-
-            LogManager.debug('userCountry=', userCountry);
             //TODO: set it in redux
         } else {
             // db present load data from database to redux
             LogManager.debug('valid db present');
         }
 
-        await dbHelper.createUser('master');
+        //await dbHelper.createUser('master');
+        this.props.setIsLoading(true);
         const mainCategoryData = await dbHelper.getRootItemsForCountry(userData.country);
         LogManager.debug('mainCategoryData=', mainCategoryData);
         this.props.setMainList(mainCategoryData);
@@ -160,6 +129,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
+    },
+    fetchData: () => {
+        dispatch(fetchAllDriveItems());
     },
 });
 

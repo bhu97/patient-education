@@ -1,10 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
-import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
@@ -46,7 +45,7 @@ interface CategoryDetailScreenState {
     breadCrumbList: any;
 }
 
-class CategoryDetailScreen extends PureComponent<CategoryDetailScreenProps, CategoryDetailScreenState> {
+class CategoryDetailScreen extends Component<CategoryDetailScreenProps, CategoryDetailScreenState> {
     constructor(props: CategoryDetailScreenProps) {
         super(props);
         this.state = {

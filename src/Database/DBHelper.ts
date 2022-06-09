@@ -59,7 +59,7 @@ export class DBhelper {
         const countries = await this.getAllAvailableCountries();
         LogManager.info('countries=', countries);
 
-        let userCountry = 'GBR'; //countries[1];
+        let userCountry = 'MASTER'; //countries[1];
         if (!user) {
             // first time so create user
             await this.createUser(userCountry);
@@ -85,7 +85,7 @@ export class DBhelper {
     async getRootItemsForCountry(countryCode: string): Promise<DriveItemModel[]> {
         const rootItems = await DatabaseManager.getInstance().getEntities(
             DriveItemSchema.name,
-            `webUrl == '${API_NAMES.ROOT_WEB_URL + countryCode}'`,
+            `webUrl == '${API_NAMES.ROOT_WEB_URL + 'Master'}'`,
         );
         LogManager.debug('rootItems=', rootItems);
 
