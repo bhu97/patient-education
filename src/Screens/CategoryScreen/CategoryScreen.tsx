@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
-import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
@@ -14,7 +13,7 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { setCategoryItem, setCategoryList } from '../../Redux/category/categorySlice';
+import { clearCategoryData, clearMainListData, setCategoryItem, setCategoryList } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
@@ -32,6 +31,8 @@ interface CategoryScreenProps {
     setCategoryItem: (selectedCategoryItem: DriveItemModel) => void;
     isLoading: boolean;
     setIsLoading: (boolean) => void;
+    clearCategoryData: () => void;
+    clearMainListData: () => void;
 }
 
 interface CategoryScreenState {
@@ -77,8 +78,8 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
     }
 
     goBack = () => {
-        this.props.setCategoryList([]);
-
+        this.props.clearMainListData();
+        this.props.clearCategoryData();
         NavigationManager.navigateAndClear('HomeScreen');
     };
 
@@ -92,6 +93,8 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         if (item.id === 0) {
             //home click
             NavigationManager.navigateAndClear('HomeScreen');
+            this.props.clearMainListData();
+            this.props.clearCategoryData();
         }
     };
 
@@ -106,7 +109,6 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                         <View style={style.flatListViewConatiner}>
                             <CustomFlatList
                                 categoryList={this.props.mainList}
-                                elementType="name"
                                 selectedElement={this.props.categoryList}
                                 disableClickOnFlatList
                             />
@@ -114,8 +116,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                         <View style={style.SecondflatListViewConatiner}>
                             <CustomFlatList
                                 categoryList={this.props.categoryList}
-                                onPressList={this.subCategoryRender}
-                                elementType="name"
+                                onPressList={this.subCategoryRender}     
                             />
                         </View>
                     </View>
@@ -148,6 +149,12 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
+    },
+    clearCategoryData: (value:any) => {
+        dispatch(clearCategoryData(value));
+    },
+    clearMainListData: (value:any) => {
+        dispatch(clearMainListData(value));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryScreen);

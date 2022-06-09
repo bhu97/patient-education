@@ -19,15 +19,37 @@ export const style = StyleSheet.create({
         width: 'auto',
         opacity:1
     },
+    emptyImage: {
+        resizeMode: 'stretch',
+           height: 200,
+           width: 'auto',
+           opacity:1
+       },
+       emptyImageStyle: {
+        resizeMode: 'contain',
+           height: 200,
+           width: 'auto',
+           opacity:1
+       },
+       overlay:{
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor:'black',
+        opacity:0.2
+       },
     svgIconStyle:{
         position:'absolute',
         top:80,
         zIndex:5,
         marginLeft:110,
+        // backgroundColor:'black',
+        opacity:1
     },
     iconImageStyle: {
         height: 20,
         width: 20,
+    },
+    emptyIconStyle: {
+       top:50,
     },
     itemContainer: {
         flexDirection: 'row',
@@ -82,8 +104,16 @@ export const style = StyleSheet.create({
     rightArrow:{
         width: '350%',
         height: 60,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
+    },
+    centerData:{
+        justifyContent:'center',
+        alignItems:'center'
+    },
+
+    emptyDataText:{
+        fontSize: 22, fontWeight: '500', padding: 10 ,
+        marginLeft:150
+       
+    },
 
 });

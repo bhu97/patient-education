@@ -61,6 +61,24 @@ const categorySlice = createSlice({
     initialState,
 
     reducers: {
+        //When navigating back from screen call this function to clear category list data
+        clearCategoryData: (state, action: PayloadAction<[]>) => {
+            // state.categoryList=[];
+        },
+          //When navigating back from screen call this function to clear main list data
+          clearMainListData: (state, action: PayloadAction<[]>) => {
+            // state.mainList=[];
+        },
+          //When navigating back from screen call this function to clear sub-category list data
+          clearSubCategoryData: (state, action: PayloadAction<[]>) => {
+            // state.subCategoryList=[];
+        },
+          //When navigating back from screen call this function to clear category details page data
+          clearCategoryDetailsData: (state, action: PayloadAction<[]>) => {
+            state.gridViewData=[];
+            state.moreInfoData=[];
+        },
+
         //set root items (main category list)
         setMainCategoryList: (state, action: PayloadAction<DriveItemModel[]>) => {
             state.mainList = action.payload;
@@ -79,6 +97,7 @@ const categorySlice = createSlice({
         //set selected Category (on click of category screen)
         setCategoryItem: (state, action: PayloadAction<DriveItemModel>) => {
             state.categoryItem = action.payload;
+          
         },
 
         //set Sub Category data
@@ -125,6 +144,10 @@ export const {
     setMoreInfoScreenData,
     setCountryListData,
     setSelectedCountry,
+    clearCategoryData,
+    clearMainListData,
+    clearSubCategoryData,
+    clearCategoryDetailsData
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

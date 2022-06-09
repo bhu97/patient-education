@@ -112,18 +112,20 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
         return (
             <View style={style.backgroundViewStyle}>
                 <TouchableOpacity onPress={() => this.loadDocument(item)}>
+                    <View>
                     {item.largeUrl ? (
                         <Image style={style.imageStyle} source={{ uri: item.largeUrl }} />
                     ) : (
                         <Image style={style.imageStyle} source={Images.emptyThumbnail} />
                     )}
-
+                     <View style={style.overlay} />
                     <View style={style.svgIconStyle}>{getIconByExtension(item.name)}</View>
+                    </View>
                 </TouchableOpacity>
                 <View style={style.itemContainer}>
                     <View style={style.textContainer}>
                         <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
-                            {item.title}
+                            {item.name}
                         </Text>
                     </View>
 
@@ -138,16 +140,25 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
 
     render() {
         return (
-            <View style={style.mainViewStyle}>
-                <FlatList
-                    data={this.props.gridViewList}
-                    renderItem={this.renderItem}
-                    numColumns={2}
-                    columnWrapperStyle={{ flex: 1, justifyContent: 'space-between' }}
-                    keyExtractor={(item, index) => index.toString()}
-                    extraData={this.state.update}
-                />
-            </View>
+            <>
+            {this.props.gridViewList.length > 0 ? (
+                <View style={style.mainViewStyle}>
+                    <FlatList
+                        data={this.props.gridViewList}
+                        renderItem={this.renderItem}
+                        numColumns={2}
+                        columnWrapperStyle={{ flex: 1, justifyContent: 'space-between' }}
+                        keyExtractor={(item, index) => index.toString()}
+                        extraData={this.state.update}
+                    />
+                </View>
+            ) : (
+                <View style={style.emptyIconStyle}>
+                    <Image style={style.emptyImageStyle} source={Images.emptyImg} />
+                    <Text style={style.emptyDataText}>There are no file here yet</Text>
+                </View>
+            )}
+        </>
         );
     }
 }

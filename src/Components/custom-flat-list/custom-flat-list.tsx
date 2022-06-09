@@ -8,7 +8,6 @@ import { style } from './style';
 interface customFlatListProps {
     categoryList: any;
     onPressList?: any;
-    elementType: string;
     selectedElement?: any;
     onPressTool?: any;
     disableClickOnFlatList?: boolean;
@@ -29,7 +28,7 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
 
     componentDidMount(): void {
         let isVisibleArray = {};
-        this.props.categoryList.map((item: any, index: any) => {
+        this.props.categoryList?.map((item: any, index: any) => {
             let setIndex = { index: index, isVisible: false };
             isVisibleArray[index] = setIndex;
         });
@@ -97,8 +96,10 @@ export default class customFlatList extends PureComponent<customFlatListProps, c
     };
 
     renderItem = ({ item, index }: any) => {
+        // console.log('pura data', item.name);
+        // console.log('selected data', this.props.selectedElement);
         const backgroundColor = this.props.selectedElement
-            ? item[this.props.elementType] === this.props.selectedElement[this.props.elementType]
+            ? item.name === this.props.selectedElement
                 ? BaseThemeStyle.colors.lightGray
                 : BaseThemeStyle.colors.white
             : BaseThemeStyle.colors.white;
