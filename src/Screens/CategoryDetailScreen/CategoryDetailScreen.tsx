@@ -10,7 +10,7 @@ import MainContainer from '../../Components/main-container/main-container';
 import MoreInfoList from '../../Components/more-info-list/more-info-list';
 import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
 import dbHelper from '../../Database/DBHelper';
-import { createGridModelData, linkedUrlListToArray, normalizeUrl, sanitizeWebUrl } from '../../Helper/Helper';
+import { createGridModelData, linkedUrlListToArray } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
@@ -85,20 +85,19 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             },
         ];
         let item: any = {};
-        let pageTitle: string = '';
-        let linkedFolder: string;
-        let linkedFiles: string;
 
-        //if subcategory items unique id is 0 means no subcategory present
         if (this.props.categoryItem.uniqueId == '0') {
+            //if category items unique id is 0 means no category/subcategory present
             item = this.props.mainCategoryItem;
         } else if (this.props.subCategoryItem.uniqueId == '0') {
+            //if subcategory category items unique id is 0 means no subcategory present
             item = this.props.categoryItem;
             breadCrumbList.push({
                 id: 2,
                 title: this.props.categoryItem.title,
             });
         } else {
+            //we have category /subcategory present
             item = this.props.subCategoryItem;
 
             //create breadcrumb array
@@ -110,52 +109,53 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
 
         LogManager.debug('CategoryDetailScreen Item =>', item);
 
-        pageTitle = item.title;
-        linkedFolder = item.linkedFolders;
-        linkedFiles = item.linkedFiles;
+        let pageTitle = item.title;
+        let linkedFolder = item.linkedFolders ? item.linkedFolders : '';
+        let linkedFiles = item.linkedFiles ? item.linkedFiles : '';
 
         const categoryDetailData = await dbHelper.getForSelectedCategory(item);
-        LogManager.debug('categoryDetailData=', categoryDetailData);
+        LogManager.info('categoryDetailData=', categoryDetailData);
 
         const thumbnailList = await fetchAllThumbnails(item.uniqueId);
-        LogManager.debug('responses list Item=', thumbnailList);
+        LogManager.info('responses list Item=', thumbnailList);
 
         const gridData = await createGridModelData(categoryDetailData, thumbnailList);
-        LogManager.debug('gridData=', gridData);
+        LogManager.info('gridData=', gridData);
 
         this.props.setGridViewList(gridData);
 
+        let moreFolderData = [];
+        let moreFileData = [];
+
+        if (linkedFolder != null && linkedFolder != '') {
+            const linkedFolderData = linkedUrlListToArray(linkedFolder);
+            LogManager.debug('linkedFolderData=', linkedFolderData);
+
+            const moreInfo = await dbHelper.getItemsForContentPageWebUrls(linkedFolderData, true);
+            console.debug('moreInfo=', moreInfo);
+
+            moreFolderData.push(moreInfo);
+        }
         if (linkedFiles != null && linkedFiles != '') {
             const linkedFileItemData = linkedUrlListToArray(linkedFiles);
             LogManager.debug('linkedFileItemData=', linkedFileItemData);
 
-            const t1 = sanitizeWebUrl(linkedFileItemData[0]);
-            console.log('t1=', t1);
-
-            const t3 = normalizeUrl(t1);
-            console.log('t3=', t3);
-
-            const t2 = normalizeUrl(linkedFileItemData[0]);
-            console.log('t2=', t2);
-
-            const t4 = sanitizeWebUrl(t2);
-            console.log('t4=', t4);
+            const moreInfo = await dbHelper.getItemsForContentPageWebUrls(linkedFileItemData, false);
+            console.debug('moreInfo=', moreInfo);
+            moreFileData.push(moreInfo);
         }
-        // if (this.props.subCategoryItem.linkedFolders != null || this.props.subCategoryItem.linkedFolders != '') {
-        //     const linkedItemData = linkedUrlListToArray(this.props.subCategoryItem.linkedFolders);
-        //     LogManager.debug('linkedItemData=', linkedItemData);
 
-        //     const moreInfoData = await dbHelper.getItemsForContentPageWebUrls(linkedItemData);
-        //     console.debug('moreInfoData=', moreInfoData);
-        //     this.props.setMoreInfoList(moreInfoData);
-        // }
+        // Merge arrays
+        const moreViewData = moreFolderData.concat(moreFileData);
+        console.debug('moreViewData=', moreViewData);
+
+        this.props.setIsLoading(false);
+        this.props.setMoreInfoList(moreViewData[0]);
 
         this.setState({
             breadCrumbList: breadCrumbList,
             pageTitle: pageTitle,
         });
-
-        this.props.setIsLoading(false);
     }
 
     goToHomeScreen = () => {

@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import { FlatList, Image, Linking, Text, TouchableOpacity, View } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
-import { getIconByExtension } from '../../Helper/Helper';
+import authenticationManager from '../../Authentication/AuthenticationManager';
+import { getExtension, getIconByExtension, normalizeUrl } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
+import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
 import Images from '../../Theme/Images';
@@ -91,20 +93,23 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
         return <View style={style.toolTipOptionSeperator}></View>;
     };
 
-    loadDocument = (item: GridViewModel) => {
-        LogManager.info('url item=', item);
-
-        //Android Webview cannot display PDF files. There is an issue related to this problem.
-        //https://stackoverflow.com/questions/58155621/react-native-webview-for-android-not-displaying-pdf-and-word-files
-        Linking.canOpenURL(item.webUrl).then((supported) => {
-            if (supported) {
-                Linking.openURL(item.webUrl);
-            } else {
-                console.log("Don't know how to open URI: " + item.webUrl);
-            }
-        });
-
-        //const webUrl = `'http://docs.google.com/gview?embedded=true&url=${item.webUrl}'`;
+    loadDocument = async (item: GridViewModel) => {
+        const fileExt = getExtension(item.webUrl);
+        console.log('fileExt=', fileExt);
+        if (fileExt.toLowerCase() === 'pdf') {
+            NavigationManager.navigate('LoadDocumentScreen', {
+                webUrl: item.webUrl,
+            });
+        } else {
+            Linking.canOpenURL(item.webUrl).then((supported) => {
+                if (supported) {
+                    Linking.openURL(item.webUrl);
+                } else {
+                    console.log(item.webUrl);
+                    console.log('error opening url');
+                }
+            });
+        }
     };
 
     renderItem = ({ item, index }: any) => {
@@ -113,13 +118,13 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
             <View style={style.backgroundViewStyle}>
                 <TouchableOpacity onPress={() => this.loadDocument(item)}>
                     <View>
-                    {item.largeUrl ? (
-                        <Image style={style.imageStyle} source={{ uri: item.largeUrl }} />
-                    ) : (
-                        <Image style={style.imageStyle} source={Images.emptyThumbnail} />
-                    )}
-                     <View style={style.overlay} />
-                    <View style={style.svgIconStyle}>{getIconByExtension(item.name)}</View>
+                        {item.largeUrl ? (
+                            <Image style={style.imageStyle} source={{ uri: item.largeUrl }} />
+                        ) : (
+                            <Image style={style.imageStyle} source={Images.emptyThumbnail} />
+                        )}
+                        <View style={style.overlay} />
+                        <View style={style.svgIconStyle}>{getIconByExtension(item.name)}</View>
                     </View>
                 </TouchableOpacity>
                 <View style={style.itemContainer}>
@@ -141,24 +146,24 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
     render() {
         return (
             <>
-            {this.props.gridViewList.length > 0 ? (
-                <View style={style.mainViewStyle}>
-                    <FlatList
-                        data={this.props.gridViewList}
-                        renderItem={this.renderItem}
-                        numColumns={2}
-                        columnWrapperStyle={{ flex: 1, justifyContent: 'space-between' }}
-                        keyExtractor={(item, index) => index.toString()}
-                        extraData={this.state.update}
-                    />
-                </View>
-            ) : (
-                <View style={style.emptyIconStyle}>
-                    <Image style={style.emptyImageStyle} source={Images.emptyImg} />
-                    <Text style={style.emptyDataText}>There are no file here yet</Text>
-                </View>
-            )}
-        </>
+                {this.props.gridViewList.length > 0 ? (
+                    <View style={style.mainViewStyle}>
+                        <FlatList
+                            data={this.props.gridViewList}
+                            renderItem={this.renderItem}
+                            numColumns={2}
+                            columnWrapperStyle={{ flex: 1, justifyContent: 'space-between' }}
+                            keyExtractor={(item, index) => index.toString()}
+                            extraData={this.state.update}
+                        />
+                    </View>
+                ) : (
+                    <View style={style.emptyIconStyle}>
+                        <Image style={style.emptyImageStyle} source={Images.emptyImg} />
+                        <Text style={style.emptyDataText}>There are no file here yet</Text>
+                    </View>
+                )}
+            </>
         );
     }
 }

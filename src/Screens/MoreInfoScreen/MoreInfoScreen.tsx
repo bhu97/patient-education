@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
-import CustomBredcrum from '../../Components/custom-bredcrum/custom-bredcrum';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
@@ -18,6 +17,7 @@ import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
+import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
 import { setMoreInfoScreenData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
@@ -32,13 +32,15 @@ interface MoreInfoScreenProps {
     categoryItem: DriveItemModel;
     //selected sub category item
     subCategoryItem: DriveItemModel;
+    setIsLoading: (value: boolean) => void;
+    isLoading: boolean;
 }
 
 interface MoreInfoScreenState {
     isLoading: boolean;
     currentTitle: string;
     gridViewData: GridViewModel[];
-    moreInfoData: MoreInfoListModel[];
+    moreViewData: MoreInfoListModel[];
     breadCrumbList: any;
 }
 
@@ -49,7 +51,7 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
             isLoading: true,
             currentTitle: '',
             gridViewData: [],
-            moreInfoData: [],
+            moreViewData: [],
             breadCrumbList: [],
         };
     }
@@ -59,6 +61,7 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
     }
 
     async loadScreenData() {
+        this.props.setIsLoading(true);
         const moreInfoScreenData = this.props.moreInfoScreenData;
         console.log('moreInfoScreenData=', moreInfoScreenData);
 
@@ -74,20 +77,30 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         const gridData = await createGridModelData(categoryDetailData, thumbnailList);
         LogManager.debug('gridData=', gridData);
 
-        let moreInfoData = [];
-        for (let categoryItemObj of categoryDetailData) {
-            console.log('categoryItemObj=', categoryItemObj);
-            if (categoryItemObj.linkedFolders != null && categoryItemObj.linkedFolders != '') {
-                const linkedItemData = linkedUrlListToArray(categoryItemObj.linkedFolders);
-                LogManager.debug('linkedItemData more=', linkedItemData);
+        let moreFolderData = [];
+        let moreFileData = [];
 
-                const moreInfo = await dbHelper.getItemsForContentPageWebUrls(linkedItemData);
-                console.log('moreInfo more=', moreInfo);
-                moreInfoData.push(moreInfo);
-            }
+        if (currentMoreInfoObject.linkedFolders != null && currentMoreInfoObject.linkedFolders != '') {
+            const linkedFolderData = linkedUrlListToArray(currentMoreInfoObject.linkedFolders);
+            LogManager.debug('linkedFolderData=', linkedFolderData);
+
+            const moreInfo = await dbHelper.getItemsForContentPageWebUrls(linkedFolderData, true);
+            console.debug('moreInfo=', moreInfo);
+            moreFolderData.push(moreInfo);
         }
+        if (currentMoreInfoObject.linkedFiles != null && currentMoreInfoObject.linkedFiles != '') {
+            const linkedFileItemData = linkedUrlListToArray(currentMoreInfoObject.linkedFiles);
+            LogManager.debug('linkedFileItemData=', linkedFileItemData);
 
-        //create bredcrumb list along with title to display, index and screen name on click
+            const moreInfo = await dbHelper.getItemsForContentPageWebUrls(linkedFileItemData, false);
+            console.debug('moreInfo=', moreInfo);
+            moreFileData.push(moreInfo);
+        }
+        // Merge arrays
+        const moreViewData = moreFolderData.concat(moreFileData);
+        console.debug('moreViewData=', moreViewData);
+
+        //create breadcrumb list along with title to display, index and screen name on click
         //default 0 will home, 1 will be category 2 will be sub category and 3 will be category details
         //create breadcrumb array
         let breadCrumbList = [
@@ -100,25 +113,30 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
                 id: 1,
                 title: this.props.mainCategoryItem.title,
             },
-            {
+        ];
+
+        if (this.props.subCategoryItem.uniqueId == '0') {
+            //if subcategory category items unique id is 0 means no subcategory present
+            breadCrumbList.push({
                 id: 2,
                 title: this.props.categoryItem.title,
-            },
-            {
+            });
+        } else {
+            //we have category /subcategory present
+            //create breadcrumb array
+            breadCrumbList.push({
                 id: 3,
                 title: this.props.subCategoryItem.title,
-            },
-        ];
+            });
+        }
 
         //check more info array and update breadcrumb to its list
 
         moreInfoScreenData.forEach((moreInfoScreenDataObj, index) => {
             console.log('Index: ' + index + ' Value: ' + moreInfoScreenDataObj);
-            let isLastIndex = index == moreInfoScreenData.length - 1 ? true : false;
             var obj = {
                 id: breadCrumbList.length,
                 title: moreInfoScreenDataObj.title,
-                isDisabled: isLastIndex,
             };
             breadCrumbList.push(obj);
         });
@@ -128,9 +146,10 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         this.setState({
             currentTitle: currentTitle,
             gridViewData: gridData,
-            moreInfoData: moreInfoData,
+            moreViewData: moreViewData[0],
             breadCrumbList: breadCrumbList,
         });
+        this.props.setIsLoading(false);
     }
 
     goBack = () => {
@@ -148,14 +167,14 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
     };
 
     refreshMoreScreen = (moreItem: MoreInfoListModel) => {
-        let data = this.props.moreInfoScreenData ? this.props.moreInfoScreenData : [];
+        let data = Object.assign([], this.props.moreInfoScreenData);
         data.push(moreItem);
         this.props.setMoreInfoScreenData(data);
         this.loadScreenData();
     };
 
     breadcrumbClick = (item: any) => {
-        console.log('item =>', item);
+        console.log('item1 =>', item);
         if (item.id === 0) {
             //home click
             NavigationManager.navigateAndClear('HomeScreen');
@@ -171,26 +190,22 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
     };
 
     render() {
-        return this.state.isLoading ? (
+        return this.props.isLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
                 <CustomTopNav back subTitle={this.state.currentTitle} onPressBack={this.goBack} />
                 <CustomBody>
                     <View style={style.mainContainer}>
-                        {this.state.gridViewData.length > 0 ? (
+                        {this.state.gridViewData && (
                             <View style={style.fileContainer}>
                                 <ThumbnailGridView gridViewList={this.state.gridViewData} />
-                            </View>
-                        ) : (
-                            <View style={style.fileContainer}>
-                                <Text>{'Hello'}</Text>
                             </View>
                         )}
                         <View style={style.moreInfoContainer}>
                             <MoreInfoList
                                 title={BaseLocalization.moreInfoTitle}
-                                moreInfoList={this.state.moreInfoData}
+                                moreInfoList={this.state.moreViewData}
                                 onPress={this.refreshMoreScreen}
                             />
                         </View>
@@ -211,11 +226,15 @@ const mapStateToProps = (state: RootState) => ({
     mainCategoryItem: state.categoryReducer.mainCategoryItem,
     categoryItem: state.categoryReducer.categoryItem,
     subCategoryItem: state.categoryReducer.subCategoryItem,
+    isLoading: state.appDataReducer.appDataLoading,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
     setMoreInfoScreenData: (data: MoreInfoListModel[]) => {
         dispatch(setMoreInfoScreenData(data));
+    },
+    setIsLoading: (value: boolean) => {
+        dispatch(setAppDataLoading(value));
     },
 });
 

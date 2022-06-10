@@ -1,5 +1,5 @@
 import { API_NAMES } from '../Constant/Constants';
-import { applyDriveItemFilter, normalizeUrl, notEmpty } from '../Helper/Helper';
+import { applyDriveItemFilter, findCountry, normalizeUrl, notEmpty, sanitizeWebUrl } from '../Helper/Helper';
 import LogManager from '../Helper/LogManager';
 import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
 import { MoreInfoListModel } from '../Model/MoreInfoListModel';
@@ -150,21 +150,43 @@ export class DBhelper {
         return itemData;
     }
 
-    async getItemsForContentPageWebUrls(webUrls: string[]): Promise<MoreInfoListModel[]> {
+    async getItemsForContentPageWebUrls(webUrls: string[], isFolder: boolean): Promise<MoreInfoListModel[]> {
         let itemsForWeb: IDriveItem[] = [];
+
+        if (webUrls.length <= 0) {
+            return [];
+        }
+
         for (let webUrl of webUrls) {
+            //normalize URL
+            const normalizedWebUrl = normalizeUrl(webUrl);
+
+            //sanitize url
+            const sanitizedWebUrl = sanitizeWebUrl(normalizedWebUrl);
+
+            //decode ur remove special chars like %20
+            const decodeWebUrl = decodeURIComponent(sanitizedWebUrl);
+
+            //get country code
+            const countryCode = findCountry(decodeWebUrl);
+
+            //name of folder
+            const itemName = decodeWebUrl.split('/').slice(-1)[0];
+
             let items = DatabaseManager.getInstance().getEntities(
                 DriveItemSchema.name,
-                'webUrl CONTAINS ' + `'${normalizeUrl(webUrl)}' && contentType == 'Document Set'`,
+                'name= ' + `'${itemName}'` + ' && country ==' + `'${countryCode}'`,
             );
             LogManager.info('items=', items);
-            itemsForWeb.push(items[0]);
+
+            if (items.length > 0) itemsForWeb.push(items[0]);
         }
 
         LogManager.info('itemsForWeb=', itemsForWeb);
         let moreInfoData = [];
         if (itemsForWeb.length > 0) {
             for (let itemForWeb of itemsForWeb) {
+                LogManager.info('itemForWeb=', itemForWeb);
                 let itemData = DatabaseManager.getInstance().getEntities(
                     DriveItemSchema.name,
                     `uniqueId == '${itemForWeb.uniqueId}'`,
@@ -176,14 +198,16 @@ export class DBhelper {
                     uniqueId: itemData[0].uniqueId,
                     title: itemData[0].title != '' ? itemData[0].title : itemData[0].name,
                     webUrl: itemForWeb.webUrl,
-                    isFolder: true,
+                    isFolder: isFolder,
                     fileSize: 0,
+                    linkedFolders: itemData[0].linkedFolders,
+                    linkedFiles: itemData[0].linkedFiles,
                 };
                 moreInfoData.push(moreInfoObj);
             }
             return moreInfoData;
         } else {
-            return [];
+            return moreInfoData;
         }
     }
 }

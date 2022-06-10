@@ -25,23 +25,29 @@ export default class MoreInfoList extends PureComponent<MoreInfoListProps> {
             <TouchableOpacity onPress={() => this.props.onPress(item)}>
                 <View style={style.mainContainer}>
                     <View style={style.itemContainer}>
-                        {item.isFolder && (
+                        {item.isFolder ? (
                             <>
                                 <View style={style.circleIconContainer}>
                                     <CustomIcon name={'folder'} />
                                 </View>
+
                                 <View style={style.folderTextContainer}>
                                     <Text style={style.textStyle}>{item.title}</Text>
                                 </View>
                             </>
-                        )}
+                        ) : null}
 
-                        {!item.isFolder && (
-                            <View style={style.iconContainer}>
-                                <CustomIcon name={'file'} />
-                                <Text style={style.flatSizeStyle}>{item.fileSize}</Text>
-                            </View>
-                        )}
+                        {!item.isFolder ? (
+                            <>
+                                <View style={style.circleIconContainer}>
+                                    <CustomIcon name={'file'} />
+                                </View>
+
+                                <View style={style.fileTextContainer}>
+                                    <Text style={style.textStyle}>{item.title}</Text>
+                                </View>
+                            </>
+                        ) : null}
                     </View>
                 </View>
             </TouchableOpacity>
