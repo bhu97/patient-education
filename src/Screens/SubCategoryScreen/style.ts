@@ -19,4 +19,18 @@ export const style = StyleSheet.create({
         padding: BaseThemeStyle.paddings.containers,
         flexDirection: 'row',
     },
+    imageContainer:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        flexGrow: 6,
+        height: '85%',
+    },
+    secondtextStyle:{
+        color: BaseThemeStyle.colors.textColor,
+        fontSize: 22,
+        textAlign: 'center',
+        paddingVertical: 30,
+        paddingHorizontal: 200,
+    },
 });

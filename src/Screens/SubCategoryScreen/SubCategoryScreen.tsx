@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View,Image,Text} from 'react-native';
 import { connect } from 'react-redux';
 import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
@@ -11,6 +11,7 @@ import MainContainer from '../../Components/main-container/main-container';
 import dbHelper from '../../Database/DBHelper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import {
@@ -21,6 +22,7 @@ import {
     setSubCategoryList,
 } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
+import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface SubCategoryScreenProps {
@@ -127,6 +129,7 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
             <MainContainer>
                 <CustomTopNav back subTitle={this.props.categoryItem.title} onPressBack={this.goBack} />
                 <CustomBody>
+                {this.props.subCategoryList && this.props.categoryList ? (
                     <View style={style.container}>
                         <View style={style.flatListViewConatiner}>
                             <CustomFlatList
@@ -141,7 +144,16 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                                 onPressListItem={this.onSubCategoryClick}
                             />
                         </View>
-                    </View>
+                    </View>): (
+                        <View style={style.container}>
+                            <View style={style.imageContainer}>
+                                <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
+                                <Text style={style.secondtextStyle} numberOfLines={3}>
+                                    {BaseLocalization.noDataText}
+                                </Text>
+                            </View>
+                        </View>
+                    )}
                 </CustomBody>
                 <CustomBottomContainer>
                     {this.state.breadCrumbList.length > 0 && (

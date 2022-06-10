@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View } from 'react-native';
+import { Image, View, Text } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
@@ -28,18 +28,25 @@ interface HomePageProps {
     setIsLoading: (boolean) => void;
     appDataLoading: boolean;
     fetchData: () => void;
+    navigation: any;
 }
 
 interface HomePageState {}
 
 class HomePage extends Component<HomePageProps, HomePageState> {
+    _unsubscribe: any;
     constructor(props: HomePageProps) {
         super(props);
         this.state = {};
     }
 
     componentDidMount() {
-        this.initializeApp();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.initializeApp();
+        });
+    }
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     async initializeApp() {
@@ -84,6 +91,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                     subTitle={BaseLocalization.selectCategory}
                 />
                 <CustomBody>
+                {this.props.mainList ? (
                     <View style={style.container}>
                         <View style={style.flatListViewContainer}>
                             {this.props.mainList && (
@@ -95,7 +103,16 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                                 <Image resizeMode="contain" style={style.imageStyle} source={Images.illuHome} />
                             </View>
                         </View>
-                    </View>
+                    </View> ) : (
+                        <View style={style.container}>
+                            <View style={style.imageContainer}>
+                                <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
+                                <Text style={style.secondtextStyle} numberOfLines={3}>
+                                    {BaseLocalization.noDataText}
+                                </Text>
+                            </View>
+                        </View>
+                    )}
                 </CustomBody>
                 <CustomBottomContainer>
                     <View style={style.bottomView}>

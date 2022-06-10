@@ -18,5 +18,6 @@
     "addRemoveFavorite":"Favorit hinzufügen/entfernen",
     "removeLocally": "Lokal entfernen",
     "download":"Download",
-    "fileOptions":"Dateioptionen"
+    "fileOptions":"Dateioptionen",
+    "noDataText":"Es sind entweder keine Dateien zum Anzeigen vorhanden oder Sie haben keinen Zugriff auf den Inhalt. Bitte überprüfen Sie das ausgewählte Land in den Einstellungen oder wenden Sie sich an den jeweiligen Support-Kontakt."
 }

@@ -10,28 +10,42 @@ import MainContainer from '../../Components/main-container/main-container';
 import dbHelper from '../../Database/DBHelper';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { setCountryListData} from '../../Redux/category/categorySlice';
+import { setCountryListData, setSelectedCountry } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface SettingPageProps {
     dispatch: Dispatch;
-    setCountryListData : (any) => void;
+    setCountryListData: (any) => void;
     isLoading: boolean;
     setIsLoading: (boolean) => void;
-} 
+    setSelectedCountry: (value: string) => void;
+    selectedCountry: (string) => void;
+    navigation:any;
+}
 
 interface SettingPageState {}
 
 class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
+    _unsubscribe: any;
     constructor(props: SettingPageProps) {
         super(props);
     }
-    async componentDidMount(){
+    componentDidMount() {
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.initializeSetting();
+        });
+    }
+    componentWillUnmount() {
+        this._unsubscribe();
+    }
+    async initializeSetting() {
         this.props.setIsLoading(true);
         let countryData = await dbHelper.getAllAvailableCountries();
         this.props.setCountryListData(countryData);
+        const userData = await dbHelper.getUser();
+        this.props.setSelectedCountry(userData.countryTitle);
         this.props.setIsLoading(false);
     }
 
@@ -81,12 +95,14 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                                 headerText={BaseLocalization.generalTitle}
                                 labelText={BaseLocalization.contact}
                                 iconName="mail"
+                                selectedCountry={this.props.selectedCountry}
                             />
 
                             <CustomListWithHeader
                                 headerText={BaseLocalization.generalTitle}
                                 labelText={BaseLocalization.contact}
                                 iconName="mail"
+                                selectedCountry={this.props.selectedCountry}
                             />
                         </View>
                         <View style={style.appInfoConatiner}>
@@ -106,19 +122,22 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                 </CustomBody>
             </MainContainer>
         );
-        
     }
 }
-const mapStateToProps = (state:RootState) => ({
-    isLoading: state.appDataReducer.appDataLoading
+const mapStateToProps = (state: RootState) => ({
+    isLoading: state.appDataReducer.appDataLoading,
+    selectedCountry: state.categoryReducer.selectedCountry,
 });
 const mapDispatchToProps = (dispatch: any) => ({
     setCountryListData: (value: any) => {
         dispatch(setCountryListData(value));
     },
-    setIsLoading : (value: boolean) => {
+    setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
-     }
+    },
+    setSelectedCountry: (value: string) => {
+        dispatch(setSelectedCountry(value));
+    },
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(SettingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingPage);

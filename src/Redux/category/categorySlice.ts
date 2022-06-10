@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { DriveItemModel, IDriveItem } from '../../Model/DriveItemModel';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
+import { UserModel } from '../../Model/UserModel';
 
 // interface to declare all required variables
 export interface CategoryState {
@@ -26,6 +27,8 @@ export interface CategoryState {
     selectedCountry: string;
     //
     moreInfoScreenData: MoreInfoListModel[];
+    // used for user data
+    userModelData: UserModel[];
 }
 
 // to set initial value for all variable
@@ -38,7 +41,7 @@ const initialState: CategoryState = {
     gridViewData: [],
     moreInfoData: [],
     countryListData: [],
-    selectedCountry: 'MASTER_ENG',
+    selectedCountry: '',
 
     mainList: [],
     mainCategoryItem: {
@@ -52,6 +55,7 @@ const initialState: CategoryState = {
         uniqueId: '0',
     },
     moreInfoScreenData: [],
+    userModelData: []
 };
 
 // basic example slice done based on the docs
@@ -128,6 +132,10 @@ const categorySlice = createSlice({
         setSelectedCountry: (state, action: PayloadAction<any>) => {
             state.selectedCountry = action.payload;
         },
+        setUserModelData: (state, action: PayloadAction<UserModel[]>) => {
+            console.log('setUserModelData payload =>', action.payload);
+            state.userModelData = action.payload;
+        },
     },
 });
 
@@ -147,7 +155,8 @@ export const {
     clearCategoryData,
     clearMainListData,
     clearSubCategoryData,
-    clearCategoryDetailsData
+    clearCategoryDetailsData,
+    setUserModelData
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

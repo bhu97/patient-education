@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import { connect } from 'react-redux';
-import { setSelectedCountry } from '../../Redux/category/categorySlice';
+import dbHelper from '../../Database/DBHelper';
+import { UserModel } from '../../Model/UserModel';
+import { setUserModelData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import CustomIcon from '../custom-icon/custom-icon';
 import { style } from './style';
@@ -12,20 +14,26 @@ interface CustomListWithHeaderProps {
     iconName: string;
     labelText: string;
     headerText?: string;
-    setSelectedCountry: (string) => void;
     selectedCountry: string;
+    userData: UserModel[];
+    setUserModelData: (data:UserModel[]) => void;
 }
 interface CustomListWithHeaderState {
     visible: boolean;
+    selectedCountry: string
 }
 class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, CustomListWithHeaderState> {
     constructor(props: CustomListWithHeaderProps) {
         super(props);
         this.state = {
             visible: false,
+            selectedCountry:''
         };
     }
-    getToolTip = (label) => {
+    componentDidMount(): void {
+        this.setState({selectedCountry:this.props.selectedCountry})
+    }
+    getToolTip = () => {
         return (
             <Tooltip
                 contentStyle={style.toolTipBorder}
@@ -37,13 +45,15 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                 showChildInTooltip={false}
             >
                 <TouchableOpacity onPress={() => this.setState({ visible: true })}>
-                    <Text style={style.textStyle}>{this.props.selectedCountry}</Text>
+                    <Text style={style.textStyle}>{this.state.selectedCountry}</Text>
                 </TouchableOpacity>
             </Tooltip>
         );
     };
     onPressFlatlist = (item) => {
-        this.props.setSelectedCountry(item);
+        dbHelper.createUser(item)
+        this.props.setUserModelData(item)
+        this.setState({selectedCountry:item.countryTitle})
         this.setState({ visible: false });
     };
     toolTipList = () => {
@@ -56,7 +66,7 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                         return (
                             <TouchableOpacity onPress={() => this.onPressFlatlist(item)}>
                                 <View style={style.listView}>
-                                    <Text style={style.textStyleToolTip}> {item}</Text>
+                                    <Text style={style.textStyleToolTip}>{item.countryTitle}</Text>
                                 </View>
                             </TouchableOpacity>
                         );
@@ -70,7 +80,7 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
         return <View style={style.toolTipOptionSeperator}></View>;
     };
     render() {
-        return (
+        return  (
             <View style={style.mainContainer}>
                 {this.props.headerText && (
                     <View style={style.headerTextContainer}>
@@ -86,10 +96,9 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                         {this.props.labelText != 'Master' && this.state.visible == false ? (
                             <Text style={style.textStyle}>{this.props.labelText}</Text>
                         ) : (
-                            this.getToolTip(this.props.labelText)
+                            this.getToolTip()
                         )}
                     </View>
-
                     <View style={style.iconContainer}>
                         <CustomIcon name={'chevron-right'} />
                     </View>
@@ -101,12 +110,13 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
 
 const mapStateToProps = (state: RootState) => ({
     countryList: state.categoryReducer.countryListData,
+    userData: state.categoryReducer.userModelData,
     selectedCountry: state.categoryReducer.selectedCountry,
 });
 const mapDispatchToProps = (dispatch: any) => ({
-    setSelectedCountry: (value: string) => {
-        dispatch(setSelectedCountry(value));
-    },
+    setUserModelData: (value: UserModel[]) => {
+        dispatch(setUserModelData(value));
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomListWithHeader);

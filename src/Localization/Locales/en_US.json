@@ -22,6 +22,6 @@
     "addRemoveFavorite":"Add/remove favorite",
     "removeLocally": "Remove locally",
     "download":"Download",
-    "fileOptions":"File Options"
-
+    "fileOptions":"File Options",
+    "noDataText":"There are either no files to display or you have no access to the content. Please check the selected country in the settings or reach out to the respective support contact."
 }

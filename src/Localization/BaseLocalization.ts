@@ -29,4 +29,6 @@ export const BaseLocalization = {
     removeLocally: LocalizationManager.getLocalizedStrings('removeLocally'),
     download: LocalizationManager.getLocalizedStrings('download'),
     fileOptions: LocalizationManager.getLocalizedStrings('fileOptions'),
+    noDataText: LocalizationManager.getLocalizedStrings('noDataText'),
+
 };

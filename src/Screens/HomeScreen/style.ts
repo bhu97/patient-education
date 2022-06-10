@@ -10,6 +10,29 @@ export const style = StyleSheet.create({
     flatListViewContainer: {
         flex: 0.5,
     },
+    textStyle:{
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: 'black',
+        paddingHorizontal: 30,
+        paddingVertical: 20,
+        backgroundColor:'white',
+    },
+    imageContainer:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        flexGrow: 6,
+        height: '85%',
+    },
+    secondtextStyle:{
+        color: BaseThemeStyle.colors.textColor,
+        fontSize: 22,
+        textAlign: 'center',
+        paddingVertical: 30,
+        paddingHorizontal: 200,
+
+    },
     imageViewContainer: {
         flex: 0.5,
         alignItems: 'flex-end',

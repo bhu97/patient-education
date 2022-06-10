@@ -26,6 +26,7 @@ export const BaseThemeStyle = {
         screenBackgroundColor: '#F2F3F5',
         listItemBackgroundColor: '#E5E7EC',
         bordergrey: '#DCDCDC',
+        textColor:'#6A768F'
     },
     paddings: {
         bodyHorizontal: 0,
