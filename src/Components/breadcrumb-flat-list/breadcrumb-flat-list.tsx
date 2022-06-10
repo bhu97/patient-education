@@ -24,7 +24,10 @@ export default class BreadcrumbFlatList extends PureComponent<BreadcrumbFlatList
     renderItem = ({ item, index }: any) => {
         console.log('renderItem =', item.title);
         return (
-            <TouchableOpacity disabled={item.isDisabled ? true : false} onPress={() => this.onPress(item, index)}>
+            <TouchableOpacity
+                disabled={index == this.props.breadCrumbList.length - 1 ? true : false}
+                onPress={() => this.onPress(item, index)}
+            >
                 <CustomBreadcrumb title={item.title} isFirstCrumb={item.id == 0 ? true : false} />
             </TouchableOpacity>
         );

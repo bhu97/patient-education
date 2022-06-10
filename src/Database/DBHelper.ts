@@ -151,25 +151,6 @@ export class DBhelper {
     }
 
     async getItemsForContentPageWebUrls(webUrls: string[]): Promise<MoreInfoListModel[]> {
-        /*      let items = await DatabaseManager.getInstance().getEntities(
-            DriveItemSchema.name,
-            `contentType == 'Document Set'`,
-        );
-        
-        LogManager.info('items=', items);
-
-        let itemsForWeb: IDriveItem[] = [];
-        for (let webUrl of webUrls) {
-            let item = items.filter((driveItem) => {
-                if (driveItem.webUrl) {
-                    return driveItem.webUrl.includes(normalizeUrl(webUrl));
-                }
-                return false;
-            });
-
-            itemsForWeb.push(item[0]);
-        }
-*/
         let itemsForWeb: IDriveItem[] = [];
         for (let webUrl of webUrls) {
             let items = DatabaseManager.getInstance().getEntities(
@@ -193,7 +174,7 @@ export class DBhelper {
 
                 let moreInfoObj = {
                     uniqueId: itemData[0].uniqueId,
-                    title: itemData[0].title,
+                    title: itemData[0].title != '' ? itemData[0].title : itemData[0].name,
                     webUrl: itemForWeb.webUrl,
                     isFolder: true,
                     fileSize: 0,

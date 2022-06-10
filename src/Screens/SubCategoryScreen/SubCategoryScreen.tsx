@@ -95,9 +95,7 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
         this.props.setIsLoading(false);
     }
 
-    onClickFirstList = (item) => {};
-
-    onClickSecondList = (item) => {
+    onSubCategoryClick = (item) => {
         console.log(item);
         this.props.setSubCategoryItem(item);
         NavigationManager.navigate('CategoryDetailScreen');
@@ -140,7 +138,7 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                         <View style={style.SecondflatListViewConatiner}>
                             <CustomFlatList
                                 categoryList={this.props.subCategoryList}
-                                onPressListItem={this.onClickSecondList}
+                                onPressListItem={this.onSubCategoryClick}
                             />
                         </View>
                     </View>

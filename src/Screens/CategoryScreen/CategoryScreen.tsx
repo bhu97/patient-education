@@ -88,9 +88,14 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         NavigationManager.navigateAndClear('HomeScreen');
     };
 
-    subCategoryRender = (item) => {
+    onCategoryClick = (item) => {
+        LogManager.warn('category screen click=', item);
         this.props.setCategoryItem(item);
-        NavigationManager.navigate('SubCategoryScreen');
+        if (item.contentType == 'Document Set') {
+            NavigationManager.navigate('CategoryDetailScreen');
+        } else {
+            NavigationManager.navigate('SubCategoryScreen');
+        }
     };
 
     breadcrumbClick = (item: any) => {
@@ -121,7 +126,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                         <View style={style.SecondflatListViewConatiner}>
                             <CustomFlatList
                                 categoryList={this.props.categoryList}
-                                onPressListItem={this.subCategoryRender}
+                                onPressListItem={this.onCategoryClick}
                             />
                         </View>
                     </View>

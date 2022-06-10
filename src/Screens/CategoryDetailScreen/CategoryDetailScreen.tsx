@@ -10,7 +10,7 @@ import MainContainer from '../../Components/main-container/main-container';
 import MoreInfoList from '../../Components/more-info-list/more-info-list';
 import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
 import dbHelper from '../../Database/DBHelper';
-import { createGridModelData, linkedUrlListToArray } from '../../Helper/Helper';
+import { createGridModelData, linkedUrlListToArray, normalizeUrl, sanitizeWebUrl } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
@@ -55,6 +55,7 @@ interface CategoryDetailScreenProps {
 
 interface CategoryDetailScreenState {
     breadCrumbList: any;
+    pageTitle: string;
 }
 
 class CategoryDetailScreen extends Component<CategoryDetailScreenProps, CategoryDetailScreenState> {
@@ -62,6 +63,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         super(props);
         this.state = {
             breadCrumbList: [],
+            pageTitle: '',
         };
     }
 
@@ -71,27 +73,6 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
 
     async getCategoryDetailData() {
         this.props.setIsLoading(true);
-        const categoryDetailData = await dbHelper.getForSelectedCategory(this.props.subCategoryItem);
-        LogManager.debug('categoryDetailData=', categoryDetailData);
-
-        const thumbnailList = await fetchAllThumbnails(this.props.subCategoryItem.uniqueId);
-        LogManager.debug('responses list Item=', thumbnailList);
-
-        const gridData = await createGridModelData(categoryDetailData, thumbnailList);
-        LogManager.debug('gridData=', gridData);
-
-        this.props.setGridViewList(gridData);
-
-        if (this.props.subCategoryItem.linkedFolders != null || this.props.subCategoryItem.linkedFolders != '') {
-            const linkedItemData = linkedUrlListToArray(this.props.subCategoryItem.linkedFolders);
-            LogManager.debug('linkedItemData=', linkedItemData);
-
-            const moreInfoData = await dbHelper.getItemsForContentPageWebUrls(linkedItemData);
-            console.debug('moreInfoData=', moreInfoData);
-            this.props.setMoreInfoList(moreInfoData);
-        }
-
-        //create breadcrumb array
         let breadCrumbList = [
             {
                 id: 0,
@@ -102,19 +83,76 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                 id: 1,
                 title: this.props.mainCategoryItem.title,
             },
-            {
+        ];
+        let item: any = {};
+        let pageTitle: string = '';
+        let linkedFolder: string;
+        let linkedFiles: string;
+
+        //if subcategory items unique id is 0 means no subcategory present
+        if (this.props.categoryItem.uniqueId == '0') {
+            item = this.props.mainCategoryItem;
+        } else if (this.props.subCategoryItem.uniqueId == '0') {
+            item = this.props.categoryItem;
+            breadCrumbList.push({
                 id: 2,
                 title: this.props.categoryItem.title,
-            },
-            {
+            });
+        } else {
+            item = this.props.subCategoryItem;
+
+            //create breadcrumb array
+            breadCrumbList.push({
                 id: 3,
                 title: this.props.subCategoryItem.title,
-                isDisabled: true,
-            },
-        ];
+            });
+        }
+
+        LogManager.debug('CategoryDetailScreen Item =>', item);
+
+        pageTitle = item.title;
+        linkedFolder = item.linkedFolders;
+        linkedFiles = item.linkedFiles;
+
+        const categoryDetailData = await dbHelper.getForSelectedCategory(item);
+        LogManager.debug('categoryDetailData=', categoryDetailData);
+
+        const thumbnailList = await fetchAllThumbnails(item.uniqueId);
+        LogManager.debug('responses list Item=', thumbnailList);
+
+        const gridData = await createGridModelData(categoryDetailData, thumbnailList);
+        LogManager.debug('gridData=', gridData);
+
+        this.props.setGridViewList(gridData);
+
+        if (linkedFiles != null && linkedFiles != '') {
+            const linkedFileItemData = linkedUrlListToArray(linkedFiles);
+            LogManager.debug('linkedFileItemData=', linkedFileItemData);
+
+            const t1 = sanitizeWebUrl(linkedFileItemData[0]);
+            console.log('t1=', t1);
+
+            const t3 = normalizeUrl(t1);
+            console.log('t3=', t3);
+
+            const t2 = normalizeUrl(linkedFileItemData[0]);
+            console.log('t2=', t2);
+
+            const t4 = sanitizeWebUrl(t2);
+            console.log('t4=', t4);
+        }
+        // if (this.props.subCategoryItem.linkedFolders != null || this.props.subCategoryItem.linkedFolders != '') {
+        //     const linkedItemData = linkedUrlListToArray(this.props.subCategoryItem.linkedFolders);
+        //     LogManager.debug('linkedItemData=', linkedItemData);
+
+        //     const moreInfoData = await dbHelper.getItemsForContentPageWebUrls(linkedItemData);
+        //     console.debug('moreInfoData=', moreInfoData);
+        //     this.props.setMoreInfoList(moreInfoData);
+        // }
 
         this.setState({
             breadCrumbList: breadCrumbList,
+            pageTitle: pageTitle,
         });
 
         this.props.setIsLoading(false);
@@ -163,7 +201,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
-                <CustomTopNav back subTitle={this.props.subCategoryItem.title} onPressBack={this.goBack} />
+                <CustomTopNav back subTitle={this.state.pageTitle} onPressBack={this.goBack} />
                 <CustomBody>
                     <View style={style.mainContainer}>
                         {this.props.gridViewData && (

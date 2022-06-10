@@ -65,9 +65,13 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     }
 
     onClick = (item) => {
-        LogManager.debug('selected item=>', item);
+        LogManager.warn('home screen click=', item);
         this.props.setMainCategoryItem(item);
-        NavigationManager.navigate('CategoryScreen');
+        if (item.contentType == 'Document Set') {
+            NavigationManager.navigate('CategoryDetailScreen');
+        } else {
+            NavigationManager.navigate('CategoryScreen');
+        }
     };
 
     render() {

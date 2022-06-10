@@ -47,7 +47,7 @@ export default class CustomFlatList extends PureComponent<CustomFlatListProps, C
             <TouchableOpacity disabled={this.props.isDisabled ? true : false} onPress={() => this.onPress(item, index)}>
                 <View style={{ ...style.listItemContainer, backgroundColor: backgroundColor }}>
                     <Text numberOfLines={2} style={style.textStyle}>
-                        {item.title}
+                        {item.title != '' ? item.title : item.name}
                     </Text>
 
                     <View style={style.blueDotImage}>{this.getImage(Images.menuBlueDots)}</View>
