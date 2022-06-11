@@ -145,7 +145,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             LogManager.debug('linkedFolderData=', linkedFolderData);
 
             const moreInfo = await dbHelper.getItemsForContentPageWebUrls(linkedFolderData, true);
-            console.debug('moreInfo=', moreInfo);
+            console.log('moreInfo folder=', moreInfo);
 
             moreFolderData.push(moreInfo);
         }
@@ -154,16 +154,35 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             LogManager.debug('linkedFileItemData=', linkedFileItemData);
 
             const moreInfo = await dbHelper.getItemsForContentPageWebUrls(linkedFileItemData, false);
-            console.debug('moreInfo=', moreInfo);
+            console.log('moreInfo file=', moreInfo);
             moreFileData.push(moreInfo);
         }
 
         // Merge arrays
-        const moreViewData = [...moreFolderData, ...moreFileData];
-        console.debug('moreViewData=', moreViewData);
+        let MoreInfoListData = [];
+        var moreViewData = [];
+        console.log('start =', MoreInfoListData);
 
+        if (
+            (moreFolderData.length == 0 && moreFileData.length == 0) ||
+            (moreFolderData.length == 0 && moreFileData.length == 1) ||
+            (moreFolderData.length == 1 && moreFileData.length == 0)
+        ) {
+            moreViewData = [...moreFolderData, ...moreFileData];
+            console.log('moreViewData=', moreViewData);
+            MoreInfoListData = moreViewData.length == 0 ? [] : moreViewData[0];
+            console.log('single / no data MoreInfoListData=', MoreInfoListData);
+        } else if (moreFolderData.length == 1 && moreFileData.length == 1) {
+            moreViewData = [...moreFolderData[0], ...moreFileData[0]];
+            console.log('moreViewData=', moreViewData);
+            MoreInfoListData = moreViewData;
+            console.log('both data MoreInfoListData=', MoreInfoListData);
+        } else {
+            MoreInfoListData = [];
+        }
+        console.log('ends =', MoreInfoListData);
         this.props.setIsLoading(false);
-        this.props.setMoreInfoList(moreViewData);
+        this.props.setMoreInfoList(MoreInfoListData);
 
         this.setState({
             breadCrumbList: breadCrumbList,

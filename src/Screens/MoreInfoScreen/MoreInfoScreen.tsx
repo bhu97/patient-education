@@ -98,8 +98,28 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         }
 
         // Merge arrays
-        const moreViewData = moreFolderData.concat(moreFileData);
-        console.debug('moreViewData=', moreViewData);
+        let MoreInfoListData = [];
+        var moreViewData = [];
+        console.log('start =', MoreInfoListData);
+
+        if (
+            (moreFolderData.length == 0 && moreFileData.length == 0) ||
+            (moreFolderData.length == 0 && moreFileData.length == 1) ||
+            (moreFolderData.length == 1 && moreFileData.length == 0)
+        ) {
+            moreViewData = [...moreFolderData, ...moreFileData];
+            console.log('moreViewData=', moreViewData);
+            MoreInfoListData = moreViewData.length == 0 ? [] : moreViewData[0];
+            console.log('single / no data MoreInfoListData=', MoreInfoListData);
+        } else if (moreFolderData.length == 1 && moreFileData.length == 1) {
+            moreViewData = [...moreFolderData[0], ...moreFileData[0]];
+            console.log('moreViewData=', moreViewData);
+            MoreInfoListData = moreViewData;
+            console.log('both data MoreInfoListData=', MoreInfoListData);
+        } else {
+            MoreInfoListData = [];
+        }
+        console.log('ends =', MoreInfoListData);
 
         //create breadcrumb list along with title to display, index and screen name on click
         //default 0 will home, 1 will be category 2 will be sub category and 3 will be category details
@@ -166,7 +186,7 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         this.setState({
             currentTitle: currentTitle,
             gridViewData: gridData,
-            moreViewData: moreViewData[0],
+            moreViewData: MoreInfoListData,
             breadCrumbList: breadCrumbList,
         });
         this.props.setIsLoading(false);
