@@ -96,6 +96,7 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
             console.debug('moreInfo=', moreInfo);
             moreFileData.push(moreInfo);
         }
+
         // Merge arrays
         const moreViewData = moreFolderData.concat(moreFileData);
         console.debug('moreViewData=', moreViewData);
@@ -112,31 +113,50 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
             {
                 id: 1,
                 title: this.props.mainCategoryItem.title,
+                isFirstCrumb: false,
             },
         ];
 
-        if (this.props.subCategoryItem.uniqueId == '0') {
+        if (this.props.categoryItem.uniqueId != '0' && this.props.subCategoryItem.uniqueId != '0') {
+            console.log('all 4 options present');
+            //we have category /subcategory present
+
+            //create breadcrumb array
+            breadCrumbList.push(
+                {
+                    id: 2,
+                    title: this.props.categoryItem.title,
+                    isFirstCrumb: false,
+                },
+                {
+                    id: 3,
+                    title: this.props.subCategoryItem.title,
+                    isFirstCrumb: false,
+                },
+            );
+        } else if (this.props.categoryItem.uniqueId != '0' && this.props.subCategoryItem.uniqueId == '0') {
+            console.log('only 3 options present Home , main category & category');
             //if subcategory category items unique id is 0 means no subcategory present
             breadCrumbList.push({
                 id: 2,
                 title: this.props.categoryItem.title,
+                isFirstCrumb: false,
             });
         } else {
-            //we have category /subcategory present
-            //create breadcrumb array
-            breadCrumbList.push({
-                id: 3,
-                title: this.props.subCategoryItem.title,
-            });
+            console.log('only 2 options present Home & main category');
+            //if category items unique id is 0 means no category/subcategory present
         }
 
         //check more info array and update breadcrumb to its list
 
         moreInfoScreenData.forEach((moreInfoScreenDataObj, index) => {
             console.log('Index: ' + index + ' Value: ' + moreInfoScreenDataObj);
+            // 4 because till index 3 (home,category,subcategory, category details are considered)
+            let breadCrumbListIndex = 4 + index;
             var obj = {
-                id: breadCrumbList.length,
+                id: breadCrumbListIndex,
                 title: moreInfoScreenDataObj.title,
+                isFirstCrumb: false,
             };
             breadCrumbList.push(obj);
         });
@@ -186,6 +206,8 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
             NavigationManager.navigateAndClear('SubCategoryScreen');
         } else if (item.id === 3) {
             NavigationManager.navigateAndClear('CategoryDetailScreen');
+        } else {
+            this.goBack();
         }
     };
 

@@ -82,29 +82,42 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             {
                 id: 1,
                 title: this.props.mainCategoryItem.title,
+                isFirstCrumb: false,
             },
         ];
         let item: any = {};
 
-        if (this.props.categoryItem.uniqueId == '0') {
-            //if category items unique id is 0 means no category/subcategory present
-            item = this.props.mainCategoryItem;
-        } else if (this.props.subCategoryItem.uniqueId == '0') {
+        if (this.props.categoryItem.uniqueId != '0' && this.props.subCategoryItem.uniqueId != '0') {
+            console.log('all 4 options present');
+            //we have category /subcategory present
+            item = this.props.subCategoryItem;
+
+            //create breadcrumb array
+            breadCrumbList.push(
+                {
+                    id: 2,
+                    title: this.props.categoryItem.title,
+                    isFirstCrumb: false,
+                },
+                {
+                    id: 3,
+                    title: this.props.subCategoryItem.title,
+                    isFirstCrumb: false,
+                },
+            );
+        } else if (this.props.categoryItem.uniqueId != '0' && this.props.subCategoryItem.uniqueId == '0') {
+            console.log('only 3 options present Home , main category & category');
             //if subcategory category items unique id is 0 means no subcategory present
             item = this.props.categoryItem;
             breadCrumbList.push({
                 id: 2,
                 title: this.props.categoryItem.title,
+                isFirstCrumb: false,
             });
         } else {
-            //we have category /subcategory present
-            item = this.props.subCategoryItem;
-
-            //create breadcrumb array
-            breadCrumbList.push({
-                id: 3,
-                title: this.props.subCategoryItem.title,
-            });
+            console.log('only 2 options present Home & main category');
+            //if category items unique id is 0 means no category/subcategory present
+            item = this.props.mainCategoryItem;
         }
 
         LogManager.debug('CategoryDetailScreen Item =>', item);
@@ -146,11 +159,11 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         }
 
         // Merge arrays
-        const moreViewData = moreFolderData.concat(moreFileData);
+        const moreViewData = [...moreFolderData, ...moreFileData];
         console.debug('moreViewData=', moreViewData);
 
         this.props.setIsLoading(false);
-        this.props.setMoreInfoList(moreViewData[0]);
+        this.props.setMoreInfoList(moreViewData);
 
         this.setState({
             breadCrumbList: breadCrumbList,
@@ -158,16 +171,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         });
     }
 
-    goToHomeScreen = () => {
-        NavigationManager.navigateAndClear('HomeScreen');
-    };
-
-    gotoCategoryScreen = () => {
-        NavigationManager.navigateAndClear('CategoryScreen');
-    };
-
     goBack = () => {
-        this.props.clearCategoryDetailsData();
         NavigationManager.goBack();
     };
 
@@ -183,10 +187,6 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         if (item.id === 0) {
             //home click
             NavigationManager.navigateAndClear('HomeScreen');
-            this.props.clearMainListData();
-            this.props.clearCategoryData();
-            this.props.clearSubCategoryData();
-            this.props.clearCategoryDetailsData();
         } else if (item.id === 1) {
             //category item clicked
             NavigationManager.navigateAndClear('CategoryScreen');

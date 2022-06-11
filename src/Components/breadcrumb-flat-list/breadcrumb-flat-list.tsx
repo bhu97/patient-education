@@ -41,7 +41,7 @@ export default class BreadcrumbFlatList extends PureComponent<BreadcrumbFlatList
                     renderItem={this.renderItem}
                     keyExtractor={(item, index) => 'key' + index}
                     horizontal={true}
-                    // initialScrollIndex={this.props.breadCrumbList.length > 3 ? (this.props.breadCrumbList.length- 1): 0}
+                    initialScrollIndex={this.props.breadCrumbList.length > 3 ? this.props.breadCrumbList.length - 1 : 0}
                 />
             </View>
         );

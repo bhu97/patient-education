@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,Image,Text} from 'react-native';
+import { View, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
 import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
@@ -108,14 +108,9 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
         if (item.id === 0) {
             //home click
             NavigationManager.navigateAndClear('HomeScreen');
-            this.props.clearMainListData();
-            this.props.clearCategoryData();
-            this.props.clearSubCategoryData();
         } else if (item.id === 1) {
             //category item clicked
             NavigationManager.goBack();
-            this.props.clearCategoryData();
-            this.props.clearSubCategoryData();
         }
     };
     goBack = () => {
@@ -129,22 +124,23 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
             <MainContainer>
                 <CustomTopNav back subTitle={this.props.categoryItem.title} onPressBack={this.goBack} />
                 <CustomBody>
-                {this.props.subCategoryList && this.props.categoryList ? (
-                    <View style={style.container}>
-                        <View style={style.flatListViewConatiner}>
-                            <CustomFlatList
-                                categoryList={this.props.categoryList}
-                                selectedElement={this.props.categoryItem}
-                                isDisabled={true}
-                            />
+                    {this.props.subCategoryList && this.props.categoryList ? (
+                        <View style={style.container}>
+                            <View style={style.flatListViewConatiner}>
+                                <CustomFlatList
+                                    categoryList={this.props.categoryList}
+                                    selectedElement={this.props.categoryItem}
+                                    isDisabled={true}
+                                />
+                            </View>
+                            <View style={style.SecondflatListViewConatiner}>
+                                <CustomFlatList
+                                    categoryList={this.props.subCategoryList}
+                                    onPressListItem={this.onSubCategoryClick}
+                                />
+                            </View>
                         </View>
-                        <View style={style.SecondflatListViewConatiner}>
-                            <CustomFlatList
-                                categoryList={this.props.subCategoryList}
-                                onPressListItem={this.onSubCategoryClick}
-                            />
-                        </View>
-                    </View>): (
+                    ) : (
                         <View style={style.container}>
                             <View style={style.imageContainer}>
                                 <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
@@ -182,16 +178,16 @@ const mapDispatchToProps = (dispatch: any) => ({
         dispatch(setSubCategoryItem(selectedCategoryItems));
     },
     setIsLoading: (value: boolean) => {
-        dispatch(setAppDataLoading(value));
+        dispatch(setAppDataLoading());
     },
-    clearCategoryData: (value: any) => {
-        dispatch(clearCategoryData(value));
+    clearCategoryData: () => {
+        dispatch(clearCategoryData());
     },
-    clearSubCategoryData: (value: any) => {
-        dispatch(clearSubCategoryData(value));
+    clearSubCategoryData: () => {
+        dispatch(clearSubCategoryData());
     },
-    clearMainListData: (value: any) => {
-        dispatch(clearMainListData(value));
+    clearMainListData: () => {
+        dispatch(clearMainListData());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SubCategoryScreen);

@@ -55,7 +55,7 @@ const initialState: CategoryState = {
         uniqueId: '0',
     },
     moreInfoScreenData: [],
-    userModelData: []
+    userModelData: [],
 };
 
 // basic example slice done based on the docs
@@ -67,20 +67,23 @@ const categorySlice = createSlice({
     reducers: {
         //When navigating back from screen call this function to clear category list data
         clearCategoryData: (state, action: PayloadAction<[]>) => {
-            state.categoryList=[];
+            state.categoryList = [];
+            state.mainCategoryItem = {
+                uniqueId: '0',
+            };
         },
-          //When navigating back from screen call this function to clear main list data
-          clearMainListData: (state, action: PayloadAction<[]>) => {
-            state.mainList=[];
+        //When navigating back from screen call this function to clear main list data
+        clearMainListData: (state, action: PayloadAction<[]>) => {
+            state.mainList = [];
         },
-          //When navigating back from screen call this function to clear sub-category list data
-          clearSubCategoryData: (state, action: PayloadAction<[]>) => {
-            state.subCategoryList=[];
+        //When navigating back from screen call this function to clear sub-category list data
+        clearSubCategoryData: (state, action: PayloadAction<[]>) => {
+            state.subCategoryList = [];
         },
-          //When navigating back from screen call this function to clear category details page data
-          clearCategoryDetailsData: (state, action: PayloadAction<[]>) => {
-            state.gridViewData=[];
-            state.moreInfoData=[];
+        //When navigating back from screen call this function to clear category details page data
+        clearCategoryDetailsData: (state, action: PayloadAction<[]>) => {
+            state.gridViewData = [];
+            state.moreInfoData = [];
         },
 
         //set root items (main category list)
@@ -101,7 +104,6 @@ const categorySlice = createSlice({
         //set selected Category (on click of category screen)
         setCategoryItem: (state, action: PayloadAction<DriveItemModel>) => {
             state.categoryItem = action.payload;
-          
         },
 
         //set Sub Category data
@@ -156,7 +158,7 @@ export const {
     clearMainListData,
     clearSubCategoryData,
     clearCategoryDetailsData,
-    setUserModelData
+    setUserModelData,
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

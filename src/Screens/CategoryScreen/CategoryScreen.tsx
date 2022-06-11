@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,Image,Text } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
@@ -14,12 +14,7 @@ import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import {
-    clearCategoryData,
-    clearMainListData,  
-    setCategoryItem,
-    setCategoryList,
-} from '../../Redux/category/categorySlice';
+import { clearCategoryData, setCategoryItem, setCategoryList } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
@@ -39,7 +34,6 @@ interface CategoryScreenProps {
     isLoading: boolean;
     setIsLoading: (boolean) => void;
     clearCategoryData: () => void;
-    clearMainListData: () => void;
 }
 
 interface CategoryScreenState {
@@ -85,7 +79,6 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
     }
 
     goBack = () => {
-        this.props.clearMainListData();
         this.props.clearCategoryData();
         NavigationManager.navigateAndClear('HomeScreen');
     };
@@ -104,9 +97,8 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         console.log('item =>', item);
         if (item.id === 0) {
             //home click
-            NavigationManager.navigateAndClear('HomeScreen');
-            this.props.clearMainListData();
             this.props.clearCategoryData();
+            NavigationManager.navigateAndClear('HomeScreen');
         }
     };
 
@@ -117,22 +109,23 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
             <MainContainer>
                 <CustomTopNav back subTitle={this.props.mainCategoryItem.title} onPressBack={this.goBack} />
                 <CustomBody>
-                {this.props.mainList && this.props.categoryList ? (
-                    <View style={style.container}>
-                        <View style={style.flatListViewConatiner}>
-                            <CustomFlatList
-                                isDisabled={true}
-                                categoryList={this.props.mainList}
-                                selectedElement={this.props.mainCategoryItem}
-                            />
+                    {this.props.mainList && this.props.categoryList ? (
+                        <View style={style.container}>
+                            <View style={style.flatListViewConatiner}>
+                                <CustomFlatList
+                                    isDisabled={true}
+                                    categoryList={this.props.mainList}
+                                    selectedElement={this.props.mainCategoryItem}
+                                />
+                            </View>
+                            <View style={style.SecondflatListViewConatiner}>
+                                <CustomFlatList
+                                    categoryList={this.props.categoryList}
+                                    onPressListItem={this.onCategoryClick}
+                                />
+                            </View>
                         </View>
-                        <View style={style.SecondflatListViewConatiner}>
-                            <CustomFlatList
-                                categoryList={this.props.categoryList}
-                                onPressListItem={this.onCategoryClick}
-                            />
-                        </View>
-                    </View>): (
+                    ) : (
                         <View style={style.container}>
                             <View style={style.imageContainer}>
                                 <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
@@ -169,14 +162,11 @@ const mapDispatchToProps = (dispatch: any) => ({
     setCategoryItem: (selectedCategoryItems: DriveItemModel) => {
         dispatch(setCategoryItem(selectedCategoryItems));
     },
-    setIsLoading: (value: boolean) => {
-        dispatch(setAppDataLoading(value));
+    setIsLoading: () => {
+        dispatch(setAppDataLoading());
     },
-    clearCategoryData: (value: any) => {
-        dispatch(clearCategoryData(value));
-    },
-    clearMainListData: (value: any) => {
-        dispatch(clearMainListData(value));
+    clearCategoryData: () => {
+        dispatch(clearCategoryData());
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryScreen);
