@@ -72,18 +72,49 @@ const categorySlice = createSlice({
                 uniqueId: '0',
             };
         },
-        //When navigating back from screen call this function to clear main list data
-        clearMainListData: (state, action: PayloadAction<[]>) => {
-            state.mainList = [];
-        },
+      
         //When navigating back from screen call this function to clear sub-category list data
-        clearSubCategoryData: (state, action: PayloadAction<[]>) => {
+        clearSubCategoryDataOnBack: (state, action: PayloadAction<[]>) => {
             state.subCategoryList = [];
+            state.categoryItem= {
+                uniqueId: '0',
+            };
+        },
+         //When navigating back from screen call this function to clear sub-category list data
+         clearSubCategoryDataOnBreadCrum: (state, action: PayloadAction<[]>) => {
+            state.subCategoryList = [];
+            state.categoryList = [];
+            state.categoryItem= {
+                uniqueId: '0',
+            };
+            state.mainCategoryItem = {
+                uniqueId: '0',
+            };
         },
         //When navigating back from screen call this function to clear category details page data
         clearCategoryDetailsData: (state, action: PayloadAction<[]>) => {
             state.gridViewData = [];
             state.moreInfoData = [];
+        },
+        clearCategoryDetailsDataOnCategoryBreadCrum: (state, action: PayloadAction<[]>) => {
+            state.gridViewData = [];
+            state.moreInfoData = [];
+            state.subCategoryList = [];
+            state.categoryItem= {
+                uniqueId: '0',
+            };
+        },
+        clearCategoryDetailsDataOnHomeBreadCrum: (state, action: PayloadAction<[]>) => {
+            state.gridViewData = [];
+            state.moreInfoData = [];
+            state.subCategoryList = [];
+            state.categoryList = [];
+            state.categoryItem= {
+                uniqueId: '0',
+            };
+            state.mainCategoryItem = {
+                uniqueId: '0',
+            };
         },
 
         //set root items (main category list)
@@ -155,10 +186,12 @@ export const {
     setCountryListData,
     setSelectedCountry,
     clearCategoryData,
-    clearMainListData,
-    clearSubCategoryData,
+    clearSubCategoryDataOnBack,
+    clearSubCategoryDataOnBreadCrum,
     clearCategoryDetailsData,
     setUserModelData,
+    clearCategoryDetailsDataOnCategoryBreadCrum,
+    clearCategoryDetailsDataOnHomeBreadCrum
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

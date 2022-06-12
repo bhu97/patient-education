@@ -202,6 +202,8 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
             }
             this.props.setMoreInfoScreenData(data);
         } else {
+            let data=[];
+            this.props.setMoreInfoScreenData(data);
             NavigationManager.goBack();
         }
     };

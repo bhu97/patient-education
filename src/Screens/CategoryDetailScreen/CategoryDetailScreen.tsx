@@ -19,15 +19,7 @@ import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
-import {
-    clearCategoryData,
-    clearCategoryDetailsData,
-    clearMainListData,
-    clearSubCategoryData,
-    setGridViewData,
-    setMoreInfoData,
-    setMoreInfoScreenData,
-} from '../../Redux/category/categorySlice';
+import { clearCategoryDetailsData, clearCategoryDetailsDataOnCategoryBreadCrum, clearCategoryDetailsDataOnHomeBreadCrum, setGridViewData, setMoreInfoData, setMoreInfoScreenData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
@@ -47,10 +39,9 @@ interface CategoryDetailScreenProps {
     setMoreInfoScreenData: (data: MoreInfoListModel[]) => void;
     isLoading: boolean;
     setIsLoading: (value: boolean) => void;
-    clearMainListData: () => void;
-    clearCategoryData: () => void;
-    clearSubCategoryData: () => void;
     clearCategoryDetailsData: () => void;
+    clearCategoryDetailsDataOnCategoryBreadCrum: () => void;
+    clearCategoryDetailsDataOnHomeBreadCrum: () => void;
 }
 
 interface CategoryDetailScreenState {
@@ -191,6 +182,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
     }
 
     goBack = () => {
+        this.props.clearCategoryDetailsData();
         NavigationManager.goBack();
     };
 
@@ -206,12 +198,15 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         if (item.id === 0) {
             //home click
             NavigationManager.navigateAndClear('HomeScreen');
+            this.props.clearCategoryDetailsDataOnHomeBreadCrum();
         } else if (item.id === 1) {
             //category item clicked
             NavigationManager.navigateAndClear('CategoryScreen');
+            this.props.clearCategoryDetailsDataOnCategoryBreadCrum();
         } else if (item.id === 2) {
             //sub category item clicked
             NavigationManager.goBack();
+            this.props.clearCategoryDetailsData();
         }
     };
 
@@ -277,18 +272,16 @@ const mapDispatchToProps = (dispatch: any) => ({
     setMoreInfoScreenData: (data: MoreInfoListModel[]) => {
         dispatch(setMoreInfoScreenData(data));
     },
-    clearCategoryData: () => {
-        dispatch(clearCategoryData());
-    },
-    clearSubCategoryData: () => {
-        dispatch(clearSubCategoryData());
-    },
-    clearMainListData: () => {
-        dispatch(clearMainListData());
-    },
     clearCategoryDetailsData: () => {
-        dispatch(clearCategoryDetailsData());
+        dispatch( clearCategoryDetailsData());
     },
+    clearCategoryDetailsDataOnHomeBreadCrum: () => {
+        dispatch(clearCategoryDetailsDataOnHomeBreadCrum());
+    },
+    clearCategoryDetailsDataOnCategoryBreadCrum: () => {
+        dispatch(clearCategoryDetailsDataOnCategoryBreadCrum());
+    }
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryDetailScreen);

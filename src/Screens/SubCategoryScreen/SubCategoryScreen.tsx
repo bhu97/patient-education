@@ -15,9 +15,8 @@ import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import {
-    clearCategoryData,
-    clearMainListData,
-    clearSubCategoryData,
+    clearSubCategoryDataOnBack,
+    clearSubCategoryDataOnBreadCrum,
     setSubCategoryItem,
     setSubCategoryList,
 } from '../../Redux/category/categorySlice';
@@ -44,9 +43,8 @@ interface SubCategoryScreenProps {
     setSubCategoryItem: (selectedCategoryItem: DriveItemModel) => void;
     isLoading: boolean;
     setIsLoading: (boolean) => void;
-    clearMainListData: () => void;
-    clearCategoryData: () => void;
-    clearSubCategoryData: () => void;
+    clearSubCategoryDataOnBack: () => void;
+    clearSubCategoryDataOnBreadCrum: () => void;
 }
 
 interface SubCategoryScreenState {
@@ -108,12 +106,15 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
         if (item.id === 0) {
             //home click
             NavigationManager.navigateAndClear('HomeScreen');
+            this.props.clearSubCategoryDataOnBreadCrum();
         } else if (item.id === 1) {
             //category item clicked
             NavigationManager.goBack();
+            this.props.clearSubCategoryDataOnBack();
         }
     };
     goBack = () => {
+        this.props.clearSubCategoryDataOnBack();
         NavigationManager.goBack();
     };
 
@@ -180,14 +181,12 @@ const mapDispatchToProps = (dispatch: any) => ({
     setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading());
     },
-    clearCategoryData: () => {
-        dispatch(clearCategoryData());
+    clearSubCategoryDataOnBack: () => {
+        dispatch(clearSubCategoryDataOnBack());
     },
-    clearSubCategoryData: () => {
-        dispatch(clearSubCategoryData());
+    clearSubCategoryDataOnBreadCrum: () => {
+        dispatch(clearSubCategoryDataOnBreadCrum());
     },
-    clearMainListData: () => {
-        dispatch(clearMainListData());
-    },
+   
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SubCategoryScreen);
