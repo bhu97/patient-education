@@ -90,6 +90,9 @@ export const API_NAMES = {
         `https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/items/${uniqueId}/children?$expand=thumbnails`,
     GRAPH_ITEM_THUMBNAIL_ENDPOINT: (uniqueId: string) =>
         `https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/items/${uniqueId}?$expand=thumbnails`,
+        
+    THUMBNAIL_LIST_ITEM_DETAILS: (itemId: string) =>
+        `https://graph.microsoft.com/v1.0/sites/ce9ddfbf-3e3c-4569-952c-2366b6352bba/lists/c5c38f36-9e7d-4f3a-8049-094782193c0b/items/${itemId}?$expand=driveItem`,
 
     GRAPH_SCOPES: [
         'offline_access', /// Needed to receive a refresh token

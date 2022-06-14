@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Image, Linking, Text, TouchableOpacity, View } from 'react-native';
+import { Button, FlatList, Image, Linking, Text, TouchableOpacity, View } from 'react-native';
+import FileViewer from 'react-native-file-viewer';
+import RNFS from 'react-native-fs';
 import Tooltip from 'react-native-walkthrough-tooltip';
-import authenticationManager from '../../Authentication/AuthenticationManager';
-import { getExtension, getIconByExtension, normalizeUrl } from '../../Helper/Helper';
-import LogManager from '../../Helper/LogManager';
-import NavigationManager from '../../Helper/NavigationManager';
+import { API_NAMES } from '../../Constant/Constants';
+import apiManager from '../../Helper/ApiManager';
+import { getExtension, getIconByExtension } from '../../Helper/Helper';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
 import Images from '../../Theme/Images';
@@ -93,13 +94,41 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
         return <View style={style.toolTipOptionSeperator}></View>;
     };
 
+    // deletion
+    deleteDownloadedFile = async (item) => {
+        // create a path you want to delete
+        var path = RNFS.DocumentDirectoryPath + `/${item}`;
+        return (
+            RNFS.unlink(path)
+                .then(() => {
+                    console.log('FILE DELETED');
+                })
+                // `unlink` will throw an error, if the item to unlink does not exist
+                .catch((err) => {
+                    console.log(err.message);
+                })
+        );
+    };
+
+    downloadFileAndShow = async (item) => {
+        await this.deleteDownloadedFile(item.name);
+        const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
+        const url = response.driveItem['@microsoft.graph.downloadUrl'];
+        const fileName = item.name;
+        const localFile = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+        console.log('file path', localFile);
+        const options = {
+            fromUrl: url,
+            toFile: localFile,
+        };
+        // last step it will download open it with fileviewer.
+        RNFS.downloadFile(options).promise.then(() => FileViewer.open(localFile));
+    };
     loadDocument = async (item: GridViewModel) => {
         const fileExt = getExtension(item.webUrl);
         console.log('fileExt=', fileExt);
         if (fileExt.toLowerCase() === 'pdf') {
-            NavigationManager.navigate('LoadDocumentScreen', {
-                webUrl: item.webUrl,
-            });
+            this.downloadFileAndShow(item);
         } else {
             Linking.canOpenURL(item.webUrl).then((supported) => {
                 if (supported) {
@@ -124,6 +153,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                             <Image style={style.imageStyle} source={Images.emptyThumbnail} />
                         )}
                         <View style={style.overlay} />
+
                         <View style={style.svgIconStyle}>{getIconByExtension(item.name)}</View>
                     </View>
                 </TouchableOpacity>
@@ -133,7 +163,6 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                             {item.name}
                         </Text>
                     </View>
-
                     <View style={style.iconContainer}>
                         {this.getToolTip(index, isVisibleIndicator)}
                         <Text style={style.sizeStyle}>{item.fileSize}</Text>
@@ -160,7 +189,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                 ) : (
                     <View style={style.emptyIconStyle}>
                         <Image style={style.emptyImageStyle} source={Images.emptyImg} />
-                        <Text style={style.emptyDataText}>There are no file here yet</Text>
+                        <Text style={style.emptyDataText}>{BaseLocalization.noDataOnGrid}</Text>
                     </View>
                 )}
             </>

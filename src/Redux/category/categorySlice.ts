@@ -80,7 +80,7 @@ const categorySlice = createSlice({
                 uniqueId: '0',
             };
         },
-         //When navigating back from screen call this function to clear sub-category list data
+         //When navigating back from screen on click of breadcrum call this function to clear sub-category list data
          clearSubCategoryDataOnBreadCrum: (state, action: PayloadAction<[]>) => {
             state.subCategoryList = [];
             state.categoryList = [];
@@ -93,8 +93,15 @@ const categorySlice = createSlice({
         },
         //When navigating back from screen call this function to clear category details page data
         clearCategoryDetailsData: (state, action: PayloadAction<[]>) => {
+
             state.gridViewData = [];
             state.moreInfoData = [];
+            state.subCategoryItem= {
+                uniqueId: '0'
+            }
+            state.categoryItem= {
+                uniqueId: '0',
+            };
         },
         clearCategoryDetailsDataOnCategoryBreadCrum: (state, action: PayloadAction<[]>) => {
             state.gridViewData = [];
@@ -103,6 +110,9 @@ const categorySlice = createSlice({
             state.categoryItem= {
                 uniqueId: '0',
             };
+            state.subCategoryItem= {
+                uniqueId: '0'
+            }
         },
         clearCategoryDetailsDataOnHomeBreadCrum: (state, action: PayloadAction<[]>) => {
             state.gridViewData = [];
@@ -115,6 +125,9 @@ const categorySlice = createSlice({
             state.mainCategoryItem = {
                 uniqueId: '0',
             };
+            state.subCategoryItem= {
+                uniqueId: '0'
+            }
         },
 
         //set root items (main category list)

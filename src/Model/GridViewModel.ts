@@ -26,6 +26,7 @@ export class GridViewModel {
     smallUrl: string;
     mediumUrl: string;
     largeUrl: string;
+    listItemId: string
 
     static generate(item: any, thumbnails: any) {
         let object: IGridViewModel = {
@@ -43,8 +44,8 @@ export class GridViewModel {
         };
 
         object.uniqueId = item.uniqueId;
-        object.parentReferenceId = item.parentReferenceId;
         object.listItemId = item.listItemId;
+        object.parentReferenceId = item.parentReferenceId;
         object.webUrl = item.webUrl;
         object.title = item.title;
         object.name = item.name;

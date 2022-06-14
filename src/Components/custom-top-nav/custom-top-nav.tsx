@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, View, Image } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';

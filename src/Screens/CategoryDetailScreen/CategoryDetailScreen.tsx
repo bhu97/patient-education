@@ -197,16 +197,18 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         console.log('item =>', item);
         if (item.id === 0) {
             //home click
-            NavigationManager.navigateAndClear('HomeScreen');
             this.props.clearCategoryDetailsDataOnHomeBreadCrum();
+            NavigationManager.navigateAndClear('HomeScreen');
         } else if (item.id === 1) {
             //category item clicked
-            NavigationManager.navigateAndClear('CategoryScreen');
             this.props.clearCategoryDetailsDataOnCategoryBreadCrum();
+            NavigationManager.navigateAndClear('CategoryScreen');
+          
         } else if (item.id === 2) {
             //sub category item clicked
-            NavigationManager.goBack();
             this.props.clearCategoryDetailsData();
+            NavigationManager.goBack();
+         
         }
     };
 
@@ -273,7 +275,7 @@ const mapDispatchToProps = (dispatch: any) => ({
         dispatch(setMoreInfoScreenData(data));
     },
     clearCategoryDetailsData: () => {
-        dispatch( clearCategoryDetailsData());
+        dispatch(clearCategoryDetailsData());
     },
     clearCategoryDetailsDataOnHomeBreadCrum: () => {
         dispatch(clearCategoryDetailsDataOnHomeBreadCrum());

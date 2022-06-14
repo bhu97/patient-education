@@ -30,5 +30,6 @@ export const BaseLocalization = {
     download: LocalizationManager.getLocalizedStrings('download'),
     fileOptions: LocalizationManager.getLocalizedStrings('fileOptions'),
     noDataText: LocalizationManager.getLocalizedStrings('noDataText'),
+    noDataOnGrid: LocalizationManager.getLocalizedStrings('noDataOnGrid'),
 
 };
