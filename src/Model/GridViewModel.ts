@@ -17,7 +17,6 @@ export interface IGridViewModel {
 export class GridViewModel {
     uniqueId: string;
     parentReferenceId: string;
-    imageName: string;
     title: string;
     fileSize: string;
     fileExtension: any;

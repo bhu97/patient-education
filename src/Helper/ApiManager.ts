@@ -25,8 +25,15 @@ class ApiManager {
         }
 
         LogManager.info('params=', params);
-        const accessToken = await authenticationManager.getAccessToken();
+        var accessToken = await authenticationManager.getAccessToken();
         LogManager.info('callApiToGetData token=', accessToken);
+        if (accessToken == undefined || accessToken == null) {
+            //added to fix issue for first time login where token is undefined.
+            //TODO: need to debug reason for same
+            LogManager.info('issue with accessToken=', accessToken);
+            accessToken = await authenticationManager.getAccessToken();
+            LogManager.info('new token=', accessToken);
+            }
 
         const headers = {
             Accept: 'application/json',
