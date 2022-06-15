@@ -1,7 +1,6 @@
-import { CommonActions, NavigationContainerRef } from '@react-navigation/native';
+import { CommonActions, NavigationContainerRef, StackActions } from '@react-navigation/native';
 
 const NavigationManager = {
-
     navigator: null as NavigationContainerRef<{}> | null,
 
     /**
@@ -15,7 +14,7 @@ const NavigationManager = {
     /**
      * Navigate to next screen
      * @param routeName : screen name to navigate
-     * @param params : if any params required for that screen 
+     * @param params : if any params required for that screen
      */
     navigate(routeName: any, params?: any) {
         this.navigator!.dispatch(
@@ -50,6 +49,23 @@ const NavigationManager = {
      */
     goBack() {
         this.navigator!.dispatch(CommonActions.goBack());
+    },
+
+    navigatePop(routeName: any, removeScreenIndex: number) {
+        // this.navigator!.dispatch(
+        //     CommonActions.reset({
+        //         index: index,
+        //         routes: [
+        //             {
+        //                 name: routeName,
+        //                 params: params,
+        //             },
+        //         ],
+        //     }),
+        // );
+
+        this.navigator!.dispatch(StackActions.pop(removeScreenIndex));
+        this.navigate(routeName);
     },
 };
 

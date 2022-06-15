@@ -14,7 +14,7 @@ import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { clearCategoryData, setCategoryItem, setCategoryList } from '../../Redux/category/categorySlice';
+import { setCategoryList, setSelectedCategoryData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
@@ -24,20 +24,21 @@ interface CategoryScreenProps {
     mainList: DriveItemModel[];
     // category screen array
     categoryList: DriveItemModel[];
-    //selected category item
-    mainCategoryItem: DriveItemModel;
+
     //set category list for selected item
     setCategoryList: (data: DriveItemModel[]) => void;
 
-    //set
-    setCategoryItem: (selectedCategoryItem: DriveItemModel) => void;
     isLoading: boolean;
-    setIsLoading: (boolean) => void;
-    clearCategoryData: () => void;
+    setIsLoading: (value: boolean) => void;
+
+    //all selected selectedCategoryData
+    selectedCategoryData: DriveItemModel[];
+    setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
 }
 
 interface CategoryScreenState {
     breadCrumbList: any;
+    pageTitle: string;
 }
 
 class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState> {
@@ -45,15 +46,41 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         super(props);
         this.state = {
             breadCrumbList: [],
+            pageTitle: '',
         };
     }
     componentDidMount() {
         this.getCategoryData();
     }
 
+    componentDidUpdate(prevProp: CategoryScreenProps) {
+        console.log('componentDidUpdate here for category');
+
+        if (
+            this.props.selectedCategoryData &&
+            this.props.selectedCategoryData.length > 0 &&
+            this.props.selectedCategoryData[0] !== prevProp.selectedCategoryData[0]
+        ) {
+            console.log('mainCategoryItem changed =', this.props.selectedCategoryData[0]);
+            console.log('mainCategoryItem old  =', prevProp.selectedCategoryData[0]);
+
+            if (this.props.selectedCategoryData[0].contentType == 'Document Set') {
+                //NavigationManager.navigate('CategoryDetailScreen');
+                NavigationManager.navigatePop('CategoryDetailScreen', 1);
+            } else {
+                //NavigationManager.navigate('CategoryScreen');
+                this.getCategoryData();
+            }
+        }
+    }
+
     async getCategoryData() {
         this.props.setIsLoading(true);
-        const categoryData = await dbHelper.getForSelectedCategory(this.props.mainCategoryItem);
+        const selectedCategoryData = this.props.selectedCategoryData;
+        let item: any = {};
+        item = selectedCategoryData[selectedCategoryData.length - 1];
+
+        const categoryData = await dbHelper.getForSelectedCategory(item);
         LogManager.debug('categoryData=', categoryData);
         this.props.setCategoryList(categoryData);
         this.props.setIsLoading(false);
@@ -67,7 +94,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
             },
             {
                 id: 1,
-                title: this.props.mainCategoryItem.title,
+                title: item.title,
                 isFirstCrumb: false,
                 isDisabled: true,
             },
@@ -75,17 +102,25 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
 
         this.setState({
             breadCrumbList: breadCrumbList,
+            pageTitle: item.title,
         });
     }
 
     goBack = () => {
-        this.props.clearCategoryData();
+        // reset all data;
+        let data = Object.assign([], this.props.selectedCategoryData);
+        data.pop();
+        this.props.setSelectedCategoryData(data);
+
         NavigationManager.navigateAndClear('HomeScreen');
     };
 
     onCategoryClick = (item) => {
         LogManager.warn('category screen click=', item);
-        this.props.setCategoryItem(item);
+        let data = Object.assign([], this.props.selectedCategoryData);
+        data.push(item);
+        this.props.setSelectedCategoryData(data);
+
         if (item.contentType == 'Document Set') {
             NavigationManager.navigate('CategoryDetailScreen');
         } else {
@@ -94,12 +129,18 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
     };
 
     breadcrumbClick = (item: any) => {
-        console.log('item =>', item);
+        console.log('breadcrumb Category screen =>', item);
         if (item.id === 0) {
             //home click
-            this.props.clearCategoryData();
-            NavigationManager.navigateAndClear('HomeScreen');
+            this.goBack();
         }
+    };
+
+    onMainCategoryClick = (item) => {
+        LogManager.warn('Main category item changed click=', item);
+        let data: any = [];
+        data.push(item);
+        this.props.setSelectedCategoryData(data);
     };
 
     render() {
@@ -107,15 +148,15 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
-                <CustomTopNav back subTitle={this.props.mainCategoryItem.title} onPressBack={this.goBack} />
+                <CustomTopNav back subTitle={this.state.pageTitle} onPressBack={this.goBack} />
                 <CustomBody>
                     {this.props.mainList && this.props.categoryList ? (
                         <View style={style.container}>
                             <View style={style.flatListViewConatiner}>
                                 <CustomFlatList
-                                    isDisabled={true}
                                     categoryList={this.props.mainList}
-                                    selectedElement={this.props.mainCategoryItem}
+                                    selectedElement={this.props.selectedCategoryData[0]}
+                                    onPressListItem={this.onMainCategoryClick}
                                 />
                             </View>
                             <View style={style.SecondflatListViewConatiner}>
@@ -147,11 +188,10 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
 }
 
 const mapStateToProps = (state: RootState) => ({
-    //
     mainList: state.categoryReducer.mainList,
     categoryList: state.categoryReducer.categoryList,
-    mainCategoryItem: state.categoryReducer.mainCategoryItem,
     isLoading: state.appDataReducer.appDataLoading,
+    selectedCategoryData: state.categoryReducer.selectedCategoryData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -159,14 +199,11 @@ const mapDispatchToProps = (dispatch: any) => ({
     setCategoryList: (categoryData: DriveItemModel[]) => {
         dispatch(setCategoryList(categoryData));
     },
-    setCategoryItem: (selectedCategoryItems: DriveItemModel) => {
-        dispatch(setCategoryItem(selectedCategoryItems));
+    setIsLoading: (isLoading: boolean) => {
+        dispatch(setAppDataLoading(isLoading));
     },
-    setIsLoading: () => {
-        dispatch(setAppDataLoading());
-    },
-    clearCategoryData: () => {
-        dispatch(clearCategoryData());
+    setSelectedCategoryData: (selectedItems: DriveItemModel[]) => {
+        dispatch(setSelectedCategoryData(selectedItems));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryScreen);

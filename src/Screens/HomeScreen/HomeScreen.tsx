@@ -16,19 +16,19 @@ import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllDriveItems } from '../../Redux/app-data/appDataThunk';
-import { setMainCategoryItem, setMainCategoryList } from '../../Redux/category/categorySlice';
+import { setMainCategoryList, setSelectedCategoryData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface HomePageProps {
     mainList: DriveItemModel[];
-    setMainCategoryItem: (selectedItem: DriveItemModel) => void;
     setMainList: (data: DriveItemModel[]) => void;
     setIsLoading: (boolean) => void;
     appDataLoading: boolean;
     fetchData: () => void;
     navigation: any;
+    setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
 }
 
 interface HomePageState {}
@@ -72,13 +72,19 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 
     onClick = (item) => {
         LogManager.warn('home screen click=', item);
-        this.props.setMainCategoryItem(item);
+        let data: any = [];
+        data.push(item);
+        this.props.setSelectedCategoryData(data);
         if (item.contentType == 'Document Set') {
             NavigationManager.navigate('CategoryDetailScreen');
         } else {
             NavigationManager.navigate('CategoryScreen');
         }
     };
+
+    callbackFunction() {
+        console.log('add call back for clear');
+    }
 
     render() {
         return this.props.appDataLoading ? (
@@ -91,19 +97,20 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                     subTitle={BaseLocalization.selectCategory}
                 />
                 <CustomBody>
-                {this.props.mainList ? (
-                    <View style={style.container}>
-                        <View style={style.flatListViewContainer}>
-                            {this.props.mainList && (
-                                <CustomFlatList categoryList={this.props.mainList} onPressListItem={this.onClick} />
-                            )}
-                        </View>
-                        <View style={style.imageViewContainer}>
-                            <View style={style.imageView}>
-                                <Image resizeMode="contain" style={style.imageStyle} source={Images.illuHome} />
+                    {this.props.mainList ? (
+                        <View style={style.container}>
+                            <View style={style.flatListViewContainer}>
+                                {this.props.mainList && (
+                                    <CustomFlatList categoryList={this.props.mainList} onPressListItem={this.onClick} />
+                                )}
+                            </View>
+                            <View style={style.imageViewContainer}>
+                                <View style={style.imageView}>
+                                    <Image resizeMode="contain" style={style.imageStyle} source={Images.illuHome} />
+                                </View>
                             </View>
                         </View>
-                    </View> ) : (
+                    ) : (
                         <View style={style.container}>
                             <View style={style.imageContainer}>
                                 <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
@@ -133,14 +140,14 @@ const mapDispatchToProps = (dispatch: any) => ({
     setMainList: (rootItems: DriveItemModel[]) => {
         dispatch(setMainCategoryList(rootItems));
     },
-    setMainCategoryItem: (selectedItems: DriveItemModel) => {
-        dispatch(setMainCategoryItem(selectedItems));
-    },
     setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
     },
     fetchData: () => {
         dispatch(fetchAllDriveItems());
+    },
+    setSelectedCategoryData: (selectedItems: DriveItemModel[]) => {
+        dispatch(setSelectedCategoryData(selectedItems));
     },
 });
 

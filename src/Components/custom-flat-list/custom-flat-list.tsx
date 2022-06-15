@@ -7,8 +7,7 @@ import { style } from './style';
 
 interface CustomFlatListProps {
     categoryList: any;
-    isDisabled?: boolean;
-    onPressListItem?: (item: any) => void;
+    onPressListItem: (item: any) => void;
     selectedElement?: DriveItemModel;
 }
 interface CustomFlatListState {}
@@ -39,12 +38,12 @@ export default class CustomFlatList extends PureComponent<CustomFlatListProps, C
         const backgroundColor =
             this.props.selectedElement === item // check if item matched with selected item
                 ? BaseThemeStyle.colors.gray // then selected color
-                : this.props.isDisabled // else if list disabled
-                ? BaseThemeStyle.colors.listItemBackgroundColor // then light color
-                : BaseThemeStyle.colors.white; // else default color
+                : //: this.props.isDisabled // else if list disabled
+                  //? BaseThemeStyle.colors.listItemBackgroundColor // then light color
+                  BaseThemeStyle.colors.white; // else default color
 
         return (
-            <TouchableOpacity disabled={this.props.isDisabled ? true : false} onPress={() => this.onPress(item, index)}>
+            <TouchableOpacity onPress={() => this.onPress(item, index)}>
                 <View style={{ ...style.listItemContainer, backgroundColor: backgroundColor }}>
                     <Text numberOfLines={2} style={style.textStyle}>
                         {item.title != '' ? item.title : item.name}

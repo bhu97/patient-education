@@ -19,7 +19,12 @@ import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
-import { clearCategoryDetailsData, clearCategoryDetailsDataOnCategoryBreadCrum, clearCategoryDetailsDataOnHomeBreadCrum, setGridViewData, setMoreInfoData, setMoreInfoScreenData } from '../../Redux/category/categorySlice';
+import {
+    setGridViewData,
+    setMoreInfoData,
+    setMoreInfoScreenData,
+    setSelectedCategoryData,
+} from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import { style } from './style';
 
@@ -27,7 +32,7 @@ interface CategoryDetailScreenProps {
     gridViewData: GridViewModel[];
     moreInfoData: MoreInfoListModel[];
     //selected category item
-    mainCategoryItem: DriveItemModel;
+    //mainCategoryItem: DriveItemModel;
     //selected category item
     categoryItem: DriveItemModel;
     //selected sub category item
@@ -39,9 +44,10 @@ interface CategoryDetailScreenProps {
     setMoreInfoScreenData: (data: MoreInfoListModel[]) => void;
     isLoading: boolean;
     setIsLoading: (value: boolean) => void;
-    clearCategoryDetailsData: () => void;
-    clearCategoryDetailsDataOnCategoryBreadCrum: () => void;
-    clearCategoryDetailsDataOnHomeBreadCrum: () => void;
+
+    //all selected selectedCategoryData
+    selectedCategoryData: DriveItemModel[];
+    setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
 }
 
 interface CategoryDetailScreenState {
@@ -64,52 +70,10 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
 
     async getCategoryDetailData() {
         this.props.setIsLoading(true);
-        let breadCrumbList = [
-            {
-                id: 0,
-                title: 'Home',
-                isFirstCrumb: true,
-            },
-            {
-                id: 1,
-                title: this.props.mainCategoryItem.title,
-                isFirstCrumb: false,
-            },
-        ];
+
+        const selectedCategoryData = this.props.selectedCategoryData;
         let item: any = {};
-
-        if (this.props.categoryItem.uniqueId != '0' && this.props.subCategoryItem.uniqueId != '0') {
-            console.log('all 4 options present');
-            //we have category /subcategory present
-            item = this.props.subCategoryItem;
-
-            //create breadcrumb array
-            breadCrumbList.push(
-                {
-                    id: 2,
-                    title: this.props.categoryItem.title,
-                    isFirstCrumb: false,
-                },
-                {
-                    id: 3,
-                    title: this.props.subCategoryItem.title,
-                    isFirstCrumb: false,
-                },
-            );
-        } else if (this.props.categoryItem.uniqueId != '0' && this.props.subCategoryItem.uniqueId == '0') {
-            console.log('only 3 options present Home , main category & category');
-            //if subcategory category items unique id is 0 means no subcategory present
-            item = this.props.categoryItem;
-            breadCrumbList.push({
-                id: 2,
-                title: this.props.categoryItem.title,
-                isFirstCrumb: false,
-            });
-        } else {
-            console.log('only 2 options present Home & main category');
-            //if category items unique id is 0 means no category/subcategory present
-            item = this.props.mainCategoryItem;
-        }
+        item = selectedCategoryData[selectedCategoryData.length - 1];
 
         LogManager.debug('CategoryDetailScreen Item =>', item);
 
@@ -128,8 +92,8 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
 
         this.props.setGridViewList(gridData);
 
-        let moreFolderData = [];
-        let moreFileData = [];
+        let moreFolderData: any = [];
+        let moreFileData: any = [];
 
         if (linkedFolder != null && linkedFolder != '') {
             const linkedFolderData = linkedUrlListToArray(linkedFolder);
@@ -150,8 +114,8 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         }
 
         // Merge arrays
-        let MoreInfoListData = [];
-        var moreViewData = [];
+        let MoreInfoListData: any = [];
+        var moreViewData: any = [];
         console.log('start =', MoreInfoListData);
 
         if (
@@ -175,6 +139,26 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         this.props.setIsLoading(false);
         this.props.setMoreInfoList(MoreInfoListData);
 
+        //create breadcrumb list
+        let breadCrumbList = [
+            {
+                id: 0,
+                title: 'Home',
+                isFirstCrumb: true,
+            },
+        ];
+
+        selectedCategoryData.forEach((selectedCategoryDataObj, index) => {
+            console.log('Index: ' + index + ' Value: ' + selectedCategoryDataObj);
+            let breadCrumbListIndex = 1 + index;
+            var obj = {
+                id: breadCrumbListIndex,
+                title: selectedCategoryDataObj.title ? selectedCategoryDataObj.title : '',
+                isFirstCrumb: false,
+            };
+            breadCrumbList.push(obj);
+        });
+
         this.setState({
             breadCrumbList: breadCrumbList,
             pageTitle: pageTitle,
@@ -182,34 +166,45 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
     }
 
     goBack = () => {
-        this.props.clearCategoryDetailsData();
+        let data = Object.assign([], this.props.selectedCategoryData);
+        if (data.length > 1) data.pop();
+        else data = [];
+        this.props.setSelectedCategoryData(data);
+
         NavigationManager.goBack();
     };
 
     goToMoreScreen = (moreItem: MoreInfoListModel) => {
-        let data = [];
+        let data: any = [];
         data.push(moreItem);
         this.props.setMoreInfoScreenData(data);
         NavigationManager.navigate('MoreInfoScreen');
     };
 
     breadcrumbClick = (item: any) => {
-        console.log('item =>', item);
+        console.log('breadcrumb Category detail screen =>', item);
         if (item.id === 0) {
             //home click
-            this.props.clearCategoryDetailsDataOnHomeBreadCrum();
+            let data = [];
+            this.props.setSelectedCategoryData(data);
             NavigationManager.navigateAndClear('HomeScreen');
         } else if (item.id === 1) {
-            //category item clicked
-            this.props.clearCategoryDetailsDataOnCategoryBreadCrum();
+            let data = Object.assign([], this.props.selectedCategoryData);
+            if (data.length > 2) data.splice(1);
+            else if (data.length > 1) data.pop();
+            else data = [];
+            this.props.setSelectedCategoryData(data);
             NavigationManager.navigateAndClear('CategoryScreen');
-          
-        } else if (item.id === 2) {
-            //sub category item clicked
-            this.props.clearCategoryDetailsData();
-            NavigationManager.goBack();
-         
+        } else {
+            this.goBack();
         }
+        //
+        //     //category item clicked
+        //     NavigationManager.navigateAndClear('CategoryScreen');
+        // } else if (item.id === 2) {
+        //     //sub category item clicked
+        //     NavigationManager.goBack();
+        // }
     };
 
     render() {
@@ -255,10 +250,12 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
 const mapStateToProps = (state: RootState) => ({
     gridViewData: state.categoryReducer.gridViewData,
     moreInfoData: state.categoryReducer.moreInfoData,
-    mainCategoryItem: state.categoryReducer.mainCategoryItem,
+    // mainCategoryItem: state.categoryReducer.mainCategoryItem,
     categoryItem: state.categoryReducer.categoryItem,
     subCategoryItem: state.categoryReducer.subCategoryItem,
     isLoading: state.appDataReducer.appDataLoading,
+
+    selectedCategoryData: state.categoryReducer.selectedCategoryData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -274,16 +271,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     setMoreInfoScreenData: (data: MoreInfoListModel[]) => {
         dispatch(setMoreInfoScreenData(data));
     },
-    clearCategoryDetailsData: () => {
-        dispatch(clearCategoryDetailsData());
+    setSelectedCategoryData: (selectedItems: DriveItemModel[]) => {
+        dispatch(setSelectedCategoryData(selectedItems));
     },
-    clearCategoryDetailsDataOnHomeBreadCrum: () => {
-        dispatch(clearCategoryDetailsDataOnHomeBreadCrum());
-    },
-    clearCategoryDetailsDataOnCategoryBreadCrum: () => {
-        dispatch(clearCategoryDetailsDataOnCategoryBreadCrum());
-    }
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryDetailScreen);

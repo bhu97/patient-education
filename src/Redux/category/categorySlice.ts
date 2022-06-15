@@ -15,13 +15,13 @@ export interface CategoryState {
     categoryDetailTitle: string;
 
     // used for / on home screen
-    mainList: Array<any>;
-    mainCategoryItem: IDriveItem;
+    mainList: IDriveItem[];
+
     // used for / on category screen
-    categoryList: Array<any>;
+    categoryList: IDriveItem[];
     categoryItem: IDriveItem;
     // used for / on sub category screen
-    subCategoryList: Array<any>;
+    subCategoryList: IDriveItem[];
     subCategoryItem: IDriveItem;
     countryListData: Array<any>;
     selectedCountry: string;
@@ -29,6 +29,9 @@ export interface CategoryState {
     moreInfoScreenData: MoreInfoListModel[];
     // used for user data
     userModelData: UserModel[];
+
+    //
+    selectedCategoryData: DriveItemModel[];
 }
 
 // to set initial value for all variable
@@ -44,9 +47,7 @@ const initialState: CategoryState = {
     selectedCountry: '',
 
     mainList: [],
-    mainCategoryItem: {
-        uniqueId: '0',
-    },
+
     categoryItem: {
         uniqueId: '0',
     },
@@ -56,6 +57,7 @@ const initialState: CategoryState = {
     },
     moreInfoScreenData: [],
     userModelData: [],
+    selectedCategoryData: [],
 };
 
 // basic example slice done based on the docs
@@ -65,89 +67,14 @@ const categorySlice = createSlice({
     initialState,
 
     reducers: {
-        //When navigating back from screen call this function to clear category list data
-        clearCategoryData: (state, action: PayloadAction<[]>) => {
-            state.categoryList = [];
-            state.mainCategoryItem = {
-                uniqueId: '0',
-            };
-        },
-      
-        //When navigating back from screen call this function to clear sub-category list data
-        clearSubCategoryDataOnBack: (state, action: PayloadAction<[]>) => {
-            state.subCategoryList = [];
-            state.categoryItem= {
-                uniqueId: '0',
-            };
-        },
-         //When navigating back from screen on click of breadcrum call this function to clear sub-category list data
-         clearSubCategoryDataOnBreadCrum: (state, action: PayloadAction<[]>) => {
-            state.subCategoryList = [];
-            state.categoryList = [];
-            state.categoryItem= {
-                uniqueId: '0',
-            };
-            state.mainCategoryItem = {
-                uniqueId: '0',
-            };
-        },
-        //When navigating back from screen call this function to clear category details page data
-        clearCategoryDetailsData: (state, action: PayloadAction<[]>) => {
-
-            state.gridViewData = [];
-            state.moreInfoData = [];
-            state.subCategoryItem= {
-                uniqueId: '0'
-            }
-            state.categoryItem= {
-                uniqueId: '0',
-            };
-        },
-        clearCategoryDetailsDataOnCategoryBreadCrum: (state, action: PayloadAction<[]>) => {
-            state.gridViewData = [];
-            state.moreInfoData = [];
-            state.subCategoryList = [];
-            state.categoryItem= {
-                uniqueId: '0',
-            };
-            state.subCategoryItem= {
-                uniqueId: '0'
-            }
-        },
-        clearCategoryDetailsDataOnHomeBreadCrum: (state, action: PayloadAction<[]>) => {
-            state.gridViewData = [];
-            state.moreInfoData = [];
-            state.subCategoryList = [];
-            state.categoryList = [];
-            state.categoryItem= {
-                uniqueId: '0',
-            };
-            state.mainCategoryItem = {
-                uniqueId: '0',
-            };
-            state.subCategoryItem= {
-                uniqueId: '0'
-            }
-        },
-
         //set root items (main category list)
         setMainCategoryList: (state, action: PayloadAction<DriveItemModel[]>) => {
             state.mainList = action.payload;
         },
 
-        //set selected Category (on click of home screen)
-        setMainCategoryItem: (state, action: PayloadAction<DriveItemModel>) => {
-            state.mainCategoryItem = action.payload;
-        },
-
         //set Category data
         setCategoryList: (state, action: PayloadAction<DriveItemModel[]>) => {
             state.categoryList = action.payload;
-        },
-
-        //set selected Category (on click of category screen)
-        setCategoryItem: (state, action: PayloadAction<DriveItemModel>) => {
-            state.categoryItem = action.payload;
         },
 
         //set Sub Category data
@@ -167,7 +94,6 @@ const categorySlice = createSlice({
         setMoreInfoData: (state, action: PayloadAction<MoreInfoListModel[]>) => {
             state.moreInfoData = action.payload;
         },
-
         setMoreInfoScreenData: (state, action: PayloadAction<MoreInfoListModel[]>) => {
             console.log('setMoreInfoScreenData =>', action.payload);
             state.moreInfoScreenData = action.payload;
@@ -182,15 +108,18 @@ const categorySlice = createSlice({
             console.log('setUserModelData payload =>', action.payload);
             state.userModelData = action.payload;
         },
+        //selected category data push all (main, category, sub)
+        setSelectedCategoryData: (state, action: PayloadAction<DriveItemModel[]>) => {
+            console.log('selectedCategoryData payload =>', action.payload);
+            state.selectedCategoryData = action.payload;
+        },
     },
 });
 
 // export individual action creator functions
 export const {
     setMainCategoryList,
-    setMainCategoryItem,
     setCategoryList,
-    setCategoryItem,
     setSubCategoryList,
     setSubCategoryItem,
     setGridViewData,
@@ -198,13 +127,8 @@ export const {
     setMoreInfoScreenData,
     setCountryListData,
     setSelectedCountry,
-    clearCategoryData,
-    clearSubCategoryDataOnBack,
-    clearSubCategoryDataOnBreadCrum,
-    clearCategoryDetailsData,
+    setSelectedCategoryData,
     setUserModelData,
-    clearCategoryDetailsDataOnCategoryBreadCrum,
-    clearCategoryDetailsDataOnHomeBreadCrum
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

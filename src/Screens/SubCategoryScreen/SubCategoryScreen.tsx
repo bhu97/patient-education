@@ -14,22 +14,12 @@ import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import {
-    clearSubCategoryDataOnBack,
-    clearSubCategoryDataOnBreadCrum,
-    setSubCategoryItem,
-    setSubCategoryList,
-} from '../../Redux/category/categorySlice';
+import { setSelectedCategoryData, setSubCategoryItem, setSubCategoryList } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface SubCategoryScreenProps {
-    //selected category item
-    mainCategoryItem: DriveItemModel;
-    //selected category item
-    categoryItem: DriveItemModel;
-
     // category screen array
     categoryList: DriveItemModel[];
 
@@ -39,16 +29,17 @@ interface SubCategoryScreenProps {
     //set category list for selected item
     setSubCategoryList: (data: DriveItemModel[]) => void;
 
-    //set
-    setSubCategoryItem: (selectedCategoryItem: DriveItemModel) => void;
     isLoading: boolean;
     setIsLoading: (boolean) => void;
-    clearSubCategoryDataOnBack: () => void;
-    clearSubCategoryDataOnBreadCrum: () => void;
+    //all selected selectedCategoryData
+    selectedCategoryData: DriveItemModel[];
+    setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
 }
 
 interface SubCategoryScreenState {
     breadCrumbList: any;
+    pageTitle: string;
+    subTitle: string;
 }
 
 class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScreenState> {
@@ -56,15 +47,24 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
         super(props);
         this.state = {
             breadCrumbList: [],
+            pageTitle: '',
+            subTitle: '',
         };
     }
     componentDidMount() {
-        this.props.setIsLoading(true);
         this.getCategoryData();
     }
 
     async getCategoryData() {
-        const subCategoryData = await dbHelper.getForSelectedCategory(this.props.categoryItem);
+        this.props.setIsLoading(true);
+        const selectedCategoryData = this.props.selectedCategoryData;
+        let item: any = {};
+        item = selectedCategoryData[selectedCategoryData.length - 1];
+
+        let subItem: any = {};
+        subItem = selectedCategoryData[selectedCategoryData.length - 2];
+
+        const subCategoryData = await dbHelper.getForSelectedCategory(item);
         LogManager.debug('subCategoryData=', subCategoryData);
         this.props.setSubCategoryList(subCategoryData);
 
@@ -77,12 +77,12 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
             },
             {
                 id: 1,
-                title: this.props.mainCategoryItem.title,
+                title: item.title,
                 isFirstCrumb: false,
             },
             {
                 id: 2,
-                title: this.props.categoryItem.title,
+                title: subItem.title,
                 isFirstCrumb: false,
                 isDisabled: true,
             },
@@ -90,32 +90,69 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
 
         this.setState({
             breadCrumbList: breadCrumbList,
+            pageTitle: item.title,
+            subTitle: subItem.title,
         });
 
         this.props.setIsLoading(false);
     }
 
+    componentDidUpdate(prevProp: SubCategoryScreenProps) {
+        console.log('componentDidUpdate here for sub Category');
+
+        if (
+            this.props.selectedCategoryData &&
+            this.props.selectedCategoryData.length > 1 &&
+            this.props.selectedCategoryData[1] !== prevProp.selectedCategoryData[1]
+        ) {
+            console.log('CategoryItem changed');
+
+            if (this.props.selectedCategoryData[1].contentType == 'Document Set') {
+                NavigationManager.navigatePop('CategoryDetailScreen', 2);
+            } else {
+                this.getCategoryData();
+            }
+        }
+    }
+
     onSubCategoryClick = (item) => {
         console.log(item);
-        this.props.setSubCategoryItem(item);
+        LogManager.warn('sub category screen click=', item);
+        let data = Object.assign([], this.props.selectedCategoryData);
+        data.push(item);
+        this.props.setSelectedCategoryData(data);
+
         NavigationManager.navigate('CategoryDetailScreen');
     };
 
     breadcrumbClick = (item: any) => {
-        console.log('item =>', item);
+        console.log('breadcrumb Sub Category screen =>', item);
         if (item.id === 0) {
             //home click
+            let data = [];
+            this.props.setSelectedCategoryData(data);
             NavigationManager.navigateAndClear('HomeScreen');
-            this.props.clearSubCategoryDataOnBreadCrum();
-        } else if (item.id === 1) {
-            //category item clicked
-            NavigationManager.goBack();
-            this.props.clearSubCategoryDataOnBack();
+        } else {
+            this.goBack();
         }
     };
     goBack = () => {
-        this.props.clearSubCategoryDataOnBack();
+        let data = Object.assign([], this.props.selectedCategoryData);
+        if (data.length > 1) data.pop();
+        this.props.setSelectedCategoryData(data);
         NavigationManager.goBack();
+    };
+
+    onCategoryClick = (item) => {
+        LogManager.warn('category item changed click=', item);
+        let data = Object.assign([], this.props.selectedCategoryData);
+        data.pop();
+        data.push(item);
+        this.props.setSelectedCategoryData(data);
+
+        if (item.contentType == 'Document Set') {
+            NavigationManager.navigate('CategoryDetailScreen');
+        }
     };
 
     render() {
@@ -123,15 +160,15 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
-                <CustomTopNav back subTitle={this.props.categoryItem.title} onPressBack={this.goBack} />
+                <CustomTopNav back subTitle={this.state.subTitle} onPressBack={this.goBack} />
                 <CustomBody>
                     {this.props.subCategoryList && this.props.categoryList ? (
                         <View style={style.container}>
                             <View style={style.flatListViewConatiner}>
                                 <CustomFlatList
                                     categoryList={this.props.categoryList}
-                                    selectedElement={this.props.categoryItem}
-                                    isDisabled={true}
+                                    selectedElement={this.props.selectedCategoryData[1]}
+                                    onPressListItem={this.onCategoryClick}
                                 />
                             </View>
                             <View style={style.SecondflatListViewConatiner}>
@@ -163,11 +200,10 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
 }
 
 const mapStateToProps = (state: RootState) => ({
-    mainCategoryItem: state.categoryReducer.mainCategoryItem,
-    categoryItem: state.categoryReducer.categoryItem,
     categoryList: state.categoryReducer.categoryList,
     subCategoryList: state.categoryReducer.subCategoryList,
     isLoading: state.appDataReducer.appDataLoading,
+    selectedCategoryData: state.categoryReducer.selectedCategoryData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -178,15 +214,11 @@ const mapDispatchToProps = (dispatch: any) => ({
     setSubCategoryItem: (selectedCategoryItems: DriveItemModel) => {
         dispatch(setSubCategoryItem(selectedCategoryItems));
     },
-    setIsLoading: (value: boolean) => {
-        dispatch(setAppDataLoading());
+    setIsLoading: (isLoading: boolean) => {
+        dispatch(setAppDataLoading(isLoading));
     },
-    clearSubCategoryDataOnBack: () => {
-        dispatch(clearSubCategoryDataOnBack());
+    setSelectedCategoryData: (selectedItems: DriveItemModel[]) => {
+        dispatch(setSelectedCategoryData(selectedItems));
     },
-    clearSubCategoryDataOnBreadCrum: () => {
-        dispatch(clearSubCategoryDataOnBreadCrum());
-    },
-   
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SubCategoryScreen);
