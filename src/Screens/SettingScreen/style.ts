@@ -6,7 +6,7 @@ export const style = StyleSheet.create({
     mainContainer: {
         flex: 1,
         flexDirection: 'row',
-        padding: 8,
+        padding: 16,
         justifyContent: 'space-between'
     },
     contactConatiner: {
@@ -15,7 +15,17 @@ export const style = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 1,
         padding: 8,
-        height: '50%'
+        height: '60%',
+         // for shadow of card
+         shadowColor: BaseThemeStyle.colors.gray,
+         opacity: 1,
+         shadowRadius: 8,
+         elevation: 20,
+         shadowOffset: { width: 5, height: 5 },
+         shadowOpacity: 5,
+    },
+    navContainer:{
+        paddingLeft:16,paddingRight:16
     },
     appInfoConatiner: {
         flex: .60,
@@ -23,7 +33,14 @@ export const style = StyleSheet.create({
         borderRadius: 1,
         backgroundColor: 'white',
         padding: 8,
-        height: '60%'
+        height: '80%',
+         // for shadow of card
+         shadowColor: BaseThemeStyle.colors.gray,
+         opacity: 1,
+         shadowRadius: 8,
+         elevation: 20,
+         shadowOffset: { width: 5, height: 5 },
+         shadowOpacity: 5,
     },
     rowTextContainer: {
         flexDirection: 'row',

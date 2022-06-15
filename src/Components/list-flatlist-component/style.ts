@@ -19,15 +19,14 @@ export const style = StyleSheet.create({
         backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
         flexDirection: 'row',
         paddingVertical: 20,
-        paddingHorizontal: 3,
-    },
-    mainIconstyle: {
-        height: 40,
-        width: 45,
-        borderRadius: 47,
+        paddingHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: BaseThemeStyle.colors.white,
+    },
+    mainIconstyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft:10
     },
     textStyle: {
         fontSize: 23,
@@ -39,7 +38,7 @@ export const style = StyleSheet.create({
     },
     rightIconstyle: {
         marginLeft: 'auto',
-         padding: 8,
+        padding: 8,
         justifyContent: 'center',
         alignItems: 'center',
     },

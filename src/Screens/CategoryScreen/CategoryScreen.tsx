@@ -148,7 +148,9 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
-                <CustomTopNav back subTitle={this.state.pageTitle} onPressBack={this.goBack} />
+                <View style={style.navContainer}>
+                <CustomTopNav back subTitle={this.state.pageTitle} onPressBack={this.goBack} isShowCard smallHeader />
+                </View>
                 <CustomBody>
                     {this.props.mainList && this.props.categoryList ? (
                         <View style={style.container}>

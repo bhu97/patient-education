@@ -18,9 +18,10 @@ export const style = StyleSheet.create({
     indicatorContainer: {
         width: 100,
         height: 100,
-        backgroundColor: BaseThemeStyle.colors.lightGray,
-        opacity: .8,
-        borderRadius: BaseThemeStyle.dimensions.borderRadiuses.containers,
+        // backgroundColor: BaseThemeStyle.colors.lightGray,
+        // opacity: .8,
+        // borderRadius: BaseThemeStyle.dimensions.borderRadiuses.containers,
+        marginBottom:20,
         alignItems: 'center',
         justifyContent: 'center',
     },

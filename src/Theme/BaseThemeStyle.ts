@@ -33,6 +33,7 @@ export const BaseThemeStyle = {
         bodyVertical: 0,
         containers: 8,
         formElements: 16,
+        listElement:20,
         bottomContainer: 24,
     },
     margin: {

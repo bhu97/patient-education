@@ -10,6 +10,7 @@ export const style = StyleSheet.create({
         flexGrow: 1,
         position: 'relative',
         margin: BaseThemeStyle.margin.screenContainer,
+        backgroundColor:"#F2F3F5"
     },
     notchPadding: {
         paddingTop: getStatusBarHeight(),

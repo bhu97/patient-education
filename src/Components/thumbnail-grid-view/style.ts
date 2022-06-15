@@ -10,8 +10,6 @@ export const style = StyleSheet.create({
     backgroundViewStyle: {
         flex: .5,
         margin: BaseThemeStyle.margin.containers,
-        borderWidth: 2,
-        borderColor: BaseThemeStyle.colors.gray,
     },
     imageStyle: {
      resizeMode: 'stretch',
@@ -53,10 +51,10 @@ export const style = StyleSheet.create({
     },
     itemContainer: {
         flexDirection: 'row',
-        borderWidth: 1,
         height: 'auto',
         backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
-        borderColor: BaseThemeStyle.colors.gray,
+        paddingTop:3,
+        paddingBottom:3,
         boxShadow: '10px 10px 5px lightblue',
         alignItems: 'center',
     },
@@ -112,8 +110,8 @@ export const style = StyleSheet.create({
 
     emptyDataText:{
         fontSize: 22, fontWeight: '500', padding: 10 ,
-        marginLeft:150
-       
+        marginLeft:150,
+        color:BaseThemeStyle.colors.textColor
     },
 
 });

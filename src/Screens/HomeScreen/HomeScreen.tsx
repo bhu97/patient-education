@@ -91,11 +91,13 @@ class HomePage extends Component<HomePageProps, HomePageState> {
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
-                <CustomTopNav
-                    isShowImage={true}
-                    title={BaseLocalization.welcome}
-                    subTitle={BaseLocalization.selectCategory}
-                />
+                <View style={style.navContainer}>
+                    <CustomTopNav
+                        isShowCard
+                        title={BaseLocalization.welcome}
+                        subTitle={BaseLocalization.selectCategory}
+                    />
+                </View>
                 <CustomBody>
                     {this.props.mainList ? (
                         <View style={style.container}>

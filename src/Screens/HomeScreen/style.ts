@@ -10,6 +10,9 @@ export const style = StyleSheet.create({
     flatListViewContainer: {
         flex: 0.5,
     },
+    navContainer:{
+        paddingLeft:16,paddingRight:16
+    },
     textStyle:{
         fontSize: 22,
         fontWeight: 'bold',

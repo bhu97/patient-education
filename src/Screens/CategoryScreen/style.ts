@@ -18,6 +18,9 @@ export const style = StyleSheet.create({
         padding: BaseThemeStyle.paddings.containers,
         flexDirection: 'row',
     },
+    navContainer:{
+        paddingLeft:16,paddingRight:16
+    },
     imageContainer:{
         justifyContent: 'center',
         alignItems: 'center',

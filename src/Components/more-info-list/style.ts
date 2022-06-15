@@ -14,7 +14,6 @@ export const style = StyleSheet.create({
     },
     itemContainer: {
         flexDirection: 'row',
-        borderWidth: 1,
         height: 'auto',
         backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
         borderColor: BaseThemeStyle.colors.gray,
@@ -29,7 +28,6 @@ export const style = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 2,
         margin: BaseThemeStyle.margin.containers,
     },
     folderTextContainer: {

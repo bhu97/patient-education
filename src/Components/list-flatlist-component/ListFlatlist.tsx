@@ -4,6 +4,7 @@ import { style } from './style';
 import Icon from 'react-native-vector-icons/Entypo';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { listitem } from '../../Model/list-data-model';
+import Images from '../../Theme/Images';
 
 const rightSwipeActions = () => {
     return (
@@ -18,11 +19,11 @@ const Lists = ({ item }) => (
         <Swipeable renderRightActions={rightSwipeActions}>
             <View style={style.listviewstyle}>
                 <View style={style.mainIconstyle}>
-                    <Icon name="text" size={30} bold color="blue" />
+                    <Image source={Images.favouritesListImage} />
                 </View>
                 <Text style={style.textStyle}>{item.text}</Text>
                 <View style={style.rightIconstyle}>
-                    <Icon name="chevron-thin-right" size={25} bold color="blue" />
+                <Image source={Images.favouritesListNavImage} />
                 </View>
             </View>
         </Swipeable>

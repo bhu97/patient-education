@@ -12,7 +12,7 @@ function Routes() {
                 gestureEnabled: false,
                 header: undefined,
                 headerShown: false,
-                cardStyle: { backgroundColor: 'white' },
+                cardStyle: { backgroundColor: '#F2F3F5' },
             }}
         >
             <Stack.Screen name="HomeScreen" component={CustomNavigator} />

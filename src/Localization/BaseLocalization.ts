@@ -31,5 +31,7 @@ export const BaseLocalization = {
     fileOptions: LocalizationManager.getLocalizedStrings('fileOptions'),
     noDataText: LocalizationManager.getLocalizedStrings('noDataText'),
     noDataOnGrid: LocalizationManager.getLocalizedStrings('noDataOnGrid'),
+    favTitleText: LocalizationManager.getLocalizedStrings('favTitleText'),
+    favSubTitleText: LocalizationManager.getLocalizedStrings('favSubTitleText'),
 
 };

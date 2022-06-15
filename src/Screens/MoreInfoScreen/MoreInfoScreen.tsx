@@ -21,6 +21,7 @@ import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
 import { setMoreInfoScreenData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
+import Images from '../../Theme/Images';
 import { style } from '../CategoryDetailScreen/style';
 
 interface MoreInfoScreenProps {
@@ -238,7 +239,9 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
-                <CustomTopNav back subTitle={this.state.currentTitle} onPressBack={this.goBack} />
+                <View style={style.navContainer}>
+                <CustomTopNav back subTitle={this.state.currentTitle} onPressBack={this.goBack} smallHeader isShowCard  imageName={Images.detailImage} />
+                </View>
                 <CustomBody>
                     <View style={style.mainContainer}>
                         {this.state.gridViewData && (

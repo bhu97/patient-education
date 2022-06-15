@@ -1,7 +1,8 @@
 import React, { Fragment, PureComponent } from 'react';
-import { ActivityIndicator, View, Text } from 'react-native';
+import { ActivityIndicator, View, Text,Image } from 'react-native';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
+import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface FullScreenLoaderProps {
@@ -25,7 +26,8 @@ export default class FullScreenLoader extends PureComponent<FullScreenLoaderProp
                         {this.props.showSpinner && (
                             <>
                             <View style={style.indicatorContainer}>
-                                <ActivityIndicator size={'large'} color={BaseThemeStyle.colors.blue}/>
+                            <Image source={Images.loaderImage} />
+                                {/* <ActivityIndicator size={'large'} color={BaseThemeStyle.colors.blue}/> */}
                              
                             </View>
                             <Text style={style.textStyle}>{BaseLocalization.pleaseWait}</Text>

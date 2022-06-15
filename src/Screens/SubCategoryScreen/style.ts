@@ -14,7 +14,9 @@ export const style = StyleSheet.create({
     SecondflatListViewConatiner: {
         flex: 0.5,
     },
-
+    navContainer:{
+        paddingLeft:16,paddingRight:16
+    },
     botomView: {
         padding: BaseThemeStyle.paddings.containers,
         flexDirection: 'row',

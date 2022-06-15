@@ -26,6 +26,7 @@ import {
     setSelectedCategoryData,
 } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
+import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface CategoryDetailScreenProps {
@@ -212,7 +213,9 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
-                <CustomTopNav back subTitle={this.state.pageTitle} onPressBack={this.goBack} />
+                <View style={style.navContainer}>
+                <CustomTopNav back subTitle={this.state.pageTitle} onPressBack={this.goBack} smallHeader isShowCard  imageName={Images.detailImage} />
+                </View>
                 <CustomBody>
                     <View style={style.mainContainer}>
                         {this.props.gridViewData && (

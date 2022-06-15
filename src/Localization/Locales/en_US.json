@@ -1,5 +1,5 @@
 {
-    "welcome": "Welcome",
+    "welcome": "Welcome!",
     "pleaseWait": "Loading, Please wait",
     "howAreYou": "How are you",
     "noInternetConnection": "The device is not connected to the internet. Please check connectivity and try again.",
@@ -24,5 +24,7 @@
     "download":"Download",
     "fileOptions":"File Options",
     "noDataText":"There are either no files to display or you have no access to the content. Please check the selected country in the settings or reach out to the respective support contact.",
-    "noDataOnGrid":"There are no file here yet"
+    "noDataOnGrid":"There are no file here yet",
+    "favTitleText":"Patient Priority Topics",
+    "favSubTitleText":"Create lists and store your files in them."
 }

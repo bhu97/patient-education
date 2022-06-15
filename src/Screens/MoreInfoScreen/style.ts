@@ -15,6 +15,9 @@ export const style = StyleSheet.create({
         borderRadius: 1,
         padding: BaseThemeStyle.paddings.containers,
     },
+    navContainer:{
+        paddingLeft:16,paddingRight:16
+    },
     moreInfoContainer: {
         flex: 0.4,
         flexDirection: 'column',

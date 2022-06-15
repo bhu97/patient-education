@@ -80,12 +80,14 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
+                 <View style={style.navContainer}>
                 <CustomTopNav
                     title={BaseLocalization.settingTitle}
                     subTitle={BaseLocalization.settingSubTitle}
-                    isShowImage={true}
-                    imageName={Images.superSignLogoWhite}
+                    isShowCard
+                    imageName={Images.topNavImageSettingScreen}
                 />
+                </View>
                 <CustomBody>
                     <View style={style.mainContainer}>
                         <View style={style.contactConatiner}>

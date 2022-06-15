@@ -14,7 +14,7 @@ export const style = StyleSheet.create({
     textStyle: {
         flex: 0.6,
         alignContent: 'flex-start',
-        padding: BaseThemeStyle.paddings.containers,
+        paddingLeft: BaseThemeStyle.paddings.listElement,
         ...BaseThemeStyle.fonts.subtitle0,
         color: BaseThemeStyle.colors.iconColor,
     },
