@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#ECEFF1',
     },
-    navContainer:{
-        paddingLeft:16,paddingRight:16
+    navContainer: {
+        paddingLeft: 16,
+        paddingRight: 16,
     },
 });

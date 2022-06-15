@@ -19,22 +19,20 @@ import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
-import { setMoreInfoScreenData } from '../../Redux/category/categorySlice';
+import { setMoreInfoScreenData, setSelectedCategoryData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
-import { style } from '../CategoryDetailScreen/style';
+import { style } from './style';
 
 interface MoreInfoScreenProps {
     setMoreInfoScreenData: (data: MoreInfoListModel[]) => void;
     moreInfoScreenData: MoreInfoListModel[];
-    //selected category item
-    mainCategoryItem: DriveItemModel;
-    //selected category item
-    categoryItem: DriveItemModel;
-    //selected sub category item
-    subCategoryItem: DriveItemModel;
     setIsLoading: (value: boolean) => void;
     isLoading: boolean;
+    //all selected selectedCategoryData
+    selectedCategoryData: DriveItemModel[];
+    // Method to set new selected details
+    setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
 }
 
 interface MoreInfoScreenState {
@@ -64,6 +62,7 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
     async loadScreenData() {
         this.props.setIsLoading(true);
         const moreInfoScreenData = this.props.moreInfoScreenData;
+
         console.log('moreInfoScreenData=', moreInfoScreenData);
 
         const currentMoreInfoObject: MoreInfoListModel = moreInfoScreenData[moreInfoScreenData.length - 1];
@@ -78,8 +77,8 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         const gridData = await createGridModelData(categoryDetailData, thumbnailList);
         LogManager.debug('gridData=', gridData);
 
-        let moreFolderData = [];
-        let moreFileData = [];
+        let moreFolderData: any = [];
+        let moreFileData: any = [];
 
         if (currentMoreInfoObject.linkedFolders != null && currentMoreInfoObject.linkedFolders != '') {
             const linkedFolderData = linkedUrlListToArray(currentMoreInfoObject.linkedFolders);
@@ -99,8 +98,8 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         }
 
         // Merge arrays
-        let MoreInfoListData = [];
-        var moreViewData = [];
+        let MoreInfoListData: any = [];
+        var moreViewData: any = [];
         console.log('start =', MoreInfoListData);
 
         if (
@@ -122,62 +121,37 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         }
         console.log('ends =', MoreInfoListData);
 
-        //create breadcrumb list along with title to display, index and screen name on click
-        //default 0 will home, 1 will be category 2 will be sub category and 3 will be category details
-        //create breadcrumb array
+        //create breadcrumb list
         let breadCrumbList = [
             {
                 id: 0,
                 title: 'Home',
                 isFirstCrumb: true,
             },
-            {
-                id: 1,
-                title: this.props.mainCategoryItem.title,
-                isFirstCrumb: false,
-            },
         ];
 
-        if (this.props.categoryItem.uniqueId != '0' && this.props.subCategoryItem.uniqueId != '0') {
-            console.log('all 4 options present');
-            //we have category /subcategory present
+        const selectedCategoryData = this.props.selectedCategoryData;
 
-            //create breadcrumb array
-            breadCrumbList.push(
-                {
-                    id: 2,
-                    title: this.props.categoryItem.title,
-                    isFirstCrumb: false,
-                },
-                {
-                    id: 3,
-                    title: this.props.subCategoryItem.title,
-                    isFirstCrumb: false,
-                },
-            );
-        } else if (this.props.categoryItem.uniqueId != '0' && this.props.subCategoryItem.uniqueId == '0') {
-            console.log('only 3 options present Home , main category & category');
-            //if subcategory category items unique id is 0 means no subcategory present
-            breadCrumbList.push({
-                id: 2,
-                title: this.props.categoryItem.title,
+        selectedCategoryData.forEach((selectedCategoryDataObj, index) => {
+            console.log('Index: ' + index + ' Value: ' + selectedCategoryDataObj);
+            let breadCrumbListIndex = 1 + index;
+            var obj = {
+                id: breadCrumbListIndex,
+                title: selectedCategoryDataObj.title ? selectedCategoryDataObj.title : '',
                 isFirstCrumb: false,
-            });
-        } else {
-            console.log('only 2 options present Home & main category');
-            //if category items unique id is 0 means no category/subcategory present
-        }
-
-        //check more info array and update breadcrumb to its list
+                uniqueId: selectedCategoryDataObj.uniqueId,
+            };
+            breadCrumbList.push(obj);
+        });
 
         moreInfoScreenData.forEach((moreInfoScreenDataObj, index) => {
             console.log('Index: ' + index + ' Value: ' + moreInfoScreenDataObj);
-            // 4 because till index 3 (home,category,subcategory, category details are considered)
             let breadCrumbListIndex = 4 + index;
             var obj = {
                 id: breadCrumbListIndex,
                 title: moreInfoScreenDataObj.title,
                 isFirstCrumb: false,
+                uniqueId: moreInfoScreenDataObj.uniqueId,
             };
             breadCrumbList.push(obj);
         });
@@ -193,6 +167,20 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         this.props.setIsLoading(false);
     }
 
+    componentDidUpdate(prevProp: MoreInfoScreenProps) {
+        console.log('componentDidUpdate here for More info sscren');
+
+        if (
+            this.props.moreInfoScreenData.length > 0 &&
+            this.props.moreInfoScreenData.length !== prevProp.moreInfoScreenData.length
+        ) {
+            console.log('data added');
+            this.loadScreenData();
+        } else if (this.props.moreInfoScreenData.length == 0) {
+            console.log('No more info');
+        }
+    }
+
     goBack = () => {
         let data = Object.assign([], this.props.moreInfoScreenData);
         if (data.length > 1) {
@@ -203,7 +191,7 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
             }
             this.props.setMoreInfoScreenData(data);
         } else {
-            let data=[];
+            let data = [];
             this.props.setMoreInfoScreenData(data);
             NavigationManager.goBack();
         }
@@ -213,24 +201,52 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         let data = Object.assign([], this.props.moreInfoScreenData);
         data.push(moreItem);
         this.props.setMoreInfoScreenData(data);
-        this.loadScreenData();
     };
 
     breadcrumbClick = (item: any) => {
-        console.log('item1 =>', item);
+        console.log('breadcrumb More info screen =>', item);
+
         if (item.id === 0) {
             //home click
+            let data = [];
+            this.props.setSelectedCategoryData(data);
             NavigationManager.navigateAndClear('HomeScreen');
-        } else if (item.id === 1) {
-            //category item clicked
-            NavigationManager.navigateAndClear('CategoryScreen');
-        } else if (item.id === 2) {
-            //sub category item clicked
-            NavigationManager.navigateAndClear('SubCategoryScreen');
-        } else if (item.id === 3) {
-            NavigationManager.navigateAndClear('CategoryDetailScreen');
+        } else if (item.id === 1 || item.id === 2) {
+            let categoryData = Object.assign([], this.props.selectedCategoryData);
+            console.log('categoryData=>', categoryData);
+
+            var clickedIndex = categoryData.findIndex((x) => x.uniqueId === item.uniqueId);
+            console.log('clickedIndex=>', clickedIndex);
+
+            if (clickedIndex != -1) {
+                //as we need to remove more info object after selected index hence +1
+                categoryData.length = clickedIndex + 1;
+                console.log('new categoryData->', categoryData);
+                this.props.setSelectedCategoryData(categoryData);
+            }
+
+            if (item.id == 1) {
+                console.log('category');
+                NavigationManager.navigateAndClear('CategoryScreen');
+            } else if (item.id == 2) {
+                console.log('subcategory=>');
+                NavigationManager.navigateAndClear('CategoryDetailScreen');
+            }
+        } else if (item.id > 3) {
+            let moreInfoData = Object.assign([], this.props.moreInfoScreenData);
+            console.log('moreInfoData=>', moreInfoData);
+
+            var clickedIndex = moreInfoData.findIndex((x) => x.uniqueId === item.uniqueId);
+            console.log('clickedIndex=>', clickedIndex);
+
+            if (clickedIndex != -1) {
+                //as we need to remove more info object after selected index hence +1
+                moreInfoData.length = clickedIndex + 1;
+                console.log('new moreInfoData->', moreInfoData);
+                this.props.setMoreInfoScreenData(moreInfoData);
+            }
         } else {
-            this.goBack();
+            console.log('add here');
         }
     };
 
@@ -240,7 +256,14 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
         ) : (
             <MainContainer>
                 <View style={style.navContainer}>
-                <CustomTopNav back subTitle={this.state.currentTitle} onPressBack={this.goBack} smallHeader isShowCard  imageName={Images.detailImage} />
+                    <CustomTopNav
+                        back
+                        subTitle={this.state.currentTitle}
+                        onPressBack={this.goBack}
+                        smallHeader
+                        isShowCard
+                        imageName={Images.detailImage}
+                    />
                 </View>
                 <CustomBody>
                     <View style={style.mainContainer}>
@@ -270,10 +293,8 @@ class MoreInfoScreen extends PureComponent<MoreInfoScreenProps, MoreInfoScreenSt
 
 const mapStateToProps = (state: RootState) => ({
     moreInfoScreenData: state.categoryReducer.moreInfoScreenData,
-    mainCategoryItem: state.categoryReducer.mainCategoryItem,
-    categoryItem: state.categoryReducer.categoryItem,
-    subCategoryItem: state.categoryReducer.subCategoryItem,
     isLoading: state.appDataReducer.appDataLoading,
+    selectedCategoryData: state.categoryReducer.selectedCategoryData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -282,6 +303,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
+    },
+    setSelectedCategoryData: (selectedItems: DriveItemModel[]) => {
+        dispatch(setSelectedCategoryData(selectedItems));
     },
 });
 

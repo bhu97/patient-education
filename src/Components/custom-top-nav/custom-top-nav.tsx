@@ -11,10 +11,10 @@ interface CustomTopNavProps {
     isShowCard?: boolean | false;
     imageName?: any;
     backgroundColor?: string;
-    smallHeader?:boolean;
+    smallHeader?: boolean;
 }
 
-interface CustomTopNavState { }
+interface CustomTopNavState {}
 
 export default class CustomTopNav extends PureComponent<CustomTopNavProps, CustomTopNavState> {
     constructor(props: CustomTopNavProps) {
@@ -23,21 +23,35 @@ export default class CustomTopNav extends PureComponent<CustomTopNavProps, Custo
 
     render() {
         return (
-            <View style={[{...style.container, height: this.props.smallHeader  ? 80 :125 },this.props.isShowCard?style.containerShadow:style.container]}>
-                 <View style={[this.props.smallHeader?style.smallHeaderText:style.textContainer]}>
+            <View
+                style={[
+                    { ...style.container, height: this.props.smallHeader ? 80 : 125 },
+                    this.props.isShowCard ? style.containerShadow : style.container,
+                ]}
+            >
+                <View style={[this.props.smallHeader ? style.smallHeaderText : style.textContainer]}>
                     {this.props.back ? (
                         <TouchableOpacity onPress={this.props.onPressBack}>
-                             <Image source={Images.backArrowImage} />
+                            <Image source={Images.backArrowImage} />
                         </TouchableOpacity>
-                    ):<Text style={style.titleText}>{this.props.title}</Text>}
-                    <Text style={{...style.subTitleText,marginLeft:this.props.smallHeader?30:0,marginTop:this.props.smallHeader?0:10}} numberOfLines={2}>
+                    ) : (
+                        <Text style={style.titleText}>{this.props.title}</Text>
+                    )}
+                    <Text
+                        style={{
+                            ...style.subTitleText,
+                            marginLeft: this.props.smallHeader ? 30 : 0,
+                            marginTop: this.props.smallHeader ? 0 : 10,
+                        }}
+                        numberOfLines={2}
+                    >
                         {this.props.subTitle}
                     </Text>
                 </View>
-               
+
                 <View style={style.imageContainer}>
                     <Image source={this.props.imageName} style={style.imageStyle} />
-                    </View>
+                </View>
             </View>
         );
     }

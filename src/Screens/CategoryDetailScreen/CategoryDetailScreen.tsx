@@ -199,13 +199,6 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         } else {
             this.goBack();
         }
-        //
-        //     //category item clicked
-        //     NavigationManager.navigateAndClear('CategoryScreen');
-        // } else if (item.id === 2) {
-        //     //sub category item clicked
-        //     NavigationManager.goBack();
-        // }
     };
 
     render() {
@@ -214,7 +207,14 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         ) : (
             <MainContainer>
                 <View style={style.navContainer}>
-                <CustomTopNav back subTitle={this.state.pageTitle} onPressBack={this.goBack} smallHeader isShowCard  imageName={Images.detailImage} />
+                    <CustomTopNav
+                        back
+                        subTitle={this.state.pageTitle}
+                        onPressBack={this.goBack}
+                        smallHeader
+                        isShowCard
+                        imageName={Images.detailImage}
+                    />
                 </View>
                 <CustomBody>
                     <View style={style.mainContainer}>
@@ -253,9 +253,6 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
 const mapStateToProps = (state: RootState) => ({
     gridViewData: state.categoryReducer.gridViewData,
     moreInfoData: state.categoryReducer.moreInfoData,
-    // mainCategoryItem: state.categoryReducer.mainCategoryItem,
-    categoryItem: state.categoryReducer.categoryItem,
-    subCategoryItem: state.categoryReducer.subCategoryItem,
     isLoading: state.appDataReducer.appDataLoading,
 
     selectedCategoryData: state.categoryReducer.selectedCategoryData,

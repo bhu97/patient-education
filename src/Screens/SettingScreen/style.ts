@@ -1,46 +1,46 @@
 import { StyleSheet } from 'react-native';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 
-
 export const style = StyleSheet.create({
     mainContainer: {
         flex: 1,
         flexDirection: 'row',
         padding: 16,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     contactConatiner: {
-        flex: .35,
+        flex: 0.35,
         flexDirection: 'column',
         backgroundColor: 'white',
         borderRadius: 1,
         padding: 8,
         height: '60%',
-         // for shadow of card
-         shadowColor: BaseThemeStyle.colors.gray,
-         opacity: 1,
-         shadowRadius: 8,
-         elevation: 20,
-         shadowOffset: { width: 5, height: 5 },
-         shadowOpacity: 5,
+        // for shadow of card
+        shadowColor: BaseThemeStyle.colors.gray,
+        opacity: 1,
+        shadowRadius: 8,
+        elevation: 20,
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 5,
     },
-    navContainer:{
-        paddingLeft:16,paddingRight:16
+    navContainer: {
+        paddingLeft: 16,
+        paddingRight: 16,
     },
     appInfoConatiner: {
-        flex: .60,
+        flex: 0.6,
         flexDirection: 'column',
         borderRadius: 1,
         backgroundColor: 'white',
         padding: 8,
         height: '80%',
-         // for shadow of card
-         shadowColor: BaseThemeStyle.colors.gray,
-         opacity: 1,
-         shadowRadius: 8,
-         elevation: 20,
-         shadowOffset: { width: 5, height: 5 },
-         shadowOpacity: 5,
+        // for shadow of card
+        shadowColor: BaseThemeStyle.colors.gray,
+        opacity: 1,
+        shadowRadius: 8,
+        elevation: 20,
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 5,
     },
     rowTextContainer: {
         flexDirection: 'row',
@@ -65,12 +65,12 @@ export const style = StyleSheet.create({
     },
     boxView: {
         justifyContent: 'center',
-        flex: .5,
+        flex: 0.5,
     },
     textView: {
         justifyContent: 'center',
         alignItems: 'flex-end',
-        flex: .5,
+        flex: 0.5,
     },
     horizontalline: {
         borderBottomColor: BaseThemeStyle.colors.black,
@@ -78,5 +78,4 @@ export const style = StyleSheet.create({
         alignItems: 'center',
         padding: 15,
     },
-
-})
+});

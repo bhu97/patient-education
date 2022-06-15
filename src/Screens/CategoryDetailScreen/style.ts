@@ -22,8 +22,9 @@ export const style = StyleSheet.create({
         shadowOffset: { width: 5, height: 5 },
         shadowOpacity: 5,
     },
-    navContainer:{
-        paddingLeft:16,paddingRight:16
+    navContainer: {
+        paddingLeft: 16,
+        paddingRight: 16,
     },
     moreInfoContainer: {
         flex: 0.4,

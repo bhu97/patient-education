@@ -52,18 +52,6 @@ const NavigationManager = {
     },
 
     navigatePop(routeName: any, removeScreenIndex: number) {
-        // this.navigator!.dispatch(
-        //     CommonActions.reset({
-        //         index: index,
-        //         routes: [
-        //             {
-        //                 name: routeName,
-        //                 params: params,
-        //             },
-        //         ],
-        //     }),
-        // );
-
         this.navigator!.dispatch(StackActions.pop(removeScreenIndex));
         this.navigate(routeName);
     },

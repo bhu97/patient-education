@@ -22,7 +22,7 @@ interface SettingPageProps {
     setIsLoading: (boolean) => void;
     setSelectedCountry: (value: string) => void;
     selectedCountry: (string) => void;
-    navigation:any;
+    navigation: any;
 }
 
 interface SettingPageState {}
@@ -80,13 +80,13 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
-                 <View style={style.navContainer}>
-                <CustomTopNav
-                    title={BaseLocalization.settingTitle}
-                    subTitle={BaseLocalization.settingSubTitle}
-                    isShowCard
-                    imageName={Images.topNavImageSettingScreen}
-                />
+                <View style={style.navContainer}>
+                    <CustomTopNav
+                        title={BaseLocalization.settingTitle}
+                        subTitle={BaseLocalization.settingSubTitle}
+                        isShowCard
+                        imageName={Images.topNavImageSettingScreen}
+                    />
                 </View>
                 <CustomBody>
                     <View style={style.mainContainer}>

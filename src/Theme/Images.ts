@@ -33,11 +33,11 @@ const Images = {
     emptyImg: require(prefix + 'empty.png'),
     favoritesHeaderImg: require(prefix + 'illu_favorites.png'),
     emptyThumbnail: require(prefix + 'empty_thumbnail.png'),
-    favouritesListImage:require(prefix + 'circle_list.png'),
-    favouritesListNavImage:require(prefix + 'chevron_right_deepblue.png'),
-    backArrowImage:require(prefix + 'arrow_back.png'),
-    detailImage:require(prefix + 'illu_content.png'),
-    loaderImage:require(prefix + 'loader.png'),
+    favouritesListImage: require(prefix + 'circle_list.png'),
+    favouritesListNavImage: require(prefix + 'chevron_right_deepblue.png'),
+    backArrowImage: require(prefix + 'arrow_back.png'),
+    detailImage: require(prefix + 'illu_content.png'),
+    loaderImage: require(prefix + 'loader.png'),
 };
 
 /// ################################ Export ################################

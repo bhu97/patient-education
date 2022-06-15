@@ -19,10 +19,10 @@ export interface CategoryState {
 
     // used for / on category screen
     categoryList: IDriveItem[];
-    categoryItem: IDriveItem;
+
     // used for / on sub category screen
     subCategoryList: IDriveItem[];
-    subCategoryItem: IDriveItem;
+
     countryListData: Array<any>;
     selectedCountry: string;
     //
@@ -48,13 +48,7 @@ const initialState: CategoryState = {
 
     mainList: [],
 
-    categoryItem: {
-        uniqueId: '0',
-    },
     categoryList: [],
-    subCategoryItem: {
-        uniqueId: '0',
-    },
     moreInfoScreenData: [],
     userModelData: [],
     selectedCategoryData: [],
@@ -80,11 +74,6 @@ const categorySlice = createSlice({
         //set Sub Category data
         setSubCategoryList: (state, action: PayloadAction<DriveItemModel[]>) => {
             state.subCategoryList = action.payload;
-        },
-
-        //set selected sub Category (on click of category screen)
-        setSubCategoryItem: (state, action: PayloadAction<DriveItemModel>) => {
-            state.subCategoryItem = action.payload;
         },
 
         //grid view on category detail screen
@@ -121,7 +110,6 @@ export const {
     setMainCategoryList,
     setCategoryList,
     setSubCategoryList,
-    setSubCategoryItem,
     setGridViewData,
     setMoreInfoData,
     setMoreInfoScreenData,

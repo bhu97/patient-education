@@ -18,22 +18,22 @@ export const style = StyleSheet.create({
         padding: BaseThemeStyle.paddings.containers,
         flexDirection: 'row',
     },
-    navContainer:{
-        paddingLeft:16,paddingRight:16
+    navContainer: {
+        paddingLeft: 16,
+        paddingRight: 16,
     },
-    imageContainer:{
+    imageContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
         flexGrow: 6,
         height: '85%',
     },
-    secondtextStyle:{
+    secondtextStyle: {
         color: BaseThemeStyle.colors.textColor,
         fontSize: 22,
         textAlign: 'center',
         paddingVertical: 30,
         paddingHorizontal: 200,
-
     },
 });
