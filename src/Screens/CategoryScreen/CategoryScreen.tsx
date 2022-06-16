@@ -181,11 +181,13 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                         </View>
                     )}
                 </CustomBody>
+                <View style={style.navContainer}>
                 <CustomBottomContainer>
                     {this.state.breadCrumbList.length > 0 && (
                         <BreadcrumbFlatList breadCrumbList={this.state.breadCrumbList} onPress={this.breadcrumbClick} />
                     )}
                 </CustomBottomContainer>
+                </View>
             </MainContainer>
         );
     }

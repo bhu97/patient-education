@@ -50,7 +50,7 @@ export const BaseThemeStyle = {
         heights: {
             buttons: 44,
             topBars: 56,
-            bottomContainer: 100,
+            bottomContainer: 75,
             breadCrumbSquare: 50,
         },
         borderWidths: {

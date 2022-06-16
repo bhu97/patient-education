@@ -243,6 +243,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                         )}
                     </View>
                 </CustomBody>
+                <View style={style.navContainer}>
                 <CustomBottomContainer>
                     <CustomBottomContainer>
                         {this.state.breadCrumbList.length > 0 && (
@@ -253,6 +254,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                         )}
                     </CustomBottomContainer>
                 </CustomBottomContainer>
+                </View>
             </MainContainer>
         );
     }
