@@ -51,7 +51,6 @@ export class DatabaseManager {
                 },
             });
 
-            console.log(this.realm.schema);
             console.log('initializeRealm finished');
         } catch (error) {
             console.log('initializeRealm error=', error);

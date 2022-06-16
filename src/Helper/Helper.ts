@@ -109,14 +109,13 @@ export const createGridModelData = async (responseData: any, thumbnailResponse: 
     const ThumbnailData = thumbnailResponse.map((thumbnailObj: any) => {
         return Thumbnail.generate(thumbnailObj);
     });
-    console.log('createGridModelData ThumbnailData=>', ThumbnailData);
 
     gridModelData = responseData.map((responseObject: any) => {
         const thumbnailObj = ThumbnailData.find((x: any) => x.uniqueId === responseObject.uniqueId);
 
         return GridViewModel.generate(responseObject, thumbnailObj);
     });
-    console.log('createGridModelData gridModelData=>', gridModelData);
+
     return gridModelData;
 };
 
@@ -135,18 +134,18 @@ export const base64ToArrayBuffer = (binaryString: string) => {
 export const applyDriveItemFilter = (driveItems: IDriveItem[]): IDriveItem[] => {
     //RULE : filter out all files that start with a dot e.g. .flex
     driveItems = filterVersionFiles(driveItems);
-    LogManager.debug('rootItemData flex/light filter =', driveItems);
+    //LogManager.debug('rootItemData flex/light filter =', driveItems);
 
     //RULE : filter out all files that start with a dot e.g.  any whitelist.txt
     driveItems = filterWhitelistFiles(driveItems);
-    LogManager.debug('rootItemData whitelist filter =', driveItems);
+    //LogManager.debug('rootItemData whitelist filter =', driveItems);
 
     //RULE: filter out any folder that is named Linked Files
     driveItems = filterLinkedFilesFolder(driveItems);
-    console.log('rootItemData Linked filter=', driveItems);
+    //LogManager.debug('rootItemData Linked filter=', driveItems);
 
     // driveItems = createDriveModelData(driveItems);
-    // console.log('rootItemData createDriveModelData=', driveItems);
+    //LogManager.debug('rootItemData createDriveModelData=', driveItems);
 
     return driveItems;
 };
@@ -222,4 +221,24 @@ export function getFileSizeLiteral(fileSize: number) {
 //get linked item list in array
 export function linkedUrlListToArray(urlListText: string): string[] {
     return urlListText.split(',').map((url) => url.trim());
+}
+
+export function createBredCrumbList(selectedCategoryData: any): [] {
+    let breadCrumbList: any = [
+        {
+            id: 0,
+            title: 'Home',
+            isFirstCrumb: true,
+        },
+    ];
+    selectedCategoryData.forEach((selectedCategoryDataObj, index) => {
+        var obj = {
+            id: selectedCategoryDataObj.prvIndex + 1,
+            title: selectedCategoryDataObj.label ? selectedCategoryDataObj.label : '',
+            isFirstCrumb: false,
+            prvIndex: selectedCategoryDataObj.prvIndex,
+        };
+        breadCrumbList.push(obj);
+    });
+    return breadCrumbList;
 }

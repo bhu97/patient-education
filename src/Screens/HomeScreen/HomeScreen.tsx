@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Text } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
@@ -29,6 +29,8 @@ interface HomePageProps {
     fetchData: () => void;
     navigation: any;
     setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
+    //all selected selectedCategoryData
+    selectedCategoryData: any[];
 }
 
 interface HomePageState {}
@@ -72,19 +74,21 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 
     onClick = (item) => {
         LogManager.warn('home screen click=', item);
+        let test: any = {
+            data: item,
+            label: item.title,
+            prvIndex: this.props.selectedCategoryData.length, //0
+        };
         let data: any = [];
-        data.push(item);
+        data.push(test);
         this.props.setSelectedCategoryData(data);
+
         if (item.contentType == 'Document Set') {
             NavigationManager.navigate('CategoryDetailScreen');
         } else {
             NavigationManager.navigate('CategoryScreen');
         }
     };
-
-    callbackFunction() {
-        console.log('add call back for clear');
-    }
 
     render() {
         return this.props.appDataLoading ? (
@@ -136,6 +140,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 const mapStateToProps = (state: RootState) => ({
     mainList: state.categoryReducer.mainList,
     appDataLoading: state.appDataReducer.appDataLoading,
+    selectedCategoryData: state.categoryReducer.selectedCategoryData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

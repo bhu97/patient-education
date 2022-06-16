@@ -151,10 +151,8 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
             params,
             data.concat(response['value']),
         )) as Array<any>;
-        console.log('nextData: ' + nextData);
         return nextData;
     } else {
-        console.log('response.value: ' + response.value);
         return data.concat(response['value']);
     }
 };

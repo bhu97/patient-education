@@ -19,7 +19,7 @@ export class DBhelper {
         );
         LogManager.debug('countryData=', countryData);
 
-        let userCountryModelData = [];
+        let userCountryModelData: any = [];
         for (let countryObject of countryData) {
             userCountryModelData.push(UserModel.generate(countryObject));
         }
@@ -73,7 +73,7 @@ export class DBhelper {
         const userCountry = await this.getUser();
         LogManager.info('userCountry=', userCountry);
 
-        const countries = await this.getAllAvailableCountries();
+        const countries: any = await this.getAllAvailableCountries();
         LogManager.info('countries=', countries);
 
         var defaultUserCountry = countries.find((item) => item.countryName.toLocaleLowerCase() === 'master');
@@ -162,7 +162,7 @@ export class DBhelper {
             const normalizedWebUrl = normalizeUrl(webUrl);
 
             //sanitize url
-            const sanitizedWebUrl = sanitizeWebUrl(normalizedWebUrl);
+            var sanitizedWebUrl = sanitizeWebUrl(normalizedWebUrl);
 
             //decode ur remove special chars like %20
             const decodeWebUrl = decodeURIComponent(sanitizedWebUrl);
@@ -183,7 +183,7 @@ export class DBhelper {
         }
 
         LogManager.info('itemsForWeb=', itemsForWeb);
-        let moreInfoData = [];
+        let moreInfoData: any = [];
         if (itemsForWeb.length > 0) {
             for (let itemForWeb of itemsForWeb) {
                 LogManager.info('itemForWeb=', itemForWeb);

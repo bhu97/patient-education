@@ -10,7 +10,7 @@ import MainContainer from '../../Components/main-container/main-container';
 import MoreInfoList from '../../Components/more-info-list/more-info-list';
 import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
 import dbHelper from '../../Database/DBHelper';
-import { createGridModelData, linkedUrlListToArray } from '../../Helper/Helper';
+import { createBredCrumbList, createGridModelData, linkedUrlListToArray } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
@@ -47,7 +47,7 @@ interface CategoryDetailScreenProps {
     setIsLoading: (value: boolean) => void;
 
     //all selected selectedCategoryData
-    selectedCategoryData: DriveItemModel[];
+    selectedCategoryData: any[];
     setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
 }
 
@@ -73,10 +73,9 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         this.props.setIsLoading(true);
 
         const selectedCategoryData = this.props.selectedCategoryData;
-        let item: any = {};
-        item = selectedCategoryData[selectedCategoryData.length - 1];
 
-        LogManager.debug('CategoryDetailScreen Item =>', item);
+        const categoryDetailDataItem: any = selectedCategoryData[selectedCategoryData.length - 1];
+        const item = categoryDetailDataItem.data;
 
         let pageTitle = item.title;
         let linkedFolder = item.linkedFolders ? item.linkedFolders : '';
@@ -101,7 +100,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             LogManager.debug('linkedFolderData=', linkedFolderData);
 
             const moreInfo = await dbHelper.getItemsForContentPageWebUrls(linkedFolderData, true);
-            console.log('moreInfo folder=', moreInfo);
+            LogManager.debug('moreInfo folder=', moreInfo);
 
             moreFolderData.push(moreInfo);
         }
@@ -110,14 +109,13 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             LogManager.debug('linkedFileItemData=', linkedFileItemData);
 
             const moreInfo = await dbHelper.getItemsForContentPageWebUrls(linkedFileItemData, false);
-            console.log('moreInfo file=', moreInfo);
+            LogManager.debug('moreInfo file=', moreInfo);
             moreFileData.push(moreInfo);
         }
 
         // Merge arrays
         let MoreInfoListData: any = [];
         var moreViewData: any = [];
-        console.log('start =', MoreInfoListData);
 
         if (
             (moreFolderData.length == 0 && moreFileData.length == 0) ||
@@ -125,40 +123,19 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             (moreFolderData.length == 1 && moreFileData.length == 0)
         ) {
             moreViewData = [...moreFolderData, ...moreFileData];
-            console.log('moreViewData=', moreViewData);
             MoreInfoListData = moreViewData.length == 0 ? [] : moreViewData[0];
-            console.log('single / no data MoreInfoListData=', MoreInfoListData);
         } else if (moreFolderData.length == 1 && moreFileData.length == 1) {
             moreViewData = [...moreFolderData[0], ...moreFileData[0]];
-            console.log('moreViewData=', moreViewData);
             MoreInfoListData = moreViewData;
-            console.log('both data MoreInfoListData=', MoreInfoListData);
         } else {
             MoreInfoListData = [];
         }
-        console.log('ends =', MoreInfoListData);
         this.props.setIsLoading(false);
         this.props.setMoreInfoList(MoreInfoListData);
 
-        //create breadcrumb list
-        let breadCrumbList = [
-            {
-                id: 0,
-                title: 'Home',
-                isFirstCrumb: true,
-            },
-        ];
-
-        selectedCategoryData.forEach((selectedCategoryDataObj, index) => {
-            console.log('Index: ' + index + ' Value: ' + selectedCategoryDataObj);
-            let breadCrumbListIndex = 1 + index;
-            var obj = {
-                id: breadCrumbListIndex,
-                title: selectedCategoryDataObj.title ? selectedCategoryDataObj.title : '',
-                isFirstCrumb: false,
-            };
-            breadCrumbList.push(obj);
-        });
+        //create breadcrumb array
+        let breadCrumbList = createBredCrumbList(selectedCategoryData);
+        LogManager.debug('categoryScreen breadCrumbList=', breadCrumbList);
 
         this.setState({
             breadCrumbList: breadCrumbList,
@@ -166,38 +143,69 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         });
     }
 
-    goBack = () => {
-        let data = Object.assign([], this.props.selectedCategoryData);
-        if (data.length > 1) data.pop();
-        else data = [];
-        this.props.setSelectedCategoryData(data);
+    componentDidUpdate(prevProp: CategoryDetailScreenProps) {
+        if (
+            this.props.selectedCategoryData &&
+            this.props.selectedCategoryData.length > prevProp.selectedCategoryData.length
+        ) {
+            console.log('data added');
+            this.getCategoryDetailData();
+        }
+        // else if (
+        //     this.props.selectedCategoryData &&
+        //     this.props.selectedCategoryData.length == prevProp.selectedCategoryData.length - 1 &&
+        //     prevProp.selectedCategoryData[prevProp.selectedCategoryData.length - 1].isDetailScreen
+        // ) {
+        //     console.log('data removed');
+        //     this.getCategoryDetailData();
+        // }
+    }
 
-        NavigationManager.goBack();
+    goBack = () => {
+        let data: any = Object.assign([], this.props.selectedCategoryData);
+        let isDetailScreen = data[data.length - 1].isDetailScreen ?? false;
+        data.pop();
+        this.props.setSelectedCategoryData(data);
+        if (!isDetailScreen) {
+            NavigationManager.goBack();
+        }
+        // else {
+        //     this.getCategoryDetailData();
+        // }
     };
 
-    goToMoreScreen = (moreItem: MoreInfoListModel) => {
-        let data: any = [];
-        data.push(moreItem);
-        this.props.setMoreInfoScreenData(data);
-        NavigationManager.navigate('MoreInfoScreen');
+    loadMoreScreenData = (moreItem: MoreInfoListModel) => {
+        let data = Object.assign([], this.props.selectedCategoryData);
+
+        let test: any = {
+            data: moreItem,
+            label: moreItem.title,
+            prvIndex: this.props.selectedCategoryData.length,
+            isDetailScreen: true,
+        };
+        data.push(test);
+
+        this.props.setSelectedCategoryData(data);
     };
 
     breadcrumbClick = (item: any) => {
-        console.log('breadcrumb Category detail screen =>', item);
-        if (item.id === 0) {
-            //home click
-            let data = [];
+        if (item.prvIndex >= 0) {
+            const prvIndex = item.prvIndex;
+            let data: any = Object.assign([], this.props.selectedCategoryData);
+            let totalDataLength = data.length;
+
+            let isDetailScreen = data[prvIndex + 1].isDetailScreen ?? false;
+
+            data.splice(prvIndex + 1);
+
             this.props.setSelectedCategoryData(data);
-            NavigationManager.navigateAndClear('HomeScreen');
-        } else if (item.id === 1) {
-            let data = Object.assign([], this.props.selectedCategoryData);
-            if (data.length > 2) data.splice(1);
-            else if (data.length > 1) data.pop();
-            else data = [];
-            this.props.setSelectedCategoryData(data);
-            NavigationManager.navigateAndClear('CategoryScreen');
+
+            if (!isDetailScreen) NavigationManager.pop(totalDataLength - item.id);
         } else {
-            this.goBack();
+            // reset all data;
+            this.props.setSelectedCategoryData([]);
+            //go back to Home screen
+            NavigationManager.navigateAndClear('HomeScreen');
         }
     };
 
@@ -229,7 +237,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                                 <MoreInfoList
                                     title={BaseLocalization.moreInfoTitle}
                                     moreInfoList={this.props.moreInfoData}
-                                    onPress={this.goToMoreScreen}
+                                    onPress={this.loadMoreScreenData}
                                 />
                             </View>
                         )}

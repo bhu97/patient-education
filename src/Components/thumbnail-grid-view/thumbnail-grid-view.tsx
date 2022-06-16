@@ -19,7 +19,7 @@ interface ThumbnailGridViewProps {
 interface ThumbnailGridViewState {
     isVisibleObject: any;
     update: any;
-    loader: boolean
+    loader: boolean;
 }
 
 export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailGridViewState> {
@@ -28,7 +28,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
         this.state = {
             isVisibleObject: {},
             update: false,
-            loader:false
+            loader: false,
         };
     }
     componentDidMount(): void {
@@ -119,29 +119,29 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
         const url = response.driveItem['@microsoft.graph.downloadUrl'];
         const fileName = item.name;
         const localFile = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-        console.log('file path', localFile);
         const options = {
             fromUrl: url,
             toFile: localFile,
         };
         // last step it will download open it with fileviewer.
-        RNFS.downloadFile(options).promise.then(() => {FileViewer.open(localFile)
-            this.setState({loader:false})});
+        RNFS.downloadFile(options).promise.then(() => {
+            FileViewer.open(localFile);
+            this.setState({ loader: false });
+        });
     };
     loadDocument = async (item: GridViewModel) => {
-        this.setState({loader:true})
+        this.setState({ loader: true });
         const fileExt = getExtension(item.webUrl);
-        console.log('fileExt=', fileExt);
         if (fileExt.toLowerCase() === 'pdf') {
             this.downloadFileAndShow(item);
         } else {
             Linking.canOpenURL(item.webUrl).then((supported) => {
                 if (supported) {
                     Linking.openURL(item.webUrl);
-                    this.setState({loader:false})
+                    this.setState({ loader: false });
                 } else {
                     console.log(item.webUrl);
-                    this.setState({loader:false})
+                    this.setState({ loader: false });
                     console.log('error opening url');
                 }
             });

@@ -55,6 +55,10 @@ const NavigationManager = {
         this.navigator!.dispatch(StackActions.pop(removeScreenIndex));
         this.navigate(routeName);
     },
+
+    pop(count: number) {
+        this.navigator!.dispatch(StackActions.pop(count));
+    },
 };
 
 export default NavigationManager;

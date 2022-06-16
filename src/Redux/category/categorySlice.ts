@@ -31,7 +31,7 @@ export interface CategoryState {
     userModelData: UserModel[];
 
     //
-    selectedCategoryData: DriveItemModel[];
+    selectedCategoryData: any[];
 }
 
 // to set initial value for all variable
@@ -84,7 +84,6 @@ const categorySlice = createSlice({
             state.moreInfoData = action.payload;
         },
         setMoreInfoScreenData: (state, action: PayloadAction<MoreInfoListModel[]>) => {
-            console.log('setMoreInfoScreenData =>', action.payload);
             state.moreInfoScreenData = action.payload;
         },
         setCountryListData: (state, action: PayloadAction<any>) => {
@@ -94,12 +93,10 @@ const categorySlice = createSlice({
             state.selectedCountry = action.payload;
         },
         setUserModelData: (state, action: PayloadAction<UserModel[]>) => {
-            console.log('setUserModelData payload =>', action.payload);
             state.userModelData = action.payload;
         },
         //selected category data push all (main, category, sub)
         setSelectedCategoryData: (state, action: PayloadAction<DriveItemModel[]>) => {
-            console.log('selectedCategoryData payload =>', action.payload);
             state.selectedCategoryData = action.payload;
         },
     },

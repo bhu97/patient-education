@@ -30,7 +30,6 @@ export default class CustomFlatList extends PureComponent<CustomFlatListProps, C
     };
 
     onPress = (item: any, index: number) => {
-        console.log('onPressListItem item=>>', item);
         this.props.onPressListItem(item);
     };
 

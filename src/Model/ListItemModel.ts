@@ -27,7 +27,7 @@ export class ListItemModel implements IListItem {
         let object: IListItem = {
             uniqueId: '0',
         };
-        //console.log(JSON.stringify(item))
+
         let docType = item.contentType.name === 'Folder' ? DriveItemType.FOLDER : DriveItemType.FILE;
         docType = item.contentType.name === 'Document Set' ? DriveItemType.DOCUMENTSET : docType;
 

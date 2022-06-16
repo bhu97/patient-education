@@ -58,13 +58,16 @@ export class LocalizationManager {
             LocalizationManager.setAppLanguage(currentLanguage);
         } else {
             //get short label of all supported language , this is as per device language return like en_us(english_usa), mr_in(marathi indiaa)
-            const supportedLanguaage = LANGUAGE_CONSTANT.LANGUAGES.map((item) => item.shortLabel);
+            const supportedLanguage = LANGUAGE_CONSTANT.LANGUAGES.map((item) => item.shortLabel);
+
+            var localeLanguageCode = LANGUAGE_CONSTANT.DEFAULT_LANGUAGE;
+
             //check if device language is not supported by app, if yes set default language to local language
-            if (!supportedLanguaage.includes(deviceManager.deviceLanguage())) {
-                var localeLanguageCode = LANGUAGE_CONSTANT.DEFAULT_LANGUAGE;
+            if (!supportedLanguage.includes(deviceManager.deviceLanguage())) {
+                localeLanguageCode = LANGUAGE_CONSTANT.DEFAULT_LANGUAGE;
             }
             //check if device language is supported by app, if yes set it to local language
-            if (supportedLanguaage.includes(deviceManager.deviceLanguage())) {
+            if (supportedLanguage.includes(deviceManager.deviceLanguage())) {
                 localeLanguageCode = deviceManager.deviceLanguage();
             }
             // set language

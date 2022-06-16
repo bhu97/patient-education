@@ -20,7 +20,6 @@ export default class MoreInfoList extends PureComponent<MoreInfoListProps> {
     };
 
     renderItem = ({ item }: any) => {
-        console.log('item=', item);
         return (
             <TouchableOpacity onPress={() => this.props.onPress(item)}>
                 <View style={style.mainContainer}>
