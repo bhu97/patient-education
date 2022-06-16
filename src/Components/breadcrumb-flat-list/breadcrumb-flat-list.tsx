@@ -17,12 +17,10 @@ export default class BreadcrumbFlatList extends PureComponent<BreadcrumbFlatList
     }
 
     onPress = (item: any, index: number) => {
-        console.log('onPress item=>>', item);
         this.props.onPress(item);
     };
 
     renderItem = ({ item, index }: any) => {
-        console.log('renderItem =', item.title);
         return (
             <TouchableOpacity
                 disabled={index == this.props.breadCrumbList.length - 1 ? true : false}
