@@ -150,15 +150,14 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         ) {
             console.log('data added');
             this.getCategoryDetailData();
+        } else if (
+            this.props.selectedCategoryData &&
+            this.props.selectedCategoryData.length == prevProp.selectedCategoryData.length - 1 &&
+            prevProp.selectedCategoryData[prevProp.selectedCategoryData.length - 1].isDetailScreen
+        ) {
+            console.log('data removed');
+            this.getCategoryDetailData();
         }
-        // else if (
-        //     this.props.selectedCategoryData &&
-        //     this.props.selectedCategoryData.length == prevProp.selectedCategoryData.length - 1 &&
-        //     prevProp.selectedCategoryData[prevProp.selectedCategoryData.length - 1].isDetailScreen
-        // ) {
-        //     console.log('data removed');
-        //     this.getCategoryDetailData();
-        // }
     }
 
     goBack = () => {
@@ -244,16 +243,16 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                     </View>
                 </CustomBody>
                 <View style={style.navContainer}>
-                <CustomBottomContainer>
                     <CustomBottomContainer>
-                        {this.state.breadCrumbList.length > 0 && (
-                            <BreadcrumbFlatList
-                                breadCrumbList={this.state.breadCrumbList}
-                                onPress={this.breadcrumbClick}
-                            />
-                        )}
+                        <CustomBottomContainer>
+                            {this.state.breadCrumbList.length > 0 && (
+                                <BreadcrumbFlatList
+                                    breadCrumbList={this.state.breadCrumbList}
+                                    onPress={this.breadcrumbClick}
+                                />
+                            )}
+                        </CustomBottomContainer>
                     </CustomBottomContainer>
-                </CustomBottomContainer>
                 </View>
             </MainContainer>
         );
