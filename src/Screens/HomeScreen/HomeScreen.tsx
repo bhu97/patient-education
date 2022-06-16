@@ -123,11 +123,13 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                         </View>
                     )}
                 </CustomBody>
+                <View style={style.navContainer}>
                 <CustomBottomContainer>
                     <View style={style.bottomView}>
                         <CustomBreadcrumb title={'Home'} isFirstCrumb={true} />
                     </View>
                 </CustomBottomContainer>
+                </View>
             </MainContainer>
         );
     }

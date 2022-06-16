@@ -41,5 +41,8 @@ export const style = StyleSheet.create({
     headerText: {
         textAlign: 'center',
         ...BaseThemeStyle.fonts.subtitle1,
+        color:BaseThemeStyle.colors.titleColor,
+        fontWeight:'800',
+        marginLeft:5
     },
 });

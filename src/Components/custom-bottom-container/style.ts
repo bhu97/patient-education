@@ -8,7 +8,12 @@ export const style = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: BaseThemeStyle.colors.white,
         justifyContent: 'center',
-        borderWidth: 5,
-        borderColor: BaseThemeStyle.colors.lightGray
+        // for shadow of card
+        shadowColor: BaseThemeStyle.colors.gray,
+        opacity: 1,
+        shadowRadius: 8,
+        elevation: 20,
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 5,
     },
 });
