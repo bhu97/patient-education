@@ -32,6 +32,7 @@ export interface CategoryState {
 
     //
     selectedCategoryData: any[];
+    isRefreshDetailScreen: boolean;
 }
 
 // to set initial value for all variable
@@ -52,6 +53,7 @@ const initialState: CategoryState = {
     moreInfoScreenData: [],
     userModelData: [],
     selectedCategoryData: [],
+    isRefreshDetailScreen: false,
 };
 
 // basic example slice done based on the docs
@@ -99,6 +101,10 @@ const categorySlice = createSlice({
         setSelectedCategoryData: (state, action: PayloadAction<DriveItemModel[]>) => {
             state.selectedCategoryData = action.payload;
         },
+        setRefreshDetailScreen: (state, action: PayloadAction<boolean>) => {
+            console.log('refreshDetailScreen value', action.payload);
+            state.isRefreshDetailScreen = action.payload;
+        },
     },
 });
 
@@ -114,6 +120,7 @@ export const {
     setSelectedCountry,
     setSelectedCategoryData,
     setUserModelData,
+    setRefreshDetailScreen,
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

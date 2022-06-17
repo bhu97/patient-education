@@ -23,6 +23,7 @@ import {
     setGridViewData,
     setMoreInfoData,
     setMoreInfoScreenData,
+    setRefreshDetailScreen,
     setSelectedCategoryData,
 } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
@@ -32,12 +33,6 @@ import { style } from './style';
 interface CategoryDetailScreenProps {
     gridViewData: GridViewModel[];
     moreInfoData: MoreInfoListModel[];
-    //selected category item
-    //mainCategoryItem: DriveItemModel;
-    //selected category item
-    categoryItem: DriveItemModel;
-    //selected sub category item
-    subCategoryItem: DriveItemModel;
     //set grid list for selected item
     setGridViewList: (data: GridViewModel[]) => void;
     //set more info list for selected item
@@ -49,6 +44,8 @@ interface CategoryDetailScreenProps {
     //all selected selectedCategoryData
     selectedCategoryData: any[];
     setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
+    isRefreshDetailScreen: boolean;
+    setRefreshDetailScreen: (isRefresh: boolean) => void;
 }
 
 interface CategoryDetailScreenState {
@@ -132,6 +129,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         }
         this.props.setIsLoading(false);
         this.props.setMoreInfoList(MoreInfoListData);
+        this.props.setRefreshDetailScreen(false);
 
         //create breadcrumb array
         let breadCrumbList = createBredCrumbList(selectedCategoryData);
@@ -144,19 +142,11 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
     }
 
     componentDidUpdate(prevProp: CategoryDetailScreenProps) {
-        if (
-            this.props.selectedCategoryData &&
-            this.props.selectedCategoryData.length > prevProp.selectedCategoryData.length
-        ) {
-            console.log('data added');
-            this.getCategoryDetailData();
-        } else if (
-            this.props.selectedCategoryData &&
-            this.props.selectedCategoryData.length == prevProp.selectedCategoryData.length - 1 &&
-            prevProp.selectedCategoryData[prevProp.selectedCategoryData.length - 1].isDetailScreen
-        ) {
-            console.log('data removed');
-            this.getCategoryDetailData();
+        if (this.props.isRefreshDetailScreen != prevProp.isRefreshDetailScreen) {
+            if (this.props.isRefreshDetailScreen) {
+                LogManager.debug('refresh screen');
+                this.getCategoryDetailData();
+            }
         }
     }
 
@@ -165,12 +155,8 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         let isDetailScreen = data[data.length - 1].isDetailScreen ?? false;
         data.pop();
         this.props.setSelectedCategoryData(data);
-        if (!isDetailScreen) {
-            NavigationManager.goBack();
-        }
-        // else {
-        //     this.getCategoryDetailData();
-        // }
+        if (!isDetailScreen) NavigationManager.goBack();
+        else this.props.setRefreshDetailScreen(true);
     };
 
     loadMoreScreenData = (moreItem: MoreInfoListModel) => {
@@ -183,8 +169,8 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             isDetailScreen: true,
         };
         data.push(test);
-
         this.props.setSelectedCategoryData(data);
+        this.props.setRefreshDetailScreen(true);
     };
 
     breadcrumbClick = (item: any) => {
@@ -200,6 +186,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             this.props.setSelectedCategoryData(data);
 
             if (!isDetailScreen) NavigationManager.pop(totalDataLength - item.id);
+            else this.props.setRefreshDetailScreen(true);
         } else {
             // reset all data;
             this.props.setSelectedCategoryData([]);
@@ -263,7 +250,7 @@ const mapStateToProps = (state: RootState) => ({
     gridViewData: state.categoryReducer.gridViewData,
     moreInfoData: state.categoryReducer.moreInfoData,
     isLoading: state.appDataReducer.appDataLoading,
-
+    isRefreshDetailScreen: state.categoryReducer.isRefreshDetailScreen,
     selectedCategoryData: state.categoryReducer.selectedCategoryData,
 });
 
@@ -282,6 +269,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setSelectedCategoryData: (selectedItems: DriveItemModel[]) => {
         dispatch(setSelectedCategoryData(selectedItems));
+    },
+    setRefreshDetailScreen: (isRefresh: boolean) => {
+        dispatch(setRefreshDetailScreen(isRefresh));
     },
 });
 
