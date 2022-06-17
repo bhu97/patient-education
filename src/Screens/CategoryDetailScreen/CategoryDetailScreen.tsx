@@ -127,7 +127,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         } else {
             MoreInfoListData = [];
         }
-        this.props.setIsLoading(false);
+
         this.props.setMoreInfoList(MoreInfoListData);
         this.props.setRefreshDetailScreen(false);
 
@@ -139,6 +139,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             breadCrumbList: breadCrumbList,
             pageTitle: pageTitle,
         });
+        this.props.setIsLoading(false);
     }
 
     componentDidUpdate(prevProp: CategoryDetailScreenProps) {

@@ -54,7 +54,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     async initializeApp() {
         SplashScreen.hide();
 
-        const userData = await dbHelper.getUser();
+        const userData: any = await dbHelper.getUser();
         LogManager.debug('userData', userData);
 
         if (!userData) {
@@ -128,11 +128,11 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                     )}
                 </CustomBody>
                 <View style={style.navContainer}>
-                <CustomBottomContainer>
-                    <View style={style.bottomView}>
-                        <CustomBreadcrumb title={'Home'} isFirstCrumb={true} />
-                    </View>
-                </CustomBottomContainer>
+                    <CustomBottomContainer>
+                        <View style={style.bottomView}>
+                            <CustomBreadcrumb title={'Home'} isFirstCrumb={true} />
+                        </View>
+                    </CustomBottomContainer>
                 </View>
             </MainContainer>
         );

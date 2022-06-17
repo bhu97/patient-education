@@ -81,7 +81,6 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         const categoryData = await dbHelper.getForSelectedCategory(selectedItem);
         LogManager.debug('categoryData=', categoryData);
         this.props.setCategoryList(categoryData);
-        this.props.setIsLoading(false);
 
         //create breadcrumb array
         let breadCrumbList = createBredCrumbList(screenCategoryObj);
@@ -92,6 +91,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
             pageTitle: selectedItem.title,
             selectedElement: selectedItem,
         });
+        this.props.setIsLoading(false);
     }
 
     goBack = () => {
