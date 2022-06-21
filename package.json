@@ -28,7 +28,6 @@
     "react": "17.0.2",
     "react-native": "0.67.3",
     "react-native-app-auth": "^6.4.3",
-    "react-native-blob-util": "^0.16.0",
     "react-native-config": "^1.4.5",
     "react-native-device-info": "^8.5.0",
     "react-native-file-viewer": "^2.1.5",
