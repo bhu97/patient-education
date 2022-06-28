@@ -1,8 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { PureComponent } from 'react';
-import { LogBox } from 'react-native';
+import { Alert, LogBox } from 'react-native';
 import { Provider } from 'react-redux';
 import { DatabaseManager } from './src/Database/DatabaseManager';
+import { envConfiguration } from './src/Helper/EnvConfigurations';
 import LogManager from './src/Helper/LogManager';
 import NavigationManager from './src/Helper/NavigationManager';
 import { LocalizationManager } from './src/Localization/LocalizationManager';
@@ -22,6 +23,8 @@ export default class App extends PureComponent {
     componentDidMount() {
         LogManager.debug('app loading', 'test');
         LogBox.ignoreAllLogs();
+        envConfiguration.envName
+        Alert.alert(`${envConfiguration.envName}`)
     }
 
     render() {

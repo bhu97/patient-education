@@ -2,7 +2,7 @@ const FontFamily = {
     LatoLight: 'Lato-Light',
     LatoRegular: 'Lato-Regular',
     LatoBold: 'Lato-Bold',
-    HelveticaNeueM: 'Helvetica Neue, Medium',
+    HelveticaNeueM: 'HelveticaNeue-Medium',
     Helvetica65R: 'Helvetica 65 Medium, Regular',
 } as const;
 
