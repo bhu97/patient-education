@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import Tooltip from 'react-native-walkthrough-tooltip';
 import { connect } from 'react-redux';
 import dbHelper from '../../Database/DBHelper';
 import { UserModel } from '../../Model/UserModel';
 import { setUserModelData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import CustomIcon from '../custom-icon/custom-icon';
+import CustomToolTip from '../custom-tool-tip/custom-tool-tip';
 import { style } from './style';
 
 interface CustomListWithHeaderProps {
@@ -16,71 +16,43 @@ interface CustomListWithHeaderProps {
     headerText?: string;
     selectedCountry: string;
     userData: UserModel[];
-    setUserModelData: (data:UserModel[]) => void;
+    setUserModelData: (data: UserModel[]) => void;
 }
 interface CustomListWithHeaderState {
     visible: boolean;
-    selectedCountry: string
+    selectedCountry: string;
 }
 class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, CustomListWithHeaderState> {
     constructor(props: CustomListWithHeaderProps) {
         super(props);
         this.state = {
             visible: false,
-            selectedCountry:''
+            selectedCountry: '',
         };
     }
     componentDidMount(): void {
-        this.setState({selectedCountry:this.props.selectedCountry})
+        this.setState({ selectedCountry: this.props.selectedCountry });
     }
-    getToolTip = () => {
+    insideToolTip() {
         return (
-            <Tooltip
-                contentStyle={style.toolTipBorder}
-                arrowSize={style.toolTipArrow}
-                isVisible={this.state.visible}
-                content={<View style={style.toolTipContainer}>{this.toolTipList()}</View>}
-                placement="right"
-                onClose={() => this.setState({ visible: false })}
-                showChildInTooltip={false}
-            >
-                <TouchableOpacity onPress={() => this.setState({ visible: true })}>
-                    <Text style={style.textStyle}>{this.state.selectedCountry}</Text>
-                </TouchableOpacity>
-            </Tooltip>
+            <TouchableOpacity onPress={() => this.setState({ visible: true })}>
+                <Text style={style.textStyle}>{this.state.selectedCountry}</Text>
+            </TouchableOpacity>
         );
-    };
-    onPressFlatlist = (item) => {
-        dbHelper.createUser(item)
-        this.props.setUserModelData(item)
-        this.setState({selectedCountry:item.countryTitle})
+    }
+
+    closeToolTip = () => {
         this.setState({ visible: false });
     };
-    toolTipList = () => {
-        return (
-            <View>
-                <FlatList
-                    ItemSeparatorComponent={this.toolTipOptionSeparator}
-                    data={this.props.countryList}
-                    renderItem={({ item }) => {
-                        return (
-                            <TouchableOpacity onPress={() => this.onPressFlatlist(item)}>
-                                <View style={style.listView}>
-                                    <Text style={style.textStyleToolTip}>{item.countryTitle}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        );
-                    }}
-                />
-            </View>
-        );
-    };
 
-    toolTipOptionSeparator = () => {
-        return <View style={style.toolTipOptionSeperator}></View>;
+    getSelectedDataFromToolTip = (item: any) => {
+        dbHelper.createUser(item);
+        this.props.setUserModelData(item);
+        this.setState({ selectedCountry: item.countryTitle });
+        this.setState({ visible: false });
     };
     render() {
-        return  (
+        return (
             <View style={style.mainContainer}>
                 {this.props.headerText && (
                     <View style={style.headerTextContainer}>
@@ -96,7 +68,14 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                         {this.props.labelText != 'Master' && this.state.visible == false ? (
                             <Text style={style.textStyle}>{this.props.labelText}</Text>
                         ) : (
-                            this.getToolTip()
+                            <CustomToolTip
+                                insideToolTip={this.insideToolTip()}
+                                isVisible={this.state.visible}
+                                model={this.props.countryList}
+                                onPressOfToolTipItem={this.getSelectedDataFromToolTip}
+                                closeToolTip={this.closeToolTip}
+                                isCountryList
+                            />
                         )}
                     </View>
                     <View style={style.iconContainer}>
@@ -116,7 +95,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: any) => ({
     setUserModelData: (value: UserModel[]) => {
         dispatch(setUserModelData(value));
-    }
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomListWithHeader);

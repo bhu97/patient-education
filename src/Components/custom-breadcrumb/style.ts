@@ -39,10 +39,11 @@ export const style = StyleSheet.create({
     },
 
     headerText: {
-        textAlign: 'center',
+         textAlign: 'center',
         ...BaseThemeStyle.fonts.subtitle1,
         color:BaseThemeStyle.colors.titleColor,
-        fontWeight:'800',
-        marginLeft:5
+        fontWeight:'600',
+        marginLeft:5,
+       
     },
 });
