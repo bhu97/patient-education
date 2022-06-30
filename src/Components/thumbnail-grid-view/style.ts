@@ -8,14 +8,21 @@ export const style = StyleSheet.create({
         backgroundColor: BaseThemeStyle.colors.white,
     },
     backgroundViewStyle: {
-        flex: .5,
-        margin: BaseThemeStyle.margin.containers,
+        flexBasis: 0.5,
+        flexGrow:.5,
+        flexShrink:.5,
+        justifyContent:'space-between',
+        padding:10,
+        paddingLeft:0,
+        paddingBottom:0, 
     },
     imageStyle: {
      resizeMode: 'stretch',
         height: 200,
         width: 'auto',
-        opacity:1
+        opacity:1,
+        justifyContent:'center',
+        flex:1
     },
     emptyImage: {
         resizeMode: 'stretch',
@@ -53,8 +60,8 @@ export const style = StyleSheet.create({
         flexDirection: 'row',
         height: 'auto',
         backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
-        paddingTop:3,
-        paddingBottom:3,
+        paddingTop:5,
+        paddingBottom:5,
         boxShadow: '10px 10px 5px lightblue',
         alignItems: 'center',
     },
@@ -107,7 +114,6 @@ export const style = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center'
     },
-
     emptyDataText:{
         fontSize: 22, fontWeight: '500', padding: 10 ,
         marginLeft:150,

@@ -208,6 +208,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                         onPressBack={this.goBack}
                         smallHeader
                         isShowCard
+                        largeTitle
                         imageName={Images.detailImage}
                     />
                 </View>

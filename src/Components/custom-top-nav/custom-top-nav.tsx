@@ -12,6 +12,7 @@ interface CustomTopNavProps {
     imageName?: any;
     backgroundColor?: string;
     smallHeader?: boolean;
+    largeTitle?: boolean;
 }
 
 interface CustomTopNavState {}
@@ -31,7 +32,7 @@ export default class CustomTopNav extends PureComponent<CustomTopNavProps, Custo
             >
                 <View style={[this.props.smallHeader ? style.smallHeaderText : style.textContainer]}>
                     {this.props.back ? (
-                        <TouchableOpacity onPress={this.props.onPressBack}>
+                        <TouchableOpacity style={{marginTop:this.props.largeTitle?5:0}} onPress={this.props.onPressBack}>
                             <Image source={Images.backArrowImage} />
                         </TouchableOpacity>
                     ) : (
@@ -40,8 +41,9 @@ export default class CustomTopNav extends PureComponent<CustomTopNavProps, Custo
                     <Text
                         style={{
                             ...style.subTitleText,
-                            marginLeft: this.props.smallHeader ? 30 : 0,
-                            marginTop: this.props.smallHeader ? 0 : 10,
+                             fontSize: this.props.largeTitle ? 30 :20,
+                             marginLeft: this.props.smallHeader ? 30 : 0,
+                             marginTop: this.props.smallHeader ? 0 : 10,
                         }}
                         numberOfLines={2}
                     >
