@@ -11,6 +11,7 @@ import {
 import { API_NAMES } from '../Constant/Constants';
 import { envConfiguration } from '../Helper/EnvConfigurations';
 import LogManager from '../Helper/LogManager';
+import { SecureStorage } from '../Helper/SecureStorage';
 
 const serviceConfiguration: ServiceConfiguration = {
     authorizationEndpoint: API_NAMES.AUTHORIZATION_ENDPOINT,
@@ -111,7 +112,8 @@ class AuthenticationManager {
 
     getAuthorization = async () => {
         LogManager.info('getAuthorization called..');
-        const raw = await AsyncStorage.getItem(storageKey);
+        //const raw = await AsyncStorage.getItem(storageKey);
+        const raw = await SecureStorage.getData(storageKey);
         if (raw) {
             return JSON.parse(raw);
         }
@@ -121,7 +123,8 @@ class AuthenticationManager {
     setAuthorization = async (authorizationResult: AuthorizeResult) => {
         LogManager.info('setAuthorization called =');
         const raw = JSON.stringify(authorizationResult);
-        await AsyncStorage.setItem(storageKey, raw);
+        //await AsyncStorage.setItem(storageKey, raw);
+        SecureStorage.saveData(storageKey, raw);
     };
 
     isAuthorizationExpired(authorization: AuthorizeResult): Boolean {

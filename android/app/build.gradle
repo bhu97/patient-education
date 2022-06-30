@@ -141,16 +141,22 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
 
 android {
+     lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "com.patienteducation"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion = 21
+        targetSdkVersion  = 27
+        //minSdkVersion rootProject.ext.minSdkVersion
+        //targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 2
+        versionName "1.1"
         resValue "string", "build_config_package", "com.patienteducation"
         manifestPlaceholders = [
                 appAuthRedirectScheme: 'preisfindungstool'
@@ -225,15 +231,6 @@ android {
 
         }
     }
-//added for pdf view
-    packagingOptions {
-       pickFirst 'lib/x86/libc++_shared.so'
-       pickFirst 'lib/x86_64/libjsc.so'
-       pickFirst 'lib/arm64-v8a/libjsc.so'
-       pickFirst 'lib/arm64-v8a/libc++_shared.so'
-       pickFirst 'lib/x86_64/libc++_shared.so'
-       pickFirst 'lib/armeabi-v7a/libc++_shared.so'
-     }
 }
 
 dependencies {

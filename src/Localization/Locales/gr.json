@@ -1,7 +1,6 @@
 {
     "welcome": "Willkommen",
     "pleaseWait": "Laden, bitte warten",
-    "howAreYou": "Wie geht es dir",
     "noInternetConnection": "Das Gerät ist nicht mit dem Internet verbunden. Bitte überprüfen Sie die Verbindung und versuchen Sie es erneut.",
     "favoriteTitle":"Prioritätsthemen für Patienten",
     "favoriteSubTitle": "Erstellen Sie Listen und speichern Sie Ihre Dateien darin.",
@@ -14,11 +13,21 @@
     "contentTitle":"Online-Inhalte",
     "updateTitle": "Jetzt aktualisierens",
     "selectCategory": "Bitte wählen Sie Ihre Kategorie aus",
+    "appInformation": "App-Informationen",
+    "version": "Ausführung",
+    "modificationDate":"Geändertes Datum",
+    "contentUpdates":"Inhaltsaktualisierungen",
     "moreInformation": "Mehr Informationen",
     "addRemoveFavorite":"Favorit hinzufügen/entfernen",
     "removeLocally": "Lokal entfernen",
     "download":"Download",
     "fileOptions":"Dateioptionen",
     "noDataText":"Es sind entweder keine Dateien zum Anzeigen vorhanden oder Sie haben keinen Zugriff auf den Inhalt. Bitte überprüfen Sie das ausgewählte Land in den Einstellungen oder wenden Sie sich an den jeweiligen Support-Kontakt.",
-    "noDataOnGrid":"Es gibt hier noch keine Datei"
+    "noDataOnGrid":"Es gibt hier noch keine Datei",
+    "favTitleText":"Patient Priority Topics",
+    "favSubTitleText":"Create lists and store your files in them.",
+    "reTry": "wiederholen",
+    "authenticationFailed": "Etwas ist schief gelaufen",
+    "cancel": "Absagen",
+    "login": "Anmeldung"
 }

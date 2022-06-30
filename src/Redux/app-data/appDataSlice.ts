@@ -4,6 +4,8 @@ import { fetchAllDriveItems, fetchItemThumbnail, fetchLastModifiedDate } from '.
 
 const initialState = {
     appDataLoading: false,
+    alertMessage: '',
+    isAlertShown: false,
 };
 
 export const appDataSlice = createSlice({
@@ -12,6 +14,12 @@ export const appDataSlice = createSlice({
     reducers: {
         setAppDataLoading: (state, action: PayloadAction<boolean>) => {
             state.appDataLoading = action.payload;
+        },
+        setAlertMessage: (state, action: PayloadAction<string>) => {
+            state.alertMessage = action.payload;
+        },
+        setIsAlertShown: (state, action: PayloadAction<boolean>) => {
+            state.isAlertShown = action.payload;
         },
     },
 
@@ -51,6 +59,6 @@ export const appDataSlice = createSlice({
     },
 });
 
-export const { setAppDataLoading } = appDataSlice.actions;
+export const { setAppDataLoading, setAlertMessage, setIsAlertShown } = appDataSlice.actions;
 
 export default appDataSlice.reducer;

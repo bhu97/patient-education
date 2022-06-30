@@ -7,16 +7,11 @@ import LogManager from './src/Helper/LogManager';
 import NavigationManager from './src/Helper/NavigationManager';
 import { LocalizationManager } from './src/Localization/LocalizationManager';
 import Routes from './src/Navigation/Routes';
-import { fetchAllDriveItems, fetchAllListItems } from './src/Redux/app-data/appDataThunk';
 import { dispatchState, store } from './src/Redux/store';
 
 export default class App extends PureComponent {
     constructor(props: any) {
         super(props);
-        LogManager.debug('app language setup starts=');
-        //initialize localization manager
-        LocalizationManager.initializeAppLanguage();
-        LogManager.debug('app language setup ends=');
     }
 
     componentDidMount() {

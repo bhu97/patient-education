@@ -8,6 +8,7 @@ import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
+import { SCREEN_NAME } from '../../Constant/Constants';
 import dbHelper from '../../Database/DBHelper';
 import { createBredCrumbList } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
@@ -113,9 +114,9 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         this.props.setSelectedCategoryData(data);
 
         if (item.contentType == 'Document Set') {
-            NavigationManager.navigate('CategoryDetailScreen');
+            NavigationManager.navigate(SCREEN_NAME.CategoryDetailScreen);
         } else {
-            NavigationManager.navigate('SubCategoryScreen');
+            NavigationManager.navigate(SCREEN_NAME.SubCategoryScreen);
         }
     };
 
@@ -135,7 +136,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         data.push(test);
         this.props.setSelectedCategoryData(data);
         if (item.contentType == 'Document Set') {
-            NavigationManager.navigatePop('CategoryDetailScreen', 2);
+            NavigationManager.navigatePop(SCREEN_NAME.CategoryDetailScreen, 2);
         }
     };
 

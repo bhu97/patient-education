@@ -33,5 +33,8 @@ export const BaseLocalization = {
     noDataOnGrid: LocalizationManager.getLocalizedStrings('noDataOnGrid'),
     favTitleText: LocalizationManager.getLocalizedStrings('favTitleText'),
     favSubTitleText: LocalizationManager.getLocalizedStrings('favSubTitleText'),
-
+    reTry: LocalizationManager.getLocalizedStrings('reTry'),
+    authFailed: LocalizationManager.getLocalizedStrings('authenticationFailed'),
+    cancel: LocalizationManager.getLocalizedStrings('cancel'),
+    login: LocalizationManager.getLocalizedStrings('login'),
 };

@@ -8,6 +8,7 @@ import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
+import { SCREEN_NAME } from '../../Constant/Constants';
 import dbHelper from '../../Database/DBHelper';
 import { createBredCrumbList } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
@@ -100,7 +101,7 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
 
         this.props.setSelectedCategoryData(data);
 
-        NavigationManager.navigate('CategoryDetailScreen');
+        NavigationManager.navigate(SCREEN_NAME.CategoryDetailScreen);
     };
 
     breadcrumbClick = (item: any) => {
@@ -141,7 +142,7 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
         this.props.setSelectedCategoryData(data);
 
         if (item.contentType == 'Document Set') {
-            NavigationManager.navigatePop('CategoryDetailScreen', 1);
+            NavigationManager.navigatePop(SCREEN_NAME.CategoryDetailScreen, 1);
         }
     };
 
@@ -188,11 +189,14 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
                     )}
                 </CustomBody>
                 <View style={style.navContainer}>
-                <CustomBottomContainer>
-                    {this.state.breadCrumbList.length > 0 && (
-                        <BreadcrumbFlatList breadCrumbList={this.state.breadCrumbList} onPress={this.breadcrumbClick} />
-                    )}
-                </CustomBottomContainer>
+                    <CustomBottomContainer>
+                        {this.state.breadCrumbList.length > 0 && (
+                            <BreadcrumbFlatList
+                                breadCrumbList={this.state.breadCrumbList}
+                                onPress={this.breadcrumbClick}
+                            />
+                        )}
+                    </CustomBottomContainer>
                 </View>
             </MainContainer>
         );

@@ -1,13 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { API_NAMES, HTTP_METHODS } from '../../Constant/Constants';
+import SplashScreen from 'react-native-splash-screen';
+import authenticationManager from '../../Authentication/AuthenticationManager';
+import { API_NAMES, HTTP_METHODS, SCREEN_NAME } from '../../Constant/Constants';
 import { DatabaseManager } from '../../Database/DatabaseManager';
 import dbHelper from '../../Database/DBHelper';
 import { DriveItemSchema } from '../../Database/Schema';
 import apiManager from '../../Helper/ApiManager';
 import { createDriveModelData, createListModelData } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
+import NavigationManager from '../../Helper/NavigationManager';
 import { setMainCategoryList } from '../category/categorySlice';
 import { dispatchState } from '../store';
+import { setIsAlertShown } from './appDataSlice';
 
 /**
  * createAsyncThunk receives two arguments
@@ -27,7 +31,7 @@ export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModified
 });
 
 //to fetch meta delta
-export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', async () => {
+export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', async (isFromLogin?: boolean) => {
     LogManager.debug('fetchDriveItems call started');
 
     const driveItems = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
@@ -50,7 +54,6 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
     LogManager.debug('insert DB stars 2=');
     await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, listModelData);
     LogManager.debug('insert DB end 2=');
-
     // create user into DB
     const userDetails = await dbHelper.createUserIfEmpty();
     LogManager.debug('userDetails=', userDetails);
@@ -61,7 +64,12 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
     dispatchState(setMainCategoryList(mainCategoryData));
 
     LogManager.debug('fetchDriveItems call ended');
-
+    /**
+     * For first time login navigating to home screen
+     */
+    if (isFromLogin) {
+        replaceAndNavigate(SCREEN_NAME.HomeScreen);
+    }
     return mainCategoryData;
 });
 
@@ -144,7 +152,6 @@ export const fetchData = async (url: string, params?: any): Promise<any[]> => {
 
 const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promise<any[]> => {
     const response = await apiManager.callApiToGetData(endpoint, params);
-
     if (response['@odata.nextLink']) {
         const nextData = (await fetchNext(
             response['@odata.nextLink'],
@@ -155,4 +162,29 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
     } else {
         return data.concat(response['value']);
     }
+};
+
+/**
+ * For FirstTime login
+ */
+export const login = createAsyncThunk('appData/login', async () => {
+    const userData: any = await dbHelper.getUser();
+    SplashScreen.hide();
+    //user not present fetch all data and save it DB and set to redux
+    if (!userData) {
+        authenticationManager.login().then((token) => {
+            if (token) {
+                dispatchState(setIsAlertShown(false));
+                dispatchState(fetchAllDriveItems(true));
+            } else {
+                dispatchState(setIsAlertShown(true));
+            }
+        });
+    } else {
+        replaceAndNavigate(SCREEN_NAME.HomeScreen);
+    }
+});
+
+export const replaceAndNavigate = (screenName: string) => {
+    NavigationManager.navigateAndReplace(screenName);
 };

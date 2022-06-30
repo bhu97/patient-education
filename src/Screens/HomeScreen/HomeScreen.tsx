@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { Image, Text, View } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
@@ -9,12 +8,12 @@ import CustomFlatList from '../../Components/custom-flat-list/custom-flat-list';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
+import { SCREEN_NAME } from '../../Constant/Constants';
 import dbHelper from '../../Database/DBHelper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
-import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllDriveItems } from '../../Redux/app-data/appDataThunk';
 import { setMainCategoryList, setSelectedCategoryData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
@@ -24,7 +23,6 @@ import { style } from './style';
 interface HomePageProps {
     mainList: DriveItemModel[];
     setMainList: (data: DriveItemModel[]) => void;
-    setIsLoading: (boolean) => void;
     appDataLoading: boolean;
     fetchData: () => void;
     navigation: any;
@@ -52,24 +50,13 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     }
 
     async initializeApp() {
-        SplashScreen.hide();
-
         const userData: any = await dbHelper.getUser();
         LogManager.debug('userData', userData);
-
-        if (!userData) {
-            //user not present fetch all data and save it DB and set to redux
-            this.props.fetchData();
-        } else {
-            // db present load data from database to redux
-            LogManager.debug('valid db present');
-
-            // this.props.setIsLoading(true);
-            const mainCategoryData = await dbHelper.getRootItemsForCountry(userData);
-            LogManager.debug('mainCategoryData=', mainCategoryData);
-            this.props.setMainList(mainCategoryData);
-            //  this.props.setIsLoading(false);
-        }
+        // db present load data from database to redux
+        LogManager.debug('valid db present');
+        const mainCategoryData = await dbHelper.getRootItemsForCountry(userData);
+        LogManager.debug('mainCategoryData=', mainCategoryData);
+        this.props.setMainList(mainCategoryData);
     }
 
     onClick = (item) => {
@@ -84,9 +71,9 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         this.props.setSelectedCategoryData(data);
 
         if (item.contentType == 'Document Set') {
-            NavigationManager.navigate('CategoryDetailScreen');
+            NavigationManager.navigate(SCREEN_NAME.CategoryDetailScreen);
         } else {
-            NavigationManager.navigate('CategoryScreen');
+            NavigationManager.navigate(SCREEN_NAME.CategoryScreen);
         }
     };
 
@@ -148,9 +135,6 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: any) => ({
     setMainList: (rootItems: DriveItemModel[]) => {
         dispatch(setMainCategoryList(rootItems));
-    },
-    setIsLoading: (value: boolean) => {
-        dispatch(setAppDataLoading(value));
     },
     fetchData: () => {
         dispatch(fetchAllDriveItems());

@@ -51,11 +51,28 @@ const NavigationManager = {
         this.navigator!.dispatch(CommonActions.goBack());
     },
 
+    /**
+     * Remove the screen using index and move to next screen
+     * @param routeName
+     * @param removeScreenIndex
+     */
     navigatePop(routeName: any, removeScreenIndex: number) {
         this.navigator!.dispatch(StackActions.pop(removeScreenIndex));
         this.navigate(routeName);
     },
 
+    /**
+     * To replace current screen form the next screen, after using this previous screen will not be present in stack
+     * @param routeName Screen name
+     */
+    navigateAndReplace(routeName: any, params?: any) {
+        this.navigator!.dispatch(StackActions.replace(routeName, params));
+    },
+
+    /**
+     * To pop to the screen
+     * @param count
+     */
     pop(count: number) {
         this.navigator!.dispatch(StackActions.pop(count));
     },
