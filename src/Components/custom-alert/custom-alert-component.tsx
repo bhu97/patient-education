@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import { style } from './style';
 

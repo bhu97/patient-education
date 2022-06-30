@@ -27,14 +27,17 @@ export const appDataSlice = createSlice({
         builder.addCase(fetchAllDriveItems.pending, (state) => {
             LogManager.info('api call fetchAllDriveItems pending', 'started');
             state.appDataLoading = true;
+            state.isAlertShown = false;
         });
         builder.addCase(fetchAllDriveItems.fulfilled, (state, action) => {
             LogManager.info('api call fetchAllDriveItems fulfilled', 'finished');
             state.appDataLoading = false;
+            state.isAlertShown = false;
         });
         builder.addCase(fetchAllDriveItems.rejected, (state) => {
             LogManager.warn('api call fetchAllDriveItems rejected', 'error');
             state.appDataLoading = false;
+            state.isAlertShown = true;
         });
 
         builder.addCase(fetchLastModifiedDate.pending, (state) => {

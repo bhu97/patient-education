@@ -9,6 +9,7 @@ import { setIsAlertShown } from '../../Redux/app-data/appDataSlice';
 import { fetchAllDriveItems, login } from '../../Redux/app-data/appDataThunk';
 import { RootState } from '../../Redux/rootReducer';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
+import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface LoginScreenProps {
@@ -54,7 +55,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
                     <View style={style.buttonLogoContainer}>
                         <Image
                             style={{ height: '30%', width: '70%', marginBottom: 30 }}
-                            source={require('../../../assets/images/launch_screen.png')}
+                            source={Images.launchScreen}
                             resizeMode="stretch"
                         />
                         <TouchableOpacity style={style.buttonStyle} onPress={this.onLogin}>

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { Image, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
@@ -45,6 +45,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
             this.initializeApp();
         });
     }
+
     componentWillUnmount() {
         this._unsubscribe();
     }

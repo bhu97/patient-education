@@ -38,6 +38,7 @@ const Images = {
     backArrowImage: require(prefix + 'arrow_back.png'),
     detailImage: require(prefix + 'illu_content.png'),
     loaderImage: require(prefix + 'loader.png'),
+    launchScreen: require(prefix + 'launch_screen.png'),
 };
 
 /// ################################ Export ################################
