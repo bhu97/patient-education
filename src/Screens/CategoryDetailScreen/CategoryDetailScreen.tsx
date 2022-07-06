@@ -40,7 +40,7 @@ interface CategoryDetailScreenProps {
     setMoreInfoScreenData: (data: MoreInfoListModel[]) => void;
     isLoading: boolean;
     setIsLoading: (value: boolean) => void;
-
+    navigation: any;
     //all selected selectedCategoryData
     selectedCategoryData: any[];
     setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
@@ -54,6 +54,7 @@ interface CategoryDetailScreenState {
 }
 
 class CategoryDetailScreen extends Component<CategoryDetailScreenProps, CategoryDetailScreenState> {
+    _unsubscribe: any;
     constructor(props: CategoryDetailScreenProps) {
         super(props);
         this.state = {
@@ -63,7 +64,12 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
     }
 
     componentDidMount() {
-        this.getCategoryDetailData();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.getCategoryDetailData();
+        });
+    }
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     async getCategoryDetailData() {

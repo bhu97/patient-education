@@ -93,4 +93,18 @@ export class DatabaseManager {
     public copyRealmObject = (item: any) => {
         return JSON.parse(JSON.stringify(item)); //refReplacer(item)};
     };
+
+    public removeRealmObject = (schemaName: string, item: any) => { // delete entity
+        try {
+            this.realm?.write(()=>{
+                var group = this.realm?.objectForPrimaryKey(schemaName,item.id);
+                if(group){
+                    this.realm?.delete(group);
+                    group = undefined;
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

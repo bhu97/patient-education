@@ -1,5 +1,15 @@
-import React, { PureComponent } from 'react';
-import { FlatList, Image, Linking, Text, TouchableOpacity, View } from 'react-native';
+import React, { PureComponent, useState } from 'react';
+import {
+    FlatList,
+    Image,
+    KeyboardAvoidingView,
+    Linking,
+    Modal,
+    Text,
+    TouchableOpacity,
+    View,
+    Button,
+} from 'react-native';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
 import { API_NAMES } from '../../Constant/Constants';
@@ -7,11 +17,15 @@ import apiManager from '../../Helper/ApiManager';
 import { getExtension, getIconByExtension } from '../../Helper/Helper';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
+import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
 import CustomToolTip from '../custom-tool-tip/custom-tool-tip';
 import FullScreenLoader from '../full-screen-loader/full-screen-loader';
+import CheckBox from '@react-native-community/checkbox';
 import { style } from './style';
+import dbHelper from '../../Database/DBHelper';
+import { FavoriteModel } from '../../Model/FavouriteModel';
 
 interface ThumbnailGridViewProps {
     gridViewList: GridViewModel[];
@@ -21,6 +35,12 @@ interface ThumbnailGridViewState {
     update: any;
     loader: boolean;
     toolTipList: Array<any>;
+    visible: boolean;
+    check: boolean;
+    groups: Array<any>;
+    selectedGroups: Array<string>;
+    selectedItem: any;
+    close: boolean;
 }
 
 export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailGridViewState> {
@@ -35,6 +55,12 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                 { index: 1, title: 'Remove Locally' },
                 { index: 2, title: 'Add/Remove Favourite' },
             ],
+            visible: false,
+            check: false,
+            groups: [],
+            selectedGroups: [],
+            selectedItem: null,
+            close: false,
         };
     }
 
@@ -45,7 +71,13 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
             isVisibleArray[index] = setIndex;
         });
         this.setState({ isVisibleObject: isVisibleArray });
+        this.getGroups();
     }
+    getGroups = async () => {
+        let groups = await dbHelper.getFavGroups();
+        this.setState({ groups });
+    };
+
     setVisible = (index: any, indicator: boolean) => {
         let isVisibleCheck = this.state.isVisibleObject[index];
         isVisibleCheck.isVisible = indicator;
@@ -59,18 +91,26 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
         return <Image resizeMode="contain" style={style.iconImageStyle} source={imageName} />;
     };
 
-    getSelectedDataFromToolTip = (item: any) => {
-        console.log('tooltip clicked', item);
+    getSelectedDataFromToolTip = (tooltip_item: any, item: any) => {
+        console.log('tooltip clicked', tooltip_item, item);
+        this.setState({
+            visible: true,
+            selectedItem: item,
+            close: true,
+        });
     };
-    getToolTip = (index, isVisibleIndicator) => {
+    getToolTip = (index, isVisibleIndicator, item) => {
         return (
-            <CustomToolTip
-                isVisible={isVisibleIndicator}
-                model={this.state.toolTipList}
-                insideToolTip={this.inside(index)}
-                closeToolTip={() => this.setVisible(index, false)}
-                onPressOfToolTipItem={this.getSelectedDataFromToolTip}
-            />
+            <>
+                <CustomToolTip
+                    isVisible={isVisibleIndicator}
+                    model={this.state.toolTipList}
+                    insideToolTip={this.inside(index)}
+                    closeToolTip={() => this.setVisible(index, false)}
+                    onPressOfToolTipItem={(_tooltip_item) => this.getSelectedDataFromToolTip(_tooltip_item, item)}
+                />
+                {this.state.close ? this.closeToolTip(index) : null}
+            </>
         );
     };
     inside(index) {
@@ -83,6 +123,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
 
     closeToolTip = (index) => {
         this.setVisible(index, false);
+        this.setState({ close: false });
     };
     toolTipOptionSeparator = () => {
         return <View style={style.toolTipOptionSeperator}></View>;
@@ -140,6 +181,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
     };
 
     renderItem = ({ item, index }: any) => {
+        console.log('item in grid view', item);
         const isVisibleIndicator = this.getVisibility(index);
         let fileName = item.name.split('.');
         return (
@@ -163,11 +205,95 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                         </Text>
                     </View>
                     <View style={style.iconContainer}>
-                        {this.getToolTip(index, isVisibleIndicator)}
+                        {this.getToolTip(index, isVisibleIndicator, item)}
                         <Text style={style.sizeStyle}>{item.fileSize}</Text>
                     </View>
                 </View>
             </View>
+        );
+    };
+
+    getModal = () => {
+        console.log('selectec_groups', this.state.selectedGroups);
+        return (
+            <Modal animationType="slide" transparent={true} visible={this.state.visible}>
+                <View style={style.centeredView}>
+                    <View style={style.modalView}>
+                        <View style={style.modalContainer}>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        paddingRight: 0,
+                                        fontSize: 25,
+                                        paddingLeft: 20,
+                                        color: BaseThemeStyle.colors.black,
+                                        marginBottom: 10,
+                                    }}
+                                >
+                                    Add to Favourites
+                                </Text>
+                            </View>
+                            <FlatList
+                                data={this.state.groups}
+                                extraData={this.state}
+                                renderItem={({ item }) => {
+                                    let isSelected = this.state.selectedGroups.findIndex(
+                                        (group_id) => group_id === item.id,
+                                    );
+                                    return (
+                                        <GroupItem
+                                            name={item.name}
+                                            id={item.id}
+                                            isCheck={isSelected >= 0}
+                                            onSelect={(id, isCheck) => {
+                                                let array = this.state.selectedGroups;
+                                                if (isCheck) {
+                                                    let _index = array.findIndex((_) => _ === id);
+                                                    if (_index == -1) {
+                                                        array.push(id);
+                                                    }
+                                                } else {
+                                                    let _index = array.findIndex((_) => _ === id);
+                                                    if (_index >= 0) {
+                                                        array.splice(_index, 1);
+                                                    }
+                                                }
+                                                console.log(isCheck, array);
+                                                this.setState({ selectedGroups: array });
+                                            }}
+                                        />
+                                    );
+                                }}
+                            />
+                            <View style={{ marginTop: 10 }}>
+                                <Button
+                                    onPress={async () => {
+                                        let favorites;
+                                        favorites = [];
+                                        this.state.selectedGroups.map((item) => {
+                                            let _group = this.state.groups.find((group) => group.id == item);
+                                            favorites.push({
+                                                uniqueId: this.state.selectedItem.uniqueId,
+                                                id: `${new Date().getTime()}`,
+                                                favoriteGroupName: _group.name,
+                                            });
+                                        });
+                                        dbHelper.createFavouriteEntries(favorites).then(() => {
+                                            this.setState({ visible: false });
+                                        });
+                                    }}
+                                    title="Okay"
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         );
     };
 
@@ -186,6 +312,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                             keyExtractor={(item, index) => index.toString()}
                             extraData={this.state.update}
                         />
+                        {this.getModal()}
                     </View>
                 ) : (
                     <View style={style.emptyIconStyle}>
@@ -197,3 +324,24 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
         );
     }
 }
+
+const GroupItem = (props) => {
+    const [isCheck, setCheck] = useState(props.isCheck);
+    return (
+        <View style={{ flexDirection: 'row' }}>
+            <View>
+                <CheckBox
+                    disabled={false}
+                    value={isCheck}
+                    onValueChange={() => {
+                        setCheck(!isCheck);
+                        props?.onSelect(props.id, !isCheck);
+                    }}
+                />
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'black' }}>{props.name}</Text>
+            </View>
+        </View>
+    );
+};

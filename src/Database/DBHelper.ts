@@ -2,10 +2,12 @@ import { API_NAMES } from '../Constant/Constants';
 import { applyDriveItemFilter, findCountry, normalizeUrl, notEmpty, sanitizeWebUrl } from '../Helper/Helper';
 import LogManager from '../Helper/LogManager';
 import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
+import { FavoriteGroupModel } from '../Model/FavouriteGroupModel';
+import { FavoriteModel } from '../Model/FavouriteModel';
 import { MoreInfoListModel } from '../Model/MoreInfoListModel';
 import { IUserModel, UserModel } from '../Model/UserModel';
 import { DatabaseManager } from './DatabaseManager';
-import { DriveItemSchema, UserSchema } from './Schema';
+import { DriveItemSchema, FavoriteGroupSchema, FavoriteSchema, UserSchema } from './Schema';
 
 export class DBhelper {
     /**
@@ -210,6 +212,38 @@ export class DBhelper {
             return moreInfoData;
         }
     }
+
+    async getFavGroups(): Promise<FavoriteGroupModel[]> {
+        //get all matching drive items
+        let itemData = DatabaseManager.getInstance().getEntities(
+            FavoriteGroupSchema.name,
+            ``,
+        );
+        LogManager.debug('getFavGroups=======', itemData);
+        return itemData;
+    }
+
+    async createFavGroup(data: FavoriteGroupModel) {
+        await DatabaseManager.getInstance().createEntity(FavoriteGroupSchema.name, data);
+    }
+
+    async removeFavGroup(item: FavoriteGroupModel) {
+        await DatabaseManager.getInstance().removeRealmObject(FavoriteGroupSchema.name, item);
+    }
+
+    async createFavouriteEntries(data: FavoriteModel[]) {
+        await data.forEach(async (element) => {
+            await DatabaseManager.getInstance().createEntity(FavoriteSchema.name, element);
+        });
+    }
+
+    async getFavItems(group: FavoriteGroupModel): Promise<FavoriteModel[]> {
+        console.log("fav group ", group)
+        let items = DatabaseManager.getInstance().getEntities(FavoriteSchema.name,`favoriteGroupName == '${group.name}'`);
+        console.log('items=====================',items);
+        return items;
+    }
+
 }
 
 const dbHelper = new DBhelper();

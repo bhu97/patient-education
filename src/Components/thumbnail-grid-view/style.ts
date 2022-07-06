@@ -119,5 +119,52 @@ export const style = StyleSheet.create({
         marginLeft:150,
         color:BaseThemeStyle.colors.textColor
     },
+    centeredView: {
+        flex: 1,
+       justifyContent: 'center',
+       alignItems: 'center',
+    
+     },
+     modalView: {
+       backgroundColor: 'white',
+       height: 'auto',
+       width: '20%',
+       justifyContent: 'flex-end',
+       // padding: 30,
+       shadowColor: '#000',
+       shadowOffset: {
+         width: 0,
+         height: 2,
+       },
+       shadowOpacity: 0.25,
+       shadowRadius: 4,
+       elevation: 5,
+       borderWidth: 1,
+       borderColor: 'gray',
+       marginBottom:150
+     
+     },
+     modalContainer: {
+       // flex: 1,
+       margin: '5%',
+    
+       // justifyContent:'flex-end'
+     },
+     cardStyle: {
+       // flex:1,
+       // borderRadius: 5,
+       // borderWidth: 1,
+       // borderColor: 'grey',
+       backgroundColor: 'white',
+       padding: '3%',
+       // marginVertical: '5%',
+       // elevation: 0.9,
+     },
+     cardTextInputStyle: {
+       borderBottomColor: 'grey',
+       borderBottomWidth: 2,
+       //  marginBottom: 10,
+       fontSize: 24,
+     },
 
 });
