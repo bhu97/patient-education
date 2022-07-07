@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, { PureComponent } from 'react';
 import { LogBox } from 'react-native';
 import { Provider } from 'react-redux';
+import ErrorBoundary from './src/Components/error-boundary/error-boudary';
 import { DatabaseManager } from './src/Database/DatabaseManager';
 import LogManager from './src/Helper/LogManager';
 import NavigationManager from './src/Helper/NavigationManager';
@@ -21,6 +22,7 @@ export default class App extends PureComponent {
 
     render() {
         return (
+            <ErrorBoundary>
             <Provider store={store}>
                 <NavigationContainer
                     ref={(navigatorRef) => {
@@ -30,6 +32,7 @@ export default class App extends PureComponent {
                     <Routes />
                 </NavigationContainer>
             </Provider>
+            </ErrorBoundary>
         );
     }
 }
