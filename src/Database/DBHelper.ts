@@ -215,10 +215,7 @@ export class DBhelper {
 
     async getFavGroups(): Promise<FavoriteGroupModel[]> {
         //get all matching drive items
-        let itemData = DatabaseManager.getInstance().getEntities(
-            FavoriteGroupSchema.name,
-            ``,
-        );
+        let itemData = DatabaseManager.getInstance().getEntities(FavoriteGroupSchema.name, ``);
         LogManager.debug('getFavGroups=======', itemData);
         return itemData;
     }
@@ -231,19 +228,53 @@ export class DBhelper {
         await DatabaseManager.getInstance().removeRealmObject(FavoriteGroupSchema.name, item);
     }
 
-    async createFavouriteEntries(data: FavoriteModel[]) {
+    async createFavouriteEntries(data: FavoriteModel[], uniqueId: String) {
+        let items = DatabaseManager.getInstance().getEntities(FavoriteSchema.name, `uniqueId == '${uniqueId}'`);
+        console.log('items^^^^^^^^^^^^^^^^^^^^^', items);
+        if (items.length > 0) {
+            items.forEach(async (_element) => {
+                await DatabaseManager.getInstance().deleteRealmObject(FavoriteSchema.name, _element.id);
+            });
+        }
+
         await data.forEach(async (element) => {
+            console.log('element^^^^^^^^^^^^^^^^^^^^^', element);
             await DatabaseManager.getInstance().createEntity(FavoriteSchema.name, element);
         });
     }
 
-    async getFavItems(group: FavoriteGroupModel): Promise<FavoriteModel[]> {
-        console.log("fav group ", group)
-        let items = DatabaseManager.getInstance().getEntities(FavoriteSchema.name,`favoriteGroupName == '${group.name}'`);
-        console.log('items=====================',items);
+    async getFavItems(group: FavoriteGroupModel): Promise<DriveItemModel[]> {
+        console.log('fav group ', group);
+        let items = await DatabaseManager.getInstance().getEntities(
+            FavoriteSchema.name,
+            `favoriteGroupName == '${group.name}'`,
+        );
+        console.log('items=====================', items);
+        let detailItems;
+        detailItems = [];
+
+        if (items.length > 0) {
+            await items.forEach(async (element) => {
+                let itemDetail = await this.getItemDetailByUniqueId(element.uniqueId);
+                if (itemDetail) {
+                    detailItems.push(itemDetail);
+                }
+            });
+        }
+
+        return detailItems;
+    }
+
+    async getFavItemsByUniqueId(uniqueId: string): Promise<FavoriteModel[]> {
+        let items = await DatabaseManager.getInstance().getEntities(FavoriteSchema.name, `uniqueId == '${uniqueId}'`);
+        console.log('items=====================', items);
         return items;
     }
 
+    async getItemDetailByUniqueId(uniqueId: string): Promise<DriveItemModel> {
+        let item = await DatabaseManager.getInstance().getEntity(DriveItemSchema.name, uniqueId);
+        return item;
+    }
 }
 
 const dbHelper = new DBhelper();

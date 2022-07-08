@@ -78,6 +78,21 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
         this.setState({ groups });
     };
 
+    getSelectedGroupsFromRealm = async (uniqueId) => {
+        let selectedGroups = await dbHelper.getFavItemsByUniqueId(uniqueId);
+        console.log('selectedGroups****************', selectedGroups);
+        if (selectedGroups.length > 0) {
+            let array;
+            array = [];
+            selectedGroups.forEach((group) => {
+                let group_id = group.id.split('_')[0];
+                array.push(group_id);
+            });
+            console.log('array****************', array);
+            this.setState({ selectedGroups: array });
+        }
+    };
+
     setVisible = (index: any, indicator: boolean) => {
         let isVisibleCheck = this.state.isVisibleObject[index];
         isVisibleCheck.isVisible = indicator;
@@ -93,11 +108,13 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
 
     getSelectedDataFromToolTip = (tooltip_item: any, item: any) => {
         console.log('tooltip clicked', tooltip_item, item);
-        this.setState({
-            visible: true,
-            selectedItem: item,
-            close: true,
-        });
+        if (tooltip_item.index == 2) {
+            this.setState({
+                visible: true,
+                selectedItem: item,
+                close: true,
+            });
+        }
     };
     getToolTip = (index, isVisibleIndicator, item) => {
         return (
@@ -105,7 +122,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                 <CustomToolTip
                     isVisible={isVisibleIndicator}
                     model={this.state.toolTipList}
-                    insideToolTip={this.inside(index)}
+                    insideToolTip={this.inside(index, item)}
                     closeToolTip={() => this.setVisible(index, false)}
                     onPressOfToolTipItem={(_tooltip_item) => this.getSelectedDataFromToolTip(_tooltip_item, item)}
                 />
@@ -113,9 +130,15 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
             </>
         );
     };
-    inside(index) {
+    inside(index, item) {
         return (
-            <TouchableOpacity onPress={() => this.setVisible(index, true)}>
+            <TouchableOpacity
+                onPress={() => {
+                    this.setVisible(index, true);
+                    this.setState({ selectedGroups: [] });
+                    this.getSelectedGroupsFromRealm(item.uniqueId);
+                }}
+            >
                 <CustomIcon name={'more-horizontal'} />
             </TouchableOpacity>
         );
@@ -181,7 +204,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
     };
 
     renderItem = ({ item, index }: any) => {
-        console.log('item in grid view', item);
+        // console.log('item in grid view', item);
         const isVisibleIndicator = this.getVisibility(index);
         let fileName = item.name.split('.');
         return (
@@ -270,22 +293,39 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                                     );
                                 }}
                             />
-                            <View style={{ marginTop: 10 }}>
+                            <View
+                                style={{
+                                    marginTop: 20,
+                                    flexDirection: 'row',
+                                    alignItems: 'flex-start',
+                                    justifyContent: 'space-evenly',
+                                }}
+                            >
+                                <Button
+                                    onPress={() => {
+                                        this.setState({ visible: false });
+                                    }}
+                                    title="Cancel"
+                                />
                                 <Button
                                     onPress={async () => {
                                         let favorites;
                                         favorites = [];
                                         this.state.selectedGroups.map((item) => {
                                             let _group = this.state.groups.find((group) => group.id == item);
-                                            favorites.push({
-                                                uniqueId: this.state.selectedItem.uniqueId,
-                                                id: `${new Date().getTime()}`,
-                                                favoriteGroupName: _group.name,
+                                            if (_group) {
+                                                favorites.push({
+                                                    uniqueId: this.state.selectedItem.uniqueId,
+                                                    id: `${_group.id}_${new Date().getTime()}`,
+                                                    favoriteGroupName: _group.name,
+                                                });
+                                            }
+                                        });
+                                        dbHelper
+                                            .createFavouriteEntries(favorites, this.state.selectedItem.uniqueId)
+                                            .then(() => {
+                                                this.setState({ visible: false });
                                             });
-                                        });
-                                        dbHelper.createFavouriteEntries(favorites).then(() => {
-                                            this.setState({ visible: false });
-                                        });
                                     }}
                                     title="Okay"
                                 />

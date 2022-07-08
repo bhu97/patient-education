@@ -150,8 +150,9 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                     </View>
                     <Text
                         style={style.textStyleNew}
-                        onPress={() => {
-                            dbHelper.getFavItems(item);
+                        onPress={async () => {
+                            let items = await dbHelper.getFavItems(item);
+                            console.log('items with details=====================',items); // set this item to get get data on thumbnail 
                         }}
                     >
                         {item.name}

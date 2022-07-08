@@ -90,6 +90,16 @@ export class DatabaseManager {
         }
     };
 
+    public getEntity = (schemaName: string, primaryKey: string) => {
+        try {
+            var group = this.realm?.objectForPrimaryKey(schemaName,primaryKey);
+            return this.copyRealmObject(group);
+        } catch (error) {
+            LogManager.error('getEnttity--->', error);
+            return null;
+        }
+    }
+
     public copyRealmObject = (item: any) => {
         return JSON.parse(JSON.stringify(item)); //refReplacer(item)};
     };
@@ -98,6 +108,20 @@ export class DatabaseManager {
         try {
             this.realm?.write(()=>{
                 var group = this.realm?.objectForPrimaryKey(schemaName,item.id);
+                if(group){
+                    this.realm?.delete(group);
+                    group = undefined;
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    public deleteRealmObject = (schemaName: string, primaryKey: any) => { // delete entity
+        try {
+            this.realm?.write(()=>{
+                var group = this.realm?.objectForPrimaryKey(schemaName,primaryKey);
                 if(group){
                     this.realm?.delete(group);
                     group = undefined;
