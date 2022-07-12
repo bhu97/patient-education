@@ -2,6 +2,7 @@ import Realm from 'realm';
 import { API_NAMES, BINARY_STRING } from '../Constant/Constants';
 import { base64ToArrayBuffer } from '../Helper/Helper';
 import LogManager from '../Helper/LogManager';
+import { FavoriteGroupModel } from '../Model/FavouriteGroupModel';
 import { DriveItemSchema, FavoriteGroupSchema, FavoriteSchema, UserSchema } from './Schema';
 
 export class DatabaseManager {

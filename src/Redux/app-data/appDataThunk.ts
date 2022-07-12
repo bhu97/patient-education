@@ -9,6 +9,7 @@ import apiManager from '../../Helper/ApiManager';
 import { createDriveModelData, createListModelData } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
+import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { setMainCategoryList } from '../category/categorySlice';
 import { dispatchState } from '../store';
 import { setIsAlertShown } from './appDataSlice';
@@ -169,6 +170,7 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
  */
 export const login = createAsyncThunk('appData/login', async () => {
     const userData: any = await dbHelper.getUser();
+    dbHelper.createFavGroup(FavoriteGroupModel.generate({name: 'Default'}));
     SplashScreen.hide();
     //user not present fetch all data and save it DB and set to redux
     if (!userData) {

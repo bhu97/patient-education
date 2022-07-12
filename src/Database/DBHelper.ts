@@ -253,16 +253,16 @@ export class DBhelper {
         let detailItems;
         detailItems = [];
 
-        if (items.length > 0) {
-            await items.forEach(async (element) => {
-                let itemDetail = await this.getItemDetailByUniqueId(element.uniqueId);
-                if (itemDetail) {
-                    detailItems.push(itemDetail);
-                }
-            });
-        }
+        // if (items.length > 0) {
+        //     await items.forEach(async (element) => {
+        //         let itemDetail = await this.getItemDetailByUniqueId(element.uniqueId);
+        //         if (itemDetail) {
+        //             detailItems.push(itemDetail);
+        //         }
+        //     });
+        // }
 
-        return detailItems;
+        return items;
     }
 
     async getFavItemsByUniqueId(uniqueId: string): Promise<FavoriteModel[]> {

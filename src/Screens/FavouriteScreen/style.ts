@@ -45,6 +45,28 @@ export const style = StyleSheet.create({
         flex: 2,
         paddingHorizontal: 10,
         paddingVertical: 20,
+        // backgroundColor:'red'
+     
+    },
+    favGridContainer:{
+        shadowColor: BaseThemeStyle.colors.gray,
+        opacity: 1,
+        shadowRadius: 8,
+        elevation: 20,
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 5,
+         backgroundColor: 'white',
+        flex: 1,
+        // flexDirection: 'row',
+        padding: BaseThemeStyle.paddings.formElements,
+        justifyContent: 'space-between',
+    },
+    fileContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: BaseThemeStyle.colors.white,
+        borderRadius: 1,
+        paddingLeft: BaseThemeStyle.paddings.containers,
      
     },
     favoritecontainer: { flex: 1, flexDirection: 'row' },
@@ -69,6 +91,7 @@ export const style = StyleSheet.create({
         paddingHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
+      
        
     },
     mainIconstyle: {
@@ -91,15 +114,18 @@ export const style = StyleSheet.create({
         alignItems: 'center',
     },
     containerView:{ 
-         paddingHorizontal: 13, 
+        paddingHorizontal: 13, 
         flexDirection: 'row', 
         justifyContent: 'center', 
         alignItems: 'center' ,
-        paddingVertical: 5, 
+      
+      
+        flex:1
    
     },
     listStyle:{ 
-     padding:10
+      padding:5,
+    
     },
     centeredView: { 
             flex: 1,  

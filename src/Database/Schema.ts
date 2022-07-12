@@ -50,6 +50,16 @@ export const FavoriteSchema = {
         id: 'string',
         favoriteGroupName: 'string',
         uniqueId: 'string',
+        fileExtension: 'string',
+        fileSize: 'string',
+        largeUrl: 'string',
+        listItemId: 'string',
+        mediumUrl: 'string',
+        name: 'string',
+        parentReferenceId: 'string',
+        smallUrl: 'string',
+        title: 'string',
+        webUrl: 'string',
     },
 };
 

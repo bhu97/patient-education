@@ -10,6 +10,7 @@ import {
     Button,
     TextInput,
     KeyboardAvoidingView,
+    ScrollView,
 } from 'react-native';
 import BalanceFileContainer from '../../Components/balance-file-container/BalanceFileContainer';
 import CustomBody from '../../Components/custom-body/custom-body';
@@ -25,16 +26,24 @@ import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import dbHelper from '../../Database/DBHelper';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import CheckBox from '@react-native-community/checkbox';
+import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
 
-interface FavouritePageProps {}
+interface FavouritePageProps {
+    navigation: any;
+}
 interface FavouritePageState {
     visible: boolean;
     groups: Array<FavoriteGroupModel>;
     group_name: string;
     check: boolean;
+    favGroupItem: Array<any> ;
+    favGroupTitle: string;
+    selectedGroupItem: FavoriteGroupModel | null;
 }
 
 class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
+    _unsubscribe: any; 
+
     constructor(props: FavouritePageProps) {
         super(props);
         this.state = {
@@ -42,16 +51,31 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
             groups: [],
             group_name: '',
             check: false,
+            favGroupItem: [],
+            favGroupTitle:'',
+            selectedGroupItem: null
         };
     }
 
     componentDidMount() {
         this.getGroups();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.getFavItems();
+        });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     getGroups = async () => {
         let groups = await dbHelper.getFavGroups();
-        this.setState({ groups });
+        if (this.state.selectedGroupItem == null && groups.length > 0) {
+            this.setState({ groups, selectedGroupItem: groups[0], favGroupTitle: groups[0].name });
+        } else {
+            this.setState({ groups });
+         }
+        
     };
 
     createGroup = () => {
@@ -66,6 +90,14 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
             this.getGroups();
         });
     };
+
+    getFavItems = async () => {
+        if(this.state.selectedGroupItem){
+            let items = await dbHelper.getFavItems(this.state.selectedGroupItem);
+            this.setState({ favGroupItem: items });
+            console.log('items with details=====================',items); // set this item to get data on thumbnail 
+        }
+    }
 
     getModal = () => {
         return (
@@ -143,7 +175,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
 
     Lists = ({ item }) => (
         <View style={style.listStyle}>
-            <Swipeable renderRightActions={this.rightSwipeActions.bind(this, item)}>
+            <Swipeable renderRightActions={item.name == 'Default' ? null : this.rightSwipeActions.bind(this, item)}>
                 <View style={style.listviewstyle}>
                     <View style={style.mainIconstyle}>
                         <Image source={Images.favouritesListImage} />
@@ -151,8 +183,9 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                     <Text
                         style={style.textStyleNew}
                         onPress={async () => {
-                            let items = await dbHelper.getFavItems(item);
-                            console.log('items with details=====================',items); // set this item to get get data on thumbnail 
+                            this.setState({favGroupTitle:item.name, selectedGroupItem: item}, () => {
+                                this.getFavItems();
+                            });
                         }}
                     >
                         {item.name}
@@ -191,6 +224,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                         {this.getModal()}
                                     </View>
                                 </View>
+                                <ScrollView>
                                 <View style={style.containerView}>
                                     <FlatList
                                         data={this.state.groups}
@@ -198,10 +232,19 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                         renderItem={this.Lists}
                                     />
                                 </View>
+                                </ScrollView>
                             </View>
                         </View>
                         <View style={style.balanceContainer}>
-                            <BalanceFileContainer />
+                            <View style={style.favGridContainer}>
+                        {this.state.favGroupItem && (
+                            <View style={style.fileContainer}>
+                                  <Text style={style.textStyle}>{this.state.favGroupTitle? this.state.favGroupTitle : 'Balance Files'}</Text>
+                                <ThumbnailGridView gridViewList={this.state.favGroupItem} />
+                             </View>
+                        )}
+                        </View>
+                            {/* <BalanceFileContainer gridViewList={this.state.favGroupItem} gridViewTitle={this.state.favGroupTitle}   /> */}
                         </View>
                     </View>
                 </CustomBody>

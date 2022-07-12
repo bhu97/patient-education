@@ -207,6 +207,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
         // console.log('item in grid view', item);
         const isVisibleIndicator = this.getVisibility(index);
         let fileName = item.name.split('.');
+        console.log('item',item);
         return (
             <View style={style.backgroundViewStyle}>
                 <TouchableOpacity onPress={() => this.loadDocument(item)}>
@@ -318,6 +319,16 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                                                     uniqueId: this.state.selectedItem.uniqueId,
                                                     id: `${_group.id}_${new Date().getTime()}`,
                                                     favoriteGroupName: _group.name,
+                                                    fileExtension: this.state.selectedItem.fileExtension,
+                                                    fileSize: this.state.selectedItem.fileSize,
+                                                    largeUrl: this.state.selectedItem.largeUrl,
+                                                    listItemId: this.state.selectedItem.listItemId,
+                                                    mediumUrl: this.state.selectedItem.mediumUrl,
+                                                    name: this.state.selectedItem.name,
+                                                    parentReferenceId: this.state.selectedItem.parentReferenceId,
+                                                    smallUrl: this.state.selectedItem.smallUrl,
+                                                    title: this.state.selectedItem.title,
+                                                    webUrl: this.state.selectedItem.webUrl,
                                                 });
                                             }
                                         });

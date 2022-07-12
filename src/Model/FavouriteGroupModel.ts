@@ -14,7 +14,12 @@ export class FavoriteGroupModel implements IGroupModel {
             id: '0',
         };
 
-        object.id = `${new Date().getTime()}`;
+        let _id = `${new Date().getTime()}`;
+        if(response.name.toLowerCase().trim() == 'default'){
+            _id = `default_01`;
+        }
+
+        object.id = _id;
         object.name = response.name;
         return object;
     }

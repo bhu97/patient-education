@@ -6,24 +6,35 @@ export const style = StyleSheet.create({
         fontSize: 22,
         fontWeight: 'bold',
         color: 'black',
-        paddingHorizontal: 30,
-        paddingVertical: 20,
-       
+        // paddingHorizontal: 30,
+        // paddingVertical: 20,
     },
-    mainContainer:{
-         // for shadow of card
-         shadowColor: BaseThemeStyle.colors.gray,
-         opacity: 1,
-         shadowRadius: 8,
-         elevation: 20,
-         shadowOffset: { width: 5, height: 5 },
-         shadowOpacity: 5,
+    fileContainer: {
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: BaseThemeStyle.colors.white,
+        borderRadius: 1,
+        paddingLeft: BaseThemeStyle.paddings.containers,
+     
+    },
+    mainContainer: {
+        // for shadow of card
+        shadowColor: BaseThemeStyle.colors.gray,
+        opacity: 1,
+        shadowRadius: 8,
+        elevation: 20,
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 5,
          backgroundColor: 'white',
+        flex: 1,
+        // flexDirection: 'row',
+        padding: BaseThemeStyle.paddings.formElements,
+        justifyContent: 'space-between',
     },
     imageContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-      
+
         flexGrow: 6,
         height: '85%',
     },
