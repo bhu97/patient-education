@@ -33,6 +33,10 @@ export interface CategoryState {
     //
     selectedCategoryData: any[];
     isRefreshDetailScreen: boolean;
+
+    // favorites screen data state
+    favGroupData: any[];
+    favGroupItemData: any[]
 }
 
 // to set initial value for all variable
@@ -54,6 +58,8 @@ const initialState: CategoryState = {
     userModelData: [],
     selectedCategoryData: [],
     isRefreshDetailScreen: false,
+    favGroupData: [],
+    favGroupItemData: []
 };
 
 // basic example slice done based on the docs
@@ -105,6 +111,16 @@ const categorySlice = createSlice({
             console.log('refreshDetailScreen value', action.payload);
             state.isRefreshDetailScreen = action.payload;
         },
+        // setting fav group and item
+
+        setFavGroupData: (state, action: PayloadAction<any>)=> {
+            state.favGroupData = action.payload;
+        },
+        setFavGroupItemData: (state, action: PayloadAction<any>)=> {
+            state.favGroupItemData = action.payload;
+        }
+
+
     },
 });
 
@@ -121,6 +137,8 @@ export const {
     setSelectedCategoryData,
     setUserModelData,
     setRefreshDetailScreen,
+    setFavGroupData,
+    setFavGroupItemData
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

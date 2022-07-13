@@ -26,9 +26,13 @@ import CheckBox from '@react-native-community/checkbox';
 import { style } from './style';
 import dbHelper from '../../Database/DBHelper';
 import { FavoriteModel } from '../../Model/FavouriteModel';
+import { RootState } from '../../Redux/rootReducer';
+import { connect } from 'react-redux';
+import { setFavGroupData } from '../../Redux/category/categorySlice';
 
 interface ThumbnailGridViewProps {
     gridViewList: GridViewModel[];
+    favGroup: any;
 }
 interface ThumbnailGridViewState {
     isVisibleObject: any;
@@ -41,9 +45,10 @@ interface ThumbnailGridViewState {
     selectedGroups: Array<string>;
     selectedItem: any;
     close: boolean;
+    dummy: number;
 }
 
-export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailGridViewState> {
+ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailGridViewState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -61,6 +66,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
             selectedGroups: [],
             selectedItem: null,
             close: false,
+            dummy:1
         };
     }
 
@@ -71,12 +77,29 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
             isVisibleArray[index] = setIndex;
         });
         this.setState({ isVisibleObject: isVisibleArray });
-        this.getGroups();
+       this.updateScreen()
     }
-    getGroups = async () => {
-        let groups = await dbHelper.getFavGroups();
-        this.setState({ groups });
-    };
+    updateScreen()
+    {
+        this.setState({dummy: 1})
+    }
+
+    componentDidUpdate(prevProp): void {
+        if (prevProp.gridViewList.length !== this.props.gridViewList.length) {
+            let isVisibleArray = {};
+            this.props.gridViewList.map((item: any, index: any) => {
+                let setIndex = { index: index, isVisible: false };
+                isVisibleArray[index] = setIndex;
+            });
+            this.setState({ isVisibleObject: isVisibleArray });
+        }
+        // this.getGroups();
+    }
+
+    // getGroups = async () => {
+    //     let groups = await dbHelper.getFavGroups();
+    //     this.setState({ groups });
+    // };
 
     getSelectedGroupsFromRealm = async (uniqueId) => {
         let selectedGroups = await dbHelper.getFavItemsByUniqueId(uniqueId);
@@ -263,7 +286,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                                 </Text>
                             </View>
                             <FlatList
-                                data={this.state.groups}
+                                data={this.props.favGroup}
                                 extraData={this.state}
                                 renderItem={({ item }) => {
                                     let isSelected = this.state.selectedGroups.findIndex(
@@ -313,7 +336,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                                         let favorites;
                                         favorites = [];
                                         this.state.selectedGroups.map((item) => {
-                                            let _group = this.state.groups.find((group) => group.id == item);
+                                            let _group = this.props.favGroup.find((group) => group.id == item);
                                             if (_group) {
                                                 favorites.push({
                                                     uniqueId: this.state.selectedItem.uniqueId,
@@ -331,6 +354,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                                                     webUrl: this.state.selectedItem.webUrl,
                                                 });
                                             }
+                                            this.updateScreen.bind(this)
                                         });
                                         dbHelper
                                             .createFavouriteEntries(favorites, this.state.selectedItem.uniqueId)
@@ -349,6 +373,7 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
     };
 
     render() {
+        console.log('isVisibleObject^^^^^^^^^^^^^^^^^^^',this.state.isVisibleObject);
         return this.state.loader ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
@@ -366,10 +391,12 @@ export default class ThumbnailGridView extends PureComponent<ThumbnailGridViewPr
                         {this.getModal()}
                     </View>
                 ) : (
+                    
                     <View style={style.emptyIconStyle}>
                         <Image style={style.emptyImageStyle} source={Images.emptyImg} />
-                        <Text style={style.emptyDataText}>{BaseLocalization.noDataOnGrid}</Text>
+                        <Text style={style.emptyDataText}>{BaseLocalization.noDataText}</Text>
                     </View>
+                  
                 )}
             </>
         );
@@ -396,3 +423,17 @@ const GroupItem = (props) => {
         </View>
     );
 };
+
+const mapStateToProps = (state: RootState) => ({
+    favGroup: state.categoryReducer.favGroupData 
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+    //
+  
+    setFavGroup: (favGroup: any) => {
+        dispatch(setFavGroupData(favGroup))
+    }
+ 
+});
+export default connect(mapStateToProps, mapDispatchToProps)(ThumbnailGridView);

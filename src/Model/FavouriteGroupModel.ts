@@ -16,7 +16,7 @@ export class FavoriteGroupModel implements IGroupModel {
 
         let _id = `${new Date().getTime()}`;
         if(response.name.toLowerCase().trim() == 'default'){
-            _id = `default_01`;
+            _id = `Default`;
         }
 
         object.id = _id;

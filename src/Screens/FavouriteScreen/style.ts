@@ -159,4 +159,18 @@ export const style = StyleSheet.create({
         borderBottomWidth: 2,
         fontSize: 24,
       },
+      imageContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+
+        flexGrow: 6,
+        height: '85%',
+    },
+    secondtextStyle: {
+        color: BaseThemeStyle.colors.textColor,
+        fontSize: 22,
+        textAlign: 'center',
+        paddingVertical: 40,
+        paddingHorizontal: 100,
+    },
 });
