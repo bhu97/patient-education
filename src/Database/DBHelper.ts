@@ -162,12 +162,15 @@ export class DBhelper {
         for (let webUrl of webUrls) {
             //normalize URL
             const normalizedWebUrl = normalizeUrl(webUrl);
+            if (!normalizedWebUrl) continue;
 
             //sanitize url
             var sanitizedWebUrl = sanitizeWebUrl(normalizedWebUrl);
+            if (!sanitizedWebUrl) continue;
 
             //decode ur remove special chars like %20
             const decodeWebUrl = decodeURIComponent(sanitizedWebUrl);
+            if (!decodeWebUrl) continue;
 
             //get country code
             const countryCode = findCountry(decodeWebUrl);
@@ -230,7 +233,7 @@ export class DBhelper {
 
     async createFavouriteEntries(data: FavoriteModel[], uniqueId: String) {
         let items = DatabaseManager.getInstance().getEntities(FavoriteSchema.name, `uniqueId == '${uniqueId}'`);
-        console.log('items^^^^^^^^^^^^^^^^^^^^^', items);
+        LogManager.debug('items^^^^^^^^^^^^^^^^^^^^^', items);
         if (items.length > 0) {
             items.forEach(async (_element) => {
                 await DatabaseManager.getInstance().deleteRealmObject(FavoriteSchema.name, _element.id);
@@ -238,18 +241,17 @@ export class DBhelper {
         }
 
         await data.forEach(async (element) => {
-            console.log('element^^^^^^^^^^^^^^^^^^^^^', element);
+            LogManager.debug('element^^^^^^^^^^^^^^^^^^^^^', element);
             await DatabaseManager.getInstance().createEntity(FavoriteSchema.name, element);
         });
     }
 
     async getFavItems(group: FavoriteGroupModel): Promise<DriveItemModel[]> {
-        console.log('fav group ', group);
         let items = await DatabaseManager.getInstance().getEntities(
             FavoriteSchema.name,
             `favoriteGroupName == '${group.name}'`,
         );
-        console.log('items=====================', items);
+        LogManager.debug('get Fav items=', items);
         let detailItems;
         detailItems = [];
 
@@ -267,7 +269,7 @@ export class DBhelper {
 
     async getFavItemsByUniqueId(uniqueId: string): Promise<FavoriteModel[]> {
         let items = await DatabaseManager.getInstance().getEntities(FavoriteSchema.name, `uniqueId == '${uniqueId}'`);
-        console.log('items=====================', items);
+        LogManager.debug('get items by unique ID=', items);
         return items;
     }
 

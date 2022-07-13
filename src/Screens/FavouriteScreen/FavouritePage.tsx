@@ -35,7 +35,7 @@ interface FavouritePageProps {
     navigation: any;
     favGroupItem: any;
     setFavGroupItem: (any) => void;
-    favGroup:any;
+    favGroup: any;
     setFavGroup: (any) => void;
 }
 interface FavouritePageState {
@@ -43,13 +43,13 @@ interface FavouritePageState {
     groups: Array<FavoriteGroupModel>;
     group_name: string;
     check: boolean;
-    favGroupItem: Array<any> ;
+    favGroupItem: Array<any>;
     favGroupTitle: string;
     selectedGroupItem: FavoriteGroupModel | null;
 }
 
 class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
-    _unsubscribe: any; 
+    _unsubscribe: any;
 
     constructor(props: FavouritePageProps) {
         super(props);
@@ -59,8 +59,8 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
             group_name: '',
             check: false,
             favGroupItem: [],
-            favGroupTitle:'',
-            selectedGroupItem: null
+            favGroupTitle: '',
+            selectedGroupItem: null,
         };
     }
 
@@ -79,13 +79,11 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
         let groups = await dbHelper.getFavGroups();
         if (this.state.selectedGroupItem == null && groups.length > 0) {
             this.props.setFavGroup(groups);
-            this.setState({selectedGroupItem: groups[0], favGroupTitle: groups[0].name });
-            
+            this.setState({ selectedGroupItem: groups[0], favGroupTitle: groups[0].name });
         } else {
             // this.setState({ groups });
             this.props.setFavGroup(groups);
-         }
-        
+        }
     };
 
     createGroup = () => {
@@ -102,13 +100,13 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
     };
 
     getFavItems = async () => {
-        if(this.state.selectedGroupItem){
+        if (this.state.selectedGroupItem) {
             let items = await dbHelper.getFavItems(this.state.selectedGroupItem);
             // this.setState({ favGroupItem: items });
-            this.props.setFavGroupItem(items)
-            console.log('items with details=====================',items); // set this item to get data on thumbnail 
+            this.props.setFavGroupItem(items);
+            console.log('items with details=====================', items); // set this item to get data on thumbnail
         }
-    }
+    };
 
     getModal = () => {
         return (
@@ -194,7 +192,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                     <Text
                         style={style.textStyleNew}
                         onPress={async () => {
-                            this.setState({favGroupTitle:item.name, selectedGroupItem: item}, () => {
+                            this.setState({ favGroupTitle: item.name, selectedGroupItem: item }, () => {
                                 this.getFavItems();
                             });
                         }}
@@ -236,32 +234,35 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                     </View>
                                 </View>
                                 <ScrollView>
-                                <View style={style.containerView}>
-                                    <FlatList
-                                        data={this.props.favGroup}
-                                        keyExtractor={(item) => item.id}
-                                        renderItem={this.Lists}
-                                    />
-                                </View>
+                                    <View style={style.containerView}>
+                                        <FlatList
+                                            data={this.props.favGroup}
+                                            keyExtractor={(item) => item.id}
+                                            renderItem={this.Lists}
+                                        />
+                                    </View>
                                 </ScrollView>
                             </View>
                         </View>
                         <View style={style.balanceContainer}>
                             <View style={style.favGridContainer}>
-                        {this.props.favGroupItem ? (
-                            <View style={style.fileContainer}>
-                                  <Text style={style.textStyle}>{this.state.favGroupTitle? this.state.favGroupTitle : 'Balance Files'}</Text>   
-                                <ThumbnailGridView gridViewList={this.props.favGroupItem} />      
-                             </View>
-                        ):
-                        <View style={style.imageContainer}>
-                        <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
-                        <Text numberOfLines={3} style={style.secondtextStyle}>
-                            There are no favorites entries here yet. Please choose documents to be displayed here. Choose
-                            some files to add as a favorite.
-                        </Text>
-                    </View>}
-                        </View>
+                                {this.props.favGroupItem ? (
+                                    <View style={style.fileContainer}>
+                                        <Text style={style.textStyle}>
+                                            {this.state.favGroupTitle ? this.state.favGroupTitle : 'Balance Files'}
+                                        </Text>
+                                        <ThumbnailGridView gridViewList={this.props.favGroupItem} />
+                                    </View>
+                                ) : (
+                                    <View style={style.imageContainer}>
+                                        <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
+                                        <Text numberOfLines={3} style={style.secondtextStyle}>
+                                            There are no favorites entries here yet. Please choose documents to be
+                                            displayed here. Choose some files to add as a favorite.
+                                        </Text>
+                                    </View>
+                                )}
+                            </View>
                             {/* <BalanceFileContainer gridViewList={this.state.favGroupItem} gridViewTitle={this.state.favGroupTitle}   /> */}
                         </View>
                     </View>
@@ -273,19 +274,17 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
 
 const mapStateToProps = (state: RootState) => ({
     favGroupItem: state.categoryReducer.favGroupItemData,
-    favGroup: state.categoryReducer.favGroupData
-   
+    favGroup: state.categoryReducer.favGroupData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
     //
-    setFavGroupItem: (favGroupItem:any) => {
+    setFavGroupItem: (favGroupItem: any) => {
         dispatch(setFavGroupItemData(favGroupItem));
     },
     setFavGroup: (favGroup: any) => {
-        dispatch(setFavGroupData(favGroup))
-    }
- 
+        dispatch(setFavGroupData(favGroup));
+    },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FavouritePage);
 

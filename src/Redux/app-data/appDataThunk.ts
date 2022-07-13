@@ -52,15 +52,16 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
     const listModelData = createListModelData(listItems);
     LogManager.debug('listModelData=', listModelData);
 
+    //update drive item with list item into db
     LogManager.debug('insert DB stars 2=');
     await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, listModelData);
     LogManager.debug('insert DB end 2=');
     // create user into DB
     const userDetails = await dbHelper.createUserIfEmpty();
-    LogManager.debug('userDetails=', userDetails);
+    // LogManager.debug('userDetails=', userDetails);
 
     const mainCategoryData = await dbHelper.getRootItemsForCountry(userDetails);
-    LogManager.debug('mainCategoryData=', mainCategoryData);
+    // LogManager.debug('mainCategoryData=', mainCategoryData);
 
     dispatchState(setMainCategoryList(mainCategoryData));
 
@@ -145,9 +146,9 @@ export const fetchData = async (url: string, params?: any): Promise<any[]> => {
         params = {};
     }
     let allResponses = Array<any>();
-    LogManager.info('performing request: ', url);
+    //LogManager.info('performing request: ', url);
     const responses = await fetchNext(url, params, allResponses);
-    LogManager.debug('all response length: ' + allResponses.length);
+    //LogManager.debug('all response length: ' + allResponses.length);
     return responses;
 };
 
@@ -170,7 +171,7 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
  */
 export const login = createAsyncThunk('appData/login', async () => {
     const userData: any = await dbHelper.getUser();
-    dbHelper.createFavGroup(FavoriteGroupModel.generate({name: 'Default'}));
+    dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));
     SplashScreen.hide();
     //user not present fetch all data and save it DB and set to redux
     if (!userData) {

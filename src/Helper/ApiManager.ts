@@ -13,8 +13,8 @@ class ApiManager {
      * @returns
      */
     async callApiToGetData(endPoint: string, httpMethodName?: any, params?: any) {
-        LogManager.info('endPoint=', endPoint);
-        LogManager.debug('httpMethodName=', httpMethodName);
+        //LogManager.info('endPoint=', endPoint);
+        //LogManager.debug('httpMethodName=', httpMethodName);
 
         if (params === null) {
             params = {};
@@ -24,25 +24,25 @@ class ApiManager {
             httpMethodName = HTTP_METHODS.GET;
         }
 
-        LogManager.info('params=', params);
+        // LogManager.info('params=', params);
         var accessToken = await authenticationManager.getAccessToken();
-        LogManager.info('callApiToGetData token=', accessToken);
+        //LogManager.info('callApiToGetData token=', accessToken);
         if (accessToken == undefined || accessToken == null) {
             //added to fix issue for first time login where token is undefined.
             //TODO: need to debug reason for same
-            LogManager.info('issue with accessToken=', accessToken);
+            //LogManager.info('issue with accessToken=', accessToken);
             accessToken = await authenticationManager.getAccessToken();
-            LogManager.info('new token=', accessToken);
-            }
+            //    LogManager.info('new token=', accessToken);
+        }
 
         const headers = {
             Accept: 'application/json',
             'Content-Type': 'application/json',
             Authorization: `Bearer ${accessToken}`,
         };
-        LogManager.info('headers=', headers);
+        //LogManager.info('headers=', headers);
 
-        let response = null;
+        let response: any = null;
         try {
             response = await axios({
                 method: httpMethodName,
@@ -50,7 +50,7 @@ class ApiManager {
                 headers: headers,
                 params: params ? params : {},
             });
-            LogManager.info('response received=', response);
+            //  LogManager.info('response received=', response);
         } catch (error) {
             // any HTTP error is caught here
             // can extend this implementation to customiz the error messages
@@ -58,7 +58,7 @@ class ApiManager {
             LogManager.info('catch response=', error);
             response = null;
         }
-        LogManager.debug('callApiToGetData return=', response);
+        // LogManager.debug('callApiToGetData return=', response);
         return response.data ? response.data : [];
     }
 }

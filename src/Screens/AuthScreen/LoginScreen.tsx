@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, Text, Image } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import ApplicationAlert from '../../Components/custom-alert/custom-alert-component';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import LocalizationManager from '../../Localization/LocalizationManager';
 import { setIsAlertShown } from '../../Redux/app-data/appDataSlice';
-import { fetchAllDriveItems, login } from '../../Redux/app-data/appDataThunk';
+import { login } from '../../Redux/app-data/appDataThunk';
 import { RootState } from '../../Redux/rootReducer';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
