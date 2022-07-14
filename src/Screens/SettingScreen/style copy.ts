@@ -2,22 +2,19 @@ import { StyleSheet } from 'react-native';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 
 export const style = StyleSheet.create({
-    navContainer: {
-        paddingHorizontal: 16
-    },
     mainContainer: {
-        // flexGrow: 1,
-        // flexBasis:0,
+        flex: 1,
         flexDirection: 'row',
-        padding: 16,
-
+        paddingHorizontal:16,
+        paddingVertical:16,
+        justifyContent: 'space-between',
     },
     contactConatiner: {
-        flex: 0.5,
-        flexShrink: 1,
-        backgroundColor: 'white',
-        marginRight: 16,
-        height:'80%',
+        backgroundColor: 'red',
+        borderRadius: 1,
+        height:'auto',
+        marginHorizontal:16,
+       // for shadow of card
         shadowColor: BaseThemeStyle.colors.gray,
         opacity: 1,
         shadowRadius: 8,
@@ -25,42 +22,45 @@ export const style = StyleSheet.create({
         shadowOffset: { width: 5, height: 5 },
         shadowOpacity: 5,
     },
-
+    navContainer: {
+        paddingLeft: 16,
+        paddingRight: 16,
+    },
     appInfoConatiner: {
-        flexGrow: 0.6,
+        flexGrow: 1,
+        flexDirection: 'column',
+        borderRadius: 1,
         backgroundColor: 'white',
+        padding: 8,
+        
+        // for shadow of card
         shadowColor: BaseThemeStyle.colors.gray,
         opacity: 1,
         shadowRadius: 8,
         elevation: 20,
         shadowOffset: { width: 5, height: 5 },
         shadowOpacity: 5,
-
     },
     rowTextContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal:BaseThemeStyle.margin.subtitle,
     },
     headerTextStyle: {
         margin: BaseThemeStyle.margin.containers,
-        ...BaseThemeStyle.fonts.h8,
+        ...BaseThemeStyle.fonts.h5,
         color: BaseThemeStyle.colors.titleColor,
         textAlign: 'left',
         paddingHorizontal: 8,
-        fontWeight:'bold'
     },
     rowTextStyle: {
-        marginHorizontal: BaseThemeStyle.margin.containers,
-        ...BaseThemeStyle.fonts.subtitle0,
+        margin: BaseThemeStyle.margin.containers,
+        ...BaseThemeStyle.fonts.listTitle,
         color: BaseThemeStyle.colors.titleColor,
     },
     boxContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingRight:BaseThemeStyle.margin.subtitle,
-        paddingBottom:BaseThemeStyle.margin.subtitle
     },
     boxView: {
         justifyContent: 'center',
@@ -77,10 +77,4 @@ export const style = StyleSheet.create({
         alignItems: 'center',
         padding: 15,
     },
-    seprater:{
-        height:1,
-        backgroundColor:BaseThemeStyle.colors.textColor,
-        marginHorizontal:BaseThemeStyle.margin.formElements,
-        marginVertical:BaseThemeStyle.margin.subtitle
-    }
 });

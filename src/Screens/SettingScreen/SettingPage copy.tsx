@@ -25,7 +25,7 @@ interface SettingPageProps {
     navigation: any;
 }
 
-interface SettingPageState { }
+interface SettingPageState {}
 
 class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     _unsubscribe: any;
@@ -72,17 +72,14 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     };
 
     headerContainer = (title) => {
-        return (
-                <Text style={style.headerTextStyle}>{title}</Text>
-        )
-        
+        return <Text style={style.headerTextStyle}>{title}</Text>;
     };
 
     render() {
-        return (
-
+        return this.props.isLoading ? (
+            <FullScreenLoader isLoading showSpinner />
+        ) : (
             <MainContainer>
-                <FullScreenLoader isLoading={this.props.isLoading} showSpinner />
                 <View style={style.navContainer}>
                     <CustomTopNav
                         title={BaseLocalization.settingTitle}
@@ -111,20 +108,17 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                             />
                         </View>
                         <View style={style.appInfoConatiner}>
-                        
-                            
                             {this.headerContainer(BaseLocalization.appInformation)}
 
                             {this.titleRowView(BaseLocalization.countryTitle, BaseLocalization.version)}
 
                             {this.boxRowView('Master', 'edit-2', '0.9.2')}
-                                <View style={style.seprater} />
+
                             {this.headerContainer(BaseLocalization.contentUpdates)}
 
                             {this.titleRowView(BaseLocalization.contentTitle, BaseLocalization.modificationDate)}
 
                             {this.boxRowView(BaseLocalization.updateTitle, 'download-cloud', '04.03.2022 14.02')}
-                        
                         </View>
                     </View>
                 </CustomBody>

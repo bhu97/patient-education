@@ -1,7 +1,4 @@
 const FontFamily = {
-    LatoLight: 'Lato-Light',
-    LatoRegular: 'Lato-Regular',
-    LatoBold: 'Lato-Bold',
     HelveticaNeueM: 'Helvetica Neue, Medium',
     Helvetica65R: 'Helvetica 65 Medium, Regular',
 } as const;
@@ -41,6 +38,7 @@ export const BaseThemeStyle = {
         formElements: 16,
         topContainer: 24,
         screenContainer: 20,
+        subtitle:10
     },
     dimensions: {
         widths: {
@@ -86,43 +84,43 @@ export const BaseThemeStyle = {
             fontSize: 17,
         },
         h1: {
-            fontFamily: FontFamily.LatoLight,
+            fontFamily: FontFamily.Helvetica65R,
             fontSize: 96,
         },
         h2: {
-            fontFamily: FontFamily.LatoLight,
+            fontFamily: FontFamily.Helvetica65R,
             fontSize: 60,
         },
         h3: {
-            fontFamily: FontFamily.LatoRegular,
+            fontFamily: FontFamily.Helvetica65R,
             fontSize: 42,
         },
         h4: {
-            fontFamily: FontFamily.LatoRegular,
+            fontFamily: FontFamily.Helvetica65R,
             fontSize: 22,
         },
         h5: {
-            fontFamily: FontFamily.LatoBold,
+            fontFamily: FontFamily.HelveticaNeueM,
             fontSize: 30,
         },
         h6: {
-            fontFamily: FontFamily.LatoBold,
+            fontFamily: FontFamily.HelveticaNeueM,
             fontSize: 21,
         },
         h7: {
-            fontFamily: FontFamily.LatoBold,
+            fontFamily: FontFamily.HelveticaNeueM,
             fontSize: 20,
         },
         h8: {
-            fontFamily: FontFamily.LatoRegular,
+            fontFamily: FontFamily.Helvetica65R,
             fontSize: 18,
         },
         body1: {
-            fontFamily: FontFamily.LatoRegular,
+            fontFamily: FontFamily.Helvetica65R,
             fontSize: 16,
         },
         body2: {
-            fontFamily: FontFamily.LatoRegular,
+            fontFamily: FontFamily.Helvetica65R,
             fontSize: 15,
         },
         subtitle0: {
@@ -134,15 +132,15 @@ export const BaseThemeStyle = {
             fontSize: 15,
         },
         subtitle2: {
-            fontFamily: FontFamily.LatoBold,
+            fontFamily: FontFamily.HelveticaNeueM,
             fontSize: 15,
         },
         button: {
-            fontFamily: FontFamily.LatoBold,
+            fontFamily: FontFamily.HelveticaNeueM,
             fontSize: 13,
         },
         subtitle3: {
-            fontFamily: FontFamily.LatoBold,
+            fontFamily: FontFamily.HelveticaNeueM,
             fontSize: 12,
         },
     },
