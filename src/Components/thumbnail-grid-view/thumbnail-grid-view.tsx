@@ -425,10 +425,8 @@ const GroupItem = (props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-    favGroup: state.categoryReducer.favGroupData,
-    gridViewList: state.categoryReducer.favGroupItemData, 
+    favGroup: state.categoryReducer.favGroupData 
 });
-
 
 const mapDispatchToProps = (dispatch: any) => ({
     //
