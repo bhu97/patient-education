@@ -33,13 +33,13 @@ export const style = StyleSheet.create({
     titleText: {
         ...BaseThemeStyle.fonts.pageTitle,
         color: BaseThemeStyle.colors.titleColor,
-        fontWeight: 'bold',
+        fontWeight: '900',
     },
     subTitleText: {
         ...BaseThemeStyle.fonts.pageSubTitle,
         color: BaseThemeStyle.colors.titleColor,
         width: '80%',
-        fontWeight: 'bold',
+        fontWeight: '600',
     },
     imageContainer: {
         flex: 0.3,

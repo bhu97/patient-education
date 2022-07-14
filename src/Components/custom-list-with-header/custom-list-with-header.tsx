@@ -61,7 +61,7 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                 )}
                 <View style={style.itemContainer}>
                     <View style={style.circleIconContainer}>
-                        <CustomIcon name={this.props.iconName} />
+                        <CustomIcon name={this.props.iconName} size={20} />
                     </View>
 
                     <View style={style.textContainer}>

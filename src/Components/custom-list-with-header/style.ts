@@ -1,34 +1,36 @@
 import { StyleSheet } from 'react-native';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 
-const iconCircleSize = 45;
+const iconCircleSize = 28;
 
 export const style = StyleSheet.create({
     mainContainer: {
         flexDirection: 'column',
-        padding: BaseThemeStyle.paddings.containers,
+        paddingHorizontal: BaseThemeStyle.paddings.containers*2,
+        paddingVertical: BaseThemeStyle.paddings.containers/2,
         justifyContent: 'center',
     },
     itemContainer: {
         flexDirection: 'row',
-        // borderWidth: 2,
-        padding:5,
         height: 'auto',
         backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
         borderColor: BaseThemeStyle.colors.gray,
         boxShadow: '10px 10px 5px lightblue',
         alignItems: 'center',
+        paddingVertical:BaseThemeStyle.paddings.containers,
+        paddingLeft:BaseThemeStyle.paddings.containers
     },
     headerTextContainer: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
+        marginBottom:BaseThemeStyle.paddings.containers
     },
     headerTextStyle: {
-        margin: BaseThemeStyle.margin.containers,
-        ...BaseThemeStyle.fonts.listTitle,
+        ...BaseThemeStyle.fonts.subtitle0,
         color: BaseThemeStyle.colors.titleColor,
         textAlign: 'left',
+        fontWeight:'400'
     },
     listView:{
         padding:5
@@ -38,10 +40,8 @@ export const style = StyleSheet.create({
         width: iconCircleSize,
         height: iconCircleSize,
         borderRadius: 0.5 * iconCircleSize,
-        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: BaseThemeStyle.margin.containers,
     },
     textContainer: {
         marginHorizontal: BaseThemeStyle.margin.formElements,
