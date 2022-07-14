@@ -206,6 +206,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
             </Swipeable>
         </View>
     );
+
     render() {
         return (
             <MainContainer>
@@ -248,22 +249,18 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                             <View style={style.favGridContainer}>
                                 {this.props.favGroupItem ? (
                                     <View style={style.fileContainer}>
-                                        <Text style={style.textStyle}>
-                                            {this.state.favGroupTitle ? this.state.favGroupTitle : 'Balance Files'}
-                                        </Text>
+                                        <Text style={style.textStyle}>{this.state.favGroupTitle}</Text>
                                         <ThumbnailGridView gridViewList={this.props.favGroupItem} />
                                     </View>
                                 ) : (
                                     <View style={style.imageContainer}>
                                         <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
                                         <Text numberOfLines={3} style={style.secondtextStyle}>
-                                            There are no favorites entries here yet. Please choose documents to be
-                                            displayed here. Choose some files to add as a favorite.
+                                            {BaseLocalization.noFavTitle}
                                         </Text>
                                     </View>
                                 )}
                             </View>
-                            {/* <BalanceFileContainer gridViewList={this.state.favGroupItem} gridViewTitle={this.state.favGroupTitle}   /> */}
                         </View>
                     </View>
                 </CustomBody>

@@ -37,4 +37,5 @@ export const BaseLocalization = {
     authFailed: LocalizationManager.getLocalizedStrings('authenticationFailed'),
     cancel: LocalizationManager.getLocalizedStrings('cancel'),
     login: LocalizationManager.getLocalizedStrings('login'),
+    noFavTitle: LocalizationManager.getLocalizedStrings('noFavTitle'),
 };

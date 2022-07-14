@@ -152,13 +152,7 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
         ) : (
             <MainContainer>
                 <View style={style.navContainer}>
-                    <CustomTopNav
-                        back
-                        subTitle={this.state.pageTitle}
-                        onPressBack={this.goBack}
-                        smallHeader
-                        isShowCard
-                    />
+                    <CustomTopNav back subTitle={this.state.pageTitle} onPressBack={this.goBack} />
                 </View>
                 <CustomBody>
                     {this.props.subCategoryList && this.props.categoryList ? (

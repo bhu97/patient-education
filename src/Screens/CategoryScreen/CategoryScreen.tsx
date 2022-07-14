@@ -146,13 +146,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
         ) : (
             <MainContainer>
                 <View style={style.navContainer}>
-                    <CustomTopNav
-                        back
-                        subTitle={this.state.pageTitle}
-                        onPressBack={this.goBack}
-                        isShowCard
-                        smallHeader
-                    />
+                    <CustomTopNav back subTitle={this.state.pageTitle} onPressBack={this.goBack} />
                 </View>
                 <CustomBody>
                     {this.props.mainList && this.props.categoryList ? (

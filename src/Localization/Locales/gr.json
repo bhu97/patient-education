@@ -29,5 +29,6 @@
     "reTry": "wiederholen",
     "authenticationFailed": "Etwas ist schief gelaufen",
     "cancel": "Absagen",
-    "login": "Anmeldung"
+    "login": "Anmeldung",
+    "noFavTitle":"Hier gibt es noch keine Favoriteneinträge. Bitte wählen Sie hier anzuzeigende Dokumente aus. Wählen Sie einige Dateien aus, die Sie als Favoriten hinzufügen möchten."
 }

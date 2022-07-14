@@ -84,11 +84,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         ) : (
             <MainContainer>
                 <View style={style.navContainer}>
-                    <CustomTopNav
-                        isShowCard
-                        title={BaseLocalization.welcome}
-                        subTitle={BaseLocalization.selectCategory}
-                    />
+                    <CustomTopNav title={BaseLocalization.welcome} subTitle={BaseLocalization.selectCategory} />
                 </View>
                 <CustomBody>
                     {this.props.mainList ? (
