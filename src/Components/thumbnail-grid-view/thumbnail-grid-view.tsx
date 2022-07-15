@@ -380,8 +380,6 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
     }
 }
 
-
-
 const mapStateToProps = (state: RootState) => ({
     favGroup: state.categoryReducer.favGroupData,
     gridViewList: state.categoryReducer.favGroupItemData,

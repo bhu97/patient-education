@@ -17,13 +17,13 @@ export const style = StyleSheet.create({
         flexShrink: 1,
         backgroundColor: 'white',
         marginRight: 16,
-        height:'80%',
         shadowColor: BaseThemeStyle.colors.gray,
         opacity: 1,
         shadowRadius: 8,
         elevation: 20,
         shadowOffset: { width: 5, height: 5 },
         shadowOpacity: 5,
+        marginBottom:20
     },
 
     appInfoConatiner: {
