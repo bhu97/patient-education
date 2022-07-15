@@ -5,6 +5,7 @@ import CategoryScreen from '../Screens/CategoryScreen/CategoryScreen';
 import HomeScreen from '../Screens/HomeScreen/HomeScreen';
 import SubCategoryScreen from '../Screens/SubCategoryScreen/SubCategoryScreen';
 import { BaseThemeStyle } from '../Theme/BaseThemeStyle';
+import CustomWebView from '../Components/webview/custom-web-view'
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ function HomeStack() {
             <Stack.Screen name="CategoryScreen" component={CategoryScreen} />
             <Stack.Screen name="SubCategoryScreen" component={SubCategoryScreen} />
             <Stack.Screen name="CategoryDetailScreen" component={CategoryDetailScreen} />
+            <Stack.Screen name="CustomWebView" component={CustomWebView} />
         </Stack.Navigator>
     );
 }

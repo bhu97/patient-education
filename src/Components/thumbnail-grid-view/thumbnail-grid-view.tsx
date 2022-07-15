@@ -31,6 +31,9 @@ import { connect } from 'react-redux';
 import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
 import GroupItem from './group-item';
 import CustomModal from '../custom-modal/custom-modal';
+import downloadManager from '../../Download/DownloadManager';
+import CustomWebView from '../webview/custom-web-view';
+import NavigationManager from '../../Helper/NavigationManager';
 
 interface ThumbnailGridViewProps {
     gridViewList: GridViewModel[];
@@ -46,7 +49,7 @@ interface ThumbnailGridViewState {
     groups: Array<any>;
     selectedGroups: Array<string>;
     selectedItem: any;
-
+    webviewUrl: string;
 }
 
 class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailGridViewState> {
@@ -64,6 +67,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
             groups: [],
             selectedGroups: [],
             selectedItem: null,
+            webviewUrl: ''
 
 
         };
@@ -169,48 +173,20 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
         return <View style={style.toolTipOptionSeperator}></View>;
     };
 
-    // deletion
-    deleteDownloadedFile = async (item) => {
-        // create a path you want to delete
-        var path = RNFS.DocumentDirectoryPath + `/${item}`;
-        return (
-            RNFS.unlink(path)
-                .then(() => {
-                    console.log('FILE DELETED');
-                })
-                // `unlink` will throw an error, if the item to unlink does not exist
-                .catch((err) => {
-                    console.log(err.message);
-                })
-        );
-    };
 
-    downloadFileAndShow = async (item) => {
-        await this.deleteDownloadedFile(item.name);
-        const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
-        const url = response.driveItem['@microsoft.graph.downloadUrl'];
-        const fileName = item.name;
-        const localFile = `${RNFS.DocumentDirectoryPath}/${fileName}`;
-        const options = {
-            fromUrl: url,
-            toFile: localFile,
-        };
-        // last step it will download open it with fileviewer.
-        RNFS.downloadFile(options).promise.then(() => {
-            FileViewer.open(localFile);
-            this.setState({ loader: false });
-        });
-    };
     loadDocument = async (item: GridViewModel) => {
         this.setState({ loader: true });
         const fileExt = getExtension(item.webUrl);
         if (fileExt.toLowerCase() === 'pdf') {
-            this.downloadFileAndShow(item);
+            downloadManager.downloadFileAndShow(item).then(() => {
+                this.setState({ loader: false });
+            }).catch(() => {
+                this.setState({ loader: false });
+            })
         } else {
             Linking.canOpenURL(item.webUrl).then((supported) => {
                 if (supported) {
-                    Linking.openURL(item.webUrl);
-                    this.setState({ loader: false });
+                    NavigationManager.navigate('CustomWebView',{url:item.webUrl})
                 } else {
                     console.log(item.webUrl);
                     this.setState({ loader: false });
@@ -365,7 +341,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                             keyExtractor={(item, index) => index.toString()}
 
                         />
-                        {this.getModal()}
+                        {this.getModal()}         
                     </View>
                 ) : (
 

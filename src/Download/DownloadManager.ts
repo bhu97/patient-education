@@ -1,5 +1,9 @@
 import { Platform } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
+import apiManager from '../Helper/ApiManager';
+import { API_NAMES } from '../Constant/Constants';
+import FileViewer from 'react-native-file-viewer';
 
 class DownloadManager {
     downloadFile(downloadUrl: string) {
@@ -67,6 +71,43 @@ class DownloadManager {
                 // error handling ..
             });
     }
+
+    deleteDownloadedFile = async (item) => {
+        // create a path you want to delete
+        var path = RNFS.DocumentDirectoryPath + `/${item}`;
+        return (
+            RNFS.unlink(path)
+                .then(() => {
+                    console.log('FILE DELETED');
+                })
+                // `unlink` will throw an error, if the item to unlink does not exist
+                .catch((err) => {
+                    console.log(err.message);
+                })
+        );
+    };
+
+
+    downloadFileAndShow = async (item): Promise<boolean>=> {
+        await this.deleteDownloadedFile(item.name);
+        const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
+        const url = response.driveItem['@microsoft.graph.downloadUrl'];
+        const fileName = item.name;
+        const localFile = `${RNFS.DocumentDirectoryPath}/${fileName}`;
+        const options = {
+            fromUrl: url,
+            toFile: localFile,
+        };
+        // last step it will download open it with fileviewer.
+      await  RNFS.downloadFile(options).promise.then(() => {
+            FileViewer.open(localFile);
+            return true
+        }).catch(()=>{
+            return false
+        });
+        return false
+    };
+
 }
 
 //export default AuthenticationManager;
