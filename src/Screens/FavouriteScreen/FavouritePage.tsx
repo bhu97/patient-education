@@ -30,6 +30,7 @@ import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-gr
 import { connect } from 'react-redux';
 import { RootState } from '../../Redux/rootReducer';
 import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
+import FavouritThumbnailGridView from '../../Components/favourit-thumbnail-grid-view/favourit-thumbnail-grid-view';
 
 interface FavouritePageProps {
     navigation: any;
@@ -247,7 +248,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                 {this.props.favGroupItem ? (
                                     <View style={style.fileContainer}>
                                         <Text style={style.textStyle}>{this.state.favGroupTitle}</Text>
-                                        <ThumbnailGridView groupName={this.state.favGroupTitle} />
+                                        <FavouritThumbnailGridView groupName={this.state.favGroupTitle} />
                                     </View>
                                 ) : (
                                     <View style={style.imageContainer}>
