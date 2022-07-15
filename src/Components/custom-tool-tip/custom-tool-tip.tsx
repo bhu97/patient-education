@@ -10,6 +10,7 @@ interface CustomToolTipProps {
     insideToolTip?: any;
     closeToolTip?: any;
     isCountryList?: boolean;
+    position:string
 }
 
 interface CustomToolTipState {
@@ -78,7 +79,7 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
                             {this.toolTipList()}
                         </View>
                     }
-                    placement="right"
+                    placement={this.props.position}
                     onClose={this.props.closeToolTip}
                     showChildInTooltip={false}
                 >

@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 
@@ -30,17 +31,17 @@ export const style = StyleSheet.create({
     },
     contentContainer: {
         flexDirection: 'row',
-        padding: 20,
-      
+        paddingHorizontal: BaseThemeStyle.margin.subtitle,
+        paddingVertical:BaseThemeStyle.margin.subtitle,
+        justifyContent:'space-between',
+        alignItems:'center'
     },
     textStyle: {
         fontSize: 27,
         fontWeight: 'bold',
         color: BaseThemeStyle.colors.black,
     },
-    plusIconstyle: {
-        marginLeft: 215,  
-    },
+
     balanceContainer: {
         flex: 2,
         paddingHorizontal: 10,

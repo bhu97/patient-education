@@ -222,17 +222,14 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                     <View style={style.favoritecontainer}>
                         <View style={style.mainContainer}>
                             <View style={style.customcontainerview}>
+
                                 <View style={style.contentContainer}>
                                     <Text style={style.textStyle}>Lists</Text>
+                                    <Icon name="plussquare" size={28} bold color="#979797" onPress={() => this.setState({ visible: true })} />
+                                </View>
 
-                                    <View style={style.plusIconstyle}>
-                                        <TouchableOpacity onPress={() => this.setState({ visible: true })}>
-                                            <Icon name="plussquare" size={35} bold color="#979797" />
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                        {this.getModal()}
-                                    </View>
+                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    {this.getModal()}
                                 </View>
                                 <ScrollView>
                                     <View style={style.containerView}>
@@ -250,7 +247,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                 {this.props.favGroupItem ? (
                                     <View style={style.fileContainer}>
                                         <Text style={style.textStyle}>{this.state.favGroupTitle}</Text>
-                                        <ThumbnailGridView gridViewList={this.props.favGroupItem} />
+                                        <ThumbnailGridView groupName={this.state.favGroupTitle} />
                                     </View>
                                 ) : (
                                     <View style={style.imageContainer}>

@@ -82,6 +82,7 @@ export const style = StyleSheet.create({
     sizeStyle: {
         ...BaseThemeStyle.fonts.subtitle3,
         color: BaseThemeStyle.colors.titleColor,
+        
     },
      toolTipBorder:{
         borderRadius: 12.5
@@ -119,7 +120,7 @@ export const style = StyleSheet.create({
         marginLeft:150,
         color:BaseThemeStyle.colors.textColor
     },
-    centeredView: {
+    centeredViewModal: {
         flex: 1,
        justifyContent: 'center',
        alignItems: 'center',
@@ -127,10 +128,9 @@ export const style = StyleSheet.create({
      },
      modalView: {
        backgroundColor: 'white',
-       height: 'auto',
-       width: '20%',
        justifyContent: 'flex-end',
-       // padding: 30,
+       paddingHorizontal:BaseThemeStyle.paddings.formElements,
+       paddingVertical:BaseThemeStyle.paddings.formElements,
        shadowColor: '#000',
        shadowOffset: {
          width: 0,
@@ -141,15 +141,16 @@ export const style = StyleSheet.create({
        elevation: 5,
        borderWidth: 1,
        borderColor: 'gray',
-       marginBottom:150
+       width:'25%'
      
      },
-     modalContainer: {
-       // flex: 1,
-       margin: '5%',
-    
-       // justifyContent:'flex-end'
-     },
+     modalBottomRow: {
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            justifyContent: 'space-evenly',
+            paddingHorizontal:BaseThemeStyle.paddings.formElements,
+            paddingVertical:BaseThemeStyle.paddings.formElements,
+        },
      cardStyle: {
        // flex:1,
        // borderRadius: 5,
@@ -166,5 +167,9 @@ export const style = StyleSheet.create({
        //  marginBottom: 10,
        fontSize: 24,
      },
+     modalTitle:{
+        ...BaseThemeStyle.fonts.h4,
+       color: BaseThemeStyle.colors.black
+     }
 
 });
