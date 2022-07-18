@@ -10,9 +10,18 @@ export const style = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         // justifyContent:'center'
+        // padding: 8,
+    },
+    textView: {
+        flex: 0.8,
+    },
+    otherView: {
+        flex: 0.2,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
     },
     textStyle: {
-        flex: 0.6,
         alignContent: 'flex-start',
         paddingLeft: BaseThemeStyle.paddings.listElement,
         ...BaseThemeStyle.fonts.subtitle0,

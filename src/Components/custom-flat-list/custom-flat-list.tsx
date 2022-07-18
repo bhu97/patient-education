@@ -36,7 +36,7 @@ export default class CustomFlatList extends PureComponent<CustomFlatListProps, C
     renderItem = ({ item, index }: any) => {
         const backgroundColor =
             this.props.selectedElement === item // check if item matched with selected item
-                ? BaseThemeStyle.colors.gray // then selected color
+                ? BaseThemeStyle.colors.selectedListColor // then selected color
                 : //: this.props.isDisabled // else if list disabled
                   //? BaseThemeStyle.colors.listItemBackgroundColor // then light color
                   BaseThemeStyle.colors.white; // else default color
@@ -44,14 +44,17 @@ export default class CustomFlatList extends PureComponent<CustomFlatListProps, C
         return (
             <TouchableOpacity onPress={() => this.onPress(item, index)}>
                 <View style={{ ...style.listItemContainer, backgroundColor: backgroundColor }}>
-                    <Text numberOfLines={2} style={style.textStyle}>
-                        {item.title != '' ? item.title : item.name}
-                    </Text>
+                    <View style={style.textView}>
+                        <Text numberOfLines={2} style={style.textStyle}>
+                            {item.title != '' ? item.title : item.name}
+                        </Text>
+                    </View>
+                    <View style={style.otherView}>
+                        <View style={style.blueDotImage}>{this.getImage(Images.menuBlueDots)}</View>
 
-                    <View style={style.blueDotImage}>{this.getImage(Images.menuBlueDots)}</View>
-
-                    <View style={style.imageViewStyle}>
-                        <View style={style.rightArrow}>{this.getImage(Images.rightArrow)}</View>
+                        <View style={style.imageViewStyle}>
+                            <View style={style.rightArrow}>{this.getImage(Images.rightArrow)}</View>
+                        </View>
                     </View>
                 </View>
             </TouchableOpacity>

@@ -8,7 +8,7 @@ export const style = StyleSheet.create({
         padding: BaseThemeStyle.paddings.formElements,
     },
     flatListViewContainer: {
-        flex: 0.5,
+        flex: 0.4,
     },
     navContainer: {
         paddingLeft: 16,
@@ -37,7 +37,7 @@ export const style = StyleSheet.create({
         paddingHorizontal: 200,
     },
     imageViewContainer: {
-        flex: 0.5,
+        flex: 0.55,
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
         padding: 8,

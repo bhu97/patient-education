@@ -1,36 +1,20 @@
 import React, { Component } from 'react';
-import {
-    FlatList,
-    Text,
-    View,
-    Image,
-    Modal,
-    Alert,
-    TouchableOpacity,
-    Button,
-    TextInput,
-    KeyboardAvoidingView,
-    ScrollView,
-} from 'react-native';
-import BalanceFileContainer from '../../Components/balance-file-container/BalanceFileContainer';
-import CustomBody from '../../Components/custom-body/custom-body';
-import Icon from 'react-native-vector-icons/AntDesign';
-import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
-import MainContainer from '../../Components/main-container/main-container';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
-import Images from '../../Theme/Images';
+import { Button, FlatList, Image, Modal, ScrollView, Text, TextInput, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { listitem } from '../../Model/list-data-model';
-import { style } from './style';
-import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
-import dbHelper from '../../Database/DBHelper';
-import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
-import CheckBox from '@react-native-community/checkbox';
-import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
+import Icon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
-import { RootState } from '../../Redux/rootReducer';
-import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
+import CustomBody from '../../Components/custom-body/custom-body';
+import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FavouritThumbnailGridView from '../../Components/favourit-thumbnail-grid-view/favourit-thumbnail-grid-view';
+import MainContainer from '../../Components/main-container/main-container';
+import dbHelper from '../../Database/DBHelper';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
+import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
+import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
+import { RootState } from '../../Redux/rootReducer';
+import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
+import Images from '../../Theme/Images';
+import { style } from './style';
 
 interface FavouritePageProps {
     navigation: any;
@@ -223,10 +207,15 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                     <View style={style.favoritecontainer}>
                         <View style={style.mainContainer}>
                             <View style={style.customcontainerview}>
-
                                 <View style={style.contentContainer}>
                                     <Text style={style.textStyle}>Lists</Text>
-                                    <Icon name="plussquare" size={28} bold color="#979797" onPress={() => this.setState({ visible: true })} />
+                                    <Icon
+                                        name="plussquare"
+                                        size={28}
+                                        bold
+                                        color="#979797"
+                                        onPress={() => this.setState({ visible: true })}
+                                    />
                                 </View>
 
                                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>

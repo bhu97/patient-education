@@ -22,15 +22,15 @@ export const BaseThemeStyle = {
         tabBackGroundColor: '#2D9CDB',
         screenBackgroundColor: '#F2F3F5',
         listItemBackgroundColor: '#E5E7EC',
-        bordergrey: '#DCDCDC',
-        textColor:'#6A768F'
+        textColor: '#6A768F',
+        selectedListColor: '#D3D3D3',
     },
     paddings: {
         bodyHorizontal: 0,
         bodyVertical: 0,
         containers: 8,
         formElements: 16,
-        listElement:20,
+        listElement: 20,
         bottomContainer: 24,
     },
     margin: {
@@ -38,7 +38,7 @@ export const BaseThemeStyle = {
         formElements: 16,
         topContainer: 24,
         screenContainer: 20,
-        subtitle:10
+        subtitle: 10,
     },
     dimensions: {
         widths: {

@@ -99,7 +99,7 @@ class AuthenticationManager {
                 authorization = await this.refreshToken(authorization);
                 return authorization.accessToken;
             } else {
-                console.info('Azure AD - Answering request for access token with: ' + authorization.accessToken);
+                console.info('Azure AD - Answering request for access token ');
                 return authorization.accessToken;
             }
         } else {
