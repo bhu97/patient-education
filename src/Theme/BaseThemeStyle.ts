@@ -43,13 +43,13 @@ export const BaseThemeStyle = {
     dimensions: {
         widths: {
             breadCrumbBorder: 25,
-            breadCrumbSquare: 100,
+            breadCrumbSquare: 70,
         },
         heights: {
             buttons: 44,
             topBars: 56,
             bottomContainer: 75,
-            breadCrumbSquare: 50,
+            breadCrumbSquare: 35,
         },
         borderWidths: {
             buttons: 1,

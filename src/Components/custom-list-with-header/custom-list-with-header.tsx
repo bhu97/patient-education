@@ -17,6 +17,7 @@ interface CustomListWithHeaderProps {
     selectedCountry: string;
     userData: UserModel[];
     setUserModelData: (data: UserModel[]) => void;
+    onPressItem:()=>void;
 }
 interface CustomListWithHeaderState {
     visible: boolean;
@@ -53,6 +54,7 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
     };
     render() {
         return (
+            <TouchableOpacity onPress={this.props.onPressItem}>
             <View style={style.mainContainer}>
                 {this.props.headerText && (
                     <View style={style.headerTextContainer}>
@@ -83,6 +85,7 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                     </View>
                 </View>
             </View>
+            </TouchableOpacity>
         );
     }
 }

@@ -22,7 +22,7 @@ export default class CustomBreadcrumb extends PureComponent<CustomBreadcrumbProp
                         {this.props.title}
                     </Text>
                 </View>
-                <View style={[style.triangleContainer, style.triangleRightContainer]} />
+                <View style={[style.triangle, style.updatedRight]} />
             </View>
         );
     };
@@ -31,13 +31,15 @@ export default class CustomBreadcrumb extends PureComponent<CustomBreadcrumbProp
     lastBreadCrumbContent = () => {
         return (
             <View style={style.mainContainer}>
-                <View style={[style.triangleContainer, style.triangleLeftContainer]} />
+             
+                <View style={[style.triangle, style.updatedLeft]}/>
+     
                 <View style={style.rectangleContainer}>
                     <Text style={style.headerText} numberOfLines={1} ellipsizeMode="tail">
                         {this.props.title}
                     </Text>
                 </View>
-                <View style={[style.triangleContainer, style.triangleRightContainer]} />
+                <View style={[style.triangle, style.updatedRight]} />
             </View>
         );
     };

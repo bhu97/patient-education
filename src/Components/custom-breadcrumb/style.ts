@@ -46,4 +46,32 @@ export const style = StyleSheet.create({
         marginLeft:5,
        
     },
+updatedLeft:{
+    borderTopWidth: BaseThemeStyle.dimensions.heights.breadCrumbSquare/2.0,
+    borderRightWidth: BaseThemeStyle.dimensions.heights.breadCrumbSquare/3.0,
+    borderBottomWidth: BaseThemeStyle.dimensions.heights.breadCrumbSquare/2.0,
+    borderLeftWidth: 0,
+    borderTopColor: BaseThemeStyle.colors.lightGray,
+    borderRightColor: 'transparent',
+    borderBottomColor: BaseThemeStyle.colors.lightGray,
+    borderLeftColor: BaseThemeStyle.colors.lightGray,
+    transform: [{ rotate: '180deg' }],
+  },
+  updatedRight: {
+    borderTopWidth: BaseThemeStyle.dimensions.heights.breadCrumbSquare/2.0,
+    borderRightWidth: 0,
+    borderBottomWidth: BaseThemeStyle.dimensions.heights.breadCrumbSquare/2.0,
+    borderLeftWidth: BaseThemeStyle.dimensions.heights.breadCrumbSquare/3.0,
+    borderTopColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderLeftColor: BaseThemeStyle.colors.lightGray,
+  },
+  triangle: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+  },
+
 });
