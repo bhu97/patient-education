@@ -31,5 +31,6 @@
     "cancel": "Cancel",
     "login": "Login",
     "noFavTitle":"There are no favorites entries here yet. Please choose documents to be displayed here. Choose some files to add as a favorite.",
-    "addToFav":"Add to Favourites"
+    "addToFav":"Add to Favourites",
+    "okayButton":"Okay"
 }

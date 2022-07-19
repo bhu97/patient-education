@@ -1,36 +1,28 @@
+import CheckBox from '@react-native-community/checkbox';
 import React, { PureComponent, useState } from 'react';
 import {
-    FlatList,
-    Image,
-    KeyboardAvoidingView,
-    Linking,
+    Button, FlatList,
+    Image, Linking,
     Modal,
     Text,
     TouchableOpacity,
-    View,
-    Button,
+    View
 } from 'react-native';
-import FileViewer from 'react-native-file-viewer';
-import RNFS from 'react-native-fs';
-import { API_NAMES } from '../../Constant/Constants';
-import apiManager from '../../Helper/ApiManager';
+import { connect } from 'react-redux';
+import dbHelper from '../../Database/DBHelper';
+import downloadManager from '../../Download/DownloadManager';
 import { getExtension, getIconByExtension } from '../../Helper/Helper';
+import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
+import { setFavGroupData } from '../../Redux/category/categorySlice';
+import { RootState } from '../../Redux/rootReducer';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
 import CustomToolTip from '../custom-tool-tip/custom-tool-tip';
 import FullScreenLoader from '../full-screen-loader/full-screen-loader';
-import CheckBox from '@react-native-community/checkbox';
 import { style } from './style';
-import dbHelper from '../../Database/DBHelper';
-import { FavoriteModel } from '../../Model/FavouriteModel';
-import { RootState } from '../../Redux/rootReducer';
-import { connect } from 'react-redux';
-import { setFavGroupData } from '../../Redux/category/categorySlice';
-import downloadManager from '../../Download/DownloadManager';
-import NavigationManager from '../../Helper/NavigationManager';
 
 interface ThumbnailGridViewProps {
     gridViewList: GridViewModel[];
@@ -49,8 +41,7 @@ interface ThumbnailGridViewState {
     selectedGroups: Array<string>;
     selectedItem: any;
     close: boolean;
-    dummy:any;
-    lastRefresh:any
+  
 }
 
  class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailGridViewState> {
@@ -72,15 +63,11 @@ interface ThumbnailGridViewState {
             selectedGroups: [],
             selectedItem: null,
             close: false,
-       dummy:{},
-       lastRefresh: `${new Date().getTime()}`,
+    
         };
-        this.refreshScreen = this.refreshScreen.bind(this)
+      
     }
-    refreshScreen=()=> {
-        this.setState({ dummy:{}})
-        console.log("refresh screen")
-    }
+   
 
     componentDidMount(): void {
         let isVisibleArray = {};
@@ -103,13 +90,10 @@ interface ThumbnailGridViewState {
             });
             this.setState({ isVisibleObject: isVisibleArray });
         }
-        // this.getGroups();
+       
     }
 
-    // getGroups = async () => {
-    //     let groups = await dbHelper.getFavGroups();
-    //     this.setState({ groups });
-    // };
+ 
 
     getSelectedGroupsFromRealm = async (uniqueId) => {
         let selectedGroups = await dbHelper.getFavItemsByUniqueId(uniqueId);
@@ -155,6 +139,7 @@ interface ThumbnailGridViewState {
                 <CustomToolTip
                     isVisible={isVisibleIndicator}
                     model={this.state.toolTipList}
+                    position='right'
                     insideToolTip={this.inside(index, item)}
                     closeToolTip={() => this.setVisible(index, false)}
                     onPressOfToolTipItem={(_tooltip_item) => this.getSelectedDataFromToolTip(_tooltip_item, item)}
@@ -210,10 +195,8 @@ interface ThumbnailGridViewState {
     };
 
     renderItem = ({ item, index }: any) => {
-        // console.log('item in grid view', item);
         const isVisibleIndicator = this.getVisibility(index);
         let fileName = item.name.split('.');
-        console.log('item',item);
         return (
             <View style={style.backgroundViewStyle}>
                 <TouchableOpacity onPress={() => this.loadDocument(item)}>
@@ -265,7 +248,7 @@ interface ThumbnailGridViewState {
                                         marginBottom: 10,
                                     }}
                                 >
-                                    Add to Favourites
+                                    {BaseLocalization.addToFav}
                                 </Text>
                             </View>
                             <FlatList
@@ -312,7 +295,7 @@ interface ThumbnailGridViewState {
                                     onPress={() => {
                                         this.setState({ visible: false });
                                     }}
-                                    title="Cancel"
+                                    title={BaseLocalization.cancel}
                                 />
                                 <Button
                                     onPress={async () => {
@@ -324,7 +307,7 @@ interface ThumbnailGridViewState {
                                                 favorites.push({
                                                     uniqueId: this.state.selectedItem.uniqueId,
                                                     id: `${_group.id}_${new Date().getTime()}`,
-                                                    favoriteGroupName: _group.name,
+                                                    favoriteGroupName: _group.id,
                                                     fileExtension: this.state.selectedItem.fileExtension,
                                                     fileSize: this.state.selectedItem.fileSize,
                                                     largeUrl: this.state.selectedItem.largeUrl,
@@ -348,7 +331,7 @@ interface ThumbnailGridViewState {
                                             });
                                            
                                     }}
-                                    title="Okay"
+                                    title={BaseLocalization.okayButton}
                                 />
                             </View>
                         </View>
@@ -415,8 +398,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    //
-  
+
     setFavGroup: (favGroup: any) => {
         dispatch(setFavGroupData(favGroup))
     }

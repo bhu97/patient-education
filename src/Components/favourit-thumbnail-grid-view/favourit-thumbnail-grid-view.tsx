@@ -1,45 +1,33 @@
-import React, { PureComponent, useState } from 'react';
+import React,{ PureComponent } from 'react';
 import {
-    FlatList,
-    Image,
-    KeyboardAvoidingView,
-    Linking,
-    Modal,
-    Text,
+    Button, FlatList,
+    Image, Linking, Text,
     TouchableOpacity,
-    View,
-    Button,
+    View
 } from 'react-native';
-import FileViewer from 'react-native-file-viewer';
-import RNFS from 'react-native-fs';
-import { API_NAMES } from '../../Constant/Constants';
-import apiManager from '../../Helper/ApiManager';
+import { connect } from 'react-redux';
+import dbHelper from '../../Database/DBHelper';
+import downloadManager from '../../Download/DownloadManager';
 import { getExtension, getIconByExtension } from '../../Helper/Helper';
+import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
-import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
+import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
+import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
+import CustomModal from '../custom-modal/custom-modal';
 import CustomToolTip from '../custom-tool-tip/custom-tool-tip';
 import FullScreenLoader from '../full-screen-loader/full-screen-loader';
-import CheckBox from '@react-native-community/checkbox';
-import { style } from './style';
-import dbHelper from '../../Database/DBHelper';
-import { FavoriteModel } from '../../Model/FavouriteModel';
-import { RootState } from '../../Redux/rootReducer';
-import { connect } from 'react-redux';
-import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
 import GroupItem from './group-item';
-import CustomModal from '../custom-modal/custom-modal';
-import downloadManager from '../../Download/DownloadManager';
-import CustomWebView from '../webview/custom-web-view';
-import NavigationManager from '../../Helper/NavigationManager';
+import { style } from './style';
 
 interface FavouritThumbnailGridViewProps {
     gridViewList: GridViewModel[];
     favGroup: any;
     setFavGroupItem: (itemArray: any[]) => void;
-    groupName: string
+    groupName: string;
+    groupId: string;
 }
 interface FavouritThumbnailGridViewState {
     isVisibleObject: any;
@@ -129,7 +117,6 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
             }, () => {
                 this.setVisible(parentIndex, false)
             });
-
         }
     };
     getToolTip = (index, isVisibleIndicator, item) => {
@@ -264,7 +251,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                 favorites.push({
                     uniqueId: this.state.selectedItem.uniqueId,
                     id: `${_group.id}_${new Date().getTime()}`,
-                    favoriteGroupName: _group.name,
+                    favoriteGroupName: _group.id,
                     fileExtension: this.state.selectedItem.fileExtension,
                     fileSize: this.state.selectedItem.fileSize,
                     largeUrl: this.state.selectedItem.largeUrl,
@@ -284,14 +271,14 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         dbHelper
             .createFavouriteEntries(favorites, this.state.selectedItem.uniqueId)
             .then(async () => {
-                let items = await dbHelper.getFavItems({ name: this.props.groupName })
+                let items = await dbHelper.getFavItems({
+                    name: this.props.groupName,
+                    id: this.props.groupId
+                })
                 this.props.setFavGroupItem(items);
                 this.setState({ visible: false });
             });
-
     }
-
-
     getModal = () => {
         return (
             <CustomModal isVisible={this.state.visible} onPressClose={() => this.setState({ visible: false })}>
@@ -356,7 +343,6 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-    //
 
     setFavGroup: (favGroup: any) => {
         dispatch(setFavGroupData(favGroup))
@@ -364,7 +350,6 @@ const mapDispatchToProps = (dispatch: any) => ({
     setFavGroupItem: (favGroupItem: any) => {
         dispatch(setFavGroupItemData(favGroupItem));
     },
-
 
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FavouritThumbnailGridView);

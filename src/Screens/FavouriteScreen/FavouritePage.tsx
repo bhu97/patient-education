@@ -31,6 +31,7 @@ interface FavouritePageState {
     favGroupItem: Array<any>;
     favGroupTitle: string;
     selectedGroupItem: FavoriteGroupModel | null;
+    renameFavGroup: any;
 }
 
 class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
@@ -46,6 +47,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
             favGroupItem: [],
             favGroupTitle: '',
             selectedGroupItem: null,
+            renameFavGroup: null,
         };
     }
 
@@ -80,8 +82,24 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
 
     removeGroup = (item: FavoriteGroupModel) => {
         dbHelper.removeFavGroup(item).then(() => {
-            this.getGroups();
+            this.setState({selectedGroupItem:null,favGroupTitle:''},()=>{ 
+                this.getGroups().then(()=>{ this.getFavItems()})
+               
+            })
+           
         });
+    };
+
+    renameGroup = (item: FavoriteGroupModel) => {
+        let group = {
+            name: this.state.group_name,
+            id:item.id
+        };
+        return dbHelper.createFavGroup(group).then(() => {
+            this.getGroups();
+            this.setState({favGroupTitle:this.state.group_name})
+        });;
+       
     };
 
     getFavItems = async () => {
@@ -92,27 +110,21 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
             console.log('items with details=====================', items); // set this item to get data on thumbnail
         }
     };
-
+   
     getModal = () => {
         return (
             <View style={style.centeredView}>
                 <Modal animationType="slide" transparent={true} visible={this.state.visible}>
                     <View style={style.modalView}>
-                        <Text
-                            style={{
-                                paddingRight: 0,
-                                fontSize: 25,
-                                paddingLeft: 10,
-                                color: BaseThemeStyle.colors.black,
-                            }}
-                        >
-                            New Category
-                        </Text>
+                        {this.state.renameFavGroup ?
+                        <Text style={style.modalHeader}>Edit: {this.state.renameFavGroup.name} </Text>:
+                        <Text style={style.modalHeader}>New Category</Text>}
 
                         <View style={style.cardStyle}>
                             <TextInput
                                 style={style.cardTextInputStyle}
-                                placeholder="ENTER"
+                                 placeholder='Enter'
+                                // defaultValue={this.state.renameFavGroup?.name}
                                 value={this.state.group_name}
                                 onChangeText={(text) => {
                                     this.setState({ group_name: text });
@@ -120,27 +132,30 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                             />
                         </View>
 
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-evenly',
-                                padding: 10,
-                                paddingTop: 10,
-                                alignItems: 'flex-end',
-                            }}
-                        >
+                        <View style={style.modalButtonContainer}>
                             <View style={{ flex: 0.4, paddingRight: 10 }}>
                                 <Button onPress={() => this.setState({ visible: false })} title="Cencel" />
                             </View>
                             <View style={{ flex: 0.4 }}>
-                                <Button
+                                <Button 
+                         
                                     onPress={() => {
+                                      
                                         if (this.state.group_name !== '') {
+                                            if(this.state.renameFavGroup)
+                                            {
+                                            this.renameGroup(this.state.renameFavGroup).then(() => {
+                                                this.setState({ group_name: '', visible: false,renameFavGroup:null });
+                                                this.getGroups();
+                                            });
+                                            }
+                                            else{
                                             this.createGroup().then(() => {
                                                 this.setState({ group_name: '', visible: false });
                                                 this.getGroups();
                                             });
                                         }
+                                        }   
                                     }}
                                     title="save"
                                 />
@@ -152,17 +167,19 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
         );
     };
     rightSwipeActions = (item) => {
+        console.log('delete item console', item);
         return (
             <View style={style.crossIconstyle}>
-                <Icon
-                    style={style.crossIconcolor}
-                    name="closecircle"
-                    size={40}
-                    bold
-                    onPress={() => {
-                        this.removeGroup(item);
-                    }}
-                />
+                <TouchableOpacity onPress={() => {this.removeGroup(item)}}>
+                    <View style={style.deleteGroup}>
+                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.setState({ visible: true, renameFavGroup: item,group_name:item.name })}>
+                <View style={style.editGroup}>
+                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Edit</Text>
+                </View>
+                </TouchableOpacity>
             </View>
         );
     };
@@ -237,7 +254,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                 {this.props.favGroupItem ? (
                                     <View style={style.fileContainer}>
                                         <Text style={style.textStyle}>{this.state.favGroupTitle}</Text>
-                                        <FavouritThumbnailGridView groupName={this.state.favGroupTitle} />
+                                        <FavouritThumbnailGridView groupName={this.state.favGroupTitle} groupId={this.state.selectedGroupItem?.id} />
                                     </View>
                                 ) : (
                                     <View style={style.imageContainer}>

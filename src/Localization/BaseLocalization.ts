@@ -39,4 +39,6 @@ export const BaseLocalization = {
     login: LocalizationManager.getLocalizedStrings('login'),
     noFavTitle: LocalizationManager.getLocalizedStrings('noFavTitle'),
     addToFav: LocalizationManager.getLocalizedStrings('addToFav'),
+    okayButton: LocalizationManager.getLocalizedStrings('okayButton')
+
 };

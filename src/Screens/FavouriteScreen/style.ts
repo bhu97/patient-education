@@ -75,6 +75,7 @@ export const style = StyleSheet.create({
         backgroundColor: BaseThemeStyle.colors.white,
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection:'row'
         // height: 50,
         // width: 50,
         // borderRadius: 45,
@@ -85,6 +86,32 @@ export const style = StyleSheet.create({
         color: '#ED484F',
         padding:15
     },
+    modalHeader:{
+        paddingRight: 0,
+        fontSize: 25,
+        paddingLeft: 10,
+        color: BaseThemeStyle.colors.black,
+    },
+    modalButtonContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        padding: 10,
+        paddingTop: 10,
+        alignItems: 'flex-end',
+    },
+    deleteGroup:{   backgroundColor: 'red',
+    height: '100%',
+    width: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,},
+    editGroup:{   backgroundColor: BaseThemeStyle.colors.gray,
+    height: '100%',
+    width: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,},
+
     listviewstyle: {
         backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
         flexDirection: 'row',

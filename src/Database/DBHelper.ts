@@ -249,24 +249,13 @@ export class DBhelper {
     async getFavItems(group: FavoriteGroupModel): Promise<DriveItemModel[]> {
         let items = await DatabaseManager.getInstance().getEntities(
             FavoriteSchema.name,
-            `favoriteGroupName == '${group.name}'`,
+            `favoriteGroupName == '${group.id}'`,
         );
         LogManager.debug('get Fav items=', items);
         let detailItems;
         detailItems = [];
-
-        // if (items.length > 0) {
-        //     await items.forEach(async (element) => {
-        //         let itemDetail = await this.getItemDetailByUniqueId(element.uniqueId);
-        //         if (itemDetail) {
-        //             detailItems.push(itemDetail);
-        //         }
-        //     });
-        // }
-
         return items;
     }
-
     async getFavItemsByUniqueId(uniqueId: string): Promise<FavoriteModel[]> {
         let items = await DatabaseManager.getInstance().getEntities(FavoriteSchema.name, `uniqueId == '${uniqueId}'`);
         LogManager.debug('get items by unique ID=', items);

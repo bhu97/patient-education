@@ -77,6 +77,7 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                                 onPressOfToolTipItem={this.getSelectedDataFromToolTip}
                                 closeToolTip={this.closeToolTip}
                                 isCountryList
+                                position='right'
                             />
                         )}
                     </View>
