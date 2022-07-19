@@ -1,9 +1,11 @@
 import { createNavigatorFactory, TabActions, TabRouter, useNavigationBuilder } from '@react-navigation/native';
 import * as React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import NavigationManager from '../Helper/NavigationManager';
 import { BaseThemeStyle } from '../Theme/BaseThemeStyle';
 import Images from '../Theme/Images';
 import { style } from './style';
@@ -51,6 +53,10 @@ const ScreenOptions = ({ route, isFocused }) => {
     }
 };
 
+const onClickSuperLogo = () => {
+    NavigationManager.navigateAndClear('HomeScreen')
+}
+
 function TabNavigator({ initialRouteName, children, screenOptions }) {
     const { state, navigation, descriptors, NavigationContent } = useNavigationBuilder(TabRouter, {
         children,
@@ -60,14 +66,21 @@ function TabNavigator({ initialRouteName, children, screenOptions }) {
 
     return (
         <NavigationContent>
+
+
+
             <View style={style.tabMainContainer}>
-                <View style={style.tabLogo}>
-                    <Image
-                        resizeMode="contain"
-                        style={style.logoSize}
-                        source={Images.superSignLogoWhite}
-                    />
+
+                <View style={style.tabLogo} >
+                    <TouchableOpacity onPress={onClickSuperLogo}>
+                        <Image
+                            resizeMode="contain"
+                            style={style.logoSize}
+                            source={Images.superSignLogoWhite}
+                        />
+                    </TouchableOpacity>
                 </View>
+
                 <View style={style.iconContainer}>
                     {state.routes.map((route) => (
                         <Pressable
