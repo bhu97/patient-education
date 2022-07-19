@@ -38,20 +38,17 @@ export const style = StyleSheet.create({
     },
     imageViewContainer: {
         flex: 0.6,
-        marginLeft:40,
-        paddingTop:40,
-        justifyContent:'flex-end',
-        alignSelf:'flex-end'
+        marginLeft: 40,
+        paddingTop: 40,
+        justifyContent: 'flex-end',
+        alignSelf: 'flex-end',
     },
     imageView: {
         alignItems: 'flex-end',
-        flex:1
+        flex: 1,
     },
     imageStyle: {
         width: '100%',
         height: '100%',
-    },
-    bottomView: {
-        padding: BaseThemeStyle.paddings.containers,
     },
 });

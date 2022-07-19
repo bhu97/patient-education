@@ -40,8 +40,4 @@ export const style = StyleSheet.create({
         shadowOffset: { width: 5, height: 5 },
         shadowOpacity: 5,
     },
-    bottomView: {
-        padding: BaseThemeStyle.paddings.containers,
-        flexDirection: 'row',
-    },
 });
