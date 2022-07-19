@@ -178,7 +178,9 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         } else {
             Linking.canOpenURL(item.webUrl).then((supported) => {
                 if (supported) {
-                    NavigationManager.navigate('CustomWebView',{url:item.webUrl})
+                    let fileName = item.name.split('.');
+                    NavigationManager.navigate('CustomWebView',{url:item.webUrl,fileName:fileName})
+                   //Linking.openURL(item.webUrl)
                     this.setState({ loader: false });
                 } else {
                     console.log(item.webUrl);

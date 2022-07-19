@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import WebView, { WebViewNavigation } from 'react-native-webview'
 import { connect } from 'react-redux';
 import NavigationManager from '../../Helper/NavigationManager';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { RootState } from '../../Redux/rootReducer';
 import CustomTopNav from '../custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../full-screen-loader/full-screen-loader';
@@ -9,7 +10,7 @@ import MainContainer from '../main-container/main-container';
 
 
 interface CustomWebViewProps {
-    route?: { params: { url: string} };
+    route?: { params: { url: string,fileName:string} };
     html?: any,
     onBack?: () => void
     onHttpError?: (event: any) => void;
@@ -67,7 +68,14 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
     render() {
         return (
             <MainContainer>
-                <CustomTopNav  back onPressBack={this.onPressClose} />
+                <CustomTopNav
+                        back
+                        subTitle={this.props.route?.params?.fileName}
+                        onPressBack={this.onPressClose}
+                        smallHeader
+                        isShowCard
+                        largeTitle
+                    />
                 <WebView
                     ref={this.ref}
                     source={{

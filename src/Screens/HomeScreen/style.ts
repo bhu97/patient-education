@@ -37,18 +37,19 @@ export const style = StyleSheet.create({
         paddingHorizontal: 200,
     },
     imageViewContainer: {
-        flex: 0.55,
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end',
-        padding: 8,
+        flex: 0.6,
+        marginLeft:40,
+        paddingTop:40,
+        justifyContent:'flex-end',
+        alignSelf:'flex-end'
     },
     imageView: {
         alignItems: 'flex-end',
-        justifyContent: 'center',
+        flex:1
     },
     imageStyle: {
-        width: 500,
-        height: 420,
+        width: '100%',
+        height: '100%',
     },
     bottomView: {
         padding: BaseThemeStyle.paddings.containers,
