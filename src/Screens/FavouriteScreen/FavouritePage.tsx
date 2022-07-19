@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, FlatList, Image, Modal, ScrollView, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
@@ -12,7 +12,6 @@ import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
-import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
