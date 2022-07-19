@@ -137,7 +137,7 @@ export const fetchAllThumbnails = async (uniqueId: string): Promise<any[]> => {
     LogManager.debug('response=', response);
 
     LogManager.info('fetchAllThumbnails call ended');
-    return response['value'];
+    return (response &&   response['value']) ?? [];
 };
 
 //fetch all data and return 1 response array

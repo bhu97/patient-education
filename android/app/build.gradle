@@ -151,16 +151,20 @@ android {
 
     defaultConfig {
         applicationId "com.patienteducation"
-        minSdkVersion = 21
-        targetSdkVersion  = 27
-        //minSdkVersion rootProject.ext.minSdkVersion
-        //targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
         versionName "1.1"
         resValue "string", "build_config_package", "com.patienteducation"
         manifestPlaceholders = [
                 appAuthRedirectScheme: 'preisfindungstool'
         ]
+    }
+  packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
     }
     splits {
         abi {

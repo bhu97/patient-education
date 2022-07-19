@@ -52,7 +52,7 @@ export class GridViewModel {
         object.fileExtension = getExtension(item.name);
         object.smallUrl = thumbnails.smallUrl ? thumbnails.smallUrl : '';
         object.mediumUrl = thumbnails.mediumUrl ? thumbnails.mediumUrl : '';
-        object.largeUrl = thumbnails.smallUrl ? thumbnails.largeUrl : '';
+        object.largeUrl = thumbnails.largeUrl ? thumbnails.largeUrl : '';
         return object;
     }
 }

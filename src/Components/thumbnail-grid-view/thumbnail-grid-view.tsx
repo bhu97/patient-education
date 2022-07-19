@@ -175,7 +175,8 @@ interface ThumbnailGridViewState {
         this.setState({ loader: true });
         const fileExt = getExtension(item.webUrl);
         if (fileExt.toLowerCase() === 'pdf') {
-            downloadManager.downloadFileAndShow(item).then(() => {
+            downloadManager.downloadFileAndShow(item).then((res) => {                
+                 NavigationManager.navigate('CustomWebView',{url:res,fileName:downloadManager.getFileName(res),isPdf:true})
                 this.setState({ loader: false });
             }).catch(() => {
                 this.setState({ loader: false });
@@ -183,7 +184,8 @@ interface ThumbnailGridViewState {
         } else {
             Linking.canOpenURL(item.webUrl).then((supported) => {
                 if (supported) {
-                    NavigationManager.navigate('CustomWebView',{url:item.webUrl})
+                 downloadManager.openLink(item.webUrl)
+                    NavigationManager.navigate('CustomWebView',{url:item.webUrl,fileName:downloadManager.getFileName(item.webUrl),isPdf:false})
                     this.setState({ loader: false });
                 } else {
                     console.log(item.webUrl);

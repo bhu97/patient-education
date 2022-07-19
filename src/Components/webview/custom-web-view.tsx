@@ -1,16 +1,18 @@
 import React, { PureComponent } from 'react'
 import WebView, { WebViewNavigation } from 'react-native-webview'
 import { connect } from 'react-redux';
+import {View} from 'react-native'
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { RootState } from '../../Redux/rootReducer';
 import CustomTopNav from '../custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../full-screen-loader/full-screen-loader';
 import MainContainer from '../main-container/main-container';
-
+import Pdf from 'react-native-pdf';
+import { style } from './style'
 
 interface CustomWebViewProps {
-    route?: { params: { url: string,fileName:string} };
+    route?: { params: { url: string, fileName: string,isPdf:boolean } };
     html?: any,
     onBack?: () => void
     onHttpError?: (event: any) => void;
@@ -35,14 +37,14 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
 
     ref = React.createRef<WebView>();
 
-    componentDidMount(){
-      
+    componentDidMount() {
+
     }
-    componentWillUnmount(){
-       
+    componentWillUnmount() {
+
     }
     onPressClose = () => {
-       // this.props.onBack && this.props.onBack();
+        // this.props.onBack && this.props.onBack();
         NavigationManager.goBack()
     }
 
@@ -55,27 +57,47 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
     )
 
     setCurrentUrl = (e: WebViewNavigation) => {
-       // this.setState({ currentUrl: e.url });
+        // this.setState({ currentUrl: e.url });
         this.props.setCurrentUrl && this.props.setCurrentUrl(e.url);
     }
 
-    
+
     onFileDownload = ({ nativeEvent }) => {
         const { downloadUrl } = nativeEvent;
         this.setState({ downloadUrl: downloadUrl });
     }
 
     render() {
+        console.log("this.props.route?.params?.isPdf",this.props.route?.params?.isPdf);
+        
         return (
             <MainContainer>
                 <CustomTopNav
-                        back
-                        subTitle={this.props.route?.params?.fileName}
-                        onPressBack={this.onPressClose}
-                        smallHeader
-                        isShowCard
-                        largeTitle
-                    />
+                    back
+                    subTitle={this.props.route?.params?.fileName}
+                    onPressBack={this.onPressClose}
+                    smallHeader
+                    isShowCard
+                    largeTitle
+                />
+               
+
+                {(this.props.route?.params?.isPdf) && (
+                    <View style={style.pdfContainer}>
+                        <Pdf
+                            source={{ uri: this.props.route?.params?.url }}
+                            onLoadComplete={(numberOfPages, filePath) => {
+                            }}
+                            onPageChanged={(page, numberOfPages) => {
+                            }}
+                            onError={(error) => {
+                            }}
+                            onPressLink={(uri) => {
+                            }}
+                            style={style.pdf} />
+                    </View>
+                )}
+                {/* {(this.props.route?.params?.isPdf == false) && (
                 <WebView
                     ref={this.ref}
                     source={{
@@ -88,13 +110,15 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
                     onNavigationStateChange={this.setCurrentUrl}
                     onFileDownload={this.onFileDownload}
                     onHttpError={this.props.onHttpError}
-                />
+                />)} */}
+
+
             </MainContainer>
         );
     }
 }
 const mapStateToProps = (state: RootState) => ({
-    
+
 });
 
 const mapDispatchToProps = (dispatch: any): object => ({

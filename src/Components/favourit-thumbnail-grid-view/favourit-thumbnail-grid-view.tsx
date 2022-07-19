@@ -157,7 +157,8 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         this.setState({ loader: true });
         const fileExt = getExtension(item.webUrl);
         if (fileExt.toLowerCase() === 'pdf') {
-            downloadManager.downloadFileAndShow(item).then(() => {
+            downloadManager.downloadFileAndShow(item).then((res) => {
+               NavigationManager.navigate('CustomWebView',{url:res,fileName:downloadManager.getFileName(res),isPdf:true})
                 this.setState({ loader: false });
             }).catch(() => {
                 this.setState({ loader: false });
@@ -166,7 +167,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
             Linking.canOpenURL(item.webUrl).then((supported) => {
                 if (supported) {
                     let fileName = item.name.split('.');
-                    NavigationManager.navigate('CustomWebView',{url:item.webUrl,fileName:fileName})
+                    NavigationManager.navigate('CustomWebView',{url:item.webUrl,fileName:downloadManager.getFileName(item.webUrl),isPdf:false})
                    //Linking.openURL(item.webUrl)
                     this.setState({ loader: false });
                 } else {

@@ -1,9 +1,8 @@
 import { Platform } from 'react-native';
-import RNFetchBlob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
-import apiManager from '../Helper/ApiManager';
+import RNFetchBlob from 'rn-fetch-blob';
 import { API_NAMES } from '../Constant/Constants';
-import FileViewer from 'react-native-file-viewer';
+import apiManager from '../Helper/ApiManager';
 
 class DownloadManager {
     downloadFile(downloadUrl: string) {
@@ -88,7 +87,7 @@ class DownloadManager {
     };
 
 
-    downloadFileAndShow = async (item): Promise<boolean>=> {
+    downloadFileAndShow = async (item): Promise<string> => {
         await this.deleteDownloadedFile(item.name);
         const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
         const url = response.driveItem['@microsoft.graph.downloadUrl'];
@@ -99,14 +98,23 @@ class DownloadManager {
             toFile: localFile,
         };
         // last step it will download open it with fileviewer.
-      await  RNFS.downloadFile(options).promise.then(() => {
-            FileViewer.open(localFile);
-            return true
-        }).catch(()=>{
-            return false
+        return new Promise((resolve, reject) => {
+            RNFS.downloadFile(options).promise.then(async (res) => {
+                console.log("localfile 103 =", `file://${localFile}`);
+                // this.openLink(`file://${localFile}`)
+
+                resolve(`file://${localFile}`)
+            }).catch(() => {
+                reject('')
+            });
         });
-        return false
     };
+
+   
+
+    getFileName = (filePath: string) => {
+       return filePath.substring(filePath.lastIndexOf('/') + 1, filePath.length).split('.')
+    }
 
 }
 
