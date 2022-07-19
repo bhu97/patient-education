@@ -113,7 +113,9 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                 </CustomBody>
                 <View style={style.navContainer}>
                     <CustomBottomContainer>
+                    <View style={style.bottomView}>
                         <CustomBreadcrumb title={'Home'} isFirstCrumb={true} />
+                        </View>
                     </CustomBottomContainer>
                 </View>
             </MainContainer>

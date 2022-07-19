@@ -51,4 +51,8 @@ export const style = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    bottomView: {
+        padding: BaseThemeStyle.paddings.containers,
+        flexDirection: 'row',
+    },
 });
