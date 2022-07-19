@@ -17,7 +17,7 @@ export const style = StyleSheet.create({
         paddingBottom:0, 
     },
     imageStyle: {
-     resizeMode: 'stretch',
+      resizeMode: 'contain',
         height: 200,
         width: 'auto',
         opacity:1,
@@ -25,7 +25,7 @@ export const style = StyleSheet.create({
         flex:1
     },
     emptyImage: {
-        resizeMode: 'stretch',
+       resizeMode: 'contain',
            height: 200,
            width: 'auto',
            opacity:1
@@ -42,12 +42,11 @@ export const style = StyleSheet.create({
         opacity:0.2
        },
     svgIconStyle:{
+        width:'100%',
+        height:'100%',
         position:'absolute',
-        top:80,
-        zIndex:5,
-        marginLeft:110,
-        // backgroundColor:'black',
-        opacity:1
+        justifyContent:'center',
+        alignItems:'center', 
     },
     iconImageStyle: {
         height: 20,
