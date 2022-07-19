@@ -48,7 +48,7 @@ export const BaseThemeStyle = {
         heights: {
             buttons: 44,
             topBars: 56,
-            bottomContainer: 75,
+            bottomContainer: 60,
             breadCrumbSquare: 35,
         },
         borderWidths: {
