@@ -4,6 +4,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
+import CustomIcon from '../../Components/custom-icon/custom-icon';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FavouritThumbnailGridView from '../../Components/favourit-thumbnail-grid-view/favourit-thumbnail-grid-view';
 import MainContainer from '../../Components/main-container/main-container';
@@ -12,6 +13,7 @@ import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
+import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import { style } from './style';
 
@@ -81,24 +83,23 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
 
     removeGroup = (item: FavoriteGroupModel) => {
         dbHelper.removeFavGroup(item).then(() => {
-            this.setState({selectedGroupItem:null,favGroupTitle:''},()=>{ 
-                this.getGroups().then(()=>{ this.getFavItems()})
-               
-            })
-           
+            this.setState({ selectedGroupItem: null, favGroupTitle: '' }, () => {
+                this.getGroups().then(() => {
+                    this.getFavItems();
+                });
+            });
         });
     };
 
     renameGroup = (item: FavoriteGroupModel) => {
         let group = {
             name: this.state.group_name,
-            id:item.id
+            id: item.id,
         };
         return dbHelper.createFavGroup(group).then(() => {
             this.getGroups();
-            this.setState({favGroupTitle:this.state.group_name})
-        });;
-       
+            this.setState({ favGroupTitle: this.state.group_name });
+        });
     };
 
     getFavItems = async () => {
@@ -106,23 +107,24 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
             let items = await dbHelper.getFavItems(this.state.selectedGroupItem);
             // this.setState({ favGroupItem: items });
             this.props.setFavGroupItem(items);
-            console.log('items with details=====================', items); // set this item to get data on thumbnail
         }
     };
-   
+
     getModal = () => {
         return (
             <View style={style.centeredView}>
                 <Modal animationType="slide" transparent={true} visible={this.state.visible}>
                     <View style={style.modalView}>
-                        {this.state.renameFavGroup ?
-                        <Text style={style.modalHeader}>Edit: {this.state.renameFavGroup.name} </Text>:
-                        <Text style={style.modalHeader}>New Category</Text>}
+                        {this.state.renameFavGroup ? (
+                            <Text style={style.modalHeader}>Please update title </Text>
+                        ) : (
+                            <Text style={style.modalHeader}>New Category</Text>
+                        )}
 
                         <View style={style.cardStyle}>
                             <TextInput
                                 style={style.cardTextInputStyle}
-                                 placeholder='Enter'
+                                placeholder="Enter"
                                 // defaultValue={this.state.renameFavGroup?.name}
                                 value={this.state.group_name}
                                 onChangeText={(text) => {
@@ -136,25 +138,25 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                 <Button onPress={() => this.setState({ visible: false })} title="Cencel" />
                             </View>
                             <View style={{ flex: 0.4 }}>
-                                <Button 
-                         
+                                <Button
                                     onPress={() => {
-                                      
                                         if (this.state.group_name !== '') {
-                                            if(this.state.renameFavGroup)
-                                            {
-                                            this.renameGroup(this.state.renameFavGroup).then(() => {
-                                                this.setState({ group_name: '', visible: false,renameFavGroup:null });
-                                                this.getGroups();
-                                            });
+                                            if (this.state.renameFavGroup) {
+                                                this.renameGroup(this.state.renameFavGroup).then(() => {
+                                                    this.setState({
+                                                        group_name: '',
+                                                        visible: false,
+                                                        renameFavGroup: null,
+                                                    });
+                                                    this.getGroups();
+                                                });
+                                            } else {
+                                                this.createGroup().then(() => {
+                                                    this.setState({ group_name: '', visible: false });
+                                                    this.getGroups();
+                                                });
                                             }
-                                            else{
-                                            this.createGroup().then(() => {
-                                                this.setState({ group_name: '', visible: false });
-                                                this.getGroups();
-                                            });
                                         }
-                                        }   
                                     }}
                                     title="save"
                                 />
@@ -166,18 +168,23 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
         );
     };
     rightSwipeActions = (item) => {
-        console.log('delete item console', item);
         return (
             <View style={style.crossIconstyle}>
-                <TouchableOpacity onPress={() => {this.removeGroup(item)}}>
+                <TouchableOpacity
+                    onPress={() => {
+                        this.removeGroup(item);
+                    }}
+                >
                     <View style={style.deleteGroup}>
-                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Delete</Text>
+                        <CustomIcon name={'x-circle'} color={BaseThemeStyle.colors.white} size={30} />
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.setState({ visible: true, renameFavGroup: item,group_name:item.name })}>
-                <View style={style.editGroup}>
-                    <Text style={{ color: 'white', fontWeight: 'bold' }}>Edit</Text>
-                </View>
+                <TouchableOpacity
+                    onPress={() => this.setState({ visible: true, renameFavGroup: item, group_name: item.name })}
+                >
+                    <View style={style.editGroup}>
+                        <CustomIcon name={'edit-2'} color={BaseThemeStyle.colors.white} size={30} />
+                    </View>
                 </TouchableOpacity>
             </View>
         );
@@ -253,7 +260,10 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                 {this.props.favGroupItem ? (
                                     <View style={style.fileContainer}>
                                         <Text style={style.textStyle}>{this.state.favGroupTitle}</Text>
-                                        <FavouritThumbnailGridView groupName={this.state.favGroupTitle} groupId={this.state.selectedGroupItem?.id} />
+                                        <FavouritThumbnailGridView
+                                            groupName={this.state.favGroupTitle}
+                                            groupId={this.state.selectedGroupItem?.id}
+                                        />
                                     </View>
                                 ) : (
                                     <View style={style.imageContainer}>

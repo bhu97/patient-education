@@ -16,7 +16,6 @@ export const style = StyleSheet.create({
     mainContainer: {
         flex: 1,
         padding: 16,
-      
     },
     customcontainerview: {
         backgroundColor: BaseThemeStyle.colors.white,
@@ -32,9 +31,9 @@ export const style = StyleSheet.create({
     contentContainer: {
         flexDirection: 'row',
         paddingHorizontal: BaseThemeStyle.margin.subtitle,
-        paddingVertical:BaseThemeStyle.margin.subtitle,
-        justifyContent:'space-between',
-        alignItems:'center'
+        paddingVertical: BaseThemeStyle.margin.subtitle,
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     textStyle: {
         fontSize: 27,
@@ -47,16 +46,15 @@ export const style = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 20,
         // backgroundColor:'red'
-     
     },
-    favGridContainer:{
+    favGridContainer: {
         shadowColor: BaseThemeStyle.colors.gray,
         opacity: 1,
         shadowRadius: 8,
         elevation: 20,
         shadowOffset: { width: 5, height: 5 },
         shadowOpacity: 5,
-         backgroundColor: 'white',
+        backgroundColor: 'white',
         flex: 1,
         // flexDirection: 'row',
         padding: BaseThemeStyle.paddings.formElements,
@@ -68,49 +66,56 @@ export const style = StyleSheet.create({
         backgroundColor: BaseThemeStyle.colors.white,
         borderRadius: 1,
         paddingLeft: BaseThemeStyle.paddings.containers,
-     
     },
     favoritecontainer: { flex: 1, flexDirection: 'row' },
     crossIconstyle: {
         backgroundColor: BaseThemeStyle.colors.white,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection:'row'
+        flexDirection: 'row',
         // height: 50,
         // width: 50,
         // borderRadius: 45,
         // justifyContent: 'center',
         // alignItems: 'center',
     },
-    crossIconcolor: {
-        color: '#ED484F',
-        padding:15
+    crossIconColor: {
+        //color: BaseThemeStyle.colors.error,
+        // padding: 15,
     },
-    modalHeader:{
+    EditIconColor: {
+        color: BaseThemeStyle.colors.iconColor,
+        //padding: 15,
+    },
+    modalHeader: {
         paddingRight: 0,
         fontSize: 25,
         paddingLeft: 10,
         color: BaseThemeStyle.colors.black,
     },
-    modalButtonContainer:{
+    modalButtonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         padding: 10,
         paddingTop: 10,
         alignItems: 'flex-end',
     },
-    deleteGroup:{   backgroundColor: 'red',
-    height: '100%',
-    width: 70,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,},
-    editGroup:{   backgroundColor: BaseThemeStyle.colors.gray,
-    height: '100%',
-    width: 70,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,},
+    deleteGroup: {
+        backgroundColor: 'red',
+        height: '100%',
+        width: 70,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+    },
+    editGroup: {
+        backgroundColor: BaseThemeStyle.colors.iconColor,
+        height: '100%',
+        width: 70,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+    },
 
     listviewstyle: {
         backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
@@ -119,15 +124,13 @@ export const style = StyleSheet.create({
         paddingHorizontal: 10,
         justifyContent: 'center',
         alignItems: 'center',
-      
-       
     },
     mainIconstyle: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft:10
+        marginLeft: 10,
     },
-    textStyleNew: {             
+    textStyleNew: {
         fontSize: 23,
         fontWeight: 'bold',
         color: BaseThemeStyle.colors.titleColor,
@@ -141,53 +144,47 @@ export const style = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    containerView:{ 
-        paddingHorizontal: 13, 
-        flexDirection: 'row', 
-        justifyContent: 'center', 
-        alignItems: 'center' ,
-      
-      
-        flex:1
-   
+    containerView: {
+        paddingHorizontal: 13,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+
+        flex: 1,
     },
-    listStyle:{ 
-      padding:5,
-    
+    listStyle: {
+        padding: 5,
     },
-    centeredView: { 
-            flex: 1,  
-            alignItems: 'center',  
-            justifyContent: 'center',  
-            backgroundColor: 'white', 
-        
-       
-      },
-      modalView: {
-        justifyContent: 'center',  
-        alignItems: 'flex-start',   
-        backgroundColor : "#E5EAF6",   
-        height: 200 ,  
-        width: '25%',  
-        borderRadius:10,  
-        borderWidth: 1,  
-        borderColor: '#fff',    
-        marginTop: 200,  
-        marginLeft: 550,  
-      },
-     
-      cardStyle: {
-        backgroundColor : "#E5EAF6", 
+    centeredView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+    },
+    modalView: {
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        backgroundColor: '#E5EAF6',
+        height: 200,
+        width: '25%',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#fff',
+        marginTop: 200,
+        marginLeft: 550,
+    },
+
+    cardStyle: {
+        backgroundColor: '#E5EAF6',
         padding: '3%',
-        width:'100%'
-       
-      },
-      cardTextInputStyle: {
+        width: '100%',
+    },
+    cardTextInputStyle: {
         borderBottomColor: 'grey',
         borderBottomWidth: 2,
         fontSize: 24,
-      },
-      imageContainer: {
+    },
+    imageContainer: {
         justifyContent: 'center',
         alignItems: 'center',
 

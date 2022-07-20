@@ -1,6 +1,6 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import React, { PureComponent } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomListWithHeader from '../../Components/custom-list-with-header/custom-list-with-header';
@@ -75,6 +75,10 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         return <Text style={style.headerTextStyle}>{title}</Text>;
     };
 
+    sendMail = () => {
+        Linking.openURL('mailto:support@example.com');
+    };
+
     render() {
         return this.props.isLoading ? (
             <FullScreenLoader isLoading showSpinner />
@@ -98,6 +102,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                                 labelText={BaseLocalization.contact}
                                 iconName="mail"
                                 selectedCountry={this.props.selectedCountry}
+                                onPressItem={this.sendMail()}
                             />
 
                             <CustomListWithHeader
@@ -105,6 +110,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                                 labelText={BaseLocalization.contact}
                                 iconName="mail"
                                 selectedCountry={this.props.selectedCountry}
+                                onPressItem={this.sendMail()}
                             />
                         </View>
                         <View style={style.appInfoConatiner}>
