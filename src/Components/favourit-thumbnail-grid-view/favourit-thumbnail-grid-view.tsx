@@ -284,24 +284,28 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         return (
             <CustomModal isVisible={this.state.visible} onPressClose={() => this.setState({ visible: false })}>
                 <View style={style.modalView}>
+                    <View style={{}}>
                     <Text style={style.modalTitle}>
                         {BaseLocalization.addToFav}
                     </Text>
+                    <Text style={style.modalSubTitle}>
+                       Please select a list.
+                    </Text>
+                    </View>
                     <FlatList
                         data={this.props.favGroup}
                         renderItem={({ item }) => this.renderGroupItem(item)}
                     />
-                    <View style={style.modalBottomRow}>
-                        <Button
-                            onPress={() => {
+                   
+                    <View style={style.modalBottomRow}> 
+                        <TouchableOpacity onPress={() => {
                                 this.setState({ visible: false });
-                            }}
-                            title="Cancel"
-                        />
-                        <Button
-                            onPress={() => this.updateModal()}
-                            title="Okay"
-                        />
+                            }}>
+                        <View style={{marginRight:20}}><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>CANCEL</Text></View>
+                        </TouchableOpacity>
+                        <TouchableOpacity  onPress={() => this.updateModal()}>
+                        <View><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>SUBMIT</Text></View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </CustomModal>

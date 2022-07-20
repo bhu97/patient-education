@@ -87,18 +87,36 @@ export const style = StyleSheet.create({
         color: BaseThemeStyle.colors.iconColor,
         //padding: 15,
     },
-    modalHeader: {
-        paddingRight: 0,
-        fontSize: 25,
-        paddingLeft: 10,
-        color: BaseThemeStyle.colors.black,
-    },
+    // modalHeader: {
+    //     paddingRight: 0,
+    //     fontSize: 25,
+    //     paddingLeft: 10,
+    //     color: BaseThemeStyle.colors.black,
+    // },
+    modalTitle:{
+        ...BaseThemeStyle.fonts.h7,
+       color: BaseThemeStyle.colors.black, 
+       fontWeight:'bold'
+     },
+     modalSubTitle:{
+        ...BaseThemeStyle.fonts.h8,
+       color: BaseThemeStyle.colors.lightGrayOnModal,
+       marginBottom:10 
+     },
     modalButtonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         padding: 10,
         paddingTop: 10,
         alignItems: 'flex-end',
+    },
+    modalBottomRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        marginTop:40
+        // paddingHorizontal:BaseThemeStyle.paddings.formElements,
+        // paddingVertical:BaseThemeStyle.paddings.formElements,
     },
     deleteGroup: {
         backgroundColor: 'red',
@@ -156,31 +174,38 @@ export const style = StyleSheet.create({
         padding: 5,
     },
     centeredView: {
-        flex: 1,
+        flex: 0.9,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white',
+       
     },
     modalView: {
+        backgroundColor: 'white',
         justifyContent: 'center',
-        alignItems: 'flex-start',
-        backgroundColor: '#E5EAF6',
-        height: 200,
-        width: '25%',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#fff',
-        marginTop: 200,
-        marginLeft: 550,
+        padding:35,
+     //    paddingHorizontal:BaseThemeStyle.paddings.formElements,
+     //    paddingVertical:BaseThemeStyle.paddings.formElements,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+        elevation: 10,
+     //    borderWidth: 1,
+     //    borderColor: 'gray',
+        // width:'25%',
+        borderRadius:5
     },
 
     cardStyle: {
-        backgroundColor: '#E5EAF6',
-        padding: '3%',
-        width: '100%',
+        // backgroundColor: '#E5EAF6',
+        // padding: '3%',
+        // width: '100%',
     },
     cardTextInputStyle: {
-        borderBottomColor: 'grey',
+        borderBottomColor: '#4389BC',
         borderBottomWidth: 2,
         fontSize: 24,
     },

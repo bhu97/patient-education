@@ -124,24 +124,42 @@ export const style = StyleSheet.create({
        alignItems: 'center',
     
      },
+     modalBottomRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        marginTop:10
+        // paddingHorizontal:BaseThemeStyle.paddings.formElements,
+        // paddingVertical:BaseThemeStyle.paddings.formElements,
+    },
      modalView: {
-       backgroundColor: 'white',
-       height: 'auto',
-       width: '20%',
-       justifyContent: 'flex-end',
-       // padding: 30,
-       shadowColor: '#000',
-       shadowOffset: {
-         width: 0,
-         height: 2,
-       },
-       shadowOpacity: 0.25,
-       shadowRadius: 4,
-       elevation: 5,
-       borderWidth: 1,
-       borderColor: 'gray',
-       marginBottom:150
-     
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        // padding:25,
+     //    paddingHorizontal:BaseThemeStyle.paddings.formElements,
+     //    paddingVertical:BaseThemeStyle.paddings.formElements,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+        elevation: 10,
+     //    borderWidth: 1,
+     //    borderColor: 'gray',
+        width:'25%',
+        borderRadius:5
+     },
+     modalTitle:{
+        ...BaseThemeStyle.fonts.h7,
+       color: BaseThemeStyle.colors.black, 
+       fontWeight:'bold'
+     },
+     modalSubTitle:{
+        ...BaseThemeStyle.fonts.h8,
+       color: BaseThemeStyle.colors.lightGrayOnModal,
+       marginBottom:10 
      },
      modalContainer: {
        // flex: 1,

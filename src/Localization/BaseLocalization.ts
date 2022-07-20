@@ -39,6 +39,12 @@ export const BaseLocalization = {
     login: LocalizationManager.getLocalizedStrings('login'),
     noFavTitle: LocalizationManager.getLocalizedStrings('noFavTitle'),
     addToFav: LocalizationManager.getLocalizedStrings('addToFav'),
-    okayButton: LocalizationManager.getLocalizedStrings('okayButton')
+    okayButton: LocalizationManager.getLocalizedStrings('okayButton'),
+    editTitle: LocalizationManager.getLocalizedStrings('editTitle'),
+    editSubTitle: LocalizationManager.getLocalizedStrings('editSubTitle'),
+    newListTitle: LocalizationManager.getLocalizedStrings('newListTitle'),
+    newListSubTitle: LocalizationManager.getLocalizedStrings('newListSubTitle'),
+    save: LocalizationManager.getLocalizedStrings('save'),
+    lists: LocalizationManager.getLocalizedStrings('lists'),
 
 };

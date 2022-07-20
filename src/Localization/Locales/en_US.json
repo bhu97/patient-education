@@ -28,9 +28,15 @@
     "favSubTitleText":"Create lists and store your files in them.",
     "reTry": "Retry",
     "authenticationFailed": "something went wrong",
-    "cancel": "Cancel",
+    "cancel": "CANCEL",
     "login": "Login",
     "noFavTitle":"There are no favorites entries here yet. Please choose documents to be displayed here. Choose some files to add as a favorite.",
     "addToFav":"Add to Favourites",
-    "okayButton":"Okay"
+    "okayButton":"Okay",
+    "editTitle":"Please update title",
+    "editSubTitle":"Please enter new title for the list.",
+    "newListTitle":"Create new list",
+    "newListSubTitle":"Please enter a title for the new list.",
+    "save":"SAVE",
+    "lists":"Lists"
 }

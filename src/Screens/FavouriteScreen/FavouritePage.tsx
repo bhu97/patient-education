@@ -112,20 +112,27 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
 
     getModal = () => {
         return (
-            <View style={style.centeredView}>
-                <Modal animationType="slide" transparent={true} visible={this.state.visible}>
+            <Modal animationType="slide" transparent={true} visible={this.state.visible}>
+                <View style={style.centeredView}>
                     <View style={style.modalView}>
-                        {this.state.renameFavGroup ? (
-                            <Text style={style.modalHeader}>Please update title </Text>
-                        ) : (
-                            <Text style={style.modalHeader}>New Category</Text>
-                        )}
-
+                        <View style={{}}>
+                            {this.state.renameFavGroup ? (
+                                <>
+                                    <Text style={style.modalTitle}>{BaseLocalization.editTitle}</Text>
+                                    <Text style={style.modalSubTitle}>{BaseLocalization.editSubTitle}</Text>
+                                </>
+                            ) : (
+                                <>
+                                    <Text style={style.modalTitle}>{BaseLocalization.newListTitle}</Text>
+                                    <Text style={style.modalSubTitle}>{BaseLocalization.newListSubTitle}</Text>
+                                </>
+                            )}
+                        </View>
                         <View style={style.cardStyle}>
                             <TextInput
                                 style={style.cardTextInputStyle}
-                                placeholder="Enter"
-                                // defaultValue={this.state.renameFavGroup?.name}
+                                placeholder="Placeholder"
+                                placeholderTextColor={'#9BA3B4'}
                                 value={this.state.group_name}
                                 onChangeText={(text) => {
                                     this.setState({ group_name: text });
@@ -133,38 +140,49 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                             />
                         </View>
 
-                        <View style={style.modalButtonContainer}>
-                            <View style={{ flex: 0.4, paddingRight: 10 }}>
-                                <Button onPress={() => this.setState({ visible: false })} title="Cencel" />
-                            </View>
-                            <View style={{ flex: 0.4 }}>
-                                <Button
-                                    onPress={() => {
-                                        if (this.state.group_name !== '') {
-                                            if (this.state.renameFavGroup) {
-                                                this.renameGroup(this.state.renameFavGroup).then(() => {
-                                                    this.setState({
-                                                        group_name: '',
-                                                        visible: false,
-                                                        renameFavGroup: null,
-                                                    });
-                                                    this.getGroups();
+                        <View style={style.modalBottomRow}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.setState({ visible: false });
+                                }}
+                            >
+                                <View style={{ marginRight: 20 }}>
+                                    <Text style={{ color: '#4389BC', fontSize: 18, fontWeight: 'bold' }}>
+                                        {BaseLocalization.cancel}
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (this.state.group_name !== '') {
+                                        if (this.state.renameFavGroup) {
+                                            this.renameGroup(this.state.renameFavGroup).then(() => {
+                                                this.setState({
+                                                    group_name: '',
+                                                    visible: false,
+                                                    renameFavGroup: null,
                                                 });
-                                            } else {
-                                                this.createGroup().then(() => {
-                                                    this.setState({ group_name: '', visible: false });
-                                                    this.getGroups();
-                                                });
-                                            }
+                                                this.getGroups();
+                                            });
+                                        } else {
+                                            this.createGroup().then(() => {
+                                                this.setState({ group_name: '', visible: false });
+                                                this.getGroups();
+                                            });
                                         }
-                                    }}
-                                    title="save"
-                                />
-                            </View>
+                                    }
+                                }}
+                            >
+                                <View>
+                                    <Text style={{ color: '#4389BC', fontSize: 18, fontWeight: 'bold' }}>
+                                        {BaseLocalization.save}
+                                    </Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
-                </Modal>
-            </View>
+                </View>
+            </Modal>
         );
     };
     rightSwipeActions = (item) => {
@@ -231,7 +249,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                         <View style={style.mainContainer}>
                             <View style={style.customcontainerview}>
                                 <View style={style.contentContainer}>
-                                    <Text style={style.textStyle}>Lists</Text>
+                                    <Text style={style.textStyle}>{BaseLocalization.lists}</Text>
                                     <Icon
                                         name="plussquare"
                                         size={28}

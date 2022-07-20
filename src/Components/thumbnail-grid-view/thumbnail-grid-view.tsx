@@ -229,7 +229,7 @@ interface ThumbnailGridViewState {
     };
 
     getModal = () => {
-        console.log('selectec_groups', this.state.selectedGroups);
+       
         return (
             <Modal animationType="slide" transparent={true} visible={this.state.visible}>
                 <View style={style.centeredView}>
@@ -237,21 +237,15 @@ interface ThumbnailGridViewState {
                         <View style={style.modalContainer}>
                             <View
                                 style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
+                                    marginHorizontal:10
                                 }}
                             >
-                                <Text
-                                    style={{
-                                        paddingRight: 0,
-                                        fontSize: 25,
-                                        paddingLeft: 20,
-                                        color: BaseThemeStyle.colors.black,
-                                        marginBottom: 10,
-                                    }}
-                                >
-                                    {BaseLocalization.addToFav}
-                                </Text>
+                                <Text style={style.modalTitle}>
+                        {BaseLocalization.addToFav}
+                    </Text>
+                    <Text style={style.modalSubTitle}>
+                       Please select a list.
+                    </Text>
                             </View>
                             <FlatList
                                 data={this.props.favGroup}
@@ -286,21 +280,14 @@ interface ThumbnailGridViewState {
                                 }}
                             />
                             <View
-                                style={{
-                                    marginTop: 20,
-                                    flexDirection: 'row',
-                                    alignItems: 'flex-start',
-                                    justifyContent: 'space-evenly',
-                                }}
+                                style={style.modalBottomRow}
                             >
-                                <Button
-                                    onPress={() => {
-                                        this.setState({ visible: false });
-                                    }}
-                                    title={BaseLocalization.cancel}
-                                />
-                                <Button
-                                    onPress={async () => {
+                                <TouchableOpacity onPress={() => {
+                                this.setState({ visible: false });
+                            }}>
+                        <View style={{marginRight:20}}><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>CANCEL</Text></View>
+                        </TouchableOpacity>
+                        <TouchableOpacity  onPress={async () => {
                                         let favorites;
                                         favorites = [];
                                         this.state.selectedGroups.map((item) => {
@@ -332,9 +319,9 @@ interface ThumbnailGridViewState {
                                                this.props?.onFavGroupChange()
                                             });
                                            
-                                    }}
-                                    title={BaseLocalization.okayButton}
-                                />
+                                    }}>
+                        <View ><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>SUBMIT</Text></View>
+                        </TouchableOpacity>
                             </View>
                         </View>
                     </View>
@@ -377,9 +364,10 @@ interface ThumbnailGridViewState {
 const GroupItem = (props) => {
     const [isCheck, setCheck] = useState(props.isCheck);
     return (
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row',marginBottom:5 }}>
             <View>
                 <CheckBox
+                 tintColors={{ true: '#4389BC', false: '#4389BC'}}
                     disabled={false}
                     value={isCheck}
                     onValueChange={() => {
@@ -389,7 +377,7 @@ const GroupItem = (props) => {
                 />
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'black' }}>{props.name}</Text>
+                <Text style={{ fontSize: 18, color: 'black' }}>{props.name}</Text>
             </View>
         </View>
     );
