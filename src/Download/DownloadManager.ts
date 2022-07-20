@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
-import { API_NAMES } from '../Constant/Constants';
+import { API_NAMES, HTTP_METHODS } from '../Constant/Constants';
 import apiManager from '../Helper/ApiManager';
 
 class DownloadManager {
@@ -107,6 +107,26 @@ class DownloadManager {
             }).catch(() => {
                 reject('')
             });
+        });
+    };
+
+    getUrl = async (item): Promise<string> => {
+        console.log("item ==", item);
+        
+       const params = {
+            expand: 'driveItem',
+           // items: item.listItemId,
+            select:"driveItem"
+        };
+        const response = await apiManager.callApiToGetData(API_NAMES.GRAPH_DRIVE_ITEM_ENDPOINT(item.listItemId), HTTP_METHODS.GET);
+        console.log("response ==", JSON.stringify(response));
+         const url = response.driveItem['@microsoft.graph.downloadUrl'];
+         const res = await apiManager.callApiToGetData(url,HTTP_METHODS.GET)
+         console.log("res ==", res.split('URL=')[1]);
+
+        return new Promise((resolve, reject) => {
+          let url =  res.split('URL=')[1] ?? ''
+          url?resolve(url):reject('')
         });
     };
 

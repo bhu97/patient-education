@@ -156,7 +156,15 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
     loadDocument = async (item: GridViewModel) => {
         this.setState({ loader: true });
         const fileExt = getExtension(item.webUrl);
-        if (fileExt.toLowerCase() === 'pdf') {
+        if (fileExt.toLowerCase() === 'url') {
+            downloadManager.getUrl(item).then((res) => {             
+                 NavigationManager.navigate('CustomWebView',{url:res,fileName:'URL',isPdf:false})
+                this.setState({ loader: false });
+            }).catch(() => {
+                this.setState({ loader: false });
+            })
+        }
+        else if (fileExt.toLowerCase() === 'pdf') {
             downloadManager.downloadFileAndShow(item).then((res) => {
                NavigationManager.navigate('CustomWebView',{url:res,fileName:downloadManager.getFileName(res),isPdf:true})
                 this.setState({ loader: false });

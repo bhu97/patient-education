@@ -102,7 +102,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                                 labelText={BaseLocalization.contact}
                                 iconName="mail"
                                 selectedCountry={this.props.selectedCountry}
-                                onPressItem={this.sendMail()}
+                                onPressItem={this.sendMail}
                             />
 
                             <CustomListWithHeader
@@ -110,7 +110,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                                 labelText={BaseLocalization.contact}
                                 iconName="mail"
                                 selectedCountry={this.props.selectedCountry}
-                                onPressItem={this.sendMail()}
+                                onPressItem={this.sendMail}
                             />
                         </View>
                         <View style={style.appInfoConatiner}>

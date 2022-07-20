@@ -177,8 +177,8 @@ android {
     signingConfigs {
         release {
             //TODO: Need to update key stroe
-            storeFile file('FreseniusKeyStore')
-            storePassword 'yZYCo6KbwLReMd3'
+            storeFile file('Fresenius.keystore')
+            storePassword 'fresenius'
             keyAlias 'fnc'
             keyPassword 'yZYCo6KbwLReMd3'
         }

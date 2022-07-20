@@ -68,10 +68,10 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
     }
 
     render() {
-        console.log("this.props.route?.params?.isPdf",this.props.route?.params?.isPdf);
-        
+    
         return (
             <MainContainer>
+                
                 <CustomTopNav
                     back
                     subTitle={this.props.route?.params?.fileName}
@@ -97,7 +97,7 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
                             style={style.pdf} />
                     </View>
                 )}
-                {/* {(this.props.route?.params?.isPdf == false) && (
+                {(this.props.route?.params?.isPdf == false) && (
                 <WebView
                     ref={this.ref}
                     source={{
@@ -110,7 +110,7 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
                     onNavigationStateChange={this.setCurrentUrl}
                     onFileDownload={this.onFileDownload}
                     onHttpError={this.props.onHttpError}
-                />)} */}
+                />)}
 
 
             </MainContainer>
