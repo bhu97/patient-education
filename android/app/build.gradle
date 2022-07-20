@@ -177,10 +177,10 @@ android {
     signingConfigs {
         release {
             //TODO: Need to update key stroe
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            storeFile file('FreseniusKeyStore')
+            storePassword 'yZYCo6KbwLReMd3'
+            keyAlias 'fnc'
+            keyPassword 'yZYCo6KbwLReMd3'
         }
         debug {
             storeFile file('debug.keystore')

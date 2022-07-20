@@ -137,7 +137,7 @@ export const fetchAllThumbnails = async (uniqueId: string): Promise<any[]> => {
     LogManager.debug('response=', response);
 
     LogManager.info('fetchAllThumbnails call ended');
-    return (response &&   response['value']) ?? [];
+    return (response && response['value']) ?? [];
 };
 
 //fetch all data and return 1 response array
@@ -171,10 +171,10 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
  */
 export const login = createAsyncThunk('appData/login', async () => {
     const userData: any = await dbHelper.getUser();
-    dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));
     SplashScreen.hide();
     //user not present fetch all data and save it DB and set to redux
     if (!userData) {
+        dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));
         authenticationManager.login().then((token) => {
             if (token) {
                 dispatchState(setIsAlertShown(false));
