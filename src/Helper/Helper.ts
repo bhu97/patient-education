@@ -109,18 +109,17 @@ export const createGridModelData = async (responseData: any, thumbnailResponse: 
     const ThumbnailData = thumbnailResponse.map((thumbnailObj: any) => {
         return Thumbnail.generate(thumbnailObj);
     });
-if(ThumbnailData.length>0){
-    gridModelData = responseData.map((responseObject: any) => {
-        const thumbnailObj = ThumbnailData.find((x: any) => x.uniqueId === responseObject.uniqueId);
+    if (ThumbnailData.length > 0) {
+        gridModelData = responseData.map((responseObject: any) => {
+            const thumbnailObj = ThumbnailData.find((x: any) => x.uniqueId === responseObject.uniqueId);
 
-        return GridViewModel.generate(responseObject, thumbnailObj);
-    });
-
-}else{
-    gridModelData = responseData.map((responseObject: any) => {
-        return GridViewModel.generate(responseObject, {});
-    });
-}
+            return GridViewModel.generate(responseObject, thumbnailObj);
+        });
+    } else {
+        gridModelData = responseData.map((responseObject: any) => {
+            return GridViewModel.generate(responseObject, {});
+        });
+    }
 
     return gridModelData;
 };
@@ -170,7 +169,7 @@ const filterLinkedFilesFolder = (driveItems: IDriveItem[]): IDriveItem[] => {
     return driveItems.filter((driveItem) => driveItem.name !== 'Linked Files');
 };
 
-export function getIconByExtension(fileName?: string) {
+export function getIconByExtension(fileName: string) {
     const extension = getExtension(fileName);
     switch (extension?.toUpperCase()) {
         default:

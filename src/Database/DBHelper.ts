@@ -233,7 +233,7 @@ export class DBhelper {
 
     async createFavouriteEntries(data: FavoriteModel[], uniqueId: String) {
         let items = DatabaseManager.getInstance().getEntities(FavoriteSchema.name, `uniqueId == '${uniqueId}'`);
-        LogManager.debug('items^^^^^^^^^^^^^^^^^^^^^', items);
+
         if (items.length > 0) {
             items.forEach(async (_element) => {
                 await DatabaseManager.getInstance().deleteRealmObject(FavoriteSchema.name, _element.id);
@@ -241,7 +241,6 @@ export class DBhelper {
         }
 
         await data.forEach(async (element) => {
-            LogManager.debug('element^^^^^^^^^^^^^^^^^^^^^', element);
             await DatabaseManager.getInstance().createEntity(FavoriteSchema.name, element);
         });
     }
