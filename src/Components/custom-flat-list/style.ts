@@ -68,7 +68,7 @@ export const style = StyleSheet.create({
     },
     toolTipOptionSeperator: {
         height: 1,
-        width: 300,
+        width: '100%',
         backgroundColor: 'black',
     },
     blueDotImage: {

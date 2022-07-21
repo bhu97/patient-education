@@ -62,7 +62,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         return (
             <View style={style.boxContainer}>
                 <View style={style.boxView}>
-                    <CustomListWithHeader labelText={customListlabel} iconName={iconName} />
+                    <CustomListWithHeader labelText={customListlabel} iconName={iconName} isToolTipEnable={iconName=='edit-2'}  />
                 </View>
                 <View style={style.textView}>
                     <Text style={style.rowTextStyle}>{customListValue}</Text>
@@ -70,6 +70,8 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
             </View>
         );
     };
+
+    
 
     headerContainer = (title) => {
         return <Text style={style.headerTextStyle}>{title}</Text>;

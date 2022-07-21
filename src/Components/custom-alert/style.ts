@@ -39,4 +39,9 @@ export const style = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
     },
+   buttonContainers: {
+        justifyContent: 'space-around',
+        flexDirection: 'row',
+        width: '100%',
+    }
 });

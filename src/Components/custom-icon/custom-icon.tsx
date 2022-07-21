@@ -8,7 +8,7 @@ interface CustomIconProps {
     color: string;
     size: number;
     style?: StyleProp<TextStyle>;
-    // onIconPress?: () => void;
+     onIconPress?: () => void;
     accessibilityLabel?: string;
 }
 
@@ -26,18 +26,18 @@ class CustomIcon extends React.PureComponent<CustomIconProps> {
         style: {},
     }
 
-    // callBack() {
-    //     this.props.onIconPress && this.props.onIconPress();
-    // }
+    callBack() {
+        this.props.onIconPress && this.props.onIconPress();
+    }
 
     render() {
         return (
             <View>
                 {!this.props.svg && this.props.name && (
                     <Icon
-                        // onPress={() => {
-                        //     this.callBack();
-                        // }}
+                        onPress={() => {
+                            this.callBack();
+                        }}
                         name={this.props.name}
                         size={this.props.size}
                         color={this.props.color}

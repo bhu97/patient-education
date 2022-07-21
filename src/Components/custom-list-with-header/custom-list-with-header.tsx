@@ -18,6 +18,7 @@ interface CustomListWithHeaderProps {
     userData: UserModel[];
     setUserModelData: (data: UserModel[]) => void;
     onPressItem:()=>void;
+    isToolTipEnable?:boolean
 }
 interface CustomListWithHeaderState {
     visible: boolean;
@@ -35,10 +36,8 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
         this.setState({ selectedCountry: this.props.selectedCountry });
     }
     insideToolTip() {
-        return (
-            <TouchableOpacity onPress={() => this.setState({ visible: true })}>
+        return (        
                 <Text style={style.textStyle}>{this.state.selectedCountry}</Text>
-            </TouchableOpacity>
         );
     }
 
@@ -49,12 +48,21 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
     getSelectedDataFromToolTip = (item: any) => {
         dbHelper.createUser(item);
         this.props.setUserModelData(item);
-        this.setState({ selectedCountry: item.countryTitle });
-        this.setState({ visible: false });
+        this.setState({ selectedCountry: item.countryTitle, visible: false });
     };
+ 
+    onPressItem=()=>{
+        if(this.props.isToolTipEnable){
+            this.setState({visible:true})
+        }else{
+            this.props.onPressItem && this.props.onPressItem()  
+        }
+        
+    }
+
     render() {
         return (
-            <TouchableOpacity onPress={this.props.onPressItem}>
+            <TouchableOpacity onPress={this.onPressItem}>
             <View style={style.mainContainer}>
                 {this.props.headerText && (
                     <View style={style.headerTextContainer}>

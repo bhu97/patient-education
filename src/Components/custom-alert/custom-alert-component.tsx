@@ -40,11 +40,7 @@ class ApplicationAlert extends PureComponent<appAlertProps> {
                             <Text style={alertMsgStyle}>{this.props.alertMsg}</Text>
                         </View>
                         <View
-                            style={{
-                                justifyContent: 'space-around',
-                                flexDirection: 'row',
-                                width: '100%',
-                            }}
+                            style={style.buttonContainers}
                         >
                             {this.props.leftButtonText ? (
                                 <TouchableOpacity onPress={this.props.onLeftPress} style={style.buttonContainer}>
