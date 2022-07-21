@@ -167,8 +167,19 @@ export const style = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-
         flex: 1,
+    },
+    modalButton:{
+        color: BaseThemeStyle.colors.blue,
+        fontSize: 18, 
+        fontWeight: 'bold'
+    },
+    cancelButton:{
+        marginRight:20
+    },
+    modalContainer:{
+justifyContent:'center',
+alignItems:'center'
     },
     listStyle: {
         padding: 5,

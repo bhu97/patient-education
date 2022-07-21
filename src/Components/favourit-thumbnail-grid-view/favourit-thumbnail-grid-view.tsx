@@ -56,8 +56,6 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
             selectedGroups: [],
             selectedItem: null,
             webviewUrl: ''
-
-
         };
     }
 
@@ -179,9 +177,9 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                    //Linking.openURL(item.webUrl)
                     this.setState({ loader: false });
                 } else {
-                    console.log(item.webUrl);
+                 
                     this.setState({ loader: false });
-                    console.log('error opening url');
+                 
                 }
             });
         }
@@ -190,7 +188,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
     renderItem = ({ item, index }: any) => {
         const isVisibleIndicator = this.getVisibility(index);
         let fileName = item.name.split('.');
-        console.log('item', item);
+      
         return (
             <View style={style.backgroundViewStyle}>
                 <TouchableOpacity onPress={() => this.loadDocument(item)}>
@@ -233,7 +231,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                 array.splice(_index, 1);
             }
         }
-        console.log(isCheck, array.length);
+     
         this.setState({ selectedGroups: array });
     }
 
@@ -297,7 +295,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                         {BaseLocalization.addToFav}
                     </Text>
                     <Text style={style.modalSubTitle}>
-                       Please select a list.
+                       {BaseLocalization.checkSubTitle}
                     </Text>
                     </View>
                     <FlatList
@@ -309,10 +307,10 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                         <TouchableOpacity onPress={() => {
                                 this.setState({ visible: false });
                             }}>
-                        <View style={{marginRight:20}}><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>CANCEL</Text></View>
+                        <View style={{marginRight:20}}><Text style={style.modalButton}>{BaseLocalization.cancel}</Text></View>
                         </TouchableOpacity>
                         <TouchableOpacity  onPress={() => this.updateModal()}>
-                        <View><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>SUBMIT</Text></View>
+                        <View><Text style={style.modalButton}>{BaseLocalization.submit}</Text></View>
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -9,58 +9,58 @@ export const style = StyleSheet.create({
     },
     backgroundViewStyle: {
         flexBasis: 0.5,
-        flexGrow:.5,
-        flexShrink:.5,
-        justifyContent:'space-between',
-        padding:10,
-        paddingLeft:0,
-        paddingBottom:0, 
+        flexGrow: 0.5,
+        flexShrink: 0.5,
+        justifyContent: 'space-between',
+        padding: 10,
+        paddingLeft: 0,
+        paddingBottom: 0,
     },
     imageStyle: {
-      resizeMode: 'contain',
+        resizeMode: 'contain',
         height: 200,
         width: 'auto',
-        opacity:1,
-        justifyContent:'center',
-        flex:1
+        opacity: 1,
+        justifyContent: 'center',
+        flex: 1,
     },
     emptyImage: {
-       resizeMode: 'contain',
-           height: 200,
-           width: 'auto',
-           opacity:1
-       },
-       emptyImageStyle: {
         resizeMode: 'contain',
-           height: 200,
-           width: 'auto',
-           opacity:1
-       },
-       overlay:{
+        height: 200,
+        width: 'auto',
+        opacity: 1,
+    },
+    emptyImageStyle: {
+        resizeMode: 'contain',
+        height: 200,
+        width: 'auto',
+        opacity: 1,
+    },
+    overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor:'black',
-        opacity:0.2
-       },
-    svgIconStyle:{
-        width:'100%',
-        height:'100%',
-        position:'absolute',
-        justifyContent:'center',
-        alignItems:'center', 
+        backgroundColor: 'black',
+        opacity: 0.2,
+    },
+    svgIconStyle: {
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     iconImageStyle: {
         height: 20,
         width: 20,
     },
     emptyIconStyle: {
-       top:50,
+        top: 50,
     },
     itemContainer: {
         flexDirection: 'row',
         height: 'auto',
         backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
-        paddingTop:5,
-        paddingBottom:5,
+        paddingTop: 5,
+        paddingBottom: 5,
         boxShadow: '10px 10px 5px lightblue',
         alignItems: 'center',
     },
@@ -82,106 +82,107 @@ export const style = StyleSheet.create({
         ...BaseThemeStyle.fonts.subtitle3,
         color: BaseThemeStyle.colors.titleColor,
     },
-     toolTipBorder:{
-        borderRadius: 12.5
+    toolTipBorder: {
+        borderRadius: 12.5,
     },
-    toolTipArrow:{
-        width: 16, height: 8
+    toolTipArrow: {
+        width: 16,
+        height: 8,
     },
-    toolTipContainer:{
-     borderRadius: 10,justifyContent: 'center', alignItems: 'center'
+    toolTipContainer: {
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    toolTipOptions:{
-        fontSize: 24, fontWeight: '500', padding: 10 , color:BaseThemeStyle.colors.blue
+    toolTipOptions: {
+        fontSize: 24,
+        fontWeight: '500',
+        padding: 10,
+        color: BaseThemeStyle.colors.blue,
     },
-    toolTipHeading:{
-        fontSize: 20, fontWeight: '500', padding: 5 
+    toolTipHeading: {
+        fontSize: 20,
+        fontWeight: '500',
+        padding: 5,
     },
-    toolTipOptionSeperator:{
-        height: 1, width: 300, backgroundColor: 'black'
+    toolTipOptionSeperator: {
+        height: 1,
+        width: 300,
+        backgroundColor: 'black',
     },
-    blueDotImage:{
+    blueDotImage: {
         height: 60,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    rightArrow:{
+    rightArrow: {
         width: '350%',
         height: 60,
     },
-    centerData:{
-        justifyContent:'center',
-        alignItems:'center'
+    centerData: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    emptyDataText:{
-        fontSize: 22, fontWeight: '500', padding: 10 ,
-        marginLeft:150,
-        color:BaseThemeStyle.colors.textColor
+    emptyDataText: {
+        fontSize: 22,
+        fontWeight: '500',
+        padding: 10,
+        marginLeft: 150,
+        color: BaseThemeStyle.colors.textColor,
     },
     centeredView: {
         flex: 1,
-       justifyContent: 'center',
-       alignItems: 'center',
-    
-     },
-     modalBottomRow: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalBottomRow: {
         flexDirection: 'row',
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
-        marginTop:10
-        // paddingHorizontal:BaseThemeStyle.paddings.formElements,
-        // paddingVertical:BaseThemeStyle.paddings.formElements,
+        marginTop: 10,
     },
-     modalView: {
+    modalButton: {
+        color: BaseThemeStyle.colors.blue,
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    modalView: {
         backgroundColor: 'white',
         justifyContent: 'center',
-        // padding:25,
-     //    paddingHorizontal:BaseThemeStyle.paddings.formElements,
-     //    paddingVertical:BaseThemeStyle.paddings.formElements,
+
         shadowColor: '#000',
         shadowOffset: {
-          width: 0,
-          height: 2,
+            width: 0,
+            height: 2,
         },
         shadowOpacity: 0.5,
         shadowRadius: 10,
         elevation: 10,
-     //    borderWidth: 1,
-     //    borderColor: 'gray',
-        width:'25%',
-        borderRadius:5
-     },
-     modalTitle:{
-        ...BaseThemeStyle.fonts.h7,
-       color: BaseThemeStyle.colors.black, 
-       fontWeight:'bold'
-     },
-     modalSubTitle:{
-        ...BaseThemeStyle.fonts.h8,
-       color: BaseThemeStyle.colors.lightGrayOnModal,
-       marginBottom:10 
-     },
-     modalContainer: {
-       // flex: 1,
-       margin: '5%',
-    
-       // justifyContent:'flex-end'
-     },
-     cardStyle: {
-       // flex:1,
-       // borderRadius: 5,
-       // borderWidth: 1,
-       // borderColor: 'grey',
-       backgroundColor: 'white',
-       padding: '3%',
-       // marginVertical: '5%',
-       // elevation: 0.9,
-     },
-     cardTextInputStyle: {
-       borderBottomColor: 'grey',
-       borderBottomWidth: 2,
-       //  marginBottom: 10,
-       fontSize: 24,
-     },
 
+        width: '25%',
+        borderRadius: 5,
+    },
+    modalTitle: {
+        ...BaseThemeStyle.fonts.h7,
+        color: BaseThemeStyle.colors.black,
+        fontWeight: 'bold',
+    },
+    modalSubTitle: {
+        ...BaseThemeStyle.fonts.h8,
+        color: BaseThemeStyle.colors.lightGrayOnModal,
+        marginBottom: 10,
+    },
+    modalContainer: {
+        margin: '5%',
+    },
+    cardStyle: {
+        backgroundColor: 'white',
+        padding: '3%',
+    },
+    cardTextInputStyle: {
+        borderBottomColor: 'grey',
+        borderBottomWidth: 2,
+
+        fontSize: 24,
+    },
 });

@@ -254,7 +254,7 @@ interface ThumbnailGridViewState {
                         {BaseLocalization.addToFav}
                     </Text>
                     <Text style={style.modalSubTitle}>
-                       Please select a list.
+                       {BaseLocalization.checkSubTitle}
                     </Text>
                             </View>
                             <FlatList
@@ -295,7 +295,7 @@ interface ThumbnailGridViewState {
                                 <TouchableOpacity onPress={() => {
                                 this.setState({ visible: false });
                             }}>
-                        <View style={{marginRight:20}}><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>CANCEL</Text></View>
+                        <View style={{marginRight:20}}><Text style={style.modalButton}>{BaseLocalization.cancel}</Text></View>
                         </TouchableOpacity>
                         <TouchableOpacity  onPress={async () => {
                                         let favorites;
@@ -330,7 +330,7 @@ interface ThumbnailGridViewState {
                                             });
                                            
                                     }}>
-                        <View ><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>SUBMIT</Text></View>
+                        <View ><Text style={style.modalButton}>{BaseLocalization.submit}</Text></View>
                         </TouchableOpacity>
                             </View>
                         </View>

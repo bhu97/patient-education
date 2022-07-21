@@ -24,7 +24,9 @@ export const BaseThemeStyle = {
         listItemBackgroundColor: '#E5E7EC',
         textColor: '#6A768F',
         selectedListColor: '#D3D3D3',
-        lightGrayOnModal:'#00000099'
+        lightGrayOnModal:'#00000099',
+        placeholder:'#9BA3B4',
+        addIconColor:'#979797',
     },
     paddings: {
         bodyHorizontal: 0,

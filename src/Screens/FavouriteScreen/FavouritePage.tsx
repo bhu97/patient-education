@@ -65,6 +65,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
 
     getGroups = async () => {
         let groups = await dbHelper.getFavGroups();
+      
         if (this.state.selectedGroupItem == null && groups.length > 0) {
             this.props.setFavGroup(groups);
             this.setState({ selectedGroupItem: groups[0], favGroupTitle: groups[0].name });
@@ -132,7 +133,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                             <TextInput
                                 style={style.cardTextInputStyle}
                                 placeholder="Placeholder"
-                                placeholderTextColor={'#9BA3B4'}
+                                placeholderTextColor={BaseThemeStyle.colors.placeholder}
                                 value={this.state.group_name}
                                 onChangeText={(text) => {
                                     this.setState({ group_name: text });
@@ -146,8 +147,8 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                     this.setState({ visible: false });
                                 }}
                             >
-                                <View style={{ marginRight: 20 }}>
-                                    <Text style={{ color: '#4389BC', fontSize: 18, fontWeight: 'bold' }}>
+                                <View style={style.cancelButton}>
+                                    <Text style={style.modalButton}>
                                         {BaseLocalization.cancel}
                                     </Text>
                                 </View>
@@ -174,7 +175,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                 }}
                             >
                                 <View>
-                                    <Text style={{ color: '#4389BC', fontSize: 18, fontWeight: 'bold' }}>
+                                    <Text style={style.modalButton}>
                                         {BaseLocalization.save}
                                     </Text>
                                 </View>
@@ -254,12 +255,12 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                         name="plussquare"
                                         size={28}
                                         bold
-                                        color="#979797"
+                                        color={BaseThemeStyle.colors.addIconColor}
                                         onPress={() => this.setState({ visible: true })}
                                     />
                                 </View>
 
-                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                <View style={style.modalContainer}>
                                     {this.getModal()}
                                 </View>
                                 <ScrollView>

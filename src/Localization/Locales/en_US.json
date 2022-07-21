@@ -38,5 +38,7 @@
     "newListTitle":"Create new list",
     "newListSubTitle":"Please enter a title for the new list.",
     "save":"SAVE",
-    "lists":"Lists"
+    "lists":"Lists",
+    "submit":"SUBMIT",
+    "checkSubTitle":"Please select a list."
 }
