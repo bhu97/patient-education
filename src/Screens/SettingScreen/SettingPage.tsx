@@ -8,8 +8,10 @@ import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
 import dbHelper from '../../Database/DBHelper';
+import { DateUtility } from '../../Helper/date-utility';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
+import { fetchAllDriveItems } from '../../Redux/app-data/appDataThunk';
 import { setCountryListData, setSelectedCountry } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
@@ -23,14 +25,21 @@ interface SettingPageProps {
     setSelectedCountry: (value: string) => void;
     selectedCountry: (string) => void;
     navigation: any;
+    isUpdateNowEnable: boolean
+    fetchData: () => void;
 }
 
-interface SettingPageState {}
+interface SettingPageState {
+    lastUpdatedDate: string
+}
 
 class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     _unsubscribe: any;
     constructor(props: SettingPageProps) {
         super(props);
+        this.state = {
+            lastUpdatedDate: ''
+        }
     }
     componentDidMount() {
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
@@ -46,6 +55,9 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         this.props.setCountryListData(countryData);
         const userData = await dbHelper.getUser();
         this.props.setSelectedCountry(userData.countryTitle);
+        let getDate = (await dbHelper.getLastDateModify())
+        let getParsDate = DateUtility.getDateTimeStringFromDateTimeMs(getDate.length > 0 ? getDate[0].lastModifyDate : '')
+        this.setState({ lastUpdatedDate: getParsDate })
         this.props.setIsLoading(false);
     }
 
@@ -62,7 +74,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         return (
             <View style={style.boxContainer}>
                 <View style={style.boxView}>
-                    <CustomListWithHeader labelText={customListlabel} iconName={iconName} isToolTipEnable={iconName=='edit-2'}  />
+                    <CustomListWithHeader labelText={customListlabel} iconName={iconName} isToolTipEnable={iconName == 'edit-2'} onPressItem={() => { }} />
                 </View>
                 <View style={style.textView}>
                     <Text style={style.rowTextStyle}>{customListValue}</Text>
@@ -71,7 +83,26 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         );
     };
 
-    
+    onPressUpdate = () => {
+        if (this.props.isUpdateNowEnable) {
+            this.props.fetchData()
+        }
+    }
+
+    boxRowViewSecond = (customListlabel, iconName) => {
+        return (
+            <View style={[style.boxContainer, { opacity: this.props.isUpdateNowEnable ? 1 : 0.2 }]}>
+                <View style={style.boxView}>
+                    <CustomListWithHeader labelText={customListlabel} iconName={iconName} isToolTipEnable={false} onPressItem={this.onPressUpdate} />
+                </View>
+                <View style={style.textView}>
+                    <Text style={style.rowTextStyle}>{this.state.lastUpdatedDate}</Text>
+                </View>
+            </View>
+        );
+    };
+
+
 
     headerContainer = (title) => {
         return <Text style={style.headerTextStyle}>{title}</Text>;
@@ -126,7 +157,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
 
                             {this.titleRowView(BaseLocalization.contentTitle, BaseLocalization.modificationDate)}
 
-                            {this.boxRowView(BaseLocalization.updateTitle, 'download-cloud', '04.03.2022 14.02')}
+                            {this.boxRowViewSecond(BaseLocalization.updateTitle, 'download-cloud')}
                         </View>
                     </View>
                 </CustomBody>
@@ -137,6 +168,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
 const mapStateToProps = (state: RootState) => ({
     isLoading: state.appDataReducer.appDataLoading,
     selectedCountry: state.categoryReducer.selectedCountry,
+    isUpdateNowEnable: state.categoryReducer.isUpdateNowEnable
 });
 const mapDispatchToProps = (dispatch: any) => ({
     setCountryListData: (value: any) => {
@@ -148,6 +180,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     setSelectedCountry: (value: string) => {
         dispatch(setSelectedCountry(value));
     },
+    fetchData: () => {
+        dispatch(fetchAllDriveItems());
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingPage);

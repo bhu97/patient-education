@@ -24,7 +24,6 @@ interface HomePageProps {
     mainList: DriveItemModel[];
     setMainList: (data: DriveItemModel[]) => void;
     appDataLoading: boolean;
-    fetchData: () => void;
     navigation: any;
     setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
     //all selected selectedCategoryData
@@ -135,9 +134,6 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: any) => ({
     setMainList: (rootItems: DriveItemModel[]) => {
         dispatch(setMainCategoryList(rootItems));
-    },
-    fetchData: () => {
-        dispatch(fetchAllDriveItems());
     },
     setSelectedCategoryData: (selectedItems: DriveItemModel[]) => {
         dispatch(setSelectedCategoryData(selectedItems));

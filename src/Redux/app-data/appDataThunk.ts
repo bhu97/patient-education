@@ -11,9 +11,9 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
-import { setMainCategoryList } from '../category/categorySlice';
+import { setIsUpdateNowEnable, setMainCategoryList } from '../category/categorySlice';
 import { dispatchState } from '../store';
-import { setIsAlertShown } from './appDataSlice';
+import { setAppDataLoading, setIsAlertShown } from './appDataSlice';
 
 /**
  * createAsyncThunk receives two arguments
@@ -23,7 +23,7 @@ import { setIsAlertShown } from './appDataSlice';
 
 //to fetch last modified date
 export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModifiedDate', async () => {
-    LogManager.debug('fetchLastModifiedDate call started');
+   // LogManager.debug('fetchLastModifiedDate call started');
     const response = await apiManager.callApiToGetData(API_NAMES.GRAPH_LAST_MODIFIED_DATE, HTTP_METHODS.GET);
     if(response && response.value){
         let group:LastModifyDateModel = {
@@ -31,10 +31,14 @@ export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModified
             lastModifyDate: response.value[0].lastModifiedDateTime,
             createdDateTime:  response.value[0].createdDateTime,
         };
+       let storeObjectDate = await dbHelper.getLastDateModify()
+        if(storeObjectDate.length>0 && storeObjectDate[0].lastModifyDate !== response.value[0].lastModifiedDateTime){
+            dispatchState(setIsUpdateNowEnable(true))
+        }
         dbHelper.createLastDateModify(LastModifyDateModel.generate(group))
     }
-    LogManager.info('response= &&&', response.value[0]);
-    LogManager.debug('fetchLastModifiedDate call ended');
+    // LogManager.info('response= &&&', response.value[0]);
+    // LogManager.debug('fetchLastModifiedDate call ended');
 
     return response;
 });
@@ -42,7 +46,7 @@ export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModified
 //to fetch meta delta
 export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', async (isFromLogin?: boolean) => {
     LogManager.debug('fetchDriveItems call started');
-
+    dispatchState(setAppDataLoading(true))
     const driveItems = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
     LogManager.info('responses driveItems=', driveItems);
 
@@ -81,6 +85,7 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
         replaceAndNavigate(SCREEN_NAME.HomeScreen); 
     }
     dispatchState(fetchLastModifiedDate())
+    dispatchState(setAppDataLoading(false))
     return mainCategoryData;
 });
 

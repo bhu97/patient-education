@@ -3,7 +3,7 @@ import { API_NAMES, BINARY_STRING } from '../Constant/Constants';
 import { base64ToArrayBuffer } from '../Helper/Helper';
 import LogManager from '../Helper/LogManager';
 import { FavoriteGroupModel } from '../Model/FavouriteGroupModel';
-import { DriveItemSchema, FavoriteGroupSchema, FavoriteSchema, UserSchema } from './Schema';
+import { DriveItemSchema, FavoriteGroupSchema, FavoriteSchema, LastModifyDateSchema, UserSchema } from './Schema';
 
 export class DatabaseManager {
     //Constants
@@ -44,7 +44,7 @@ export class DatabaseManager {
 
             this.realm = new Realm({
                 encryptionKey: base64ToArrayBuffer(BINARY_STRING),
-                schema: [DriveItemSchema, UserSchema, FavoriteSchema, FavoriteGroupSchema],
+                schema: [DriveItemSchema, UserSchema, FavoriteSchema, FavoriteGroupSchema,LastModifyDateSchema],
                 schemaVersion: 1,
                 migration: (_oldRealm, _newRealm) => {
                     //app already release to app store and in next version if you update any field name or change
