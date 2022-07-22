@@ -132,7 +132,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                         <View style={style.cardStyle}>
                             <TextInput
                                 style={style.cardTextInputStyle}
-                                placeholder="Placeholder"
+                                placeholder="Enter the title"
                                 placeholderTextColor={BaseThemeStyle.colors.placeholder}
                                 value={this.state.group_name}
                                 onChangeText={(text) => {
@@ -144,7 +144,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                         <View style={style.modalBottomRow}>
                             <TouchableOpacity
                                 onPress={() => {
-                                    this.setState({ visible: false });
+                                    this.setState({ visible: false, renameFavGroup: null,group_name: ''});
                                 }}
                             >
                                 <View style={style.cancelButton}>
@@ -187,6 +187,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
         );
     };
     rightSwipeActions = (item) => {
+     
         return (
             <View style={style.crossIconstyle}>
                 <TouchableOpacity
@@ -199,7 +200,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => this.setState({ visible: true, renameFavGroup: item, group_name: item.name })}
+                    onPress={() => this.setState({ visible: true, renameFavGroup: item, group_name: item.name,favGroupTitle: item.name, selectedGroupItem: item},()=>{this.getFavItems()})}
                 >
                     <View style={style.editGroup}>
                         <CustomIcon name={'edit-2'} color={BaseThemeStyle.colors.white} size={30} />
@@ -211,7 +212,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
 
     Lists = ({ item }) => (
         <View style={style.listStyle}>
-            <Swipeable renderRightActions={item.name == 'Default' ? null : this.rightSwipeActions.bind(this, item)}>
+            <Swipeable  renderRightActions={item.name == 'Default' ? null : this.rightSwipeActions.bind(this, item)}>
                 <View style={style.listviewstyle}>
                     <View style={style.mainIconstyle}>
                         <Image source={Images.favouritesListImage} />
