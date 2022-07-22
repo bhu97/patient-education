@@ -11,7 +11,7 @@ import dbHelper from '../../Database/DBHelper';
 import { DateUtility } from '../../Helper/date-utility';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { fetchAllDriveItems } from '../../Redux/app-data/appDataThunk';
+import { fetchAllDriveItems, logout, onLogout } from '../../Redux/app-data/appDataThunk';
 import { setCountryListData, setSelectedCountry } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
@@ -27,6 +27,7 @@ interface SettingPageProps {
     navigation: any;
     isUpdateNowEnable: boolean
     fetchData: () => void;
+    logoutPress:()=>void;
 }
 
 interface SettingPageState {
@@ -69,12 +70,17 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
             </View>
         );
     };
+    onCustomItemPress=(title)=>{
+        if(title == BaseLocalization.logoutNow){
+            this.props.logoutPress()
+        }
+    }
 
     boxRowView = (customListlabel, iconName, customListValue) => {
         return (
             <View style={style.boxContainer}>
                 <View style={style.boxView}>
-                    <CustomListWithHeader labelText={customListlabel} iconName={iconName} isToolTipEnable={iconName == 'edit-2'} onPressItem={() => { }} />
+                    <CustomListWithHeader labelText={customListlabel} iconName={iconName} isToolTipEnable={iconName == 'edit-2'} onPressItem={() => {this.onCustomItemPress(customListlabel)}} />
                 </View>
                 <View style={style.textView}>
                     <Text style={style.rowTextStyle}>{customListValue}</Text>
@@ -186,6 +192,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     fetchData: () => {
         dispatch(fetchAllDriveItems());
+    },
+    logoutPress:()=>{
+        dispatch(logout())
     }
 });
 

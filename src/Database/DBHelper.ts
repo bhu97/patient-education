@@ -20,20 +20,20 @@ export class DBhelper {
             DriveItemSchema.name,
             `parentReferenceId == '${API_NAMES.ROOT_ID}'`,
         );
-        LogManager.debug('countryData=', countryData);
+       // LogManager.debug('countryData=', countryData);
 
         let userCountryModelData: any = [];
         for (let countryObject of countryData) {
             userCountryModelData.push(UserModel.generate(countryObject));
         }
-        LogManager.debug('userCountryModelData=', userCountryModelData);
+        //LogManager.debug('userCountryModelData=', userCountryModelData);
 
         const userModelData = userCountryModelData.filter(function (userCountryModelObject) {
             if (userCountryModelObject.countryTitle && userCountryModelObject.countryName) {
                 return UserModel.generate(userCountryModelObject);
             }
         });
-        LogManager.debug('userModelData=', userModelData);
+       // LogManager.debug('userModelData=', userModelData);
 
         userModelData.sort((a, b) => a.countryName.localeCompare(b.countryName));
 
@@ -59,12 +59,18 @@ export class DBhelper {
         return user[0];
     }
 
+
+
     /**
      * cretae user into DB with country code
      * @param userDetails
      */
     async createUser(userDetails: UserModel) {
         await DatabaseManager.getInstance().createEntity(UserSchema.name, userDetails);
+    }
+
+     removeUser(userDetails: IUserModel) {
+       DatabaseManager.getInstance().removeRealmObject(UserSchema.name, userDetails);
     }
 
     /**
@@ -108,7 +114,7 @@ export class DBhelper {
             DriveItemSchema.name,
             `webUrl == '${userCountryModel.webUrl}'`,
         );
-        LogManager.debug('rootItems=', rootItems);
+      //  LogManager.debug('rootItems=', rootItems);
 
         if (rootItems.length > 0) {
             //map 0 index to drive item model
@@ -274,7 +280,7 @@ export class DBhelper {
     async getLastDateModify(): Promise<LastModifyDateModel[]> {
         //get all matching drive items
         let itemData = DatabaseManager.getInstance().getEntities(LastModifyDateSchema.name, ``);
-        LogManager.debug('LastModifyDateSchema=======', itemData);
+       // LogManager.debug('LastModifyDateSchema=======', itemData);
         return itemData;
     }
 

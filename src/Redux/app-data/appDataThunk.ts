@@ -11,6 +11,7 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
+import { UserModel } from '../../Model/UserModel';
 import { setIsUpdateNowEnable, setMainCategoryList } from '../category/categorySlice';
 import { dispatchState } from '../store';
 import { setAppDataLoading, setIsAlertShown } from './appDataSlice';
@@ -184,7 +185,7 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
  * For FirstTime login
  */
 export const login = createAsyncThunk('appData/login', async () => {
-    const userData: any = await dbHelper.getUser();
+    const userData: any = await dbHelper.getUser(); 
     SplashScreen.hide();
     //user not present fetch all data and save it DB and set to redux
     if (!userData) {
@@ -205,3 +206,10 @@ export const login = createAsyncThunk('appData/login', async () => {
 export const replaceAndNavigate = (screenName: string) => {
     NavigationManager.navigateAndReplace(screenName);
 };
+
+export const logout = createAsyncThunk('appData/logout', async () => {
+    authenticationManager.setAuthorization(null);
+     let obj =  await dbHelper.getUser()
+     dbHelper.removeUser(obj)
+    replaceAndNavigate(SCREEN_NAME.LoginScreen)
+})
