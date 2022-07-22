@@ -18,7 +18,8 @@ export const style = StyleSheet.create({
         boxShadow: '10px 10px 5px lightblue',
         alignItems: 'center',
         paddingVertical:BaseThemeStyle.paddings.containers,
-        paddingLeft:BaseThemeStyle.paddings.containers
+        paddingLeft:BaseThemeStyle.paddings.containers,
+        marginBottom:10
     },
     headerTextContainer: {
         flexDirection: 'row',

@@ -40,5 +40,7 @@
     "save":"SPAREN",
     "lists":"LISTEN",
     "submit":"EINREICHEN",
-    "checkSubTitle":"Bitte wählen Sie eine Liste aus."
+    "checkSubTitle":"Bitte wählen Sie eine Liste aus.",
+    "logout": "Ausloggen",
+    "logoutNow": "jetzt abmelden"
 }

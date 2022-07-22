@@ -158,6 +158,10 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                             {this.titleRowView(BaseLocalization.contentTitle, BaseLocalization.modificationDate)}
 
                             {this.boxRowViewSecond(BaseLocalization.updateTitle, 'download-cloud')}
+
+                            {this.headerContainer(BaseLocalization.logout)}
+
+                            {this.boxRowView(BaseLocalization.logoutNow, 'log-out', '')}
                         </View>
                     </View>
                 </CustomBody>

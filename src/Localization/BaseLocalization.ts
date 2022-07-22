@@ -48,5 +48,7 @@ export const BaseLocalization = {
     lists: LocalizationManager.getLocalizedStrings('lists'),
     checkSubTitle: LocalizationManager.getLocalizedStrings('checkSubTitle'),
     submit: LocalizationManager.getLocalizedStrings('submit'),
+    logout : LocalizationManager.getLocalizedStrings('logout'),
+    logoutNow : LocalizationManager.getLocalizedStrings('logoutNow'),
 
 };
