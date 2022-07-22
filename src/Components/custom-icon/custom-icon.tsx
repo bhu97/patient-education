@@ -35,9 +35,9 @@ class CustomIcon extends React.PureComponent<CustomIconProps> {
             <View>
                 {!this.props.svg && this.props.name && (
                     <Icon
-                        onPress={() => {
-                            this.callBack();
-                        }}
+                        // onPress={() => {
+                        //     this.callBack();
+                        // }}
                         name={this.props.name}
                         size={this.props.size}
                         color={this.props.color}
