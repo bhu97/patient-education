@@ -1,23 +1,14 @@
 import CheckBox from '@react-native-community/checkbox';
 import React, { PureComponent, useState } from 'react';
-import {
-    Button, FlatList,
-    Image, Linking,
-    Modal,
-    Text,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import { FlatList, Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import dbHelper from '../../Database/DBHelper';
 import downloadManager from '../../Download/DownloadManager';
-import { getExtension, getIconByExtension } from '../../Helper/Helper';
-import NavigationManager from '../../Helper/NavigationManager';
+import { getIconByExtension } from '../../Helper/Helper';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { setFavGroupData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
-import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
 import CustomToolTip from '../custom-tool-tip/custom-tool-tip';
@@ -28,7 +19,7 @@ interface ThumbnailGridViewProps {
     gridViewList: GridViewModel[];
     favGroup: any;
     onFavGroupChange?: Function;
-    navigation:any;
+    navigation: any;
 }
 interface ThumbnailGridViewState {
     isVisibleObject: any;
@@ -41,11 +32,10 @@ interface ThumbnailGridViewState {
     selectedGroups: Array<string>;
     selectedItem: any;
     close: boolean;
-  
 }
 
- class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailGridViewState> {
-    _unsubscribe: any; 
+class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailGridViewState> {
+    _unsubscribe: any;
     constructor(props) {
         super(props);
         this.state = {
@@ -63,11 +53,8 @@ interface ThumbnailGridViewState {
             selectedGroups: [],
             selectedItem: null,
             close: false,
-    
         };
-      
     }
-   
 
     componentDidMount(): void {
         let isVisibleArray = {};
@@ -76,10 +63,7 @@ interface ThumbnailGridViewState {
             isVisibleArray[index] = setIndex;
         });
         this.setState({ isVisibleObject: isVisibleArray });
-      
     }
-   
-
 
     componentDidUpdate(prevProp): void {
         if (prevProp.gridViewList.length !== this.props.gridViewList.length) {
@@ -90,10 +74,7 @@ interface ThumbnailGridViewState {
             });
             this.setState({ isVisibleObject: isVisibleArray });
         }
-       
     }
-
- 
 
     getSelectedGroupsFromRealm = async (uniqueId) => {
         let selectedGroups = await dbHelper.getFavItemsByUniqueId(uniqueId);
@@ -105,7 +86,6 @@ interface ThumbnailGridViewState {
                 let group_id = group.id.split('_')[0];
                 array.push(group_id);
             });
-            console.log('array****************', array);
             this.setState({ selectedGroups: array });
         }
     };
@@ -139,7 +119,7 @@ interface ThumbnailGridViewState {
                 <CustomToolTip
                     isVisible={isVisibleIndicator}
                     model={this.state.toolTipList}
-                    position='right'
+                    position="right"
                     insideToolTip={this.inside(index, item)}
                     closeToolTip={() => this.setVisible(index, false)}
                     onPressOfToolTipItem={(_tooltip_item) => this.getSelectedDataFromToolTip(_tooltip_item, item)}
@@ -170,40 +150,16 @@ interface ThumbnailGridViewState {
         return <View style={style.toolTipOptionSeperator}></View>;
     };
 
-    
     loadDocument = async (item: GridViewModel) => {
         this.setState({ loader: true });
-        const fileExt = getExtension(item.webUrl);
-        if (fileExt.toLowerCase() === 'url') {
-            downloadManager.getUrl(item).then((res) => {  
-                console.log("res ====",res);
-                              
-                 NavigationManager.navigate('CustomWebView',{url:res,fileName:'URL',isPdf:false})
-                this.setState({ loader: false });
-            }).catch(() => {
+        downloadManager
+            .displayDocument(item)
+            .then((res) => {
                 this.setState({ loader: false });
             })
-        }
-        else if (fileExt.toLowerCase() === 'pdf') {
-            downloadManager.downloadFileAndShow(item).then((res) => {                
-                 NavigationManager.navigate('CustomWebView',{url:res,fileName:downloadManager.getFileName(res),isPdf:true})
+            .catch(() => {
                 this.setState({ loader: false });
-            }).catch(() => {
-                this.setState({ loader: false });
-            })
-        } else {
-            Linking.canOpenURL(item.webUrl).then((supported) => {
-                if (supported) {
-                 downloadManager.openLink(item.webUrl)
-                    NavigationManager.navigate('CustomWebView',{url:item.webUrl,fileName:downloadManager.getFileName(item.webUrl),isPdf:false})
-                    this.setState({ loader: false });
-                } else {
-                    console.log(item.webUrl);
-                    this.setState({ loader: false });
-                    console.log('error opening url');
-                }
             });
-        }
     };
 
     renderItem = ({ item, index }: any) => {
@@ -239,7 +195,6 @@ interface ThumbnailGridViewState {
     };
 
     getModal = () => {
-       
         return (
             <Modal animationType="slide" transparent={true} visible={this.state.visible}>
                 <View style={style.centeredView}>
@@ -247,15 +202,11 @@ interface ThumbnailGridViewState {
                         <View style={style.modalContainer}>
                             <View
                                 style={{
-                                    marginHorizontal:10
+                                    marginHorizontal: 10,
                                 }}
                             >
-                                <Text style={style.modalTitle}>
-                        {BaseLocalization.addToFav}
-                    </Text>
-                    <Text style={style.modalSubTitle}>
-                       Please select a list.
-                    </Text>
+                                <Text style={style.modalTitle}>{BaseLocalization.addToFav}</Text>
+                                <Text style={style.modalSubTitle}>{BaseLocalization.checkSubTitle}</Text>
                             </View>
                             <FlatList
                                 data={this.props.favGroup}
@@ -289,15 +240,18 @@ interface ThumbnailGridViewState {
                                     );
                                 }}
                             />
-                            <View
-                                style={style.modalBottomRow}
-                            >
-                                <TouchableOpacity onPress={() => {
-                                this.setState({ visible: false });
-                            }}>
-                        <View style={{marginRight:20}}><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>CANCEL</Text></View>
-                        </TouchableOpacity>
-                        <TouchableOpacity  onPress={async () => {
+                            <View style={style.modalBottomRow}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        this.setState({ visible: false });
+                                    }}
+                                >
+                                    <View style={{ marginRight: 20 }}>
+                                        <Text style={style.modalButton}>{BaseLocalization.cancel}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={async () => {
                                         let favorites;
                                         favorites = [];
                                         this.state.selectedGroups.map((item) => {
@@ -319,19 +273,20 @@ interface ThumbnailGridViewState {
                                                     webUrl: this.state.selectedItem.webUrl,
                                                 });
                                             }
-                                       
                                         });
-                                    
+
                                         dbHelper
                                             .createFavouriteEntries(favorites, this.state.selectedItem.uniqueId)
                                             .then(() => {
                                                 this.setState({ visible: false });
-                                               this.props?.onFavGroupChange()
+                                                this.props?.onFavGroupChange();
                                             });
-                                           
-                                    }}>
-                        <View ><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>SUBMIT</Text></View>
-                        </TouchableOpacity>
+                                    }}
+                                >
+                                    <View>
+                                        <Text style={style.modalButton}>{BaseLocalization.submit}</Text>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
@@ -341,7 +296,6 @@ interface ThumbnailGridViewState {
     };
 
     render() {
-        console.log('isVisibleObject^^^^^^^^^^^^^^^^^^^',this.state.isVisibleObject);
         return this.state.loader ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
@@ -359,12 +313,10 @@ interface ThumbnailGridViewState {
                         {this.getModal()}
                     </View>
                 ) : (
-                    
                     <View style={style.emptyIconStyle}>
                         <Image style={style.emptyImageStyle} source={Images.emptyImg} />
                         <Text style={style.emptyDataText}>{BaseLocalization.noDataText}</Text>
                     </View>
-                  
                 )}
             </>
         );
@@ -374,10 +326,10 @@ interface ThumbnailGridViewState {
 const GroupItem = (props) => {
     const [isCheck, setCheck] = useState(props.isCheck);
     return (
-        <View style={{ flexDirection: 'row',marginBottom:5 }}>
+        <View style={{ flexDirection: 'row', marginBottom: 5 }}>
             <View>
                 <CheckBox
-                 tintColors={{ true: '#4389BC', false: '#4389BC'}}
+                    tintColors={{ true: '#4389BC', false: '#4389BC' }}
                     disabled={false}
                     value={isCheck}
                     onValueChange={() => {
@@ -394,14 +346,12 @@ const GroupItem = (props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-    favGroup: state.categoryReducer.favGroupData 
+    favGroup: state.categoryReducer.favGroupData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-
     setFavGroup: (favGroup: any) => {
-        dispatch(setFavGroupData(favGroup))
-    }
- 
+        dispatch(setFavGroupData(favGroup));
+    },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ThumbnailGridView);

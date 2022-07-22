@@ -38,5 +38,7 @@
     "newListTitle":"Neue Liste erstellen",
     "newListSubTitle":"Bitte geben Sie einen Titel für die neue Liste ein.",
     "save":"SPAREN",
-    "lists":"LISTEN"
+    "lists":"LISTEN",
+    "submit":"EINREICHEN",
+    "checkSubTitle":"Bitte wählen Sie eine Liste aus."
 }

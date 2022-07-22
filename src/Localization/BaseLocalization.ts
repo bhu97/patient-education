@@ -46,5 +46,7 @@ export const BaseLocalization = {
     newListSubTitle: LocalizationManager.getLocalizedStrings('newListSubTitle'),
     save: LocalizationManager.getLocalizedStrings('save'),
     lists: LocalizationManager.getLocalizedStrings('lists'),
+    checkSubTitle: LocalizationManager.getLocalizedStrings('checkSubTitle'),
+    submit: LocalizationManager.getLocalizedStrings('submit'),
 
 };

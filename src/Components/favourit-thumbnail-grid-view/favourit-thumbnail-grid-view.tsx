@@ -1,15 +1,9 @@
-import React,{ PureComponent } from 'react';
-import {
-    Button, FlatList,
-    Image, Linking, Text,
-    TouchableOpacity,
-    View
-} from 'react-native';
+import React, { PureComponent } from 'react';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import dbHelper from '../../Database/DBHelper';
 import downloadManager from '../../Download/DownloadManager';
-import { getExtension, getIconByExtension } from '../../Helper/Helper';
-import NavigationManager from '../../Helper/NavigationManager';
+import { getIconByExtension } from '../../Helper/Helper';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
@@ -55,22 +49,19 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
             groups: [],
             selectedGroups: [],
             selectedItem: null,
-            webviewUrl: ''
-
-
+            webviewUrl: '',
         };
     }
 
     componentDidMount(): void {
         let isVisibleArray = {};
-        this.props.gridViewList && this.props.gridViewList.map((item: any, index: any) => {
-            let setIndex = { index: index, isVisible: false };
-            isVisibleArray[index] = setIndex;
-        });
+        this.props.gridViewList &&
+            this.props.gridViewList.map((item: any, index: any) => {
+                let setIndex = { index: index, isVisible: false };
+                isVisibleArray[index] = setIndex;
+            });
         this.setState({ isVisibleObject: isVisibleArray });
-
     }
-
 
     componentDidUpdate(prevProp): void {
         if (prevProp.gridViewList.length !== this.props.gridViewList.length && this.props.gridViewList.length > 0) {
@@ -111,12 +102,15 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
 
     getSelectedDataFromToolTip = (tooltip_item: any, item: any, parentIndex: number) => {
         if (tooltip_item.index == 2) {
-            this.setState({
-                visible: true,
-                selectedItem: item,
-            }, () => {
-                this.setVisible(parentIndex, false)
-            });
+            this.setState(
+                {
+                    visible: true,
+                    selectedItem: item,
+                },
+                () => {
+                    this.setVisible(parentIndex, false);
+                },
+            );
         }
     };
     getToolTip = (index, isVisibleIndicator, item) => {
@@ -128,7 +122,9 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                     insideToolTip={this.inside(index, item)}
                     closeToolTip={() => this.setVisible(index, false)}
                     position={(index + 1) % 2 == 0 ? 'left' : 'right'}
-                    onPressOfToolTipItem={(_tooltip_item) => this.getSelectedDataFromToolTip(_tooltip_item, item, index)}
+                    onPressOfToolTipItem={(_tooltip_item) =>
+                        this.getSelectedDataFromToolTip(_tooltip_item, item, index)
+                    }
                 />
             </>
         );
@@ -147,50 +143,26 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         );
     }
 
-
     toolTipOptionSeparator = () => {
         return <View style={style.toolTipOptionSeperator}></View>;
     };
 
-
     loadDocument = async (item: GridViewModel) => {
         this.setState({ loader: true });
-        const fileExt = getExtension(item.webUrl);
-        if (fileExt.toLowerCase() === 'url') {
-            downloadManager.getUrl(item).then((res) => {             
-                 NavigationManager.navigate('CustomWebView',{url:res,fileName:'URL',isPdf:false})
-                this.setState({ loader: false });
-            }).catch(() => {
+        downloadManager
+            .displayDocument(item)
+            .then((res) => {
                 this.setState({ loader: false });
             })
-        }
-        else if (fileExt.toLowerCase() === 'pdf') {
-            downloadManager.downloadFileAndShow(item).then((res) => {
-               NavigationManager.navigate('CustomWebView',{url:res,fileName:downloadManager.getFileName(res),isPdf:true})
+            .catch(() => {
                 this.setState({ loader: false });
-            }).catch(() => {
-                this.setState({ loader: false });
-            })
-        } else {
-            Linking.canOpenURL(item.webUrl).then((supported) => {
-                if (supported) {
-                    let fileName = item.name.split('.');
-                    NavigationManager.navigate('CustomWebView',{url:item.webUrl,fileName:downloadManager.getFileName(item.webUrl),isPdf:false})
-                   //Linking.openURL(item.webUrl)
-                    this.setState({ loader: false });
-                } else {
-                    console.log(item.webUrl);
-                    this.setState({ loader: false });
-                    console.log('error opening url');
-                }
             });
-        }
     };
 
     renderItem = ({ item, index }: any) => {
         const isVisibleIndicator = this.getVisibility(index);
         let fileName = item.name.split('.');
-        console.log('item', item);
+
         return (
             <View style={style.backgroundViewStyle}>
                 <TouchableOpacity onPress={() => this.loadDocument(item)}>
@@ -233,14 +205,12 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                 array.splice(_index, 1);
             }
         }
-        console.log(isCheck, array.length);
+
         this.setState({ selectedGroups: array });
-    }
+    };
 
     renderGroupItem = (item: any) => {
-        let isSelected = this.state.selectedGroups.findIndex(
-            (group_id) => group_id === item.id,
-        );
+        let isSelected = this.state.selectedGroups.findIndex((group_id) => group_id === item.id);
         return (
             <GroupItem
                 name={item.name}
@@ -249,7 +219,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                 onSelect={(id, isCheck) => this.onSlectedCheckbox(id, isCheck)}
             />
         );
-    }
+    };
 
     updateModal = async () => {
         let favorites;
@@ -274,45 +244,41 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                 });
             } else {
                 console.log();
-
             }
         });
-        dbHelper
-            .createFavouriteEntries(favorites, this.state.selectedItem.uniqueId)
-            .then(async () => {
-                let items = await dbHelper.getFavItems({
-                    name: this.props.groupName,
-                    id: this.props.groupId
-                })
-                this.props.setFavGroupItem(items);
-                this.setState({ visible: false });
+        dbHelper.createFavouriteEntries(favorites, this.state.selectedItem.uniqueId).then(async () => {
+            let items = await dbHelper.getFavItems({
+                name: this.props.groupName,
+                id: this.props.groupId,
             });
-    }
+            this.props.setFavGroupItem(items);
+            this.setState({ visible: false });
+        });
+    };
     getModal = () => {
         return (
             <CustomModal isVisible={this.state.visible} onPressClose={() => this.setState({ visible: false })}>
                 <View style={style.modalView}>
                     <View style={{}}>
-                    <Text style={style.modalTitle}>
-                        {BaseLocalization.addToFav}
-                    </Text>
-                    <Text style={style.modalSubTitle}>
-                       Please select a list.
-                    </Text>
+                        <Text style={style.modalTitle}>{BaseLocalization.addToFav}</Text>
+                        <Text style={style.modalSubTitle}>{BaseLocalization.checkSubTitle}</Text>
                     </View>
-                    <FlatList
-                        data={this.props.favGroup}
-                        renderItem={({ item }) => this.renderGroupItem(item)}
-                    />
-                   
-                    <View style={style.modalBottomRow}> 
-                        <TouchableOpacity onPress={() => {
+                    <FlatList data={this.props.favGroup} renderItem={({ item }) => this.renderGroupItem(item)} />
+
+                    <View style={style.modalBottomRow}>
+                        <TouchableOpacity
+                            onPress={() => {
                                 this.setState({ visible: false });
-                            }}>
-                        <View style={{marginRight:20}}><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>CANCEL</Text></View>
+                            }}
+                        >
+                            <View style={{ marginRight: 20 }}>
+                                <Text style={style.modalButton}>{BaseLocalization.cancel}</Text>
+                            </View>
                         </TouchableOpacity>
-                        <TouchableOpacity  onPress={() => this.updateModal()}>
-                        <View><Text style={{color:'#4389BC',fontSize:18,fontWeight:'bold'}}>SUBMIT</Text></View>
+                        <TouchableOpacity onPress={() => this.updateModal()}>
+                            <View>
+                                <Text style={style.modalButton}>{BaseLocalization.submit}</Text>
+                            </View>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -333,17 +299,14 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                             numColumns={2}
                             columnWrapperStyle={{}}
                             keyExtractor={(item, index) => index.toString()}
-
                         />
-                        {this.getModal()}         
+                        {this.getModal()}
                     </View>
                 ) : (
-
                     <View style={style.emptyIconStyle}>
                         <Image style={style.emptyImageStyle} source={Images.emptyImg} />
                         <Text style={style.emptyDataText}>{BaseLocalization.noDataText}</Text>
                     </View>
-
                 )}
             </>
         );
@@ -356,13 +319,11 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-
     setFavGroup: (favGroup: any) => {
-        dispatch(setFavGroupData(favGroup))
+        dispatch(setFavGroupData(favGroup));
     },
     setFavGroupItem: (favGroupItem: any) => {
         dispatch(setFavGroupItemData(favGroupItem));
     },
-
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FavouritThumbnailGridView);
