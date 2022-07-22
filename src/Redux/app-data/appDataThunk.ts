@@ -10,6 +10,7 @@ import { createDriveModelData, createListModelData } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
+import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
 import { setMainCategoryList } from '../category/categorySlice';
 import { dispatchState } from '../store';
 import { setIsAlertShown } from './appDataSlice';
@@ -23,9 +24,16 @@ import { setIsAlertShown } from './appDataSlice';
 //to fetch last modified date
 export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModifiedDate', async () => {
     LogManager.debug('fetchLastModifiedDate call started');
-
     const response = await apiManager.callApiToGetData(API_NAMES.GRAPH_LAST_MODIFIED_DATE, HTTP_METHODS.GET);
-    LogManager.info('response=', response);
+    if(response && response.value){
+        let group:LastModifyDateModel = {
+            id: response.value[0].id,
+            lastModifyDate: response.value[0].lastModifiedDateTime,
+            createdDateTime:  response.value[0].createdDateTime,
+        };
+        dbHelper.createLastDateModify(LastModifyDateModel.generate(group))
+    }
+    LogManager.info('response= &&&', response.value[0]);
     LogManager.debug('fetchLastModifiedDate call ended');
 
     return response;
@@ -70,8 +78,9 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
      * For first time login navigating to home screen
      */
     if (isFromLogin) {
-        replaceAndNavigate(SCREEN_NAME.HomeScreen);
+        replaceAndNavigate(SCREEN_NAME.HomeScreen); 
     }
+    dispatchState(fetchLastModifiedDate())
     return mainCategoryData;
 });
 

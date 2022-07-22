@@ -1,3 +1,5 @@
+import { string } from "prop-types";
+
 export const DriveItemSchema = {
     name: 'DriveItem',
     primaryKey: 'uniqueId',
@@ -69,5 +71,15 @@ export const FavoriteGroupSchema = {
     properties: {
         id: 'string',
         name: 'string',
+    },
+};
+
+export const LastModifyDateSchema = {
+    name: 'LastModifyDate',
+    primaryKey: 'id',
+    properties: {
+        id: 'string',
+        lastModifyDate:'string',
+        createdDateTime:'string'
     },
 };

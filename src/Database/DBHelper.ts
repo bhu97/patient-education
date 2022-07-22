@@ -4,10 +4,11 @@ import LogManager from '../Helper/LogManager';
 import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
 import { FavoriteGroupModel } from '../Model/FavouriteGroupModel';
 import { FavoriteModel } from '../Model/FavouriteModel';
+import { LastModifyDateModel } from '../Model/LastModifyDateModel';
 import { MoreInfoListModel } from '../Model/MoreInfoListModel';
 import { IUserModel, UserModel } from '../Model/UserModel';
 import { DatabaseManager } from './DatabaseManager';
-import { DriveItemSchema, FavoriteGroupSchema, FavoriteSchema, UserSchema } from './Schema';
+import { DriveItemSchema, FavoriteGroupSchema, FavoriteSchema, LastModifyDateSchema, UserSchema } from './Schema';
 
 export class DBhelper {
     /**
@@ -266,6 +267,18 @@ export class DBhelper {
         let item = await DatabaseManager.getInstance().getEntity(DriveItemSchema.name, uniqueId);
         return item;
     }
+
+    async createLastDateModify(data: LastModifyDateModel) {
+        await DatabaseManager.getInstance().createEntity(LastModifyDateSchema.name, data);
+    }
+
+    async getLastDateModify(): Promise<LastModifyDateModel[]> {
+        //get all matching drive items
+        let itemData = DatabaseManager.getInstance().getEntities(LastModifyDateSchema.name, ``);
+        LogManager.debug('LastModifyDateSchema=======', itemData);
+        return itemData;
+    }
+
 }
 
 const dbHelper = new DBhelper();

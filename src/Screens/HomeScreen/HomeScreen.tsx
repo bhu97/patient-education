@@ -14,7 +14,7 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
-import { fetchAllDriveItems } from '../../Redux/app-data/appDataThunk';
+import { fetchAllDriveItems, fetchLastModifiedDate } from '../../Redux/app-data/appDataThunk';
 import { setMainCategoryList, setSelectedCategoryData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
@@ -29,6 +29,7 @@ interface HomePageProps {
     setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
     //all selected selectedCategoryData
     selectedCategoryData: any[];
+    fetchLastModifyDate:()=>void;
 }
 
 interface HomePageState {}
@@ -44,6 +45,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
             this.initializeApp();
         });
+        
     }
 
     componentWillUnmount() {
@@ -58,6 +60,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         const mainCategoryData = await dbHelper.getRootItemsForCountry(userData);
         LogManager.debug('mainCategoryData=', mainCategoryData);
         this.props.setMainList(mainCategoryData);
+        this.props.fetchLastModifyDate();
     }
 
     onClick = (item) => {
@@ -138,6 +141,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setSelectedCategoryData: (selectedItems: DriveItemModel[]) => {
         dispatch(setSelectedCategoryData(selectedItems));
+    },
+    fetchLastModifyDate: () => {
+        dispatch(fetchLastModifiedDate());
     },
 });
 
