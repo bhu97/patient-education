@@ -40,6 +40,9 @@ export interface CategoryState {
 
     //Setting Page
     isUpdateNowEnable:boolean
+
+    //country slected
+    isCountrySelected:boolean
 }
 
 // to set initial value for all variable
@@ -63,7 +66,8 @@ const initialState: CategoryState = {
     isRefreshDetailScreen: false,
     favGroupData: [],
     favGroupItemData: [],
-    isUpdateNowEnable:false
+    isUpdateNowEnable:false,
+    isCountrySelected:false
 
 };
 
@@ -126,7 +130,11 @@ const categorySlice = createSlice({
         },
         setIsUpdateNowEnable: (state, action: PayloadAction<boolean>)=> {
             state.isUpdateNowEnable = action.payload;
+        },
+        setIsCountrySelected: (state, action: PayloadAction<boolean>)=> {
+            state.isCountrySelected = action.payload;
         }
+        
 
     },
 });
@@ -146,7 +154,8 @@ export const {
     setRefreshDetailScreen,
     setFavGroupData,
     setFavGroupItemData,
-    setIsUpdateNowEnable
+    setIsUpdateNowEnable,
+    setIsCountrySelected
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

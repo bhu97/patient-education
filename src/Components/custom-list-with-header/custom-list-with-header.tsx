@@ -3,7 +3,7 @@ import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import dbHelper from '../../Database/DBHelper';
 import { UserModel } from '../../Model/UserModel';
-import { setUserModelData } from '../../Redux/category/categorySlice';
+import { setIsCountrySelected, setUserModelData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import CustomIcon from '../custom-icon/custom-icon';
 import CustomToolTip from '../custom-tool-tip/custom-tool-tip';
@@ -18,7 +18,8 @@ interface CustomListWithHeaderProps {
     userData: UserModel[];
     setUserModelData: (data: UserModel[]) => void;
     onPressItem:()=>void;
-    isToolTipEnable?:boolean
+    isToolTipEnable?:boolean;
+    setIsCountrySelected: (boolean) => void;
 }
 interface CustomListWithHeaderState {
     visible: boolean;
@@ -49,6 +50,7 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
         dbHelper.createUser(item);
         this.props.setUserModelData(item);
         this.setState({ selectedCountry: item.countryTitle, visible: false });
+        this.props.setIsCountrySelected(true);
     };
  
     onPressItem=()=>{
@@ -108,6 +110,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     setUserModelData: (value: UserModel[]) => {
         dispatch(setUserModelData(value));
     },
+    setIsCountrySelected: (value : boolean) => {
+        dispatch(setIsCountrySelected(value))
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomListWithHeader);

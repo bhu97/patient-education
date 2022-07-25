@@ -1,5 +1,6 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import React, { PureComponent } from 'react';
+import { SUPPORT_EMAIL } from '../../Constant/Constants';
 import { Text, View, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
@@ -115,7 +116,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     };
 
     sendMail = () => {
-        Linking.openURL('mailto:support@example.com');
+        Linking.openURL(`mailto:${SUPPORT_EMAIL}`);
     };
 
     render() {

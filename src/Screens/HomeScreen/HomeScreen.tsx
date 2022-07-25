@@ -15,7 +15,7 @@ import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { fetchAllDriveItems, fetchLastModifiedDate } from '../../Redux/app-data/appDataThunk';
-import { setMainCategoryList, setSelectedCategoryData } from '../../Redux/category/categorySlice';
+import { setIsCountrySelected, setMainCategoryList, setSelectedCategoryData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
@@ -29,6 +29,8 @@ interface HomePageProps {
     //all selected selectedCategoryData
     selectedCategoryData: any[];
     fetchLastModifyDate:()=>void;
+    isCountrySelected: boolean;
+    setIsCountrySelected: (boolean) => void;
 }
 
 interface HomePageState {}
@@ -61,7 +63,12 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         this.props.setMainList(mainCategoryData);
         this.props.fetchLastModifyDate();
     }
-
+    componentDidUpdate(prevProp): void {
+        if (prevProp.isCountrySelected !== this.props.isCountrySelected) {
+            NavigationManager.navigateAndClear('HomeScreen');
+            this.props.setIsCountrySelected(false);
+        }
+    }
     onClick = (item) => {
         LogManager.warn('home screen click=', item);
         let test: any = {
@@ -129,6 +136,7 @@ const mapStateToProps = (state: RootState) => ({
     mainList: state.categoryReducer.mainList,
     appDataLoading: state.appDataReducer.appDataLoading,
     selectedCategoryData: state.categoryReducer.selectedCategoryData,
+    isCountrySelected: state.categoryReducer.isCountrySelected
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -141,6 +149,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     fetchLastModifyDate: () => {
         dispatch(fetchLastModifiedDate());
     },
+    setIsCountrySelected: (value : boolean) => {
+        dispatch(setIsCountrySelected(value))
+    }
 });
 
 //export default HomePage;
