@@ -20,7 +20,7 @@ export class DBhelper {
             DriveItemSchema.name,
             `parentReferenceId == '${API_NAMES.ROOT_ID}'`,
         );
-       // LogManager.debug('countryData=', countryData);
+        // LogManager.debug('countryData=', countryData);
 
         let userCountryModelData: any = [];
         for (let countryObject of countryData) {
@@ -33,20 +33,10 @@ export class DBhelper {
                 return UserModel.generate(userCountryModelObject);
             }
         });
-       // LogManager.debug('userModelData=', userModelData);
+        // LogManager.debug('userModelData=', userModelData);
 
         userModelData.sort((a, b) => a.countryName.localeCompare(b.countryName));
 
-        // const driveItemsNoMaster = countryData?.filter(
-        //     (driveItem) => driveItem.name! !== DatabaseManager.getInstance().kMasterFolderName,
-        // );
-        // LogManager.debug('driveItemsNoMaster=', driveItemsNoMaster);
-
-        // if (driveItemsNoMaster) {
-        //     return driveItemsNoMaster
-        //         ?.flatMap((driveItem) => driveItem.name!)
-        //         .sort((name1, name2) => name1.localeCompare(name2));
-        // }
         return userModelData;
     }
 
@@ -59,8 +49,6 @@ export class DBhelper {
         return user[0];
     }
 
-
-
     /**
      * cretae user into DB with country code
      * @param userDetails
@@ -69,8 +57,8 @@ export class DBhelper {
         await DatabaseManager.getInstance().createEntity(UserSchema.name, userDetails);
     }
 
-     removeUser(userDetails: IUserModel) {
-       DatabaseManager.getInstance().removeRealmObject(UserSchema.name, userDetails);
+    removeUser(userDetails: IUserModel) {
+        DatabaseManager.getInstance().removeRealmObject(UserSchema.name, userDetails);
     }
 
     /**
@@ -80,13 +68,13 @@ export class DBhelper {
      */
     async createUserIfEmpty(): Promise<UserModel> {
         const userCountry = await this.getUser();
-        LogManager.info('userCountry=', userCountry);
+        //LogManager.info('userCountry=', userCountry);
 
         const countries: any = await this.getAllAvailableCountries();
-        LogManager.info('countries=', countries);
+        //LogManager.info('countries=', countries);
 
         var defaultUserCountry = countries.find((item) => item.countryName.toLocaleLowerCase() === 'master');
-        LogManager.info('defaultUserCountry=', defaultUserCountry);
+        //LogManager.info('defaultUserCountry=', defaultUserCountry);
 
         if (!userCountry) {
             // first time so create user
@@ -114,7 +102,7 @@ export class DBhelper {
             DriveItemSchema.name,
             `webUrl == '${userCountryModel.webUrl}'`,
         );
-      //  LogManager.debug('rootItems=', rootItems);
+        //  LogManager.debug('rootItems=', rootItems);
 
         if (rootItems.length > 0) {
             //map 0 index to drive item model
@@ -125,12 +113,17 @@ export class DBhelper {
                 DriveItemSchema.name,
                 `parentReferenceId == '${rootItem.uniqueId}'`,
             );
-            LogManager.debug('rootItemData original=', rootItemData);
+            //LogManager.debug('rootItemData original=', rootItemData);
 
             //Apply all filter on drive item data
             rootItemData = applyDriveItemFilter(rootItemData);
 
-            LogManager.debug('rootItemData final=', rootItemData);
+            //sort by name
+            rootItemData.sort(function (a, b) {
+                return a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
+            });
+
+            //LogManager.debug('rootItemData final=', rootItemData);
 
             return rootItemData;
         } else {
@@ -147,14 +140,19 @@ export class DBhelper {
             DriveItemSchema.name,
             `parentReferenceId == '${selectedItem.uniqueId}'`,
         );
-        LogManager.debug('getForSelectedCategory itemData original=', itemData);
+        //LogManager.debug('getForSelectedCategory itemData original=', itemData);
 
-        LogManager.debug('rootItemData original=', itemData);
+        //LogManager.debug('rootItemData original=', itemData);
 
         //Apply all filter on drive item data
         itemData = applyDriveItemFilter(itemData);
 
-        LogManager.debug('rootItemData final=', itemData);
+        //sort by name
+        itemData.sort(function (a, b) {
+            return a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
+        });
+
+        //LogManager.debug('rootItemData final=', itemData);
 
         return itemData;
     }
@@ -189,22 +187,22 @@ export class DBhelper {
                 DriveItemSchema.name,
                 'name= ' + `'${itemName}'` + ' && country ==' + `'${countryCode}'`,
             );
-            LogManager.info('items=', items);
+            //LogManager.info('items=', items);
 
             if (items.length > 0) itemsForWeb.push(items[0]);
         }
 
-        LogManager.info('itemsForWeb=', itemsForWeb);
+        //LogManager.info('itemsForWeb=', itemsForWeb);
         let moreInfoData: any = [];
         if (itemsForWeb.length > 0) {
             for (let itemForWeb of itemsForWeb) {
-                LogManager.info('itemForWeb=', itemForWeb);
+                //      LogManager.info('itemForWeb=', itemForWeb);
                 let itemData = DatabaseManager.getInstance().getEntities(
                     DriveItemSchema.name,
                     `uniqueId == '${itemForWeb.uniqueId}'`,
                 );
 
-                LogManager.debug('itemData original=', itemData[0]);
+                //LogManager.debug('itemData original=', itemData[0]);
 
                 let moreInfoObj = {
                     uniqueId: itemData[0].uniqueId,
@@ -226,7 +224,7 @@ export class DBhelper {
     async getFavGroups(): Promise<FavoriteGroupModel[]> {
         //get all matching drive items
         let itemData = DatabaseManager.getInstance().getEntities(FavoriteGroupSchema.name, ``);
-        LogManager.debug('getFavGroups=======', itemData);
+        //LogManager.debug('getFavGroups=======', itemData);
         return itemData;
     }
 
@@ -257,14 +255,13 @@ export class DBhelper {
             FavoriteSchema.name,
             `favoriteGroupName == '${group.id}'`,
         );
-        LogManager.debug('get Fav items=', items);
-        let detailItems;
-        detailItems = [];
+        //LogManager.debug('get Fav items=', items);
+
         return items;
     }
     async getFavItemsByUniqueId(uniqueId: string): Promise<FavoriteModel[]> {
         let items = await DatabaseManager.getInstance().getEntities(FavoriteSchema.name, `uniqueId == '${uniqueId}'`);
-        LogManager.debug('get items by unique ID=', items);
+        //LogManager.debug('get items by unique ID=', items);
         return items;
     }
 
@@ -280,10 +277,9 @@ export class DBhelper {
     async getLastDateModify(): Promise<LastModifyDateModel[]> {
         //get all matching drive items
         let itemData = DatabaseManager.getInstance().getEntities(LastModifyDateSchema.name, ``);
-       // LogManager.debug('LastModifyDateSchema=======', itemData);
+        // LogManager.debug('LastModifyDateSchema=======', itemData);
         return itemData;
     }
-
 }
 
 const dbHelper = new DBhelper();
