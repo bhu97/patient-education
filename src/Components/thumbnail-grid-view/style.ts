@@ -33,8 +33,7 @@ export const style = StyleSheet.create({
     emptyImageStyle: {
         resizeMode: 'contain',
         height: 200,
-        width: 'auto',
-        opacity: 1,
+        width: 200,
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
@@ -53,7 +52,9 @@ export const style = StyleSheet.create({
         width: 20,
     },
     emptyIconStyle: {
-        top: 50,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     itemContainer: {
         flexDirection: 'row',
@@ -127,7 +128,6 @@ export const style = StyleSheet.create({
         fontSize: 22,
         fontWeight: '500',
         padding: 10,
-        marginLeft: 150,
         color: BaseThemeStyle.colors.textColor,
     },
     centeredView: {

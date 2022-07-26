@@ -109,6 +109,8 @@ export const API_NAMES = {
         'https://login.microsoftonline.com/c98df534-5e36-459a-ac3f-8c2e449863bd',
         'https://login.microsoftonline.com/organizations',
     ],
+
+    COUNTRY_SUPPORT_EMAIL:'https://fresenius.sharepoint.com/teams/FMETS0447212/Lists/Support%20Emails/AllItems.aspx'
 };
 
 export const SCREEN_NAME = {
