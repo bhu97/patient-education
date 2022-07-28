@@ -20,12 +20,12 @@ interface ThumbnailGridViewProps {
     favGroup: any;
     onFavGroupChange?: Function;
     navigation: any;
+    toolTipList: Array<any>;
 }
 interface ThumbnailGridViewState {
     isVisibleObject: any;
     update: any;
     loader: boolean;
-    toolTipList: Array<any>;
     visible: boolean;
     check: boolean;
     groups: Array<any>;
@@ -41,12 +41,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
         this.state = {
             isVisibleObject: {},
             update: false,
-            loader: false,
-            toolTipList: [
-                { index: 0, title: 'Download' },
-                { index: 1, title: 'Remove Locally' },
-                { index: 2, title: 'Add/Remove Favourite' },
-            ],
+            loader: false,      
             visible: false,
             check: false,
             groups: [],
@@ -118,7 +113,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
             <>
                 <CustomToolTip
                     isVisible={isVisibleIndicator}
-                    model={this.state.toolTipList}
+                    model={this.props.toolTipList}
                     position="right"
                     insideToolTip={this.inside(index, item)}
                     closeToolTip={() => this.setVisible(index, false)}
@@ -347,6 +342,7 @@ const GroupItem = (props) => {
 
 const mapStateToProps = (state: RootState) => ({
     favGroup: state.categoryReducer.favGroupData,
+    toolTipList: state.categoryReducer.toolTipList
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
