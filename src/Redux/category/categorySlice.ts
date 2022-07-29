@@ -45,6 +45,11 @@ export interface CategoryState {
     isCountrySelected:boolean,
 
     isFetchAllThumbnailLoaded:boolean
+
+
+    //tooltip list
+    toolTipList: Array<any>;
+
 }
 
 // to set initial value for all variable
@@ -70,7 +75,12 @@ const initialState: CategoryState = {
     favGroupItemData: [],
     isUpdateNowEnable:false,
     isCountrySelected:false,
-    isFetchAllThumbnailLoaded:false
+    isFetchAllThumbnailLoaded:false,
+    toolTipList: [
+        { index: 0, title: 'Download' },
+        { index: 1, title: 'Remove Locally' },
+        { index: 2, title: 'Add/Remove Favourite' }
+    ]
 
 };
 

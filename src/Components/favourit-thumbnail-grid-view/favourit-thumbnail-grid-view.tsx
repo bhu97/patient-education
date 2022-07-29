@@ -22,16 +22,15 @@ interface FavouritThumbnailGridViewProps {
     setFavGroupItem: (itemArray: any[]) => void;
     groupName: string;
     groupId: string;
+    toolTipList: Array<any>;
 }
 interface FavouritThumbnailGridViewState {
     isVisibleObject: any;
     loader: boolean;
-    toolTipList: Array<any>;
     visible: boolean;
     groups: Array<any>;
     selectedGroups: Array<string>;
     selectedItem: any;
-    webviewUrl: string;
 }
 
 class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewProps, FavouritThumbnailGridViewState> {
@@ -40,16 +39,10 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         this.state = {
             isVisibleObject: {},
             loader: false,
-            toolTipList: [
-                { index: 0, title: 'Download' },
-                { index: 1, title: 'Remove Locally' },
-                { index: 2, title: 'Add/Remove Favourite' },
-            ],
             visible: false,
             groups: [],
             selectedGroups: [],
             selectedItem: null,
-            webviewUrl: '',
         };
     }
 
@@ -118,7 +111,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
             <>
                 <CustomToolTip
                     isVisible={isVisibleIndicator}
-                    model={this.state.toolTipList}
+                    model={this.props.toolTipList}
                     insideToolTip={this.inside(index, item)}
                     closeToolTip={() => this.setVisible(index, false)}
                     position={(index + 1) % 2 == 0 ? 'left' : 'right'}
@@ -316,6 +309,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
 const mapStateToProps = (state: RootState) => ({
     favGroup: state.categoryReducer.favGroupData,
     gridViewList: state.categoryReducer.favGroupItemData,
+    toolTipList: state.categoryReducer.toolTipList,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
