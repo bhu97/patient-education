@@ -107,6 +107,11 @@ class DownloadManager {
             RNFS.downloadFile(options).promise.then((res: any) => {
                 console.log('SUCCESS');
                 resolve(fileDownloadPath)
+                // NavigationManager.navigate('CustomWebView', {
+                //     url: fileDownloadPath,
+                //     fileName:'PDF',
+                //     isPdf: true,
+                // });
             }).catch((err) => {
                 console.log('ERROR', err);
                 reject(err)

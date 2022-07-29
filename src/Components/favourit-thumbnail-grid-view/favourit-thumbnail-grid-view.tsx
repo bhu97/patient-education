@@ -104,6 +104,13 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                     this.setVisible(parentIndex, false);
                 },
             );
+        }else if(tooltip_item.index == 0){
+            downloadManager.downloadFile('http://www.africau.edu/images/default/sample.pdf').then((res)=>{
+
+            }).catch((err)=>{
+
+            })
+
         }
     };
     getToolTip = (index, isVisibleIndicator, item) => {
