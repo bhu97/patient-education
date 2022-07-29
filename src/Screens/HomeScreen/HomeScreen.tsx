@@ -10,12 +10,13 @@ import FullScreenLoader from '../../Components/full-screen-loader/full-screen-lo
 import MainContainer from '../../Components/main-container/main-container';
 import { SCREEN_NAME } from '../../Constant/Constants';
 import dbHelper from '../../Database/DBHelper';
+import downloadManager from '../../Download/DownloadManager';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { fetchAllDriveItems, fetchLastModifiedDate } from '../../Redux/app-data/appDataThunk';
-import { setIsCountrySelected, setMainCategoryList, setSelectedCategoryData } from '../../Redux/category/categorySlice';
+import { setIsCountrySelected, setIsFetchThumbnailLoaded, setMainCategoryList, setSelectedCategoryData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
@@ -31,6 +32,7 @@ interface HomePageProps {
     fetchLastModifyDate:()=>void;
     isCountrySelected: boolean;
     setIsCountrySelected: (boolean) => void;
+    setIsThumbnailLoaded:(isLoaded:boolean)=>void;
 }
 
 interface HomePageState {}
@@ -62,6 +64,12 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         LogManager.debug('mainCategoryData=', mainCategoryData);
         this.props.setMainList(mainCategoryData);
         this.props.fetchLastModifyDate();
+        downloadManager.downloadFile('https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4').then((res)=>{
+            console.log("res ^^^^",res);
+            
+        }).catch((err)=>{
+            console.log("err ^^^^",err);
+        })
     }
     componentDidUpdate(prevProp): void {
         if (prevProp.isCountrySelected !== this.props.isCountrySelected) {
@@ -81,6 +89,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         this.props.setSelectedCategoryData(data);
 
         if (item.contentType == 'Document Set') {
+            this.props.setIsThumbnailLoaded(false)
             NavigationManager.navigate(SCREEN_NAME.CategoryDetailScreen);
         } else {
             NavigationManager.navigate(SCREEN_NAME.CategoryScreen);
@@ -151,7 +160,10 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setIsCountrySelected: (value : boolean) => {
         dispatch(setIsCountrySelected(value))
-    }
+    },
+    setIsThumbnailLoaded: (isLoaded: boolean) => {
+        dispatch(setIsFetchThumbnailLoaded(isLoaded));
+    },
 });
 
 //export default HomePage;

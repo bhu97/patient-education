@@ -12,7 +12,7 @@ import NavigationManager from '../../Helper/NavigationManager';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
 import { UserModel } from '../../Model/UserModel';
-import { setIsUpdateNowEnable, setMainCategoryList } from '../category/categorySlice';
+import { setIsFetchThumbnailLoaded, setIsUpdateNowEnable, setMainCategoryList } from '../category/categorySlice';
 import { dispatchState } from '../store';
 import { setAppDataLoading, setIsAlertShown } from './appDataSlice';
 
@@ -150,7 +150,7 @@ export const fetchAllThumbnails = async (uniqueId: string): Promise<any[]> => {
         {},
     );
     LogManager.debug('response=', response);
-
+    dispatchState(setIsFetchThumbnailLoaded(true))
     LogManager.info('fetchAllThumbnails call ended');
     return (response && response['value']) ?? [];
 };

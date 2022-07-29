@@ -42,7 +42,9 @@ export interface CategoryState {
     isUpdateNowEnable:boolean
 
     //country slected
-    isCountrySelected:boolean
+    isCountrySelected:boolean,
+
+    isFetchAllThumbnailLoaded:boolean
 }
 
 // to set initial value for all variable
@@ -67,7 +69,8 @@ const initialState: CategoryState = {
     favGroupData: [],
     favGroupItemData: [],
     isUpdateNowEnable:false,
-    isCountrySelected:false
+    isCountrySelected:false,
+    isFetchAllThumbnailLoaded:false
 
 };
 
@@ -133,6 +136,9 @@ const categorySlice = createSlice({
         },
         setIsCountrySelected: (state, action: PayloadAction<boolean>)=> {
             state.isCountrySelected = action.payload;
+        },
+        setIsFetchThumbnailLoaded: (state, action: PayloadAction<boolean>)=> {
+            state.isFetchAllThumbnailLoaded = action.payload;
         }
         
 
@@ -155,7 +161,8 @@ export const {
     setFavGroupData,
     setFavGroupItemData,
     setIsUpdateNowEnable,
-    setIsCountrySelected
+    setIsCountrySelected,
+    setIsFetchThumbnailLoaded
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

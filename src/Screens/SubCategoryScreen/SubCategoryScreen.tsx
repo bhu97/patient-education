@@ -16,7 +16,7 @@ import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { setSelectedCategoryData, setSubCategoryList } from '../../Redux/category/categorySlice';
+import { setIsFetchThumbnailLoaded, setSelectedCategoryData, setSubCategoryList } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
@@ -36,6 +36,7 @@ interface SubCategoryScreenProps {
     //all selected selectedCategoryData
     selectedCategoryData: any[];
     setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
+    setIsThumbnailLoaded:(isLoaded:boolean)=>void;
 }
 
 interface SubCategoryScreenState {
@@ -100,7 +101,7 @@ class SubCategoryScreen extends Component<SubCategoryScreenProps, SubCategoryScr
         data.push(test);
 
         this.props.setSelectedCategoryData(data);
-
+        this.props.setIsThumbnailLoaded(false)
         NavigationManager.navigate(SCREEN_NAME.CategoryDetailScreen);
     };
 
@@ -214,6 +215,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setSelectedCategoryData: (selectedItems: DriveItemModel[]) => {
         dispatch(setSelectedCategoryData(selectedItems));
+    },
+    setIsThumbnailLoaded: (isLoaded: boolean) => {
+        dispatch(setIsFetchThumbnailLoaded(isLoaded));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SubCategoryScreen);

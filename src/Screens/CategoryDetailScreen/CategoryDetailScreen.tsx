@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { connect } from 'react-redux';
 import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
@@ -13,6 +13,7 @@ import dbHelper from '../../Database/DBHelper';
 import { createBredCrumbList, createGridModelData, linkedUrlListToArray } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
+import networkManager from '../../Helper/NetworkManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { GridViewModel } from '../../Model/GridViewModel';
@@ -29,6 +30,7 @@ import {
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
+import NetInfo from "@react-native-community/netinfo";
 
 interface CategoryDetailScreenProps {
     gridViewData: GridViewModel[];
@@ -46,6 +48,7 @@ interface CategoryDetailScreenProps {
     setSelectedCategoryData: (selectedItem: DriveItemModel[]) => void;
     isRefreshDetailScreen: boolean;
     setRefreshDetailScreen: (isRefresh: boolean) => void;
+    isFetchAllThumbnailLoaded: boolean
 }
 
 interface CategoryDetailScreenState {
@@ -55,26 +58,46 @@ interface CategoryDetailScreenState {
 
 class CategoryDetailScreen extends Component<CategoryDetailScreenProps, CategoryDetailScreenState> {
     _unsubscribe: any;
+    _unsubscribeNetworkCheck: any;
     constructor(props: CategoryDetailScreenProps) {
         super(props);
         this.state = {
             breadCrumbList: [],
             pageTitle: '',
         };
+
     }
 
     componentDidMount() {
-        this._unsubscribe = this.props.navigation.addListener('focus', () => {
-            this.getCategoryDetailData();
-        });
+        // this._unsubscribe = this.props.navigation.addListener('focus', async () => {
+        //     let isConnected = await networkManager.isConnected();    
+        //     this.getCategoryDetailData(isConnected);
+        // });
+        this._unsubscribeNetworkCheck = NetInfo.addEventListener(state => {
+            console.log("%%%%%%%%%%%%91 state.isConnected",state.isConnected);
+            if (state.isConnected) {
+                if(!this.props.isFetchAllThumbnailLoaded){
+                    this.getCategoryDetailData(true)
+                }
+            }else{
+                this.getCategoryDetailData(false)
+            }
+
+        })
     }
+
+
+
     componentWillUnmount() {
-        this._unsubscribe();
+      // this._unsubscribe();
+        this._unsubscribeNetworkCheck()
     }
 
-    async getCategoryDetailData() {
-        this.props.setIsLoading(true);
 
+
+    async getCategoryDetailData(isConnected: boolean) {
+        
+         this.props.setIsLoading(isConnected);
         const selectedCategoryData = this.props.selectedCategoryData;
 
         const categoryDetailDataItem: any = selectedCategoryData[selectedCategoryData.length - 1];
@@ -83,15 +106,18 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         let pageTitle = item.title;
         let linkedFolder = item.linkedFolders ? item.linkedFolders : '';
         let linkedFiles = item.linkedFiles ? item.linkedFiles : '';
-
         const categoryDetailData = await dbHelper.getForSelectedCategory(item);
-        LogManager.info('categoryDetailData=', categoryDetailData);
-
-        const thumbnailList = await fetchAllThumbnails(item.uniqueId);
-        LogManager.info('responses list Item=', thumbnailList);
-
+       // LogManager.info('categoryDetailData=', categoryDetailData);
+        
+        let thumbnailList: any[] = [];
+        if (isConnected) {
+            thumbnailList = await fetchAllThumbnails(item.uniqueId);
+        } else {
+            thumbnailList = []
+        }
+     //   LogManager.info('responses list Item=', thumbnailList);
         const gridData = await createGridModelData(categoryDetailData, thumbnailList);
-        LogManager.info('gridData=', gridData);
+       // LogManager.info('gridData=', gridData);
 
         this.props.setGridViewList(gridData);
 
@@ -100,7 +126,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
 
         if (linkedFolder != null && linkedFolder != '') {
             const linkedFolderData = linkedUrlListToArray(linkedFolder);
-            LogManager.debug('linkedFolderData=', linkedFolderData);
+           // LogManager.debug('linkedFolderData=', linkedFolderData);
 
             const moreInfo = await dbHelper.getItemsForContentPageWebUrls(linkedFolderData, true);
             LogManager.debug('moreInfo folder=', moreInfo);
