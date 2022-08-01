@@ -42,5 +42,6 @@
     "submit":"EINREICHEN",
     "checkSubTitle":"Bitte wählen Sie eine Liste aus.",
     "logout": "Ausloggen",
-    "logoutNow": "jetzt abmelden"
+    "logoutNow": "jetzt abmelden",
+    "downloadFolder": "Download Ordner"
 }

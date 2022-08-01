@@ -58,7 +58,7 @@ export const style = StyleSheet.create({
     },
     itemContainer: {
         flexDirection: 'row',
-        height: 'auto',
+        height: 55,
         backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
         paddingTop: 5,
         paddingBottom: 5,
@@ -69,11 +69,14 @@ export const style = StyleSheet.create({
         marginHorizontal: BaseThemeStyle.margin.formElements,
         flex: 0.6,
     },
+    downloadedListStyle: {
+        backgroundColor:BaseThemeStyle.colors.blue,height:55,width:5
+    },
     textStyle: {
         ...BaseThemeStyle.fonts.listTitle,
         color: BaseThemeStyle.colors.titleColor,
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 16,
     },
     iconContainer: {
         flex: 0.3,

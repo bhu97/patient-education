@@ -42,5 +42,6 @@
     "submit":"SUBMIT",
     "checkSubTitle":"Please select a list.",
     "logout": "Logout",
-    "logoutNow": "Logout Now"
+    "logoutNow": "Logout Now",
+    "downloadFolder": "download Folder"
 }

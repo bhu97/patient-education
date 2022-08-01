@@ -2,6 +2,7 @@ import { Linking, Platform } from 'react-native';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
 import { API_NAMES, HTTP_METHODS } from '../Constant/Constants';
+import dbHelper from '../Database/DBHelper';
 import apiManager from '../Helper/ApiManager';
 import deviceManager from '../Helper/DeviceManager';
 import { getExtension } from '../Helper/Helper';
@@ -9,119 +10,66 @@ import NavigationManager from '../Helper/NavigationManager';
 import permissions from '../Helper/Permission';
 
 class DownloadManager {
-    // downloadFile(downloadUrl: string) {
-    //     console.log('downloadUrl=', downloadUrl);
+   
+    updateCurrentDriveItem = async (item: any, filePath: string ) => {
 
-    //     let dirs = RNFetchBlob.fs.dirs;
-    //     console.log('dirs=', dirs);
+        let localItem = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
+        localItem.downloadLocation = filePath;
+        await dbHelper.createDriveItemEnteriesById(localItem, item.uniqueId);
 
-    //     const {
-    //         dirs: { DownloadDir, DocumentDir, CacheDir, PictureDir, MusicDir },
-    //     } = RNFetchBlob.fs;
+    }
 
-    //     const fileName = downloadUrl.split('/').pop();
-    //     console.log('fileName=', fileName);
-
-    //     const fileExt = fileName.split('.').pop();
-    //     console.log('fileExt=', fileExt);
-
-    //     var mimeType = '';
-
-    //     var downloadFilePath = DownloadDir;
-
-    //     if (fileExt === 'png' || fileExt === 'jpg' || fileExt === 'jpeg') {
-    //         mimeType = 'image/*';
-    //         downloadFilePath = PictureDir;
-    //     } else if (fileExt === 'pdf') {
-    //         mimeType = 'application/pdf';
-    //         downloadFilePath = DownloadDir;
-    //     } else if (fileExt === 'avi' || fileExt === 'mp4' || fileExt === 'mov') {
-    //         mimeType = 'video/*';
-    //         downloadFilePath = MusicDir;
-    //     }
-    //     console.log('mimeType=', mimeType);
-    //     console.log('downloadFilePat=', downloadFilePath);
-
-    //     let fileDownloadPath = Platform.OS === 'ios' ? dirs.DocumentDir : downloadFilePath + '/test/' + fileName;
-    //     console.log('fileDownloadPath=', fileDownloadPath);
-
-    //     RNFetchBlob.config({
-    //         // response data will be saved to this path if it has access right.
-    //         path: fileDownloadPath,
-    //         //background: true,
-    //         //cacheable:false,
-    //         timeout: 1000 * 60 * 15, //15 minutes
-    //         addAndroidDownloads: {
-    //             path: fileDownloadPath,
-    //             useDownloadManager: true, // <-- this is the only thing required
-    //             // Optional, override notification setting (default to true)
-    //             // notification: false,
-    //             // Optional, but recommended since android DownloadManager will fail when
-    //             // the url does not contains a file extension, by default the mime type will be text/plain
-    //             // mime: 'text/plain',
-    //             //description: 'File downloaded by download manager.',
-    //         },
-    //     })
-    //         .fetch('GET', downloadUrl, {
-    //             //some headers ..
-    //         })
-    //         .then((response) => {
-    //             // the path should be dirs.DocumentDir + 'path-to-file.anything'
-    //             console.log('The file saved to ', response.path());
-    //         })
-    //         .catch((error) => {
-    //             console.log('error=', error);
-    //             // error handling ..
-    //         });
-    // }
-
-    downloadFile = async (downloadUrl: string, customFileName?: string): Promise<string> => {
+    downloadFile = async (item: any, customFileName?: string): Promise<string> => {
+        const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
+        const downloadUrl = response.driveItem['@microsoft.graph.downloadUrl'];
         let documentDir = RNFS.DocumentDirectoryPath;
-        let isPermitted = await permissions.checkPermission();
-        let isPdf = false;
-        console.log('ISPERMITTED', isPermitted);
+        let _ = await permissions.checkPermission();
+      
         let fileName: string;
         if (customFileName) {
             fileName = customFileName ? customFileName : 'PdfFile';
         } else {
-            fileName = downloadUrl.split('/').pop();
+            fileName = item.name;
         }
         const fileExt = fileName.split('.').pop();
         var downloadFilePath = documentDir + '/' + fileName;
-        if (fileExt === 'pdf' || fileExt === 'png' || fileExt === 'jpg' || fileExt === 'jpeg') {
-            isPdf = true
+        if (fileExt === 'pdf' || fileExt === 'png' || fileExt === 'jpg' || fileExt === 'jpeg') {    
             downloadFilePath = documentDir + '/' + fileName;
-        } else {
-            isPdf = false
+        } else { 
             downloadFilePath = downloadUrl;
         }
-        let fileDownloadPath =
-            Platform.OS === 'ios' ? documentDir : downloadFilePath;
-
-        console.log('fileDownloadPath=', fileDownloadPath);
+        let fileDownloadPath = Platform.OS === 'ios' ? documentDir : downloadFilePath;
         const options = {
             fromUrl: downloadUrl,
             toFile: fileDownloadPath,
         };
         return new Promise((resolve, reject) => {
-            RNFS.downloadFile(options).promise.then((res: any) => {
-                console.log('SUCCESS');
-                resolve(fileDownloadPath)
-                // NavigationManager.navigate('CustomWebView', {
-                //     url: fileDownloadPath,
-                //     fileName:'PDF',
-                //     isPdf: true,
-                // });
-            }).catch((err) => {
-                console.log('ERROR', err);
-                reject(err)
-            });
-        })
-
-    }
-
-
-
+            RNFS.downloadFile(options)
+                .promise.then(async (res: any) => {
+                    console.log('SUCCESS');
+                    this.updateCurrentDriveItem(item, fileDownloadPath)
+                    resolve(fileDownloadPath);
+                })
+                .catch((err) => {
+                    // console.log('ERROR', err);
+                    reject(err);
+                });
+        });
+    };
+    removeFile = async (item: any) => {
+        var path = RNFS.DocumentDirectoryPath + `/${item.name}`;
+        return (
+            RNFS.unlink(path)
+                .then(() => {
+                    console.log('FILE DELETED');
+                    this.updateCurrentDriveItem(item, '')
+                })
+                // `unlink` will throw an error, if the item to unlink does not exist
+                .catch((err) => {
+                    console.log(err.message);
+                })
+        );
+    };
 
     getDownloadedFilesName = async () => {
         let downloadedList: any[] = [];
@@ -149,7 +97,6 @@ class DownloadManager {
         }
         return downloadedList;
     };
-
 
     deleteDownloadedFile = async (item) => {
         // create a path you want to delete

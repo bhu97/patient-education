@@ -8,7 +8,13 @@ import { LastModifyDateModel } from '../Model/LastModifyDateModel';
 import { MoreInfoListModel } from '../Model/MoreInfoListModel';
 import { IUserModel, UserModel } from '../Model/UserModel';
 import { DatabaseManager } from './DatabaseManager';
-import { DriveItemSchema, FavoriteGroupSchema, FavoriteSchema, LastModifyDateSchema, UserSchema } from './Schema';
+import {
+    DriveItemSchema,
+    FavoriteGroupSchema,
+    FavoriteSchema,
+    LastModifyDateSchema,
+    UserSchema,
+} from './Schema';
 
 export class DBhelper {
     /**
@@ -279,6 +285,11 @@ export class DBhelper {
         let itemData = DatabaseManager.getInstance().getEntities(LastModifyDateSchema.name, ``);
         // LogManager.debug('LastModifyDateSchema=======', itemData);
         return itemData;
+    }
+    async createDriveItemEnteriesById(data: DriveItemModel, uniqueId: String) {
+        await DatabaseManager.getInstance().deleteRealmObject(DriveItemSchema.name, uniqueId);
+
+        await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, data);
     }
 }
 

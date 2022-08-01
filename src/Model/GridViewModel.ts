@@ -13,6 +13,7 @@ export interface IGridViewModel {
     smallUrl: string;
     mediumUrl: string;
     largeUrl: string;
+    downloadLocation?:string
 }
 export class GridViewModel {
     uniqueId: string;
@@ -25,7 +26,8 @@ export class GridViewModel {
     smallUrl: string;
     mediumUrl: string;
     largeUrl: string;
-    listItemId: string
+    listItemId: string;
+    downloadLocation?:string
 
     static generate(item: any, thumbnails: any) {
         let object: IGridViewModel = {
@@ -40,6 +42,7 @@ export class GridViewModel {
             smallUrl: '',
             mediumUrl: '',
             largeUrl: '',
+            downloadLocation:''
         };
 
         object.uniqueId = item.uniqueId;
@@ -53,6 +56,7 @@ export class GridViewModel {
         object.smallUrl = thumbnails.smallUrl ? thumbnails.smallUrl : '';
         object.mediumUrl = thumbnails.mediumUrl ? thumbnails.mediumUrl : '';
         object.largeUrl = thumbnails.largeUrl ? thumbnails.largeUrl : '';
+        object.downloadLocation = item.downloadLocation;
         return object;
     }
 }

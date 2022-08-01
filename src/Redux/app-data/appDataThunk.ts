@@ -5,6 +5,7 @@ import { API_NAMES, HTTP_METHODS, SCREEN_NAME } from '../../Constant/Constants';
 import { DatabaseManager } from '../../Database/DatabaseManager';
 import dbHelper from '../../Database/DBHelper';
 import { DriveItemSchema } from '../../Database/Schema';
+import downloadManager from '../../Download/DownloadManager';
 import apiManager from '../../Helper/ApiManager';
 import { createDriveModelData, createListModelData } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
@@ -24,19 +25,22 @@ import { setAppDataLoading, setIsAlertShown } from './appDataSlice';
 
 //to fetch last modified date
 export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModifiedDate', async () => {
-   // LogManager.debug('fetchLastModifiedDate call started');
+    // LogManager.debug('fetchLastModifiedDate call started');
     const response = await apiManager.callApiToGetData(API_NAMES.GRAPH_LAST_MODIFIED_DATE, HTTP_METHODS.GET);
-    if(response && response.value){
-        let group:LastModifyDateModel = {
+    if (response && response.value) {
+        let group: LastModifyDateModel = {
             id: response.value[0].id,
             lastModifyDate: response.value[0].lastModifiedDateTime,
-            createdDateTime:  response.value[0].createdDateTime,
+            createdDateTime: response.value[0].createdDateTime,
         };
-       let storeObjectDate = await dbHelper.getLastDateModify()
-        if(storeObjectDate.length>0 && storeObjectDate[0].lastModifyDate !== response.value[0].lastModifiedDateTime){
-            dispatchState(setIsUpdateNowEnable(true))
+        let storeObjectDate = await dbHelper.getLastDateModify();
+        if (
+            storeObjectDate.length > 0 &&
+            storeObjectDate[0].lastModifyDate !== response.value[0].lastModifiedDateTime
+        ) {
+            dispatchState(setIsUpdateNowEnable(true));
         }
-        dbHelper.createLastDateModify(LastModifyDateModel.generate(group))
+        dbHelper.createLastDateModify(LastModifyDateModel.generate(group));
     }
     // LogManager.info('response= &&&', response.value[0]);
     // LogManager.debug('fetchLastModifiedDate call ended');
@@ -47,7 +51,7 @@ export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModified
 //to fetch meta delta
 export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', async (isFromLogin?: boolean) => {
     LogManager.debug('fetchDriveItems call started');
-    dispatchState(setAppDataLoading(true))
+    dispatchState(setAppDataLoading(true));
     const driveItems = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
     LogManager.info('responses driveItems=', driveItems);
 
@@ -83,10 +87,10 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
      * For first time login navigating to home screen
      */
     if (isFromLogin) {
-        replaceAndNavigate(SCREEN_NAME.HomeScreen); 
+        replaceAndNavigate(SCREEN_NAME.HomeScreen);
     }
-    dispatchState(fetchLastModifiedDate())
-    dispatchState(setAppDataLoading(false))
+    dispatchState(fetchLastModifiedDate());
+    dispatchState(setAppDataLoading(false));
     return mainCategoryData;
 });
 
@@ -150,7 +154,7 @@ export const fetchAllThumbnails = async (uniqueId: string): Promise<any[]> => {
         {},
     );
     LogManager.debug('response=', response);
-    dispatchState(setIsFetchThumbnailLoaded(true))
+    dispatchState(setIsFetchThumbnailLoaded(true));
     LogManager.info('fetchAllThumbnails call ended');
     return (response && response['value']) ?? [];
 };
@@ -185,7 +189,7 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
  * For FirstTime login
  */
 export const login = createAsyncThunk('appData/login', async () => {
-    const userData: any = await dbHelper.getUser(); 
+    const userData: any = await dbHelper.getUser();
     SplashScreen.hide();
     //user not present fetch all data and save it DB and set to redux
     if (!userData) {
@@ -209,7 +213,29 @@ export const replaceAndNavigate = (screenName: string) => {
 
 export const logout = createAsyncThunk('appData/logout', async () => {
     authenticationManager.setAuthorization(null);
-     let obj =  await dbHelper.getUser()
-     dbHelper.removeUser(obj)
-    replaceAndNavigate(SCREEN_NAME.LoginScreen)
-})
+    let obj = await dbHelper.getUser();
+    dbHelper.removeUser(obj);
+    replaceAndNavigate(SCREEN_NAME.LoginScreen);
+});
+
+export const download = createAsyncThunk('appData/downlaod', async (item: any) => {
+    await downloadManager.downloadFile(item);
+});
+export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (driveItems: Array<any>) => {
+    for (let i = 0; i < driveItems.length; i++) {
+        if (driveItems[i].downloadLocation.length > 0 == false) {
+            await downloadManager.downloadFile(driveItems[i]);
+        }
+    }
+});
+
+export const removeDownloadedItem = createAsyncThunk('appData/removeDownloadedItem', async (item: any) => {
+    await downloadManager.removeFile(item);
+});
+export const  removeDownloadedFolder = createAsyncThunk('appData/removeDownloadedFolder', async (driveItems: Array<any>) => {
+    for (let i = 0; i < driveItems.length; i++) {
+        if (driveItems[i].downloadLocation != '') {
+            await downloadManager.removeFile(driveItems[i]);
+        }
+    }
+});

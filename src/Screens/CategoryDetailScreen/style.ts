@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
-
+const iconCircleSize = 45;
 export const style = StyleSheet.create({
     mainContainer: {
         flex: 1,
@@ -30,7 +30,7 @@ export const style = StyleSheet.create({
         flex: 0.4,
         flexDirection: 'column',
         borderRadius: 1,
-        paddingLeft: BaseThemeStyle.paddings.formElements,
+        // paddingLeft: BaseThemeStyle.paddings.formElements,
         // for shadow of card
         backgroundColor: BaseThemeStyle.colors.white,
         shadowColor: BaseThemeStyle.colors.gray,
@@ -39,5 +39,46 @@ export const style = StyleSheet.create({
         elevation: 20,
         shadowOffset: { width: 5, height: 5 },
         shadowOpacity: 5,
+    },
+    mainContainerForCard: {
+        flexDirection: 'column',
+        marginTop:10,
+        padding:16,
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        height: 'auto',
+        backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
+        borderColor: BaseThemeStyle.colors.gray,
+        boxShadow: '10px 10px 5px lightblue',
+        alignItems: 'center',
+    },
+    circleIconContainer: {
+        backgroundColor: BaseThemeStyle.colors.white,
+        width: iconCircleSize,
+        height: iconCircleSize,
+        borderRadius: 0.5 * iconCircleSize,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: BaseThemeStyle.margin.containers,
+    },
+    folderTextContainer: {
+        marginHorizontal: BaseThemeStyle.margin.formElements,
+        flex: 0.8,
+    },
+    textStyle: {
+        ...BaseThemeStyle.fonts.listTitle,
+        color: BaseThemeStyle.colors.titleColor,
+        fontWeight: 'bold',
+    },
+    iconContainer: {
+        flex: 0.3,
+        alignItems: 'flex-end',
+    },
+    seperator:{
+        height: 1, width: "92%", backgroundColor: 'gray',
+        marginLeft:16,marginRight:16,
+        marginTop:8
     },
 });

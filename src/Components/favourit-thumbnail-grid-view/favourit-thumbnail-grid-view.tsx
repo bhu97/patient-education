@@ -6,6 +6,7 @@ import downloadManager from '../../Download/DownloadManager';
 import { getIconByExtension } from '../../Helper/Helper';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
+import { download } from '../../Redux/app-data/appDataThunk';
 import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
@@ -23,6 +24,7 @@ interface FavouritThumbnailGridViewProps {
     groupName: string;
     groupId: string;
     toolTipList: Array<any>;
+    setDownloadItem: (any) => void;
 }
 interface FavouritThumbnailGridViewState {
     isVisibleObject: any;
@@ -93,7 +95,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         return <Image resizeMode="contain" style={style.iconImageStyle} source={imageName} />;
     };
 
-    getSelectedDataFromToolTip = (tooltip_item: any, item: any, parentIndex: number) => {
+    getSelectedDataFromToolTip = async (tooltip_item: any, item: any, parentIndex: number) => {
         if (tooltip_item.index == 2) {
             this.setState(
                 {
@@ -104,14 +106,22 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                     this.setVisible(parentIndex, false);
                 },
             );
-        }else if(tooltip_item.index == 0){
-            downloadManager.downloadFile('http://www.africau.edu/images/default/sample.pdf').then((res)=>{
-
-            }).catch((err)=>{
-
-            })
-
+        } else if (tooltip_item.index == 0) {
+            downloadManager
+                .downloadFile(item)
+                .then((res) => {
+                    this.refreshList();
+                })
+                .catch((err) => {});
+        } else if (tooltip_item.index == 1) {
         }
+    };
+    refreshList = async () => {
+        let items = await dbHelper.getFavItems({
+            name: this.props.groupName,
+            id: this.props.groupId,
+        });
+        this.props.setFavGroupItem(items);
     };
     getToolTip = (index, isVisibleIndicator, item) => {
         return (
@@ -178,6 +188,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                 </TouchableOpacity>
 
                 <View style={style.itemContainer}>
+                    {item.downloadLocation ? <View style={style.downloadedListStyle}></View> : null}
                     <View style={style.textContainer}>
                         <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
                             {fileName[0]}
@@ -247,11 +258,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
             }
         });
         dbHelper.createFavouriteEntries(favorites, this.state.selectedItem.uniqueId).then(async () => {
-            let items = await dbHelper.getFavItems({
-                name: this.props.groupName,
-                id: this.props.groupId,
-            });
-            this.props.setFavGroupItem(items);
+            this.refreshList();
             this.setState({ visible: false });
         });
     };
@@ -325,6 +332,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setFavGroupItem: (favGroupItem: any) => {
         dispatch(setFavGroupItemData(favGroupItem));
+    },
+    setDownloadItem: (item: any) => {
+        dispatch(download(item));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FavouritThumbnailGridView);

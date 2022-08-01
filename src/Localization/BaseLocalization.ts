@@ -50,5 +50,6 @@ export const BaseLocalization = {
     submit: LocalizationManager.getLocalizedStrings('submit'),
     logout : LocalizationManager.getLocalizedStrings('logout'),
     logoutNow : LocalizationManager.getLocalizedStrings('logoutNow'),
+    downloadFolder: LocalizationManager.getLocalizedStrings('downloadFolder'),
 
 };
