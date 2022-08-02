@@ -1,5 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { Component } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import ApplicationAlert from '../../Components/custom-alert/custom-alert-component';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
@@ -29,8 +31,17 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
         LocalizationManager.initializeAppLanguage();
     }
 
-    componentDidMount() {
+   async componentDidMount() {
+        let isLogout;
+        isLogout = await AsyncStorage.getItem('isLogout');
+        if(!JSON.parse(isLogout))
+        {
         this.onLogin();
+        }
+        else{
+            SplashScreen.hide();
+        }
+       
     }
 
     hideAlert = () => {
@@ -38,6 +49,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     };
     onLogin = () => {
         this.props.login();
+        
     };
 
     reTry = () => {

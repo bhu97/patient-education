@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import SplashScreen from 'react-native-splash-screen';
 import authenticationManager from '../../Authentication/AuthenticationManager';
@@ -194,10 +195,11 @@ export const login = createAsyncThunk('appData/login', async () => {
     //user not present fetch all data and save it DB and set to redux
     if (!userData) {
         dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));
-        authenticationManager.login().then((token) => {
+        authenticationManager.login().then(async (token) => {
             if (token) {
                 dispatchState(setIsAlertShown(false));
                 dispatchState(fetchAllDriveItems(true));
+                await AsyncStorage.setItem('isLogout','false');
             } else {
                 dispatchState(setIsAlertShown(true));
             }
@@ -215,6 +217,7 @@ export const logout = createAsyncThunk('appData/logout', async () => {
     authenticationManager.setAuthorization(null);
     let obj = await dbHelper.getUser();
     dbHelper.removeUser(obj);
+    await AsyncStorage.setItem('isLogout','true');
     replaceAndNavigate(SCREEN_NAME.LoginScreen);
 });
 
