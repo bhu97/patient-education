@@ -8,7 +8,7 @@ import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { download } from '../../Redux/app-data/appDataThunk';
-import { setFavGroupData, setFavGroupItemData, setShowToolTip } from '../../Redux/category/categorySlice';
+import { setFavGroupData, setFavGroupItemData, setRefreshDetailScreen, setShowToolTip } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
@@ -30,6 +30,7 @@ interface FavouritThumbnailGridViewProps {
     setIsLoading: (value: boolean) => void;
     showToolTipData: ComponentData.ShowToolTipData;
     setShowToolTip: (data: ComponentData.ShowToolTipData) => void;
+    setRefreshDetailScreen:(value:boolean)=>void;
 
 }
 interface FavouritThumbnailGridViewState {
@@ -115,8 +116,16 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
             id: this.props.groupId,
         });        
         this.props.setFavGroupItem(items);
-        this.props.setIsLoading(false)
+      //  this.props.setRefreshDetailScreen(true)
+        this.props.setIsLoading(false);
+        let items1 = await dbHelper.getFavItems({
+            name: this.props.groupName,
+            id: this.props.groupId,
+        });        
+        this.props.setFavGroupItem(items1);
+       
     };
+
     getToolTip = (index, item) => {      
         return (
             <>
@@ -336,6 +345,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setShowToolTip: (value: ComponentData.ShowToolTipData) => {
         dispatch(setShowToolTip(value));
+    },
+    setRefreshDetailScreen: (isRefresh: boolean) => {
+        dispatch(setRefreshDetailScreen(isRefresh));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FavouritThumbnailGridView);
