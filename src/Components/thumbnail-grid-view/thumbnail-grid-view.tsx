@@ -106,8 +106,17 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                 selectedItem: item,
                 close: true,
             });
+        }else if (tooltip_item.index == 0) {
+            downloadManager
+                .downloadFile(item)
+                .then((res) => {
+                  
+                })
+                .catch((err) => {});
+        } else if (tooltip_item.index == 1) {
         }
     };
+  
     getToolTip = (index, isVisibleIndicator, item) => {
         return (
             <>
@@ -175,6 +184,8 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                 </TouchableOpacity>
 
                 <View style={style.itemContainer}>
+                {item.downloadLocation ? 
+                <View style={style.downloadedListStyle}></View>: null}
                     <View style={style.textContainer}>
                         <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
                             {fileName[0]}

@@ -19,7 +19,7 @@ import { DriveItemModel } from '../../Model/DriveItemModel';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
+import { downloadFolder, fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
 import {
     setGridViewData,
     setMoreInfoData,
@@ -32,6 +32,7 @@ import Images from '../../Theme/Images';
 import { style } from './style';
 import NetInfo from '@react-native-community/netinfo';
 import CustomIcon from '../../Components/custom-icon/custom-icon';
+import downloadManager from '../../Download/DownloadManager';
 
 interface CategoryDetailScreenProps {
     gridViewData: GridViewModel[];
@@ -221,6 +222,11 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
             NavigationManager.navigateAndClear('HomeScreen');
         }
     };
+    onClickDownloadFolder = async () => {
+     
+     await downloadFolder(this.props.gridViewData)
+   
+    }
 
     render() {
         return this.props.isLoading ? (
@@ -247,7 +253,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                         )}
 
                         <View style={style.moreInfoContainer}>
-                            <TouchableOpacity onPress={() => {}}>
+                            <TouchableOpacity onPress={this.onClickDownloadFolder}>
                                 <View style={style.mainContainerForCard}>
                                     <View style={style.itemContainer}>
                                         <View style={style.circleIconContainer}>
