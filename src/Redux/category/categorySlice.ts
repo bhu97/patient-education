@@ -49,6 +49,7 @@ export interface CategoryState {
 
     //tooltip list
     toolTipList: Array<any>;
+    showToolTipData:ComponentData.ShowToolTipData
 
 }
 
@@ -80,7 +81,8 @@ const initialState: CategoryState = {
         { index: 0, title: 'Download',isEnable:true },
         { index: 1, title: 'Remove Locally',isEnable:true },
         { index: 2, title: 'Add/Remove Favourite',isEnable:true }
-    ]
+    ],
+    showToolTipData: {isVisible:false,currentIndex:-1} 
 
 };
 
@@ -149,8 +151,10 @@ const categorySlice = createSlice({
         },
         setIsFetchThumbnailLoaded: (state, action: PayloadAction<boolean>)=> {
             state.isFetchAllThumbnailLoaded = action.payload;
+        },
+        setShowToolTip: (state, action: PayloadAction<ComponentData.ShowToolTipData>)=> {
+            state.showToolTipData = action.payload;
         }
-        
 
     },
 });
@@ -172,7 +176,8 @@ export const {
     setFavGroupItemData,
     setIsUpdateNowEnable,
     setIsCountrySelected,
-    setIsFetchThumbnailLoaded
+    setIsFetchThumbnailLoaded,
+    setShowToolTip
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

@@ -6,8 +6,9 @@ import downloadManager from '../../Download/DownloadManager';
 import { getIconByExtension } from '../../Helper/Helper';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
+import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { download } from '../../Redux/app-data/appDataThunk';
-import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
+import { setFavGroupData, setFavGroupItemData, setShowToolTip } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
@@ -25,10 +26,13 @@ interface FavouritThumbnailGridViewProps {
     groupId: string;
     toolTipList: Array<any>;
     setDownloadItem: (any) => void;
+    isLoading: boolean;
+    setIsLoading: (value: boolean) => void;
+    showToolTipData: ComponentData.ShowToolTipData;
+    setShowToolTip: (data: ComponentData.ShowToolTipData) => void;
+
 }
 interface FavouritThumbnailGridViewState {
-    isVisibleObject: any;
-    loader: boolean;
     visible: boolean;
     groups: Array<any>;
     selectedGroups: Array<string>;
@@ -39,8 +43,6 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
     constructor(props) {
         super(props);
         this.state = {
-            isVisibleObject: {},
-            loader: false,
             visible: false,
             groups: [],
             selectedGroups: [],
@@ -49,23 +51,11 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
     }
 
     componentDidMount(): void {
-        let isVisibleArray = {};
-        this.props.gridViewList &&
-            this.props.gridViewList.map((item: any, index: any) => {
-                let setIndex = { index: index, isVisible: false };
-                isVisibleArray[index] = setIndex;
-            });
-        this.setState({ isVisibleObject: isVisibleArray });
     }
 
     componentDidUpdate(prevProp): void {
         if (prevProp.gridViewList.length !== this.props.gridViewList.length && this.props.gridViewList.length > 0) {
-            let isVisibleArray = {};
-            this.props.gridViewList.map((item: any, index: any) => {
-                let setIndex = { index: index, isVisible: false };
-                isVisibleArray[index] = setIndex;
-            });
-            this.setState({ isVisibleObject: isVisibleArray });
+
         }
     }
 
@@ -82,67 +72,59 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         }
     };
 
-    setVisible = (index: any, indicator: boolean = false) => {
-        let isVisibleCheck = this.state.isVisibleObject[index];
-        isVisibleCheck.isVisible = indicator;
-        this.setState({ isVisibleObject: { ...this.state.isVisibleObject, isVisibleCheck },loader: false });
-    };
 
-    getVisibility = (index: any) => {
-        return this.state.isVisibleObject[index]?.isVisible ? true : false;
-    };
     getImage = (imageName) => {
         return <Image resizeMode="contain" style={style.iconImageStyle} source={imageName} />;
     };
 
     getSelectedDataFromToolTip = async (tooltip_item: any, item: any, parentIndex: number) => {
         if (tooltip_item.index == 2) {
-            this.setState(
-                {
-                    visible: true,
-                    selectedItem: item,
-                },
-                () => {
-                    this.setVisible(parentIndex, false);
-                },
+            this.setState({ visible: true, selectedItem: item }, () => {
+                this.props.setShowToolTip({ isVisible: false, currentIndex: -1 })
+            },
             );
         } else if (tooltip_item.index == 0) {
-            this.setState({ loader: true });
+            this.props.setIsLoading(true)
             downloadManager
                 .downloadFile(item, true)
                 .then((res) => {
+                   // console.log("return path", res);
                     this.refreshList(parentIndex);
-
                 })
-                .catch((err) => { });
+                .catch((err) => { this.errorData() });
         } else if (tooltip_item.index == 1) {
-            this.setState({ loader: true });
+            this.props.setIsLoading(true)
             downloadManager
                 .removeFile(item, true)
                 .then((res) => {
                     this.refreshList(parentIndex);
-
                 })
-                .catch((err) => { });
+                .catch((err) => { this.errorData() });
         }
     };
-    refreshList = async (parentIndex: number) => {
+    errorData = () => {
+        this.props.setIsLoading(false);
+        this.props.setShowToolTip({ isVisible: false, currentIndex: -1 })
+    }
+    refreshList = async (parentIndex?: number) => {
+        if (parentIndex) {
+            this.props.setShowToolTip({ isVisible: false, currentIndex: -1 })
+        }
         let items = await dbHelper.getFavItems({
             name: this.props.groupName,
             id: this.props.groupId,
-        });
+        });        
         this.props.setFavGroupItem(items);
-        this.setVisible(parentIndex, false);
-       
+        this.props.setIsLoading(false)
     };
-    getToolTip = (index, isVisibleIndicator, item) => {
+    getToolTip = (index, item) => {      
         return (
             <>
                 <CustomToolTip
-                    isVisible={isVisibleIndicator}
+                    isVisible={this.props.showToolTipData.isVisible && this.props.showToolTipData.currentIndex == index}
                     model={this.props.toolTipList}
                     insideToolTip={this.inside(index, item)}
-                    closeToolTip={() => this.setVisible(index, false)}
+                    closeToolTip={() => this.props.setShowToolTip({ isVisible: false, currentIndex: -1 })}
                     position={(index + 1) % 2 == 0 ? 'left' : 'right'}
                     onPressOfToolTipItem={(_tooltip_item) =>
                         this.getSelectedDataFromToolTip(_tooltip_item, item, index)
@@ -155,9 +137,8 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         return (
             <TouchableOpacity
                 onPress={() => {
-                    this.setVisible(index, true);
-                    this.setState({ selectedGroups: [] });
                     this.getSelectedGroupsFromRealm(item.uniqueId);
+                    this.props.setShowToolTip({ isVisible: true, currentIndex: index })
                 }}
             >
                 <CustomIcon name={'more-horizontal'} />
@@ -170,19 +151,19 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
     };
 
     loadDocument = async (item: GridViewModel) => {
-        this.setState({ loader: true });
+        this.props.setIsLoading(true)
         downloadManager
             .displayDocument(item)
             .then((res) => {
-                this.setState({ loader: false });
+                this.props.setIsLoading(false)
             })
             .catch(() => {
-                this.setState({ loader: false });
+                this.props.setIsLoading(false)
             });
     };
 
     renderItem = ({ item, index }: any) => {
-        const isVisibleIndicator = this.getVisibility(index);
+
         let fileName = item.name.split('.');
         return (
             <View style={style.backgroundViewStyle}>
@@ -206,7 +187,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                         </Text>
                     </View>
                     <View style={style.iconContainer}>
-                        {this.getToolTip(index, isVisibleIndicator, item)}
+                        {this.getToolTip(index, item)}
                         <Text style={style.sizeStyle}>{item.fileSize}</Text>
                     </View>
                 </View>
@@ -263,7 +244,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                     smallUrl: this.state.selectedItem.smallUrl,
                     title: this.state.selectedItem.title,
                     webUrl: this.state.selectedItem.webUrl,
-                    downloadLocation:this.state.selectedItem.downloadLocation
+                    downloadLocation: this.state.selectedItem.downloadLocation
                 });
             } else {
                 console.log();
@@ -306,8 +287,8 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
     };
 
     render() {
-        return this.state.loader ? (
-            <FullScreenLoader isLoading showSpinner />
+        return this.props.isLoading ? (
+            <FullScreenLoader isLoading={this.props.isLoading} showSpinner />
         ) : (
             <>
                 {this.props.gridViewList.length > 0 ? (
@@ -336,6 +317,8 @@ const mapStateToProps = (state: RootState) => ({
     favGroup: state.categoryReducer.favGroupData,
     gridViewList: state.categoryReducer.favGroupItemData,
     toolTipList: state.categoryReducer.toolTipList,
+    isLoading: state.appDataReducer.appDataLoading,
+    showToolTipData: state.categoryReducer.showToolTipData
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -347,6 +330,12 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setDownloadItem: (item: any) => {
         dispatch(download(item));
+    },
+    setIsLoading: (value: boolean) => {
+        dispatch(setAppDataLoading(value));
+    },
+    setShowToolTip: (value: ComponentData.ShowToolTipData) => {
+        dispatch(setShowToolTip(value));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FavouritThumbnailGridView);

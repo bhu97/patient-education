@@ -64,12 +64,6 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         LogManager.debug('mainCategoryData=', mainCategoryData);
         this.props.setMainList(mainCategoryData);
         this.props.fetchLastModifyDate();
-        downloadManager.downloadFile('https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4').then((res)=>{
-            console.log("res ^^^^",res);
-            
-        }).catch((err)=>{
-            console.log("err ^^^^",err);
-        })
     }
     componentDidUpdate(prevProp): void {
         if (prevProp.isCountrySelected !== this.props.isCountrySelected) {
