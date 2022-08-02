@@ -77,9 +77,9 @@ const initialState: CategoryState = {
     isCountrySelected:false,
     isFetchAllThumbnailLoaded:false,
     toolTipList: [
-        { index: 0, title: 'Download' },
-        { index: 1, title: 'Remove Locally' },
-        { index: 2, title: 'Add/Remove Favourite' }
+        { index: 0, title: 'Download',isEnable:true },
+        { index: 1, title: 'Remove Locally',isEnable:true },
+        { index: 2, title: 'Add/Remove Favourite',isEnable:true }
     ]
 
 };

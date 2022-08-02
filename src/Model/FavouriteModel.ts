@@ -13,6 +13,7 @@ export interface IFavoriteModel {
     smallUrl: string;
     title: string;
     webUrl: string;
+    downloadLocation:string;
 }
 
 export class FavoriteModel implements IFavoriteModel {
@@ -29,6 +30,8 @@ export class FavoriteModel implements IFavoriteModel {
     smallUrl: string;
     title: string;
     webUrl: string;
+    downloadLocation:string;
+
 
     static generate(response: any) {
         let object: IFavoriteModel = {
@@ -45,6 +48,7 @@ export class FavoriteModel implements IFavoriteModel {
             smallUrl: '',
             title: '',
             webUrl: '',
+            downloadLocation:''
         };
 
         object.id = `${new Date().getTime()}`;
@@ -60,6 +64,7 @@ export class FavoriteModel implements IFavoriteModel {
         object.smallUrl = response.smallUrl;
         object.title = response.title;
         object.webUrl = response.webUrl;
+        object.downloadLocation = response.downloadLocation
 
         return object;
     }

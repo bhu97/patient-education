@@ -287,10 +287,10 @@ export class DBhelper {
         return itemData;
     }
     async createDriveItemEnteriesById(data: DriveItemModel, uniqueId: String) {
-        await DatabaseManager.getInstance().deleteRealmObject(DriveItemSchema.name, uniqueId);
-
+        // await DatabaseManager.getInstance().deleteRealmObject(DriveItemSchema.name, uniqueId);
         await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, data);
     }
+
 }
 
 const dbHelper = new DBhelper();

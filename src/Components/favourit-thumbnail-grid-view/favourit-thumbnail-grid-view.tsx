@@ -85,7 +85,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
     setVisible = (index: any, indicator: boolean = false) => {
         let isVisibleCheck = this.state.isVisibleObject[index];
         isVisibleCheck.isVisible = indicator;
-        this.setState({ isVisibleObject: { ...this.state.isVisibleObject, isVisibleCheck } });
+        this.setState({ isVisibleObject: { ...this.state.isVisibleObject, isVisibleCheck },loader: false });
     };
 
     getVisibility = (index: any) => {
@@ -107,21 +107,33 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                 },
             );
         } else if (tooltip_item.index == 0) {
+            this.setState({ loader: true });
             downloadManager
-                .downloadFile(item)
+                .downloadFile(item, true)
                 .then((res) => {
-                    this.refreshList();
+                    this.refreshList(parentIndex);
+
                 })
-                .catch((err) => {});
+                .catch((err) => { });
         } else if (tooltip_item.index == 1) {
+            this.setState({ loader: true });
+            downloadManager
+                .removeFile(item, true)
+                .then((res) => {
+                    this.refreshList(parentIndex);
+
+                })
+                .catch((err) => { });
         }
     };
-    refreshList = async () => {
+    refreshList = async (parentIndex: number) => {
         let items = await dbHelper.getFavItems({
             name: this.props.groupName,
             id: this.props.groupId,
         });
         this.props.setFavGroupItem(items);
+        this.setVisible(parentIndex, false);
+       
     };
     getToolTip = (index, isVisibleIndicator, item) => {
         return (
@@ -172,7 +184,6 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
     renderItem = ({ item, index }: any) => {
         const isVisibleIndicator = this.getVisibility(index);
         let fileName = item.name.split('.');
-
         return (
             <View style={style.backgroundViewStyle}>
                 <TouchableOpacity onPress={() => this.loadDocument(item)}>
@@ -252,6 +263,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                     smallUrl: this.state.selectedItem.smallUrl,
                     title: this.state.selectedItem.title,
                     webUrl: this.state.selectedItem.webUrl,
+                    downloadLocation:this.state.selectedItem.downloadLocation
                 });
             } else {
                 console.log();

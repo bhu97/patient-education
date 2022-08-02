@@ -8,18 +8,30 @@ import deviceManager from '../Helper/DeviceManager';
 import { getExtension } from '../Helper/Helper';
 import NavigationManager from '../Helper/NavigationManager';
 import permissions from '../Helper/Permission';
+import { DriveItemModel } from '../Model/DriveItemModel';
+import { FavoriteModel } from '../Model/FavouriteModel';
 
 class DownloadManager {
    
-    updateCurrentDriveItem = async (item: any, filePath: string ) => {
-
+    updateCurrentDriveItem = async (item: DriveItemModel, filePath: string ) => {
         let localItem = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
+       // console.log("localItem derive item %%%%%%%%%%%%%%%%%%",localItem);
         localItem.downloadLocation = filePath;
         await dbHelper.createDriveItemEnteriesById(localItem, item.uniqueId);
-
+       // let localItem1 = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
+        // console.log("localItem derive item %%%%%%%%%%%%%%%%%%",localItem1);
     }
 
-    downloadFile = async (item: any, customFileName?: string): Promise<string> => {
+   
+    updateCurrentFavItem = async (item: FavoriteModel, filePath: string ) => {    
+        let localItem = await dbHelper.getFavItemsByUniqueId(item.uniqueId); 
+        localItem[0].downloadLocation = filePath;
+        await dbHelper.createFavouriteEntries([localItem[0]], item.uniqueId);
+        // let localItem1 = await dbHelper.getFavItemsByUniqueId(item.uniqueId); 
+        // console.log("localItem1 &&&&&",localItem1);
+    }
+
+    downloadFile = async (item: any,isFavPage:boolean, customFileName?: string, ): Promise<string> => {
         const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
         const downloadUrl = response.driveItem['@microsoft.graph.downloadUrl'];
         let documentDir = RNFS.DocumentDirectoryPath;
@@ -47,7 +59,11 @@ class DownloadManager {
             RNFS.downloadFile(options)
                 .promise.then(async (res: any) => {
                     console.log('SUCCESS');
-                    this.updateCurrentDriveItem(item, fileDownloadPath)
+                    if(isFavPage){
+                        this.updateCurrentFavItem(item, fileDownloadPath)
+                    }else{
+                        this.updateCurrentDriveItem(item, fileDownloadPath)
+                    }
                     resolve(fileDownloadPath);
                 })
                 .catch((err) => {
@@ -56,13 +72,17 @@ class DownloadManager {
                 });
         });
     };
-    removeFile = async (item: any) => {
+    removeFile = async (item: any,isFavPage:boolean) => {
         var path = RNFS.DocumentDirectoryPath + `/${item.name}`;
         return (
             RNFS.unlink(path)
                 .then(() => {
                     console.log('FILE DELETED');
-                    this.updateCurrentDriveItem(item, '')
+                    if(isFavPage){
+                        this.updateCurrentFavItem(item, '')
+                    }else{
+                        this.updateCurrentDriveItem(item, '')
+                    }
                 })
                 // `unlink` will throw an error, if the item to unlink does not exist
                 .catch((err) => {

@@ -62,6 +62,7 @@ export const FavoriteSchema = {
         smallUrl: 'string',
         title: 'string',
         webUrl: 'string',
+        downloadLocation: 'string?',
     },
 };
 
