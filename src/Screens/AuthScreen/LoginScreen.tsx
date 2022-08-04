@@ -1,7 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { Component } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import ApplicationAlert from '../../Components/custom-alert/custom-alert-component';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
@@ -20,9 +18,10 @@ interface LoginScreenProps {
     appDataLoading: boolean;
     setIsAlertShown: (value: boolean) => void;
     login: () => void;
+    isLogout:boolean;
 }
 
-interface LoginScreenState { }
+interface LoginScreenState {}
 
 class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     constructor(props: LoginScreenProps) {
@@ -31,10 +30,11 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
         LocalizationManager.initializeAppLanguage();
     }
 
-    async componentDidMount() {
-        SplashScreen.hide();
-        this.onLogin();
-
+    componentDidMount() {
+        if(!this.props.isLogout){
+            this.onLogin();
+        }
+       
     }
 
     hideAlert = () => {
@@ -42,7 +42,6 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     };
     onLogin = () => {
         this.props.login();
-
     };
 
     reTry = () => {
@@ -86,6 +85,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
 const mapStateToProps = (state: RootState) => ({
     isAlertShown: state.appDataReducer.isAlertShown,
     appDataLoading: state.appDataReducer.appDataLoading,
+    isLogout:state.appDataReducer.isLogout
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

@@ -17,6 +17,7 @@ import { setCountryListData, setSelectedCountry } from '../../Redux/category/cat
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
+import deviceManager from '../../Helper/DeviceManager';
 
 interface SettingPageProps {
     dispatch: Dispatch;
@@ -146,7 +147,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                             />
 
                             <CustomListWithHeader
-                                headerText={BaseLocalization.generalTitle}
+                                headerText={BaseLocalization.technicalTitle}
                                 labelText={BaseLocalization.contact}
                                 iconName="mail"
                                 selectedCountry={this.props.selectedCountry}
@@ -158,7 +159,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
 
                             {this.titleRowView(BaseLocalization.countryTitle, BaseLocalization.version)}
 
-                            {this.boxRowView('Master', 'edit-2', '0.9.2')}
+                            {this.boxRowView('Master', 'edit-2', deviceManager.getAppVersion())}
 
                             {this.headerContainer(BaseLocalization.contentUpdates)}
 
