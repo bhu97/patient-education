@@ -15,7 +15,7 @@ import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
 import { setIsFetchThumbnailLoaded, setIsUpdateNowEnable, setMainCategoryList } from '../category/categorySlice';
 import { dispatchState } from '../store';
-import { setAppDataLoading, setIsAlertShown } from './appDataSlice';
+import { setAppDataLoading, setIsAlertShown, setIsLogout } from './appDataSlice';
 
 /**
  * createAsyncThunk receives two arguments
@@ -190,7 +190,7 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
  */
 export const login = createAsyncThunk('appData/login', async () => {
     const userData: any = await dbHelper.getUser();
-     SplashScreen.hide();
+    SplashScreen.hide();
     //user not present fetch all data and save it DB and set to redux
     if (!userData) {
         dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));
@@ -198,7 +198,7 @@ export const login = createAsyncThunk('appData/login', async () => {
             if (token) {
                 dispatchState(setIsAlertShown(false));
                 dispatchState(fetchAllDriveItems(true));
-                await AsyncStorage.setItem('isLogout','false');
+                await AsyncStorage.setItem('isLogout', 'false');
             } else {
                 dispatchState(setIsAlertShown(true));
             }
@@ -216,7 +216,7 @@ export const logout = createAsyncThunk('appData/logout', async () => {
     authenticationManager.setAuthorization(null);
     let obj = await dbHelper.getUser();
     dbHelper.removeUser(obj);
-    await AsyncStorage.setItem('isLogout','true');
+    dispatchState(setIsLogout(true))
     replaceAndNavigate(SCREEN_NAME.LoginScreen);
 });
 
@@ -227,12 +227,12 @@ export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (
     dispatchState(setAppDataLoading(true))
     for (let i = 0; i < driveItems.length; i++) {
         if (isStringEmpty(driveItems[i].downloadLocation)) {
-            await downloadManager.downloadFile(driveItems[i],false);
-            
-        }else{
+            await downloadManager.downloadFile(driveItems[i], false);
+
+        } else {
             console.log("already downloaded")
         }
-        if(i == driveItems.length-1){
+        if (i == driveItems.length - 1) {
             dispatchState(setAppDataLoading(false))
         }
     }
@@ -241,10 +241,10 @@ export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (
 // export const removeDownloadedItem = createAsyncThunk('appData/removeDownloadedItem', async (item: any) => {
 //     await downloadManager.removeFile(item,false);
 // });
-export const  removeDownloadedFolder = createAsyncThunk('appData/removeDownloadedFolder', async (driveItems: Array<any>) => {
+export const removeDownloadedFolder = createAsyncThunk('appData/removeDownloadedFolder', async (driveItems: Array<any>) => {
     for (let i = 0; i < driveItems.length; i++) {
         if (isStringEmpty(driveItems[i].downloadLocation) == true) {
-            await downloadManager.removeFile(driveItems[i],false);
+            await downloadManager.removeFile(driveItems[i], false);
         }
     }
 });
