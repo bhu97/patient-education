@@ -190,7 +190,7 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
  */
 export const login = createAsyncThunk('appData/login', async () => {
     const userData: any = await dbHelper.getUser();
-    SplashScreen.hide();
+    
     //user not present fetch all data and save it DB and set to redux
     if (!userData) {
         dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import ApplicationAlert from '../../Components/custom-alert/custom-alert-component';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
@@ -31,9 +32,10 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     }
 
     componentDidMount() {
-        if(!this.props.isLogout){
-            this.onLogin();
-        }
+        SplashScreen.hide();
+        // if(!this.props.isLogout){
+        //     this.onLogin();
+        // }
        
     }
 
