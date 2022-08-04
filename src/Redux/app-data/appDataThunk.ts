@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import SplashScreen from 'react-native-splash-screen';
 import authenticationManager from '../../Authentication/AuthenticationManager';
 import { API_NAMES, HTTP_METHODS, SCREEN_NAME } from '../../Constant/Constants';
 import { DatabaseManager } from '../../Database/DatabaseManager';
@@ -13,7 +12,6 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
-import { UserModel } from '../../Model/UserModel';
 import { setIsFetchThumbnailLoaded, setIsUpdateNowEnable, setMainCategoryList } from '../category/categorySlice';
 import { dispatchState } from '../store';
 import { setAppDataLoading, setIsAlertShown } from './appDataSlice';
@@ -191,7 +189,7 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
  */
 export const login = createAsyncThunk('appData/login', async () => {
     const userData: any = await dbHelper.getUser();
-    SplashScreen.hide();
+    // SplashScreen.hide();
     //user not present fetch all data and save it DB and set to redux
     if (!userData) {
         dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));
@@ -242,3 +240,6 @@ export const  removeDownloadedFolder = createAsyncThunk('appData/removeDownloade
         }
     }
 });
+
+
+

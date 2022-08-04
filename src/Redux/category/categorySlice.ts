@@ -154,6 +154,9 @@ const categorySlice = createSlice({
         },
         setShowToolTip: (state, action: PayloadAction<ComponentData.ShowToolTipData>)=> {
             state.showToolTipData = action.payload;
+        },
+        setToolTipData: (state, action: PayloadAction<any[]>)=> {
+            state.showToolTipData = action.payload;
         }
 
     },
@@ -177,7 +180,8 @@ export const {
     setIsUpdateNowEnable,
     setIsCountrySelected,
     setIsFetchThumbnailLoaded,
-    setShowToolTip
+    setShowToolTip,
+    setToolTipData
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

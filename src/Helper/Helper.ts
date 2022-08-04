@@ -247,3 +247,8 @@ export function createBredCrumbList(selectedCategoryData: any): [] {
     });
     return breadCrumbList;
 }
+export function isStringEmpty(str): boolean {
+    if (str == null || str == '' || str == undefined) {
+        return true
+    } else return false
+}

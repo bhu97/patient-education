@@ -10,11 +10,13 @@ interface CustomToolTipProps {
     insideToolTip?: any;
     closeToolTip?: any;
     isCountryList?: boolean;
-    position:string
+    position:string,
+    isEmpty:boolean
 }
 
 interface CustomToolTipState {
     isVisible: boolean;
+    model: Array<any>;
 }
 
 export default class CustomToolTip extends PureComponent<CustomToolTipProps, CustomToolTipState> {
@@ -22,10 +24,16 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
         super(props);
         this.state = {
             isVisible: false,
+            model:this.props.model
         };
     }
+
+
+    
     onPressOfToolTipItem = (item: any) => {
-        this.props.onPressOfToolTipItem?.(item); // The optional chaining (?.) operator short-circuits instead of throwing an error if the reference is undefined or null.
+        if(item.isEnable){
+            this.props.onPressOfToolTipItem && this.props.onPressOfToolTipItem?.(item); // The optional chaining (?.) operator short-circuits instead of throwing an error if the reference is undefined or null.
+        }
     };
 
     toolTipList = () => {
@@ -37,7 +45,7 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
                     renderItem={({ item }) => {
                         return (
                             <TouchableOpacity onPress={() => this.onPressOfToolTipItem(item)}>
-                                <View style={[this.props.isCountryList ? style.listView : style.categoryListView]}>
+                                <View style={[this.props.isCountryList ? style.listView : [style.categoryListView,{opacity:item.isEnable?1:0.3}]]}>
                                     <Text
                                         style={[
                                             this.props.isCountryList
