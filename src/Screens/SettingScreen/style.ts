@@ -49,7 +49,8 @@ export const style = StyleSheet.create({
         color: BaseThemeStyle.colors.titleColor,
         textAlign: 'left',
         paddingHorizontal: 8,
-        fontWeight:'bold'
+        fontWeight:'bold',
+        
     },
     rowTextStyle: {
         marginHorizontal: BaseThemeStyle.margin.containers,

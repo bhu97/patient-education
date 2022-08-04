@@ -91,9 +91,9 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                             />
                         )}
                     </View>
-                    <View style={style.iconContainer}>
+                    {/* <View style={style.iconContainer}>
                         <CustomIcon name={'chevron-right'} />
-                    </View>
+                    </View> */}
                 </View>
             </View>
             </TouchableOpacity>
