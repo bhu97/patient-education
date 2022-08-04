@@ -7,7 +7,7 @@ import dbHelper from '../../Database/DBHelper';
 import { DriveItemSchema } from '../../Database/Schema';
 import downloadManager from '../../Download/DownloadManager';
 import apiManager from '../../Helper/ApiManager';
-import { createDriveModelData, createListModelData } from '../../Helper/Helper';
+import { createDriveModelData, createListModelData, isStringEmpty } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
@@ -219,24 +219,31 @@ export const logout = createAsyncThunk('appData/logout', async () => {
     replaceAndNavigate(SCREEN_NAME.LoginScreen);
 });
 
-export const download = createAsyncThunk('appData/downlaod', async (item: any) => {
-    await downloadManager.downloadFile(item);
-});
+// export const download = createAsyncThunk('appData/downlaod', async (item: any) => {
+//     await downloadManager.downloadFile(item,false);
+// });
 export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (driveItems: Array<any>) => {
+    dispatchState(setAppDataLoading(true))
     for (let i = 0; i < driveItems.length; i++) {
-        if (driveItems[i].downloadLocation.length > 0 == false) {
-            await downloadManager.downloadFile(driveItems[i]);
+        if (isStringEmpty(driveItems[i].downloadLocation)) {
+            await downloadManager.downloadFile(driveItems[i],false);
+            
+        }else{
+            console.log("already downloaded")
+        }
+        if(i == driveItems.length-1){
+            dispatchState(setAppDataLoading(false))
         }
     }
 });
 
-export const removeDownloadedItem = createAsyncThunk('appData/removeDownloadedItem', async (item: any) => {
-    await downloadManager.removeFile(item);
-});
+// export const removeDownloadedItem = createAsyncThunk('appData/removeDownloadedItem', async (item: any) => {
+//     await downloadManager.removeFile(item,false);
+// });
 export const  removeDownloadedFolder = createAsyncThunk('appData/removeDownloadedFolder', async (driveItems: Array<any>) => {
     for (let i = 0; i < driveItems.length; i++) {
-        if (driveItems[i].downloadLocation != '') {
-            await downloadManager.removeFile(driveItems[i]);
+        if (isStringEmpty(driveItems[i].downloadLocation) == true) {
+            await downloadManager.removeFile(driveItems[i],false);
         }
     }
 });

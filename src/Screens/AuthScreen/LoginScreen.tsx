@@ -32,15 +32,16 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     }
 
    async componentDidMount() {
-        let isLogout;
-        isLogout = await AsyncStorage.getItem('isLogout');
-        if(!JSON.parse(isLogout))
-        {
+        // let isLogout;
+        // isLogout = await AsyncStorage.getItem('isLogout');
+        // if(!JSON.parse(isLogout))
+        // {
+        // this.onLogin();
+        // }
+        // else{
+        //     SplashScreen.hide();
+        // }
         this.onLogin();
-        }
-        else{
-            SplashScreen.hide();
-        }
        
     }
 

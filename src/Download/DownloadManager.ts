@@ -18,8 +18,8 @@ class DownloadManager {
        // console.log("localItem derive item %%%%%%%%%%%%%%%%%%",localItem);
         localItem.downloadLocation = filePath;
         await dbHelper.createDriveItemEnteriesById(localItem, item.uniqueId);
-       // let localItem1 = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
-        // console.log("localItem derive item %%%%%%%%%%%%%%%%%%",localItem1);
+       let localItem1 = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
+        console.log("localItem derive item %%%%%%%%%%%%%%%%%%",localItem1.downloadLocation);
     }
 
    

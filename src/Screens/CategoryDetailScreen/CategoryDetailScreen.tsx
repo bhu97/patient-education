@@ -51,6 +51,7 @@ interface CategoryDetailScreenProps {
     isRefreshDetailScreen: boolean;
     setRefreshDetailScreen: (isRefresh: boolean) => void;
     isFetchAllThumbnailLoaded: boolean;
+    downloadAll:(currentArray:any[])=>void
 }
 
 interface CategoryDetailScreenState {
@@ -224,8 +225,8 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
     };
     onClickDownloadFolder = async () => {
      
-     await downloadFolder(this.props.gridViewData)
-   
+    // await downloadFolder(this.props.gridViewData)
+   this.props.downloadAll(this.props.gridViewData)
     }
 
     render() {
@@ -319,6 +320,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     setRefreshDetailScreen: (isRefresh: boolean) => {
         dispatch(setRefreshDetailScreen(isRefresh));
+    },
+    downloadAll: (data: any[]) => {
+        dispatch(downloadFolder(data));
     },
 });
 
