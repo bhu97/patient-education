@@ -18,6 +18,7 @@ interface LoginScreenProps {
     appDataLoading: boolean;
     setIsAlertShown: (value: boolean) => void;
     login: () => void;
+    isLogout:boolean;
 }
 
 interface LoginScreenState {}
@@ -30,7 +31,10 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     }
 
     componentDidMount() {
-        this.onLogin();
+        if(!this.props.isLogout){
+            this.onLogin();
+        }
+       
     }
 
     hideAlert = () => {
@@ -81,6 +85,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
 const mapStateToProps = (state: RootState) => ({
     isAlertShown: state.appDataReducer.isAlertShown,
     appDataLoading: state.appDataReducer.appDataLoading,
+    isLogout:state.appDataReducer.isLogout
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

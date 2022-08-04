@@ -6,6 +6,7 @@ const initialState = {
     appDataLoading: false,
     alertMessage: '',
     isAlertShown: false,
+    isLogout:false,
 };
 
 export const appDataSlice = createSlice({
@@ -20,6 +21,9 @@ export const appDataSlice = createSlice({
         },
         setIsAlertShown: (state, action: PayloadAction<boolean>) => {
             state.isAlertShown = action.payload;
+        },
+        setIsLogout: (state, action: PayloadAction<boolean>) => {
+            state.isLogout = action.payload;
         },
     },
 
@@ -62,6 +66,6 @@ export const appDataSlice = createSlice({
     },
 });
 
-export const { setAppDataLoading, setAlertMessage, setIsAlertShown } = appDataSlice.actions;
+export const { setAppDataLoading, setAlertMessage, setIsAlertShown,setIsLogout } = appDataSlice.actions;
 
 export default appDataSlice.reducer;

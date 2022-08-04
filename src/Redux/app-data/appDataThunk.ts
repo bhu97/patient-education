@@ -14,7 +14,7 @@ import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
 import { UserModel } from '../../Model/UserModel';
 import { setIsUpdateNowEnable, setMainCategoryList } from '../category/categorySlice';
 import { dispatchState } from '../store';
-import { setAppDataLoading, setIsAlertShown } from './appDataSlice';
+import { setAppDataLoading, setIsAlertShown, setIsLogout } from './appDataSlice';
 
 /**
  * createAsyncThunk receives two arguments
@@ -188,6 +188,7 @@ export const login = createAsyncThunk('appData/login', async () => {
     const userData: any = await dbHelper.getUser(); 
     SplashScreen.hide();
     //user not present fetch all data and save it DB and set to redux
+    dispatchState(setIsLogout(false))
     if (!userData) {
         dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));
         authenticationManager.login().then((token) => {
@@ -211,5 +212,6 @@ export const logout = createAsyncThunk('appData/logout', async () => {
     authenticationManager.setAuthorization(null);
      let obj =  await dbHelper.getUser()
      dbHelper.removeUser(obj)
+     dispatchState(setIsLogout(true))
     replaceAndNavigate(SCREEN_NAME.LoginScreen)
 })
