@@ -22,7 +22,7 @@ interface LoginScreenProps {
     login: () => void;
 }
 
-interface LoginScreenState {}
+interface LoginScreenState { }
 
 class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     constructor(props: LoginScreenProps) {
@@ -31,18 +31,10 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
         LocalizationManager.initializeAppLanguage();
     }
 
-   async componentDidMount() {
-        // let isLogout;
-        // isLogout = await AsyncStorage.getItem('isLogout');
-        // if(!JSON.parse(isLogout))
-        // {
-        // this.onLogin();
-        // }
-        // else{
-        //     SplashScreen.hide();
-        // }
+    async componentDidMount() {
+        SplashScreen.hide();
         this.onLogin();
-       
+
     }
 
     hideAlert = () => {
@@ -50,7 +42,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     };
     onLogin = () => {
         this.props.login();
-        
+
     };
 
     reTry = () => {
