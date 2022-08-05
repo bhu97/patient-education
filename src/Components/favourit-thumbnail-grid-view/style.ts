@@ -72,7 +72,6 @@ export const style = StyleSheet.create({
     textStyle: {
         ...BaseThemeStyle.fonts.listTitle,
         color: BaseThemeStyle.colors.titleColor,
-        fontWeight: 'bold',
         fontSize: 16,
     },
     iconContainer: {

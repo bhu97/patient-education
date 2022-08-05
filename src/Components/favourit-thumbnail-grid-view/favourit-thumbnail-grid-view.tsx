@@ -24,7 +24,6 @@ interface FavouritThumbnailGridViewProps {
     setFavGroupItem: (itemArray: any[]) => void;
     groupName: string;
     groupId: string;
-    toolTipList: Array<any>;
     setDownloadItem: (any) => void;
     isLoading: boolean;
     setIsLoading: (value: boolean) => void;
@@ -36,7 +35,6 @@ interface FavouritThumbnailGridViewProps {
 }
 interface FavouritThumbnailGridViewState {
     visible: boolean;
-    groups: Array<any>;
     selectedGroups: Array<string>;
     selectedItem: any;
     toolTipData: any[];
@@ -47,7 +45,6 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         super(props);
         this.state = {
             visible: false,
-            groups: [],
             selectedGroups: [],
             selectedItem: null,
             toolTipData: [
@@ -354,7 +351,6 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
 const mapStateToProps = (state: RootState) => ({
     favGroup: state.categoryReducer.favGroupData,
     gridViewList: state.categoryReducer.favGroupItemData,
-    toolTipList: state.categoryReducer.toolTipList,
     isLoading: state.appDataReducer.appDataLoading,
     showToolTipData: state.categoryReducer.showToolTipData
 });

@@ -78,8 +78,11 @@ export class DBhelper {
 
         const countries: any = await this.getAllAvailableCountries();
         //LogManager.info('countries=', countries);
-
+        console.log('countries=', countries)
+        if(countries.length>1)
         var defaultUserCountry = countries.find((item) => item.countryName.toLocaleLowerCase() === 'master');
+        else
+        var defaultUserCountry = countries;
         //LogManager.info('defaultUserCountry=', defaultUserCountry);
 
         if (!userCountry) {

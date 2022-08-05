@@ -77,7 +77,7 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                     </View>
 
                     <View style={style.textContainer}>
-                        {this.props.labelText != 'Master' && this.state.visible == false ? (
+                        {this.props.countryList.indexOf(this.state.selectedCountry)!=0 && this.state.visible == false ? (
                             <Text style={style.textStyle}>{this.props.labelText}</Text>
                         ) : (
                             <CustomToolTip

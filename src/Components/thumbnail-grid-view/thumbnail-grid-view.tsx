@@ -1,17 +1,18 @@
-import CheckBox from '@react-native-community/checkbox';
 import React, { PureComponent, useState } from 'react';
 import { FlatList, Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import dbHelper from '../../Database/DBHelper';
 import downloadManager from '../../Download/DownloadManager';
-import { getIconByExtension } from '../../Helper/Helper';
+import { getIconByExtension, isStringEmpty } from '../../Helper/Helper';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
-import { setFavGroupData } from '../../Redux/category/categorySlice';
+import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
+import { setFavGroupData, setRefreshDetailScreen, setShowToolTip } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
 import CustomToolTip from '../custom-tool-tip/custom-tool-tip';
+import GroupItem from '../favourit-thumbnail-grid-view/group-item';
 import FullScreenLoader from '../full-screen-loader/full-screen-loader';
 import { style } from './style';
 
@@ -21,17 +22,17 @@ interface ThumbnailGridViewProps {
     onFavGroupChange?: Function;
     navigation: any;
     toolTipList: Array<any>;
+    isLoading: boolean;
+    setRefreshDetailScreen: (boolean) => void;
+    showToolTipData: ComponentData.ShowToolTipData;
+    setShowToolTip: (data: ComponentData.ShowToolTipData) => void;
+    setIsLoading: (boolean) => void;
 }
 interface ThumbnailGridViewState {
-    isVisibleObject: any;
-    update: any;
-    loader: boolean;
     visible: boolean;
-    check: boolean;
-    groups: Array<any>;
     selectedGroups: Array<string>;
     selectedItem: any;
-    close: boolean;
+    toolTipData: any[];
 }
 
 class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailGridViewState> {
@@ -39,35 +40,21 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
     constructor(props) {
         super(props);
         this.state = {
-            isVisibleObject: {},
-            update: false,
-            loader: false,      
             visible: false,
-            check: false,
-            groups: [],
             selectedGroups: [],
             selectedItem: null,
-            close: false,
+            toolTipData: [
+                { index: 0, title: 'Download', isEnable: true },
+                { index: 1, title: 'Remove Locally', isEnable: true },
+                { index: 2, title: 'Add/Remove Favourite', isEnable: true },
+            ],
         };
     }
 
-    componentDidMount(): void {
-        let isVisibleArray = {};
-        this.props.gridViewList.map((item: any, index: any) => {
-            let setIndex = { index: index, isVisible: false };
-            isVisibleArray[index] = setIndex;
-        });
-        this.setState({ isVisibleObject: isVisibleArray });
-    }
+    componentDidMount(): void {}
 
     componentDidUpdate(prevProp): void {
         if (prevProp.gridViewList.length !== this.props.gridViewList.length) {
-            let isVisibleArray = {};
-            this.props.gridViewList.map((item: any, index: any) => {
-                let setIndex = { index: index, isVisible: false };
-                isVisibleArray[index] = setIndex;
-            });
-            this.setState({ isVisibleObject: isVisibleArray });
         }
     }
 
@@ -84,16 +71,11 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
             this.setState({ selectedGroups: array });
         }
     };
-
-    setVisible = (index: any, indicator: boolean) => {
-        let isVisibleCheck = this.state.isVisibleObject[index];
-        isVisibleCheck.isVisible = indicator;
-        this.setState({ isVisibleObject: { ...this.state.isVisibleObject, isVisibleCheck }, update: {} });
+    errorData = () => {
+        this.props.setIsLoading(false);
+        this.props.setShowToolTip({ isVisible: false, currentIndex: -1 });
     };
 
-    getVisibility = (index: any) => {
-        return this.state.isVisibleObject[index]?.isVisible ? true : false;
-    };
     getImage = (imageName) => {
         return <Image resizeMode="contain" style={style.iconImageStyle} source={imageName} />;
     };
@@ -101,34 +83,48 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
     getSelectedDataFromToolTip = (tooltip_item: any, item: any) => {
         console.log('tooltip clicked', tooltip_item, item);
         if (tooltip_item.index == 2) {
-            this.setState({
-                visible: true,
-                selectedItem: item,
-                close: true,
+            this.setState({ visible: true, selectedItem: item }, () => {
+                this.props.setShowToolTip({ isVisible: false, currentIndex: -1 });
             });
-        }else if (tooltip_item.index == 0) {
-            downloadManager
-                .downloadFile(item)
-                .then((res) => {
-                  
-                })
-                .catch((err) => {});
+        } else if (tooltip_item.index == 0) {
+            downloadManager.downloadFile(item, false).then(() => {});
         } else if (tooltip_item.index == 1) {
+            downloadManager.removeFile(item, false).then(() => {});
         }
     };
-  
-    getToolTip = (index, isVisibleIndicator, item) => {
+    getToolTipList = (index: number) => {
+        let localToolTip = [...this.state.toolTipData];
+        const isEmpaty = isStringEmpty(this.props.gridViewList[index].downloadLocation);
+        localToolTip.map((ele: any, ind: number) => {
+            if (isEmpaty) {
+                if (ind == 0) {
+                    ele.isEnable = true;
+                } else if (ind == 1) {
+                    ele.isEnable = false;
+                }
+            } else {
+                if (ind == 0) {
+                    ele.isEnable = false;
+                } else if (ind == 1) {
+                    ele.isEnable = true;
+                }
+            }
+        });
+
+        this.setState({ toolTipData: localToolTip });
+    };
+
+    getToolTip = (index, item) => {
         return (
             <>
                 <CustomToolTip
-                    isVisible={isVisibleIndicator}
-                    model={this.props.toolTipList}
+                    isVisible={this.props.showToolTipData.isVisible && this.props.showToolTipData.currentIndex == index}
+                    model={this.state.toolTipData}
                     position="right"
                     insideToolTip={this.inside(index, item)}
-                    closeToolTip={() => this.setVisible(index, false)}
+                    closeToolTip={() => this.props.setShowToolTip({ isVisible: false, currentIndex: -1 })}
                     onPressOfToolTipItem={(_tooltip_item) => this.getSelectedDataFromToolTip(_tooltip_item, item)}
                 />
-                {this.state.close ? this.closeToolTip(index) : null}
             </>
         );
     };
@@ -136,7 +132,8 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
         return (
             <TouchableOpacity
                 onPress={() => {
-                    this.setVisible(index, true);
+                    this.getToolTipList(index);
+                    this.props.setShowToolTip({ isVisible: true, currentIndex: index });
                     this.setState({ selectedGroups: [] });
                     this.getSelectedGroupsFromRealm(item.uniqueId);
                 }}
@@ -146,28 +143,23 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
         );
     }
 
-    closeToolTip = (index) => {
-        this.setVisible(index, false);
-        this.setState({ close: false });
-    };
     toolTipOptionSeparator = () => {
         return <View style={style.toolTipOptionSeperator}></View>;
     };
 
     loadDocument = async (item: GridViewModel) => {
-        this.setState({ loader: true });
+        this.props.setIsLoading(true);
         downloadManager
             .displayDocument(item)
             .then((res) => {
-                this.setState({ loader: false });
+                this.props.setIsLoading(false);
             })
             .catch(() => {
-                this.setState({ loader: false });
+                this.props.setIsLoading(false);
             });
     };
 
     renderItem = ({ item, index }: any) => {
-        const isVisibleIndicator = this.getVisibility(index);
         let fileName = item.name.split('.');
         return (
             <View style={style.backgroundViewStyle}>
@@ -184,19 +176,76 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                 </TouchableOpacity>
 
                 <View style={style.itemContainer}>
-                {item.downloadLocation ? 
-                <View style={style.downloadedListStyle}></View>: null}
+                    {item.downloadLocation ? <View style={style.downloadedListStyle}></View> : null}
                     <View style={style.textContainer}>
                         <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
                             {fileName[0]}
                         </Text>
                     </View>
                     <View style={style.iconContainer}>
-                        {this.getToolTip(index, isVisibleIndicator, item)}
+                        {this.getToolTip(index, item)}
                         <Text style={style.sizeStyle}>{item.fileSize}</Text>
                     </View>
                 </View>
             </View>
+        );
+    };
+    updateModal = async () => {
+        let favorites;
+        favorites = [];
+        this.state.selectedGroups.map((item) => {
+            let _group = this.props.favGroup.find((group) => group.id == item);
+            if (_group) {
+                favorites.push({
+                    uniqueId: this.state.selectedItem.uniqueId,
+                    id: `${_group.id}_${new Date().getTime()}`,
+                    favoriteGroupName: _group.id,
+                    fileExtension: this.state.selectedItem.fileExtension,
+                    fileSize: this.state.selectedItem.fileSize,
+                    largeUrl: this.state.selectedItem.largeUrl,
+                    listItemId: this.state.selectedItem.listItemId,
+                    mediumUrl: this.state.selectedItem.mediumUrl,
+                    name: this.state.selectedItem.name,
+                    parentReferenceId: this.state.selectedItem.parentReferenceId,
+                    smallUrl: this.state.selectedItem.smallUrl,
+                    title: this.state.selectedItem.title,
+                    webUrl: this.state.selectedItem.webUrl,
+                    downloadLocation: this.state.selectedItem.downloadLocation,
+                });
+            } else {
+                //console.log();
+            }
+        });
+        dbHelper.createFavouriteEntries(favorites, this.state.selectedItem.uniqueId).then(async () => {
+            // this.refreshList();
+            this.setState({ visible: false });
+        });
+    };
+    onSlectedCheckbox = (id, isCheck) => {
+        let array = this.state.selectedGroups;
+        if (isCheck) {
+            let _index = array.findIndex((_) => _ === id);
+            if (_index == -1) {
+                array.push(id);
+            }
+        } else {
+            let _index = array.findIndex((_) => _ === id);
+            if (_index >= 0) {
+                array.splice(_index, 1);
+            }
+        }
+
+        this.setState({ selectedGroups: array });
+    };
+    renderGroupItem = (item: any) => {
+        let isSelected = this.state.selectedGroups.findIndex((group_id) => group_id === item.id);
+        return (
+            <GroupItem
+                name={item.name}
+                id={item.id}
+                isCheck={isSelected >= 0}
+                onSelect={(id, isCheck) => this.onSlectedCheckbox(id, isCheck)}
+            />
         );
     };
 
@@ -216,36 +265,9 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                             </View>
                             <FlatList
                                 data={this.props.favGroup}
-                                extraData={this.state}
-                                renderItem={({ item }) => {
-                                    let isSelected = this.state.selectedGroups.findIndex(
-                                        (group_id) => group_id === item.id,
-                                    );
-                                    return (
-                                        <GroupItem
-                                            name={item.name}
-                                            id={item.id}
-                                            isCheck={isSelected >= 0}
-                                            onSelect={(id, isCheck) => {
-                                                let array = this.state.selectedGroups;
-                                                if (isCheck) {
-                                                    let _index = array.findIndex((_) => _ === id);
-                                                    if (_index == -1) {
-                                                        array.push(id);
-                                                    }
-                                                } else {
-                                                    let _index = array.findIndex((_) => _ === id);
-                                                    if (_index >= 0) {
-                                                        array.splice(_index, 1);
-                                                    }
-                                                }
-                                                console.log(isCheck, array);
-                                                this.setState({ selectedGroups: array });
-                                            }}
-                                        />
-                                    );
-                                }}
+                                renderItem={({ item }) => this.renderGroupItem(item)}
                             />
+
                             <View style={style.modalBottomRow}>
                                 <TouchableOpacity
                                     onPress={() => {
@@ -256,39 +278,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                                         <Text style={style.modalButton}>{BaseLocalization.cancel}</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={async () => {
-                                        let favorites;
-                                        favorites = [];
-                                        this.state.selectedGroups.map((item) => {
-                                            let _group = this.props.favGroup.find((group) => group.id == item);
-                                            if (_group) {
-                                                favorites.push({
-                                                    uniqueId: this.state.selectedItem.uniqueId,
-                                                    id: `${_group.id}_${new Date().getTime()}`,
-                                                    favoriteGroupName: _group.id,
-                                                    fileExtension: this.state.selectedItem.fileExtension,
-                                                    fileSize: this.state.selectedItem.fileSize,
-                                                    largeUrl: this.state.selectedItem.largeUrl,
-                                                    listItemId: this.state.selectedItem.listItemId,
-                                                    mediumUrl: this.state.selectedItem.mediumUrl,
-                                                    name: this.state.selectedItem.name,
-                                                    parentReferenceId: this.state.selectedItem.parentReferenceId,
-                                                    smallUrl: this.state.selectedItem.smallUrl,
-                                                    title: this.state.selectedItem.title,
-                                                    webUrl: this.state.selectedItem.webUrl,
-                                                });
-                                            }
-                                        });
-
-                                        dbHelper
-                                            .createFavouriteEntries(favorites, this.state.selectedItem.uniqueId)
-                                            .then(() => {
-                                                this.setState({ visible: false });
-                                                this.props?.onFavGroupChange();
-                                            });
-                                    }}
-                                >
+                                <TouchableOpacity onPress={() => this.updateModal()}>
                                     <View>
                                         <Text style={style.modalButton}>{BaseLocalization.submit}</Text>
                                     </View>
@@ -302,7 +292,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
     };
 
     render() {
-        return this.state.loader ? (
+        return this.props.isLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <>
@@ -314,7 +304,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                             numColumns={2}
                             columnWrapperStyle={{}}
                             keyExtractor={(item, index) => index.toString()}
-                            extraData={this.state.update}
+                            // extraData={this.state.update}
                         />
                         {this.getModal()}
                     </View>
@@ -329,36 +319,25 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
     }
 }
 
-const GroupItem = (props) => {
-    const [isCheck, setCheck] = useState(props.isCheck);
-    return (
-        <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-            <View>
-                <CheckBox
-                    tintColors={{ true: '#4389BC', false: '#4389BC' }}
-                    disabled={false}
-                    value={isCheck}
-                    onValueChange={() => {
-                        setCheck(!isCheck);
-                        props?.onSelect(props.id, !isCheck);
-                    }}
-                />
-            </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 18, color: 'black' }}>{props.name}</Text>
-            </View>
-        </View>
-    );
-};
-
 const mapStateToProps = (state: RootState) => ({
     favGroup: state.categoryReducer.favGroupData,
-    toolTipList: state.categoryReducer.toolTipList
+    toolTipList: state.categoryReducer.toolTipList,
+    showToolTipData: state.categoryReducer.showToolTipData,
+    isLoading: state.appDataReducer.appDataLoading,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
     setFavGroup: (favGroup: any) => {
         dispatch(setFavGroupData(favGroup));
+    },
+    setRefreshDetailScreen: (isRefresh: boolean) => {
+        dispatch(setRefreshDetailScreen(isRefresh));
+    },
+    setShowToolTip: (value: ComponentData.ShowToolTipData) => {
+        dispatch(setShowToolTip(value));
+    },
+    setIsLoading: (value: boolean) => {
+        dispatch(setAppDataLoading(value));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ThumbnailGridView);

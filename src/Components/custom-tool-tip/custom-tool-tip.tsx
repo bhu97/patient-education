@@ -34,6 +34,10 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
         if(item.isEnable){
             this.props.onPressOfToolTipItem && this.props.onPressOfToolTipItem?.(item); // The optional chaining (?.) operator short-circuits instead of throwing an error if the reference is undefined or null.
         }
+        else if(this.props.isCountryList)
+        {
+            this.props.onPressOfToolTipItem?.(item)    
+        }
     };
 
     toolTipList = () => {

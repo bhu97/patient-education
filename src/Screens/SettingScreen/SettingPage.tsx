@@ -25,7 +25,7 @@ interface SettingPageProps {
     isLoading: boolean;
     setIsLoading: (boolean) => void;
     setSelectedCountry: (value: string) => void;
-    selectedCountry: (string) => void;
+    selectedCountry: string;
     navigation: any;
     isUpdateNowEnable: boolean
     fetchData: () => void;
@@ -159,7 +159,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
 
                             {this.titleRowView(BaseLocalization.countryTitle, BaseLocalization.version)}
 
-                            {this.boxRowView('Master', 'edit-2', deviceManager.getAppVersion())}
+                            {this.boxRowView(this.props.selectedCountry, 'edit-2', deviceManager.getAppVersion())}
 
                             {this.headerContainer(BaseLocalization.contentUpdates)}
 
