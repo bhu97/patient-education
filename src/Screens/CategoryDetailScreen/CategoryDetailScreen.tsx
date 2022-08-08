@@ -10,7 +10,7 @@ import MainContainer from '../../Components/main-container/main-container';
 import MoreInfoList from '../../Components/more-info-list/more-info-list';
 import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
 import dbHelper from '../../Database/DBHelper';
-import { createBredCrumbList, createGridModelData, linkedUrlListToArray } from '../../Helper/Helper';
+import { createBredCrumbList, createGridModelData, linkedUrlListToArray, isStringEmpty } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import networkManager from '../../Helper/NetworkManager';
@@ -19,7 +19,7 @@ import { DriveItemModel } from '../../Model/DriveItemModel';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { downloadFolder, fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
+import { downloadFolder, fetchAllThumbnails, removeDownloadedFolder } from '../../Redux/app-data/appDataThunk';
 import {
     setGridViewData,
     setMoreInfoData,
@@ -51,7 +51,8 @@ interface CategoryDetailScreenProps {
     isRefreshDetailScreen: boolean;
     setRefreshDetailScreen: (isRefresh: boolean) => void;
     isFetchAllThumbnailLoaded: boolean;
-    downloadAll:(currentArray:any[])=>void
+    downloadAll: (currentArray: any[]) => void;
+    removeAll: (currentArray: any[]) => void;
 }
 
 interface CategoryDetailScreenState {
@@ -224,10 +225,14 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         }
     };
     onClickDownloadFolder = async () => {
-     
-    // await downloadFolder(this.props.gridViewData)
-   this.props.downloadAll(this.props.gridViewData)
-    }
+      
+       if( this.props.gridViewData.filter((item) => {
+            return isStringEmpty(item.downloadLocation);
+        }).length )
+        this.props.downloadAll(this.props.gridViewData);
+        else
+        this.props.removeAll(this.props.gridViewData);
+    };
 
     render() {
         return this.props.isLoading ? (
@@ -258,10 +263,20 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                                 <View style={style.mainContainerForCard}>
                                     <View style={style.itemContainer}>
                                         <View style={style.circleIconContainer}>
-                                            <CustomIcon name={'download'} />
+                                            <CustomIcon name={this.props.gridViewData.filter((item) => {
+                                                    return isStringEmpty(item.downloadLocation);
+                                                }).length
+                                                    ? 'download'
+                                                    : 'trash-2'} />
                                         </View>
                                         <View style={style.folderTextContainer}>
-                                            <Text style={style.textStyle}>{BaseLocalization.downloadFolder}</Text>
+                                            <Text style={style.textStyle}>
+                                                {this.props.gridViewData.filter((item) => {
+                                                    return isStringEmpty(item.downloadLocation);
+                                                }).length
+                                                    ? BaseLocalization.downloadFolder
+                                                    : BaseLocalization.removeFolder}
+                                            </Text>
                                         </View>
                                     </View>
                                 </View>
@@ -323,6 +338,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     downloadAll: (data: any[]) => {
         dispatch(downloadFolder(data));
+    },
+    removeAll: (data: any[]) => {
+        dispatch(removeDownloadedFolder(data));
     },
 });
 

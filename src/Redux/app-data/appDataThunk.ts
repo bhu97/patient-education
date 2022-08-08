@@ -243,7 +243,7 @@ export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (
 // });
 export const removeDownloadedFolder = createAsyncThunk('appData/removeDownloadedFolder', async (driveItems: Array<any>) => {
     for (let i = 0; i < driveItems.length; i++) {
-        if (isStringEmpty(driveItems[i].downloadLocation) == true) {
+        if (isStringEmpty(driveItems[i].downloadLocation) == false) {
             await downloadManager.removeFile(driveItems[i], false);
         }
     }

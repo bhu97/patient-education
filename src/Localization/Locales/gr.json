@@ -43,5 +43,6 @@
     "checkSubTitle":"Bitte wählen Sie eine Liste aus.",
     "logout": "Ausloggen",
     "logoutNow": "jetzt abmelden",
-    "downloadFolder": "Download Ordner"
+    "downloadFolder": "Download Ordner",
+    "removeFolder": "Ordner entfernen"
 }
