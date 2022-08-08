@@ -133,8 +133,9 @@ class DownloadManager {
         );
     };
 
-    downloadFileAndShow = async (item): Promise<string> => {
-        await this.deleteDownloadedFile(item.name);
+    downloadFileAndShow = async (item,isFav): Promise<string> => {
+       // await this.deleteDownloadedFile(item.name);
+        // this.downloadFile(item,isFav);
         const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
         const url = response.driveItem['@microsoft.graph.downloadUrl'];
         const fileName = item.name;
@@ -148,8 +149,11 @@ class DownloadManager {
             RNFS.downloadFile(options)
                 .promise.then(async (res) => {
                     console.log('localfile 103 =', `file://${localFile}`);
-                    // this.openLink(`file://${localFile}`)
-
+                    if(isFav){
+                        this.updateCurrentFavItem(item, localFile)
+                    }else{
+                        this.updateCurrentDriveItem(item, localFile)
+                    }
                     resolve(`file://${localFile}`);
                 })
                 .catch(() => {
@@ -176,7 +180,7 @@ class DownloadManager {
         });
     };
 
-    displayDocument = async (item): Promise<boolean> => {
+    displayDocument = async (item,isFav): Promise<boolean> => {
         const fileExt = getExtension(item.webUrl);
         let title = '';
         if (item.name) title = item.name.split('.' + fileExt)[0];
@@ -198,7 +202,7 @@ class DownloadManager {
                     });
             } else if (fileExt.toLowerCase() === 'pdf') {
                 downloadManager
-                    .downloadFileAndShow(item)
+                    .downloadFileAndShow(item,isFav)
                     .then((res) => {
                         NavigationManager.navigate('CustomWebView', {
                             url: res,

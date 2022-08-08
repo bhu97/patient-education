@@ -150,7 +150,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
     loadDocument = async (item: GridViewModel) => {
         this.props.setIsLoading(true);
         downloadManager
-            .displayDocument(item)
+            .displayDocument(item,false)
             .then((res) => {
                 this.props.setIsLoading(false);
             })

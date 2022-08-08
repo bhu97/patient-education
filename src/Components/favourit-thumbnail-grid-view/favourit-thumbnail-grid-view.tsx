@@ -188,7 +188,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
     loadDocument = async (item: GridViewModel) => {
         this.props.setIsLoading(true)
         downloadManager
-            .displayDocument(item)
+            .displayDocument(item,true)
             .then((res) => {
                 this.props.setIsLoading(false)
             })
