@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, FlatList, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
@@ -110,7 +110,6 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
             this.props.setFavGroupItem(items);
         }
     };
-
     getModal = () => {
         return (
             <Modal animationType="slide" transparent={true} visible={this.state.visible}>

@@ -33,10 +33,9 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
 
     componentDidMount() {
         SplashScreen.hide();
-        // if(!this.props.isLogout){
-        //     this.onLogin();
-        // }
-       
+        if(!this.props.isLogout){
+            this.onLogin();
+        }
     }
 
     hideAlert = () => {

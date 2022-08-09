@@ -13,7 +13,7 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
-import { setIsFetchThumbnailLoaded, setIsUpdateNowEnable, setMainCategoryList } from '../category/categorySlice';
+import { setIsFetchThumbnailLoaded, setIsUpdateNowEnable, setMainCategoryList, setRefreshDetailScreen } from '../category/categorySlice';
 import { dispatchState } from '../store';
 import { setAppDataLoading, setIsAlertShown, setIsLogout } from './appDataSlice';
 
@@ -234,6 +234,7 @@ export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (
         }
         if (i == driveItems.length - 1) {
             dispatchState(setAppDataLoading(false))
+            dispatchState(setRefreshDetailScreen(true))
         }
     }
 });
@@ -242,9 +243,14 @@ export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (
 //     await downloadManager.removeFile(item,false);
 // });
 export const removeDownloadedFolder = createAsyncThunk('appData/removeDownloadedFolder', async (driveItems: Array<any>) => {
+    dispatchState(setAppDataLoading(true))
     for (let i = 0; i < driveItems.length; i++) {
         if (isStringEmpty(driveItems[i].downloadLocation) == false) {
             await downloadManager.removeFile(driveItems[i], false);
+        }
+        if (i == driveItems.length - 1) {
+            dispatchState(setAppDataLoading(false))
+            dispatchState(setRefreshDetailScreen(true))
         }
     }
 });

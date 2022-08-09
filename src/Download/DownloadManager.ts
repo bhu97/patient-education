@@ -12,31 +12,28 @@ import { DriveItemModel } from '../Model/DriveItemModel';
 import { FavoriteModel } from '../Model/FavouriteModel';
 
 class DownloadManager {
-   
-    updateCurrentDriveItem = async (item: DriveItemModel, filePath: string ) => {
+
+    updateCurrentDriveItem = async (item: DriveItemModel, filePath: string): Promise<boolean> => {
         let localItem = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
-       // console.log("localItem derive item %%%%%%%%%%%%%%%%%%",localItem);
         localItem.downloadLocation = filePath;
         await dbHelper.createDriveItemEnteriesById(localItem, item.uniqueId);
-       let localItem1 = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
-        console.log("localItem derive item %%%%%%%%%%%%%%%%%%",localItem1.downloadLocation);
+        return true
     }
 
-   
-    updateCurrentFavItem = async (item: FavoriteModel, filePath: string ) => {    
-        let localItem = await dbHelper.getFavItemsByUniqueId(item.uniqueId); 
+
+    updateCurrentFavItem = async (item: FavoriteModel, filePath: string): Promise<boolean> => {
+        let localItem = await dbHelper.getFavItemsByUniqueId(item.uniqueId);
         localItem[0].downloadLocation = filePath;
-        await dbHelper.createFavouriteEntries([localItem[0]], item.uniqueId);
-        // let localItem1 = await dbHelper.getFavItemsByUniqueId(item.uniqueId); 
-        // console.log("localItem1 &&&&&",localItem1);
+        await dbHelper.createFavouriteEntries(localItem[0]);
+        return true
     }
 
-    downloadFile = async (item: any,isFavPage:boolean, customFileName?: string, ): Promise<string> => {
+    downloadFile = async (item: any, isFavPage: boolean, customFileName?: string,): Promise<string> => {
         const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
         const downloadUrl = response.driveItem['@microsoft.graph.downloadUrl'];
         let documentDir = RNFS.DocumentDirectoryPath;
         let _ = await permissions.checkPermission();
-      
+
         let fileName: string;
         if (customFileName) {
             fileName = customFileName ? customFileName : 'PdfFile';
@@ -45,9 +42,9 @@ class DownloadManager {
         }
         const fileExt = fileName.split('.').pop();
         var downloadFilePath = documentDir + '/' + fileName;
-        if (fileExt === 'pdf' || fileExt === 'png' || fileExt === 'jpg' || fileExt === 'jpeg') {    
+        if (fileExt === 'pdf' || fileExt === 'png' || fileExt === 'jpg' || fileExt === 'jpeg') {
             downloadFilePath = documentDir + '/' + fileName;
-        } else { 
+        } else {
             downloadFilePath = downloadUrl;
         }
         let fileDownloadPath = Platform.OS === 'ios' ? documentDir : downloadFilePath;
@@ -59,12 +56,15 @@ class DownloadManager {
             RNFS.downloadFile(options)
                 .promise.then(async (res: any) => {
                     console.log('SUCCESS');
-                    if(isFavPage){
-                        this.updateCurrentFavItem(item, fileDownloadPath)
-                    }else{
-                        this.updateCurrentDriveItem(item, fileDownloadPath)
+                    if (isFavPage) {
+                         this.updateCurrentFavItem(item, fileDownloadPath).then((res)=>{ 
+                            resolve(fileDownloadPath);
+                         })
+                    } else {
+                        await this.updateCurrentDriveItem(item, fileDownloadPath)
+                        resolve(fileDownloadPath);
                     }
-                    resolve(fileDownloadPath);
+
                 })
                 .catch((err) => {
                     // console.log('ERROR', err);
@@ -72,16 +72,16 @@ class DownloadManager {
                 });
         });
     };
-    removeFile = async (item: any,isFavPage:boolean) => {
+    removeFile = async (item: any, isFavPage: boolean) => {
         var path = RNFS.DocumentDirectoryPath + `/${item.name}`;
         return (
             RNFS.unlink(path)
                 .then(() => {
                     console.log('FILE DELETED');
-                    if(isFavPage){
+                    if (isFavPage) {
                         this.updateCurrentFavItem(item, '')
-                    }else{
-                        this.updateCurrentDriveItem(item, '')
+                    } else {
+                         this.updateCurrentDriveItem(item, '')
                     }
                 })
                 // `unlink` will throw an error, if the item to unlink does not exist
@@ -133,8 +133,8 @@ class DownloadManager {
         );
     };
 
-    downloadFileAndShow = async (item,isFav): Promise<string> => {
-       // await this.deleteDownloadedFile(item.name);
+    downloadFileAndShow = async (item, isFav): Promise<string> => {
+        // await this.deleteDownloadedFile(item.name);
         // this.downloadFile(item,isFav);
         const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
         const url = response.driveItem['@microsoft.graph.downloadUrl'];
@@ -149,9 +149,9 @@ class DownloadManager {
             RNFS.downloadFile(options)
                 .promise.then(async (res) => {
                     console.log('localfile 103 =', `file://${localFile}`);
-                    if(isFav){
+                    if (isFav) {
                         this.updateCurrentFavItem(item, localFile)
-                    }else{
+                    } else {
                         this.updateCurrentDriveItem(item, localFile)
                     }
                     resolve(`file://${localFile}`);
@@ -180,7 +180,7 @@ class DownloadManager {
         });
     };
 
-    displayDocument = async (item,isFav): Promise<boolean> => {
+    displayDocument = async (item, isFav): Promise<boolean> => {
         const fileExt = getExtension(item.webUrl);
         let title = '';
         if (item.name) title = item.name.split('.' + fileExt)[0];
@@ -202,7 +202,7 @@ class DownloadManager {
                     });
             } else if (fileExt.toLowerCase() === 'pdf') {
                 downloadManager
-                    .downloadFileAndShow(item,isFav)
+                    .downloadFileAndShow(item, isFav)
                     .then((res) => {
                         NavigationManager.navigate('CustomWebView', {
                             url: res,

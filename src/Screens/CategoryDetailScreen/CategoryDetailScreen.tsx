@@ -1,19 +1,20 @@
+import NetInfo from '@react-native-community/netinfo';
 import React, { Component } from 'react';
-import { Platform, TouchableOpacity, View, Text } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
+import CustomIcon from '../../Components/custom-icon/custom-icon';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
 import MoreInfoList from '../../Components/more-info-list/more-info-list';
 import ThumbnailGridView from '../../Components/thumbnail-grid-view/thumbnail-grid-view';
 import dbHelper from '../../Database/DBHelper';
-import { createBredCrumbList, createGridModelData, linkedUrlListToArray, isStringEmpty } from '../../Helper/Helper';
+import { createBredCrumbList, createGridModelData, isStringEmpty, linkedUrlListToArray } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
-import networkManager from '../../Helper/NetworkManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { GridViewModel } from '../../Model/GridViewModel';
@@ -25,14 +26,11 @@ import {
     setMoreInfoData,
     setMoreInfoScreenData,
     setRefreshDetailScreen,
-    setSelectedCategoryData,
+    setSelectedCategoryData
 } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
-import NetInfo from '@react-native-community/netinfo';
-import CustomIcon from '../../Components/custom-icon/custom-icon';
-import downloadManager from '../../Download/DownloadManager';
 
 interface CategoryDetailScreenProps {
     gridViewData: GridViewModel[];
@@ -72,12 +70,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
     }
 
     componentDidMount() {
-        // this._unsubscribe = this.props.navigation.addListener('focus', async () => {
-        //     let isConnected = await networkManager.isConnected();
-        //     this.getCategoryDetailData(isConnected);
-        // });
         this._unsubscribeNetworkCheck = NetInfo.addEventListener((state) => {
-            console.log('%%%%%%%%%%%%91 state.isConnected', state.isConnected);
             if (state.isConnected) {
                 if (!this.props.isFetchAllThumbnailLoaded) {
                     this.getCategoryDetailData(true);
@@ -175,7 +168,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
         if (this.props.isRefreshDetailScreen != prevProp.isRefreshDetailScreen) {
             if (this.props.isRefreshDetailScreen) {
                 LogManager.debug('refresh screen');
-                this.getCategoryDetailData();
+                this.getCategoryDetailData(true);
             }
         }
     }

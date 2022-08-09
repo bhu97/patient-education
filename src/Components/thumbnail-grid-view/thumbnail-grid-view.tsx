@@ -1,13 +1,14 @@
-import React, { PureComponent, useState } from 'react';
+import React, { PureComponent } from 'react';
 import { FlatList, Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import dbHelper from '../../Database/DBHelper';
 import downloadManager from '../../Download/DownloadManager';
-import { getIconByExtension, isStringEmpty } from '../../Helper/Helper';
+import { createGridModelData, getIconByExtension, isStringEmpty } from '../../Helper/Helper';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { setFavGroupData, setRefreshDetailScreen, setShowToolTip } from '../../Redux/category/categorySlice';
+import { fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
+import { setFavGroupData, setGridViewData, setShowToolTip } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import CustomIcon from '../custom-icon/custom-icon';
@@ -23,10 +24,11 @@ interface ThumbnailGridViewProps {
     navigation: any;
     toolTipList: Array<any>;
     isLoading: boolean;
-    setRefreshDetailScreen: (boolean) => void;
     showToolTipData: ComponentData.ShowToolTipData;
     setShowToolTip: (data: ComponentData.ShowToolTipData) => void;
     setIsLoading: (boolean) => void;
+    selectedCategoryData: any[];
+    setGridViewList: (data: GridViewModel[]) => void;
 }
 interface ThumbnailGridViewState {
     visible: boolean;
@@ -60,7 +62,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
 
     getSelectedGroupsFromRealm = async (uniqueId) => {
         let selectedGroups = await dbHelper.getFavItemsByUniqueId(uniqueId);
-        console.log('selectedGroups****************', selectedGroups);
+        // console.log('selectedGroups****************', selectedGroups);
         if (selectedGroups.length > 0) {
             let array;
             array = [];
@@ -81,17 +83,42 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
     };
 
     getSelectedDataFromToolTip = (tooltip_item: any, item: any) => {
-        console.log('tooltip clicked', tooltip_item, item);
+        this.props.setShowToolTip({ isVisible: false, currentIndex: -1 });
         if (tooltip_item.index == 2) {
             this.setState({ visible: true, selectedItem: item }, () => {
-                this.props.setShowToolTip({ isVisible: false, currentIndex: -1 });
             });
         } else if (tooltip_item.index == 0) {
-            downloadManager.downloadFile(item, false).then(() => {});
+            this.props.setIsLoading(true)
+            downloadManager.downloadFile(item, false).then(() => {
+                this.refreshList();
+            });
         } else if (tooltip_item.index == 1) {
-            downloadManager.removeFile(item, false).then(() => {});
+            this.props.setIsLoading(true)
+            downloadManager.removeFile(item, false).then(() => {
+                this.refreshList();
+            });
         }
     };
+
+    refreshList = async () => {
+        const selectedCategoryData = this.props.selectedCategoryData;
+
+        const categoryDetailDataItem: any = selectedCategoryData[selectedCategoryData.length - 1];
+        const item = categoryDetailDataItem.data;
+        const categoryDetailData = await dbHelper.getForSelectedCategory(item);
+        // LogManager.info('categoryDetailData=', categoryDetailData);
+
+     
+       let  thumbnailList = await fetchAllThumbnails(item.uniqueId);
+       
+        //   LogManager.info('responses list Item=', thumbnailList);
+        const gridData = await createGridModelData(categoryDetailData, thumbnailList);
+        // LogManager.info('gridData=', gridData);
+
+        this.props.setGridViewList(gridData);
+        this.errorData();
+    };
+
     getToolTipList = (index: number) => {
         let localToolTip = [...this.state.toolTipData];
         const isEmpaty = isStringEmpty(this.props.gridViewList[index].downloadLocation);
@@ -165,7 +192,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
             <View style={style.backgroundViewStyle}>
                 <TouchableOpacity onPress={() => this.loadDocument(item)}>
                     {item.largeUrl ? (
-                        <Image style={style.imageStyle} source={{ uri: item.largeUrl }} />
+                        <Image style={{...style.imageStyle, resizeMode: item.name.startsWith("iPDF") ? 'contain' : 'cover'}}source={{ uri: item.largeUrl }} />
                     ) : (
                         <Image style={style.imageStyle} source={Images.emptyThumbnail} />
                     )}
@@ -324,20 +351,22 @@ const mapStateToProps = (state: RootState) => ({
     toolTipList: state.categoryReducer.toolTipList,
     showToolTipData: state.categoryReducer.showToolTipData,
     isLoading: state.appDataReducer.appDataLoading,
+    selectedCategoryData: state.categoryReducer.selectedCategoryData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
     setFavGroup: (favGroup: any) => {
         dispatch(setFavGroupData(favGroup));
     },
-    setRefreshDetailScreen: (isRefresh: boolean) => {
-        dispatch(setRefreshDetailScreen(isRefresh));
-    },
+
     setShowToolTip: (value: ComponentData.ShowToolTipData) => {
         dispatch(setShowToolTip(value));
     },
     setIsLoading: (value: boolean) => {
         dispatch(setAppDataLoading(value));
+    },
+    setGridViewList: (gridData: GridViewModel[]) => {
+        dispatch(setGridViewData(gridData));
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(ThumbnailGridView);
