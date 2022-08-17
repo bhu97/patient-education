@@ -245,8 +245,17 @@ export class DBhelper {
         await DatabaseManager.getInstance().removeRealmObject(FavoriteGroupSchema.name, item);
     }
 
-    async createFavouriteEntries(data: FavoriteModel) {
-        await DatabaseManager.getInstance().createEntity(FavoriteSchema.name, data);    
+    // async createFavouriteEntries(data: FavoriteModel) {
+    //     await DatabaseManager.getInstance().createEntity(FavoriteSchema.name, data);    
+    // }
+    async createFavouriteEntries(data: FavoriteModel[], uniqueId: String) {
+        let items = DatabaseManager.getInstance().getEntities(FavoriteSchema.name, `uniqueId == '${uniqueId}'`);
+        if (items.length > 0) {
+            items.forEach(async (_element) => {
+                await DatabaseManager.getInstance().deleteRealmObject(FavoriteSchema.name, _element.id);
+            });
+        }
+        await DatabaseManager.getInstance().createEntity(FavoriteSchema.name, data);
     }
 
     async getFavItems(group: FavoriteGroupModel): Promise<DriveItemModel[]> {

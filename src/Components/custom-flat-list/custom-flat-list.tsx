@@ -50,8 +50,6 @@ export default class CustomFlatList extends PureComponent<CustomFlatListProps, C
                         </Text>
                     </View>
                     <View style={style.otherView}>
-                        <View style={style.blueDotImage}>{this.getImage(Images.menuBlueDots)}</View>
-
                         <View style={style.imageViewStyle}>
                             <View style={style.rightArrow}>{this.getImage(Images.rightArrow)}</View>
                         </View>
