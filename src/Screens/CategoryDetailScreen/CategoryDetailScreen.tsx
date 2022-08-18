@@ -70,14 +70,16 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
     }
 
     componentDidMount() {
-        this._unsubscribeNetworkCheck = NetInfo.addEventListener((state) => {
-            if (state.isConnected) {
-                if (!this.props.isFetchAllThumbnailLoaded) {
-                    this.getCategoryDetailData(true);
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this._unsubscribeNetworkCheck = NetInfo.addEventListener((state) => {
+                if (state.isConnected) {
+                    if (!this.props.isFetchAllThumbnailLoaded) {
+                        this.getCategoryDetailData(true);
+                    }
+                } else {
+                    this.getCategoryDetailData(false);
                 }
-            } else {
-                this.getCategoryDetailData(false);
-            }
+            });
         });
     }
 

@@ -17,6 +17,11 @@ class DownloadManager {
         let localItem = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
         localItem.downloadLocation = filePath;
         await dbHelper.createDriveItemEnteriesById(localItem, item.uniqueId);
+        let localItemFav = await dbHelper.getFavItemsByUniqueId(item.uniqueId);
+        if (localItemFav.length > 0) {
+            localItemFav[0].downloadLocation = filePath;
+            await dbHelper.createFavouriteEntries([localItemFav[0]]);
+        }
         return true
     }
 
@@ -24,7 +29,11 @@ class DownloadManager {
     updateCurrentFavItem = async (item: FavoriteModel, filePath: string): Promise<boolean> => {
         let localItem = await dbHelper.getFavItemsByUniqueId(item.uniqueId);
         localItem[0].downloadLocation = filePath;
-        await dbHelper.createFavouriteEntries(localItem[0]);
+        await dbHelper.createFavouriteEntries([localItem[0]]);
+        let localItemDri = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
+        localItemDri.downloadLocation = filePath;
+        await dbHelper.createDriveItemEnteriesById(localItemDri, item.uniqueId);
+
         return true
     }
 
@@ -32,45 +41,46 @@ class DownloadManager {
         const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
         const downloadUrl = response.driveItem['@microsoft.graph.downloadUrl'];
         let documentDir = RNFS.DocumentDirectoryPath;
-        let _ = await permissions.checkPermission();
-
-        let fileName: string;
-        if (customFileName) {
-            fileName = customFileName ? customFileName : 'PdfFile';
-        } else {
-            fileName = item.name;
-        }
-        const fileExt = fileName.split('.').pop();
-        var downloadFilePath = documentDir + '/' + fileName;
-        if (fileExt === 'pdf' || fileExt === 'png' || fileExt === 'jpg' || fileExt === 'jpeg') {
-            downloadFilePath = documentDir + '/' + fileName;
-        } else {
-            downloadFilePath = downloadUrl;
-        }
-        let fileDownloadPath = Platform.OS === 'ios' ? documentDir : downloadFilePath;
-        const options = {
-            fromUrl: downloadUrl,
-            toFile: fileDownloadPath,
-        };
-        return new Promise((resolve, reject) => {
-            RNFS.downloadFile(options)
-                .promise.then(async (res: any) => {
-                    console.log('SUCCESS');
-                    if (isFavPage) {
-                         this.updateCurrentFavItem(item, fileDownloadPath).then((res)=>{ 
+        let granted = await permissions.checkPermission();
+        if (granted) {
+            let fileName: string;
+            if (customFileName) {
+                fileName = customFileName ? customFileName : 'PdfFile';
+            } else {
+                fileName = item.name;
+            }
+            const fileExt = fileName.split('.').pop();
+            var downloadFilePath = documentDir + '/' + fileName;
+            if (fileExt === 'pdf' || fileExt === 'png' || fileExt === 'jpg' || fileExt === 'jpeg') {
+                downloadFilePath = documentDir + '/' + fileName;
+            } else {
+                downloadFilePath = downloadUrl;
+            }
+            let fileDownloadPath = Platform.OS === 'ios' ? documentDir : downloadFilePath;
+            const options = {
+                fromUrl: downloadUrl,
+                toFile: fileDownloadPath,
+            };
+            return new Promise((resolve, reject) => {
+                RNFS.downloadFile(options)
+                    .promise.then(async (res: any) => {
+                        console.log('SUCCESS');
+                        if (isFavPage) {
+                            this.updateCurrentFavItem(item, fileDownloadPath).then((res) => {
+                                resolve(fileDownloadPath);
+                            })
+                        } else {
+                            await this.updateCurrentDriveItem(item, fileDownloadPath)
                             resolve(fileDownloadPath);
-                         })
-                    } else {
-                        await this.updateCurrentDriveItem(item, fileDownloadPath)
-                        resolve(fileDownloadPath);
-                    }
+                        }
 
-                })
-                .catch((err) => {
-                    // console.log('ERROR', err);
-                    reject(err);
-                });
-        });
+                    })
+                    .catch((err) => {
+                        // console.log('ERROR', err);
+                        reject(err);
+                    });
+            });
+        }
     };
     removeFile = async (item: any, isFavPage: boolean) => {
         var path = RNFS.DocumentDirectoryPath + `/${item.name}`;
@@ -81,7 +91,7 @@ class DownloadManager {
                     if (isFavPage) {
                         this.updateCurrentFavItem(item, '')
                     } else {
-                         this.updateCurrentDriveItem(item, '')
+                        this.updateCurrentDriveItem(item, '')
                     }
                 })
                 // `unlink` will throw an error, if the item to unlink does not exist
