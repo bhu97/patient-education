@@ -1,5 +1,5 @@
 import React, { Fragment, PureComponent } from 'react';
-import { ActivityIndicator, Image, Text, View } from 'react-native';
+import { ActivityIndicator, Animated, Easing, Image, Text, View } from 'react-native';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
@@ -10,13 +10,34 @@ interface FullScreenLoaderProps {
     showSpinner?: boolean;
 }
 
-interface FullScreenLoaderState {}
+interface FullScreenLoaderState {
+
+}
 
 export default class FullScreenLoader extends PureComponent<FullScreenLoaderProps, FullScreenLoaderState> {
     constructor(props: FullScreenLoaderProps) {
         super(props);
-        this.state = {};
+        this.state = {
+
+        };
     }
+    spinValue = new Animated.Value(0);
+    componentDidMount() {
+        Animated.timing(
+            this.spinValue,
+            {
+                toValue: 1,
+                duration: 3000,
+                easing: Easing.linear, // Easing is an additional import from react-native
+                useNativeDriver: true  // To make use of native driver for performance
+            }
+        ).start()
+    }
+
+    spin = this.spinValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg']
+    })
 
     render() {
         return (
@@ -27,7 +48,10 @@ export default class FullScreenLoader extends PureComponent<FullScreenLoaderProp
                             <>
                                 <View style={style.indicatorContainer}>
                                     {/* <Image source={Images.loaderImage} /> */}
-                                    <ActivityIndicator size={'large'} color={BaseThemeStyle.colors.blue}/>
+                                    <Animated.Image
+                                        style={{ transform: [{ rotate: this.spin }] }}
+                                        source={Images.loaderImage} />
+                                    {/* <ActivityIndicator size={'large'} color={BaseThemeStyle.colors.blue}/> */}
                                 </View>
                                 <Text style={style.textStyle}>{BaseLocalization.pleaseWait}</Text>
                             </>

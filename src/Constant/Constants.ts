@@ -110,7 +110,11 @@ export const API_NAMES = {
         'https://login.microsoftonline.com/organizations',
     ],
 
-    COUNTRY_SUPPORT_EMAIL:'https://fresenius.sharepoint.com/teams/FMETS0447212/Lists/Support%20Emails/AllItems.aspx'
+    //COUNTRY_SUPPORT_EMAIL:'https://fresenius.sharepoint.com/teams/FMETS0447212/Lists/Support%20Emails/AllItems.aspx',
+    COUNTRY_SUPPORT_EMAIL:'https://fresenius.sharepoint.com/teams/FMETS0447212/Lists/Support%20Emails/AllItems.aspx?OR=Teams%2DHL&CT=1660024896572&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiIxNDE1LzIyMDcwMzAwODE0IiwiSGFzRmVkZXJhdGVkVXNlciI6ZmFsc2V9',
+
+    
+    
 };
 
 export const SCREEN_NAME = {
