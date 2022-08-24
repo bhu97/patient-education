@@ -12,7 +12,7 @@ import dbHelper from '../../Database/DBHelper';
 import { DateUtility } from '../../Helper/date-utility';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { fetchAllDriveItems, logout, onLogout } from '../../Redux/app-data/appDataThunk';
+import { fetchAllDriveItems, logout} from '../../Redux/app-data/appDataThunk';
 import { setCountryListData, setSelectedCountry } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
@@ -194,7 +194,7 @@ const mapDispatchToProps = (dispatch: any) => ({
         dispatch(setSelectedCountry(value));
     },
     fetchData: () => {
-        dispatch(fetchAllDriveItems());
+        dispatch(fetchAllDriveItems(true));
     },
     logoutPress:()=>{
         dispatch(logout())

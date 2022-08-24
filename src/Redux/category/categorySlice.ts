@@ -74,7 +74,7 @@ const initialState: CategoryState = {
     isRefreshDetailScreen: false,
     favGroupData: [],
     favGroupItemData: [],
-    isUpdateNowEnable:false,
+    isUpdateNowEnable:true,
     isCountrySelected:false,
     isFetchAllThumbnailLoaded:false,
     toolTipList: [

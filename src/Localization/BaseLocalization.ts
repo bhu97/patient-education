@@ -52,5 +52,6 @@ export const BaseLocalization = {
     logoutNow : LocalizationManager.getLocalizedStrings('logoutNow'),
     downloadFolder: LocalizationManager.getLocalizedStrings('downloadFolder'),
     removeFolder: LocalizationManager.getLocalizedStrings('removeFolder'),
+    folderOptions: LocalizationManager.getLocalizedStrings('folderOptions'),
 
 };
