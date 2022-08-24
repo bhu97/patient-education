@@ -1,9 +1,7 @@
 import { createNavigatorFactory, TabActions, TabRouter, useNavigationBuilder } from '@react-navigation/native';
 import * as React from 'react';
 import { Image, Pressable, StyleSheet, View ,TouchableOpacity} from 'react-native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Feather from 'react-native-vector-icons/Feather';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+
 import NavigationManager from '../Helper/NavigationManager';
 import { BaseThemeStyle } from '../Theme/BaseThemeStyle';
 import Images from '../Theme/Images';
@@ -15,11 +13,7 @@ const ScreenOptions = ({ route, isFocused }) => {
             return (
                 <View style={[style.tabIconContainer, isFocused ? style.focused : style.unfocused]}>
                     <View style={style.tabIcon}>
-                        <Feather
-                            name="home"
-                            color={isFocused ? BaseThemeStyle.colors.blue : BaseThemeStyle.colors.white}
-                            size={35}
-                        />
+                          <Image style={{ height: 35, width: 35 }} source={ isFocused? Images.homeFilled : Images.home} />
                     </View>
                 </View>
             );
@@ -28,11 +22,7 @@ const ScreenOptions = ({ route, isFocused }) => {
             return (
                 <View style={[style.tabIconContainer, isFocused ? style.focused : style.unfocused]}>
                     <View style={style.tabIcon}>
-                        <EvilIcons
-                            name="star"
-                            color={isFocused ? BaseThemeStyle.colors.blue : BaseThemeStyle.colors.white}
-                            size={35}
-                        />
+                         <Image style={{ height: 35, width: 35 }} source={ isFocused? Images.favoritesFilled : Images.favorites} />
                     </View>
                 </View>
             );
@@ -41,11 +31,7 @@ const ScreenOptions = ({ route, isFocused }) => {
             return (
                 <View style={[style.tabIconContainer, isFocused ? style.focused : style.unfocused]}>
                     <View style={style.tabIcon}>
-                        <SimpleLineIcons
-                            name="settings"
-                            color={isFocused ? BaseThemeStyle.colors.blue : BaseThemeStyle.colors.white}
-                            size={35}
-                        />
+                         <Image style={{ height: 35, width: 35 }} source={ isFocused? Images.settingsFilled : Images.settings} />
                     </View>
                 </View>
             );

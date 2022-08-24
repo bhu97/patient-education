@@ -30,10 +30,12 @@ export const style = StyleSheet.create({
     },
     contentContainer: {
         flexDirection: 'row',
-        paddingHorizontal: BaseThemeStyle.margin.subtitle,
+        // paddingHorizontal: BaseThemeStyle.margin.subtitle,
+        paddingHorizontal:16,
         paddingVertical: BaseThemeStyle.margin.subtitle,
         justifyContent: 'space-between',
         alignItems: 'center',
+
     },
     textStyle: {
         fontSize: 27,
@@ -87,12 +89,9 @@ export const style = StyleSheet.create({
         color: BaseThemeStyle.colors.iconColor,
         //padding: 15,
     },
-    // modalHeader: {
-    //     paddingRight: 0,
-    //     fontSize: 25,
-    //     paddingLeft: 10,
-    //     color: BaseThemeStyle.colors.black,
-    // },
+    listSaprator: {
+        backgroundColor:BaseThemeStyle.colors.textColor,width:2,height:'100%'
+    },
     modalTitle:{
         ...BaseThemeStyle.fonts.h7,
        color: BaseThemeStyle.colors.black, 
@@ -119,7 +118,8 @@ export const style = StyleSheet.create({
         // paddingVertical:BaseThemeStyle.paddings.formElements,
     },
     deleteGroup: {
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
+        backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
         height: '100%',
         width: 70,
         justifyContent: 'center',
@@ -127,7 +127,8 @@ export const style = StyleSheet.create({
         padding: 10,
     },
     editGroup: {
-        backgroundColor: BaseThemeStyle.colors.iconColor,
+        // backgroundColor: BaseThemeStyle.colors.iconColor,
+        backgroundColor: BaseThemeStyle.colors.listItemBackgroundColor,
         height: '100%',
         width: 70,
         justifyContent: 'center',

@@ -65,7 +65,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
 
     getGroups = async () => {
         let groups = await dbHelper.getFavGroups();
-      
+
         if (this.state.selectedGroupItem == null && groups.length > 0) {
             this.props.setFavGroup(groups);
             this.setState({ selectedGroupItem: groups[0], favGroupTitle: groups[0].name });
@@ -143,13 +143,11 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                         <View style={style.modalBottomRow}>
                             <TouchableOpacity
                                 onPress={() => {
-                                    this.setState({ visible: false, renameFavGroup: null,group_name: ''});
+                                    this.setState({ visible: false, renameFavGroup: null, group_name: '' });
                                 }}
                             >
                                 <View style={style.cancelButton}>
-                                    <Text style={style.modalButton}>
-                                        {BaseLocalization.cancel}
-                                    </Text>
+                                    <Text style={style.modalButton}>{BaseLocalization.cancel}</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -174,9 +172,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                 }}
                             >
                                 <View>
-                                    <Text style={style.modalButton}>
-                                        {BaseLocalization.save}
-                                    </Text>
+                                    <Text style={style.modalButton}>{BaseLocalization.save}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -186,23 +182,40 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
         );
     };
     rightSwipeActions = (item) => {
-     
         return (
             <View style={style.crossIconstyle}>
+                 <View style={style.listSaprator}></View>
                 <TouchableOpacity
                     onPress={() => {
                         this.removeGroup(item);
                     }}
                 >
                     <View style={style.deleteGroup}>
-                        <CustomIcon name={'x-circle'} color={BaseThemeStyle.colors.white} size={30} />
+                  
+                        <Image style={{ height: 50, width: 50 }} source={Images.deleteList} />
+                      
                     </View>
                 </TouchableOpacity>
+                <View style={style.listSaprator}></View>
                 <TouchableOpacity
-                    onPress={() => this.setState({ visible: true, renameFavGroup: item, group_name: item.name,favGroupTitle: item.name, selectedGroupItem: item},()=>{this.getFavItems()})}
+                    onPress={() =>
+                        this.setState(
+                            {
+                                visible: true,
+                                renameFavGroup: item,
+                                group_name: item.name,
+                                favGroupTitle: item.name,
+                                selectedGroupItem: item,
+                            },
+                            () => {
+                                this.getFavItems();
+                            },
+                        )
+                    }
                 >
                     <View style={style.editGroup}>
-                        <CustomIcon name={'edit-2'} color={BaseThemeStyle.colors.white} size={30} />
+                     
+                        <Image style={{ height: 50, width: 50 }} source={Images.editList} />  
                     </View>
                 </TouchableOpacity>
             </View>
@@ -211,7 +224,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
 
     Lists = ({ item }) => (
         <View style={style.listStyle}>
-            <Swipeable  renderRightActions={item.name == 'Default' ? null : this.rightSwipeActions.bind(this, item)}>
+            <Swipeable renderRightActions={item.name == 'Default' ? null : this.rightSwipeActions.bind(this, item)}>
                 <View style={style.listviewstyle}>
                     <View style={style.mainIconstyle}>
                         <Image source={Images.favouritesListImage} />
@@ -251,18 +264,12 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                             <View style={style.customcontainerview}>
                                 <View style={style.contentContainer}>
                                     <Text style={style.textStyle}>{BaseLocalization.lists}</Text>
-                                    <Icon
-                                        name="plussquare"
-                                        size={28}
-                                        bold
-                                        color={BaseThemeStyle.colors.addIconColor}
-                                        onPress={() => this.setState({ visible: true })}
-                                    />
+                                    <TouchableOpacity onPress={() => this.setState({ visible: true })}>
+                                        <Image style={{ height: 30, width: 30 }} source={Images.squarePlus} />
+                                    </TouchableOpacity>
                                 </View>
 
-                                <View style={style.modalContainer}>
-                                    {this.getModal()}
-                                </View>
+                                <View style={style.modalContainer}>{this.getModal()}</View>
                                 <ScrollView>
                                     <View style={style.containerView}>
                                         <FlatList

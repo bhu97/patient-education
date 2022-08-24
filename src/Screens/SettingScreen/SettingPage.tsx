@@ -78,11 +78,12 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         }
     }
 
-    boxRowView = (customListlabel, iconName, customListValue) => {
+    boxRowView = (customListlabel, source, customListValue) => {
+       
         return (
             <View style={style.boxContainer}>
                 <View style={style.boxView}>
-                    <CustomListWithHeader labelText={customListlabel} iconName={iconName} isToolTipEnable={iconName == 'edit-2'} onPressItem={() => {this.onCustomItemPress(customListlabel)}} />
+                    <CustomListWithHeader labelText={customListlabel} iconName={source} isToolTipEnable={source == Images.circleEditCountry} onPressItem={() => {this.onCustomItemPress(customListlabel)}} />
                 </View>
                 <View style={style.textView}>
                     <Text style={style.rowTextStyle}>{customListValue}</Text>
@@ -141,7 +142,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                             <CustomListWithHeader
                                 headerText={BaseLocalization.generalTitle}
                                 labelText={BaseLocalization.contact}
-                                iconName="mail"
+                                iconName={Images.circleMail}
                                 selectedCountry={this.props.selectedCountry}
                                 onPressItem={this.sendMail}
                             />
@@ -149,7 +150,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                             <CustomListWithHeader
                                 headerText={BaseLocalization.technicalTitle}
                                 labelText={BaseLocalization.contact}
-                                iconName="mail"
+                                iconName={Images.circleMail}
                                 selectedCountry={this.props.selectedCountry}
                                 onPressItem={this.sendMail}
                             />
@@ -159,17 +160,17 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
 
                             {this.titleRowView(BaseLocalization.countryTitle, BaseLocalization.version)}
 
-                            {this.boxRowView(this.props.selectedCountry, 'edit-2', deviceManager.getAppVersion())}
+                            {this.boxRowView(this.props.selectedCountry, Images.circleEditCountry, deviceManager.getAppVersion())}
 
                             {this.headerContainer(BaseLocalization.contentUpdates)}
 
                             {this.titleRowView(BaseLocalization.contentTitle, BaseLocalization.modificationDate)}
 
-                            {this.boxRowViewSecond(BaseLocalization.updateTitle, 'download-cloud')}
+                            {this.boxRowViewSecond(BaseLocalization.updateTitle, Images.circleUpdate)}
 
                             {this.headerContainer(BaseLocalization.logout)}
 
-                            {this.boxRowView(BaseLocalization.logoutNow, 'log-out', '')}
+                            {this.boxRowView(BaseLocalization.logoutNow, Images.logout, '')}
                         </View>
                     </View>
                 </CustomBody>

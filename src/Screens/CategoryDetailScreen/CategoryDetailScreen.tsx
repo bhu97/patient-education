@@ -1,11 +1,10 @@
 import NetInfo from '@react-native-community/netinfo';
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View,Image } from 'react-native';
 import { connect } from 'react-redux';
 import BreadcrumbFlatList from '../../Components/breadcrumb-flat-list/breadcrumb-flat-list';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomBottomContainer from '../../Components/custom-bottom-container/custom-bottom-container';
-import CustomIcon from '../../Components/custom-icon/custom-icon';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
@@ -258,11 +257,11 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                                 <View style={style.mainContainerForCard}>
                                     <View style={style.itemContainer}>
                                         <View style={style.circleIconContainer}>
-                                            <CustomIcon name={this.props.gridViewData.filter((item) => {
+                                            <Image style={{ height: 40, width: 40 }} source={this.props.gridViewData.filter((item) => {
                                                     return isStringEmpty(item.downloadLocation);
                                                 }).length
-                                                    ? 'download'
-                                                    : 'trash-2'} />
+                                                    ? Images.download
+                                                    : Images.trash} />  
                                         </View>
                                         <View style={style.folderTextContainer}>
                                             <Text style={style.textStyle}>

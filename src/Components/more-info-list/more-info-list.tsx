@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Text, View, TouchableOpacity } from 'react-native';
+import { FlatList, Text, View, TouchableOpacity, Image } from 'react-native';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
-import CustomIcon from '../custom-icon/custom-icon';
+import Images from '../../Theme/Images';
 import { style } from './style';
 
 interface MoreInfoListProps {
@@ -27,7 +27,7 @@ export default class MoreInfoList extends PureComponent<MoreInfoListProps> {
                         {item.isFolder ? (
                             <>
                                 <View style={style.circleIconContainer}>
-                                    <CustomIcon name={'folder'} />
+                                    <Image style={{ height: 35, width: 35 }} source={Images.circleFolder} />
                                 </View>
 
                                 <View style={style.folderTextContainer}>
@@ -39,7 +39,7 @@ export default class MoreInfoList extends PureComponent<MoreInfoListProps> {
                         {!item.isFolder ? (
                             <>
                                 <View style={style.circleIconContainer}>
-                                    <CustomIcon name={'file'} />
+                                    <Image style={{ height: 40, width: 40 }} source={Images.file} />
                                 </View>
 
                                 <View style={style.fileTextContainer}>

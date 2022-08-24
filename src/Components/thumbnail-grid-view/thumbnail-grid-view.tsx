@@ -11,10 +11,10 @@ import { fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
 import { setFavGroupData, setGridViewData, setShowToolTip } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
-import CustomIcon from '../custom-icon/custom-icon';
 import CustomToolTip from '../custom-tool-tip/custom-tool-tip';
 import GroupItem from '../favourit-thumbnail-grid-view/group-item';
 import FullScreenLoader from '../full-screen-loader/full-screen-loader';
+import CustomIcon from '../custom-icon/custom-icon';
 import { style } from './style';
 
 interface ThumbnailGridViewProps {
@@ -165,7 +165,9 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                     this.getSelectedGroupsFromRealm(item.uniqueId);
                 }}
             >
-                <CustomIcon name={'more-horizontal'} />
+                <View style={style.sepration}>
+                     <Image source={Images.dots} /> 
+                </View>
             </TouchableOpacity>
         );
     }

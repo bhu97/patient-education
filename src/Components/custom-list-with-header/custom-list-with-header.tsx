@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Text, TouchableOpacity, View , Image} from 'react-native';
 import { connect } from 'react-redux';
 import dbHelper from '../../Database/DBHelper';
 import { UserModel } from '../../Model/UserModel';
 import { setIsCountrySelected, setUserModelData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
-import CustomIcon from '../custom-icon/custom-icon';
+import Images from '../../Theme/Images';
 import CustomToolTip from '../custom-tool-tip/custom-tool-tip';
 import { style } from './style';
 
@@ -73,7 +73,7 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                 )}
                 <View style={style.itemContainer}>
                     <View style={style.circleIconContainer}>
-                        <CustomIcon name={this.props.iconName} size={20} />
+                        <Image style={{ height: 30, width: 30 }} source={this.props.iconName} />
                     </View>
 
                     <View style={style.textContainer}>
@@ -91,9 +91,6 @@ class CustomListWithHeader extends PureComponent<CustomListWithHeaderProps, Cust
                             />
                         )}
                     </View>
-                    {/* <View style={style.iconContainer}>
-                        <CustomIcon name={'chevron-right'} />
-                    </View> */}
                 </View>
             </View>
             </TouchableOpacity>

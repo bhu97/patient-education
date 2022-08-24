@@ -10,7 +10,6 @@ import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { setFavGroupData, setFavGroupItemData, setShowToolTip } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
-import CustomIcon from '../custom-icon/custom-icon';
 import CustomModal from '../custom-modal/custom-modal';
 import CustomToolTip from '../custom-tool-tip/custom-tool-tip';
 import FullScreenLoader from '../full-screen-loader/full-screen-loader';
@@ -161,7 +160,9 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                     this.props.setShowToolTip({ isVisible: true, currentIndex: index })
                 }}
             >
-                <CustomIcon name={'more-horizontal'} />
+                  <View style={style.sepration}>
+                     <Image source={Images.dots} /> 
+                </View>
             </TouchableOpacity>
         );
     }

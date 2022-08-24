@@ -78,6 +78,9 @@ export const style = StyleSheet.create({
         flex: 0.3,
         alignItems: 'flex-end',
     },
+    sepration: {
+      paddingBottom:10
+    },
     sizeStyle: {
         ...BaseThemeStyle.fonts.subtitle3,
         color: BaseThemeStyle.colors.titleColor,
