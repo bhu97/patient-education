@@ -34,12 +34,14 @@ export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModified
             createdDateTime: response.value[0].createdDateTime,
         };
         let storeObjectDate = await dbHelper.getLastDateModify();
-        if (
-            storeObjectDate.length > 0 &&
-            storeObjectDate[0].lastModifyDate !== response.value[0].lastModifiedDateTime
-        ) {
-            dispatchState(setIsUpdateNowEnable(true));
-        }
+        // if (
+        //     storeObjectDate.length > 0 &&
+        //     storeObjectDate[0].lastModifyDate !== response.value[0].lastModifiedDateTime
+        // ) {
+        //     dispatchState(setIsUpdateNowEnable(true));
+        // }
+        // added default as true as country can be added for specific user dynamically 
+        dispatchState(setIsUpdateNowEnable(true));
         dbHelper.createLastDateModify(LastModifyDateModel.generate(group));
     }
     // LogManager.info('response= &&&', response.value[0]);
@@ -49,7 +51,7 @@ export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModified
 });
 
 //to fetch meta delta
-export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', async (isFromLogin?: boolean) => {
+export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', async (isRedirectToHomeScreen?: boolean) => {
     LogManager.debug('fetchDriveItems call started');
     dispatchState(setAppDataLoading(true));
     const driveItems = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
@@ -85,8 +87,9 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
     LogManager.debug('fetchDriveItems call ended');
     /**
      * For first time login navigating to home screen
+     * In Case of update now(Setting screen option) redirect to home screen
      */
-    if (isFromLogin) {
+    if (isRedirectToHomeScreen) {
         replaceAndNavigate(SCREEN_NAME.HomeScreen);
     }
     dispatchState(fetchLastModifiedDate());

@@ -44,5 +44,6 @@
     "logout": "Ausloggen",
     "logoutNow": "jetzt abmelden",
     "downloadFolder": "Download Ordner",
-    "removeFolder": "Ordner entfernen"
+    "removeFolder": "Ordner entfernen",
+    "folderOptions": "Ordneroptionen"
 }

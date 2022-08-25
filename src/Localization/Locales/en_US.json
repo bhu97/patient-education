@@ -44,5 +44,7 @@
     "logout": "Logout",
     "logoutNow": "Logout Now",
     "downloadFolder": "Download Folder",
-    "removeFolder": "Remove Folder"
+    "removeFolder": "Remove Folder",
+    "folderOptions": "Folder Options"
+
 }

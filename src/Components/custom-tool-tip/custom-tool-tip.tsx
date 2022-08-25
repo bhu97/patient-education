@@ -1,6 +1,7 @@
 import React, { Fragment, PureComponent } from 'react';
 import { Alert, FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { style } from './style';
 
 interface CustomToolTipProps {
@@ -79,11 +80,11 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
                     arrowSize={style.toolTipArrow}
                     isVisible={this.props.isVisible}
                     content={
-                        <View style={[{ ...style.toolTipContainer, height: this.props.isCountryList ? 610 : 220 }]}>
+                        <View style={[{ ...style.toolTipContainer, height: this.props.isCountryList ? 'auto' : 220 }]}>
                             {!this.props.isCountryList ? (
                                 <>
-                                    <Text style={{ fontSize: 20, marginTop: 40, marginBottom: 10, fontWeight: 'bold' }}>
-                                        Folder Options
+                                    <Text style={style.folderTitle}>
+                                        {BaseLocalization.folderOptions}
                                     </Text>
                                     {this.toolTipOptionSeparator()}
                                 </>
