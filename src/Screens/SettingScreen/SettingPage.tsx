@@ -12,7 +12,7 @@ import dbHelper from '../../Database/DBHelper';
 import { DateUtility } from '../../Helper/date-utility';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { fetchAllDriveItems, logout, onLogout } from '../../Redux/app-data/appDataThunk';
+import { fetchAllDriveItems, fetchEmailSupport, logout, onLogout } from '../../Redux/app-data/appDataThunk';
 import { setCountryListData, setSelectedCountry } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
@@ -30,6 +30,7 @@ interface SettingPageProps {
     isUpdateNowEnable: boolean
     fetchData: () => void;
     logoutPress:()=>void;
+    fetchSupportEmail:()=>void;
 }
 
 interface SettingPageState {
@@ -47,6 +48,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     componentDidMount() {
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
             this.initializeSetting();
+            
         });
     }
     componentWillUnmount() {
@@ -62,6 +64,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         let getParsDate = DateUtility.getDateTimeStringFromDateTimeMs(getDate.length > 0 ? getDate[0].lastModifyDate : '')
         this.setState({ lastUpdatedDate: getParsDate })
         this.props.setIsLoading(false);
+        this.props.fetchSupportEmail();
     }
 
     titleRowView = (leftHeader, rightHeader) => {
@@ -198,6 +201,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     logoutPress:()=>{
         dispatch(logout())
+    },
+    fetchSupportEmail:()=>{
+        dispatch(fetchEmailSupport())
     }
 });
 

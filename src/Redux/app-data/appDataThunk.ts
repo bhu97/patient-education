@@ -256,15 +256,15 @@ export const removeDownloadedFolder = createAsyncThunk('appData/removeDownloaded
 });
 
 export const fetchEmailSupport = createAsyncThunk('appData/fetchEmailSupport', async () => {
+    console.log("called ######");
+    
     const params = {};
     const response = await apiManager.callApiToGetData(
         API_NAMES.COUNTRY_SUPPORT_EMAIL,
         HTTP_METHODS.GET,
         params,
     );
-    LogManager.debug('response=', response);
-
-    LogManager.info('fetchThumbnail call ended');
+    LogManager.debug('response= value &&&&&&&', JSON.stringify(response.value));
     return response;
 });
 
