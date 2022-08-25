@@ -13,7 +13,7 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
-import { setIsFetchThumbnailLoaded, setIsUpdateNowEnable, setMainCategoryList, setRefreshDetailScreen } from '../category/categorySlice';
+import { setIsFetchThumbnailLoaded, setIsSupportEmailLoad, setIsUpdateNowEnable, setMainCategoryList, setRefreshDetailScreen, setSupportEmailData } from '../category/categorySlice';
 import { dispatchState } from '../store';
 import { setAppDataLoading, setIsAlertShown, setIsLogout } from './appDataSlice';
 
@@ -176,6 +176,7 @@ export const fetchData = async (url: string, params?: any): Promise<any[]> => {
 
 const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promise<any[]> => {
     const response = await apiManager.callApiToGetData(endpoint, params);
+   
     if (response['@odata.nextLink']) {
         const nextData = (await fetchNext(
             response['@odata.nextLink'],
@@ -258,17 +259,31 @@ export const removeDownloadedFolder = createAsyncThunk('appData/removeDownloaded
     }
 });
 
-export const fetchEmailSupport = createAsyncThunk('appData/fetchEmailSupport', async () => {
-    console.log("called ######");
+export const fetchEmailSupport = createAsyncThunk('appData/fetchEmailSupport', async (isSupportEmailLoad?: boolean) => {
     
     const params = {};
+    if(isSupportEmailLoad == false)
+    {
+    console.log("called ######");
     const response = await apiManager.callApiToGetData(
         API_NAMES.COUNTRY_SUPPORT_EMAIL,
         HTTP_METHODS.GET,
         params,
     );
+    
     LogManager.debug('response= value &&&&&&&', JSON.stringify(response.value));
+    if (response.value.length > 0) {
+        let emailSupportData: any = []
+        for (let item of response.value) {
+            const {Title, country, email} = item.fields
+            const data = {Title, country, email}
+            emailSupportData.push(data)
+        }
+        dispatchState(setSupportEmailData(emailSupportData))
+        dispatchState(setIsSupportEmailLoad(true))
+    }
     return response;
+}
 });
 
 

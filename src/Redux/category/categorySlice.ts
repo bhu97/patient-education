@@ -49,7 +49,11 @@ export interface CategoryState {
 
     //tooltip list
     toolTipList: Array<any>;
-    showToolTipData:ComponentData.ShowToolTipData
+    showToolTipData:ComponentData.ShowToolTipData;
+
+    // Contact Support Email
+    supportEmailData: Array<any>;
+    isSupportEmailLoad: boolean;
 
 }
 
@@ -82,7 +86,9 @@ const initialState: CategoryState = {
         { index: 1, title: 'Remove Locally',isEnable:true },
         { index: 2, title: 'Add/Remove Favourite',isEnable:true }
     ],
-    showToolTipData: {isVisible:false,currentIndex:-1} 
+    showToolTipData: {isVisible:false,currentIndex:-1} ,
+    supportEmailData: [],
+    isSupportEmailLoad: false
 
 };
 
@@ -157,7 +163,13 @@ const categorySlice = createSlice({
         },
         setToolTipData: (state, action: PayloadAction<any[]>)=> {
             state.showToolTipData = action.payload;
-        }
+        },
+        setSupportEmailData: (state, action: PayloadAction<any>)=> {
+            state.supportEmailData = action.payload;
+        },
+        setIsSupportEmailLoad: (state, action: PayloadAction<boolean>)=> {
+            state.isSupportEmailLoad = action.payload;
+        },
 
     },
 });
@@ -181,7 +193,9 @@ export const {
     setIsCountrySelected,
     setIsFetchThumbnailLoaded,
     setShowToolTip,
-    setToolTipData
+    setToolTipData,
+    setSupportEmailData,
+    setIsSupportEmailLoad
 } = categorySlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

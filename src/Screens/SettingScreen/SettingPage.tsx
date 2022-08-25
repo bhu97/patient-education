@@ -30,7 +30,9 @@ interface SettingPageProps {
     isUpdateNowEnable: boolean
     fetchData: () => void;
     logoutPress:()=>void;
-    fetchSupportEmail:()=>void;
+    fetchSupportEmail:(any)=>void;
+    supportEmailData: any;
+    isSupportEmailLoad: boolean;
 }
 
 interface SettingPageState {
@@ -64,7 +66,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         let getParsDate = DateUtility.getDateTimeStringFromDateTimeMs(getDate.length > 0 ? getDate[0].lastModifyDate : '')
         this.setState({ lastUpdatedDate: getParsDate })
         this.props.setIsLoading(false);
-        this.props.fetchSupportEmail();
+        this.props.fetchSupportEmail(this.props.isSupportEmailLoad);
     }
 
     titleRowView = (leftHeader, rightHeader) => {
@@ -94,6 +96,14 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
             </View>
         );
     };
+    getSupportEmail = () => {
+        for(var i = 0; i < this.props.supportEmailData.length; i++) {
+            if (this.props.supportEmailData[i].country == this.props.selectedCountry) {
+               return this.props.supportEmailData[i].email;
+            }   
+        }
+        return this.props.supportEmailData[0].email;
+    }
 
     onPressUpdate = () => {
         if (this.props.isUpdateNowEnable) {
@@ -121,10 +131,12 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     };
 
     sendMail = () => {
-        Linking.openURL(`mailto:${SUPPORT_EMAIL}`);
+     
+        Linking.openURL(`mailto:${this.getSupportEmail()}`);
     };
 
     render() {
+       
         return this.props.isLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
@@ -184,7 +196,9 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
 const mapStateToProps = (state: RootState) => ({
     isLoading: state.appDataReducer.appDataLoading,
     selectedCountry: state.categoryReducer.selectedCountry,
-    isUpdateNowEnable: state.categoryReducer.isUpdateNowEnable
+    isUpdateNowEnable: state.categoryReducer.isUpdateNowEnable,
+    supportEmailData: state.categoryReducer.supportEmailData,
+    isSupportEmailLoad: state.categoryReducer.isSupportEmailLoad
 });
 const mapDispatchToProps = (dispatch: any) => ({
     setCountryListData: (value: any) => {
@@ -202,8 +216,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     logoutPress:()=>{
         dispatch(logout())
     },
-    fetchSupportEmail:()=>{
-        dispatch(fetchEmailSupport())
+    fetchSupportEmail:(value: boolean)=>{
+        dispatch(fetchEmailSupport(value))
     }
 });
 
