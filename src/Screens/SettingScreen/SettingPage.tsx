@@ -1,15 +1,19 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import React, { PureComponent } from 'react';
-import { SUPPORT_EMAIL } from '../../Constant/Constants';
-import { Text, View, Linking } from 'react-native';
+import { Linking, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
 import CustomListWithHeader from '../../Components/custom-list-with-header/custom-list-with-header';
+import CustomToast from '../../Components/custom-toast/custom-toast';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
 import MainContainer from '../../Components/main-container/main-container';
+import { SUPPORT_EMAIL } from '../../Constant/Constants';
 import dbHelper from '../../Database/DBHelper';
 import { DateUtility } from '../../Helper/date-utility';
+import deviceManager from '../../Helper/DeviceManager';
+import LogManager from '../../Helper/LogManager';
+import networkManager from '../../Helper/NetworkManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllDriveItems, fetchEmailSupport, logout } from '../../Redux/app-data/appDataThunk';
@@ -17,8 +21,6 @@ import { setCountryListData, setSelectedCountry } from '../../Redux/category/cat
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
 import { style } from './style';
-import deviceManager from '../../Helper/DeviceManager';
-
 interface SettingPageProps {
     dispatch: Dispatch;
     setCountryListData: (any) => void;
@@ -96,6 +98,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
             </View>
         );
     };
+
     getSupportEmail = () => {
         for(var i = 0; i < this.props.supportEmailData.length; i++) {
             if (this.props.supportEmailData[i].country == this.props.selectedCountry) {
@@ -106,9 +109,23 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     }
 
     onPressUpdate = () => {
-        if (this.props.isUpdateNowEnable) {
-            this.props.fetchData()
-        }
+
+        networkManager.isNetworkAvailable()
+        .then((isNetAvailable) => {
+            if(isNetAvailable){
+                LogManager.debug("network available ")
+                if (this.props.isUpdateNowEnable) {
+                    this.props.fetchData()
+                }
+            } else {
+                LogManager.warn("network not available ")
+                //add toast
+                CustomToast.show(
+                    BaseLocalization.noInternetConnection
+                )
+            }
+        });
+
     }
 
     boxRowViewSecond = (customListlabel, iconName) => {
@@ -124,15 +141,21 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         );
     };
 
-
-
     headerContainer = (title) => {
         return <Text style={style.headerTextStyle}>{title}</Text>;
     };
 
-    sendMail = () => {
-     
-        Linking.openURL(`mailto:${this.getSupportEmail()}`);
+    sendMail = (isTechnicalSupport) => {
+        LogManager.debug("Technical support click=",isTechnicalSupport)
+        let mailEmailAddress =SUPPORT_EMAIL;
+        if(isTechnicalSupport){
+            //Technical support will be always Laura’s Mail
+            mailEmailAddress =SUPPORT_EMAIL;
+        }else {
+            //Content support will be country specific mail address 
+            mailEmailAddress= this.getSupportEmail();
+        }
+        Linking.openURL(`mailto:${mailEmailAddress}`); 
     };
 
     render() {
@@ -141,6 +164,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
             <FullScreenLoader isLoading showSpinner />
         ) : (
             <MainContainer>
+                 <CustomToast />
                 <View style={style.navContainer}>
                     <CustomTopNav
                         title={BaseLocalization.settingTitle}
@@ -159,7 +183,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                                 labelText={BaseLocalization.contact}
                                 iconName={Images.circleMail}
                                 selectedCountry={this.props.selectedCountry}
-                                onPressItem={this.sendMail}
+                                onPressItem={() => this.sendMail(false)}
                             />
 
                             <CustomListWithHeader
@@ -167,7 +191,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                                 labelText={BaseLocalization.contact}
                                 iconName={Images.circleMail}
                                 selectedCountry={this.props.selectedCountry}
-                                onPressItem={this.sendMail}
+                                onPressItem={() => this.sendMail(true)}
                             />
                         </View>
                         <View style={style.appInfoConatiner}>

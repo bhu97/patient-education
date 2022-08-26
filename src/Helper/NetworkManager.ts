@@ -2,6 +2,7 @@ import NetInfo from '@react-native-community/netinfo';
 import LogManager from './LogManager';
 
 export class NetworkManager {
+    
     /**
      * check network connection before every api call
      * if network not available returns false with resolve
@@ -9,7 +10,8 @@ export class NetworkManager {
      * if any issue to check network return false with resolve
      * @returns promise with boolean
      */
-    public isConnected(): Promise<boolean> {
+     isNetworkAvailable = async (): Promise<boolean> => {
+     
         return new Promise((res) => {
             NetInfo.fetch()
                 .then((state) => {
