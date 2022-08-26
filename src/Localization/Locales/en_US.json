@@ -1,7 +1,7 @@
 {
     "welcome": "Welcome!",
     "pleaseWait": "Loading, Please wait",
-    "noInternetConnection": "The device is not connected to the internet. Please check connectivity and try again.",
+    "noInternetConnection": "There is no internet connection. Please check your internet settings and try again.",
     "favoriteTitle": "Patient Priority Topics",
     "favoriteSubTitle": "Create lists and store your files in them.",
     "settingTitle": "Settings",

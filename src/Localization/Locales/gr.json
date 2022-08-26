@@ -1,7 +1,7 @@
 {
     "welcome": "Willkommen",
     "pleaseWait": "Laden, bitte warten",
-    "noInternetConnection": "Das Gerät ist nicht mit dem Internet verbunden. Bitte überprüfen Sie die Verbindung und versuchen Sie es erneut.",
+    "noInternetConnection": "Es besteht keine Internetverbindung. Bitte überprüfen Sie Ihre Interneteinstellungen und versuchen Sie es erneut.",
     "favoriteTitle":"Prioritätsthemen für Patienten",
     "favoriteSubTitle": "Erstellen Sie Listen und speichern Sie Ihre Dateien darin.",
     "settingTitle": "die Einstellungen",

@@ -5,7 +5,7 @@ import { API_NAMES, HTTP_METHODS } from '../Constant/Constants';
 import dbHelper from '../Database/DBHelper';
 import apiManager from '../Helper/ApiManager';
 import deviceManager from '../Helper/DeviceManager';
-import { getExtension } from '../Helper/Helper';
+import LogManager from '../Helper/LogManager';
 import NavigationManager from '../Helper/NavigationManager';
 import permissions from '../Helper/Permission';
 import { DriveItemModel } from '../Model/DriveItemModel';
@@ -87,7 +87,7 @@ class DownloadManager {
         return (
             RNFS.unlink(path)
                 .then(() => {
-                    console.log('FILE DELETED');
+                    LogManager.info('FILE DELETED');
                     if (isFavPage) {
                         this.updateCurrentFavItem(item, '')
                     } else {
@@ -96,7 +96,7 @@ class DownloadManager {
                 })
                 // `unlink` will throw an error, if the item to unlink does not exist
                 .catch((err) => {
-                    console.log(err.message);
+                    LogManager.error(err.message);
                 })
         );
     };
@@ -121,7 +121,7 @@ class DownloadManager {
                         downloadedList = result;
                     })
                     .catch((err) => {
-                        console.log('ERROR::', err);
+                        LogManager.error('ERROR::', err);
                     });
             }
         }
@@ -134,11 +134,11 @@ class DownloadManager {
         return (
             RNFS.unlink(path)
                 .then(() => {
-                    console.log('FILE DELETED');
+                    LogManager.info('FILE DELETED');
                 })
                 // `unlink` will throw an error, if the item to unlink does not exist
                 .catch((err) => {
-                    console.log(err.message);
+                    LogManager.error(err.message);
                 })
         );
     };
@@ -146,6 +146,14 @@ class DownloadManager {
     downloadFileAndShow = async (item, isFav): Promise<string> => {
         // await this.deleteDownloadedFile(item.name);
         // this.downloadFile(item,isFav);
+        //if file already downloaded, display same file
+        if(item.downloadLocation) {
+            LogManager.debug("return already downloaded file path")
+            return new Promise((resolve) => {
+                resolve(item.downloadLocation);
+            });
+        }
+
         const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
         const url = response.driveItem['@microsoft.graph.downloadUrl'];
         const fileName = item.name;
@@ -158,7 +166,7 @@ class DownloadManager {
         return new Promise((resolve, reject) => {
             RNFS.downloadFile(options)
                 .promise.then(async (res) => {
-                    console.log('localfile 103 =', `file://${localFile}`);
+                    LogManager.debug('local file path =', `file://${localFile}`);
                     if (isFav) {
                         this.updateCurrentFavItem(item, localFile)
                     } else {
@@ -173,16 +181,15 @@ class DownloadManager {
     };
 
     getUrl = async (item): Promise<string> => {
-        console.log('item ==', item);
-
+        
         const response = await apiManager.callApiToGetData(
             API_NAMES.GRAPH_DRIVE_ITEM_ENDPOINT(item.listItemId),
             HTTP_METHODS.GET,
         );
-        console.log('response ==', JSON.stringify(response));
+        LogManager.debug('get URL response ==', JSON.stringify(response));
         const url = response.driveItem['@microsoft.graph.downloadUrl'];
         const res = await apiManager.callApiToGetData(url, HTTP_METHODS.GET);
-        console.log('res ==', res.split('URL=')[1]);
+        //console.log('res ==', res.split('URL=')[1]);
 
         return new Promise((resolve, reject) => {
             let url = res.split('URL=')[1] ?? '';
@@ -191,11 +198,12 @@ class DownloadManager {
     };
 
     displayDocument = async (item, isFav): Promise<boolean> => {
-        const fileExt = getExtension(item.webUrl);
+        
+        const fileExt = item.fileExtension;
         let title = '';
         if (item.name) title = item.name.split('.' + fileExt)[0];
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (fileExt.toLowerCase() === 'url') {
                 downloadManager
                     .getUrl(item)
