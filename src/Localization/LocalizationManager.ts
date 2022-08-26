@@ -3,6 +3,7 @@ import I18n from 'i18n-js';
 import { I18nManager } from 'react-native';
 import { LANGUAGE_CONSTANT } from '../Constant/Constants';
 import deviceManager from '../Helper/DeviceManager';
+import LogManager from '../Helper/LogManager';
 import en_US from './Locales/en_US.json';
 import gr from './Locales/gr.json';
 
@@ -18,7 +19,7 @@ export class LocalizationManager {
     static setAppLanguage(newLanguage: string) {
         I18n.locale = newLanguage;
         // save it to local storage for next time
-        AsyncStorage.setItem(LANGUAGE_CONSTANT.APP_LANGUAGE, newLanguage);
+       // AsyncStorage.setItem(LANGUAGE_CONSTANT.APP_LANGUAGE, newLanguage);
     }
 
     static getLocalizedStrings(name: string) {
@@ -51,29 +52,24 @@ export class LocalizationManager {
         I18n.translations = { en_US, gr };
         I18n.locale = LANGUAGE_CONSTANT.DEFAULT_LANGUAGE;
 
-        console.log('device language', deviceManager.deviceLanguage());
-        const currentLanguage = await AsyncStorage.getItem(LANGUAGE_CONSTANT.APP_LANGUAGE);
-        console.log('app language', currentLanguage);
-        if (currentLanguage) {
-            LocalizationManager.setAppLanguage(currentLanguage);
+        const orgDeviceLanguage =deviceManager.deviceLanguage();
+        LogManager.debug('orgDeviceLanguage=', orgDeviceLanguage);
+        const deviceLanguageStartWith = orgDeviceLanguage.split("_")[0]+"_";
+        LogManager.debug('deviceLanguageStartWith=', deviceLanguageStartWith);
+
+        var langResultArray = LANGUAGE_CONSTANT.LANGUAGES.filter(function (d) { 
+            return Object.values(d).indexOf(deviceLanguageStartWith) != -1 
+        });
+        LogManager.debug("langResultArray=",langResultArray);
+
+        if(langResultArray.length>0){
+            var appLanguageCode = langResultArray[0].shortLabel;
         } else {
-            //get short label of all supported language , this is as per device language return like en_us(english_usa), mr_in(marathi indiaa)
-            const supportedLanguage = LANGUAGE_CONSTANT.LANGUAGES.map((item) => item.shortLabel);
-
-            var localeLanguageCode = LANGUAGE_CONSTANT.DEFAULT_LANGUAGE;
-
-            //check if device language is not supported by app, if yes set default language to local language
-            if (!supportedLanguage.includes(deviceManager.deviceLanguage())) {
-                localeLanguageCode = LANGUAGE_CONSTANT.DEFAULT_LANGUAGE;
-            }
-            //check if device language is supported by app, if yes set it to local language
-            if (supportedLanguage.includes(deviceManager.deviceLanguage())) {
-                localeLanguageCode = deviceManager.deviceLanguage();
-            }
-            // set language
-            LocalizationManager.setAppLanguage(localeLanguageCode);
-            console.log('locale language', localeLanguageCode);
+            var appLanguageCode = LANGUAGE_CONSTANT.DEFAULT_LANGUAGE;
         }
+        LogManager.debug('appLanguageCode=',appLanguageCode);
+        LocalizationManager.setAppLanguage(appLanguageCode);
+
     };
 }
 

@@ -30,8 +30,8 @@ export const LANGUAGE_CONSTANT = {
     APP_LANGUAGE: 'appLanguage',
     // all supportive language
     LANGUAGES: [
-        { key: 'en', label: 'English (USA)', shortLabel: 'en_US' },
-        { key: 'gr', label: 'German', shortLabel: 'gr' },
+        { key: 'en', label: 'English (USA)', shortLabel: 'en_US',languageStartsWith: 'en_' },
+        { key: 'gr', label: 'German', shortLabel: 'gr', languageStartsWith: 'de_'},
     ],
 };
 //this is used to encrypt db in phone

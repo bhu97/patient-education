@@ -82,7 +82,7 @@ export class DeviceManager {
      * orientation changes.
      */
     public height(): number {
-        return Dimensions.get('window').width;
+        return Dimensions.get('window').height;
     }
 
     /**
@@ -112,10 +112,16 @@ export class DeviceManager {
      * Get default language set to device
      */
     public deviceLanguage(): string {
-        return Platform.OS === 'ios'
+      
+    const deviceLanguage =
+          Platform.OS === 'ios'
             ? NativeModules.SettingsManager.settings.AppleLocale ||
-                  NativeModules.SettingsManager.settings.AppleLanguages[0] //iOS 13
+              NativeModules.SettingsManager.settings.AppleLanguages[0] // iOS 13
             : NativeModules.I18nManager.localeIdentifier;
+
+            
+      //  console.log('deviceLanguage=',deviceLanguage); //en_US
+        return deviceLanguage;
     }
 }
 
