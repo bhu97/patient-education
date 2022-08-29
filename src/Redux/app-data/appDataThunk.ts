@@ -15,7 +15,7 @@ import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
 import { setIsFetchThumbnailLoaded, setIsSupportEmailLoad, setIsUpdateNowEnable, setMainCategoryList, setRefreshDetailScreen, setSupportEmailData } from '../category/categorySlice';
 import { dispatchState } from '../store';
-import { setAppDataLoading, setIsAlertShown, setIsLogout } from './appDataSlice';
+import { setAppDataLoading, setIsAlertShown } from './appDataSlice';
 
 /**
  * createAsyncThunk receives two arguments
@@ -192,13 +192,12 @@ const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promi
 /**
  * For FirstTime login
  */
-export const login = createAsyncThunk('appData/login', async () => {
+export const userLoginCalled = createAsyncThunk('appData/login', async () => {
     const userData: any = await dbHelper.getUser();
-    
     //user not present fetch all data and save it DB and set to redux
     if (!userData) {
         dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));
-        authenticationManager.login().then(async (token) => {
+        authenticationManager.userLogin().then(async (token) => {
             if (token) {
                 dispatchState(setIsAlertShown(false));
                 dispatchState(fetchAllDriveItems(true));
@@ -220,7 +219,6 @@ export const logout = createAsyncThunk('appData/logout', async () => {
     authenticationManager.setAuthorization(null);
     let obj = await dbHelper.getUser();
     dbHelper.removeUser(obj);
-    dispatchState(setIsLogout(true))
     replaceAndNavigate(SCREEN_NAME.LoginScreen);
 });
 

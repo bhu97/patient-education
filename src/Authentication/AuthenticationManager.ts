@@ -30,7 +30,7 @@ const authConfig: AuthConfiguration = {
     additionalParameters: additionalParameters,
 };
 
-const storageKey = 'authorization';
+export const storageKey = 'authorization';
 
 const refreshConfig = {
     value: 5,
@@ -55,7 +55,7 @@ class AuthenticationManager {
     /**
      * @returns user token
      */
-    login = async () => {
+    userLogin = async () => {
         LogManager.info('login called =');
         try {
             const result = await authorize(authConfig);

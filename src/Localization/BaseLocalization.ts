@@ -53,5 +53,6 @@ export const BaseLocalization = {
     downloadFolder: LocalizationManager.getLocalizedStrings('downloadFolder'),
     removeFolder: LocalizationManager.getLocalizedStrings('removeFolder'),
     folderOptions: LocalizationManager.getLocalizedStrings('folderOptions'),
+    commonError: LocalizationManager.getLocalizedStrings('commonError'),
 
 };

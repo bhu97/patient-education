@@ -7,7 +7,7 @@ import FullScreenLoader from '../../Components/full-screen-loader/full-screen-lo
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import LocalizationManager from '../../Localization/LocalizationManager';
 import { setIsAlertShown } from '../../Redux/app-data/appDataSlice';
-import { login } from '../../Redux/app-data/appDataThunk';
+import {  userLoginCalled } from '../../Redux/app-data/appDataThunk';
 import { RootState } from '../../Redux/rootReducer';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
@@ -33,10 +33,8 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
 
     componentDidMount() {
         SplashScreen.hide();
-        // if(!this.props.isLogout){
-        //     this.onLogin();
-        // }
-        this.onLogin();
+        //this.props.login();
+
     }
 
     hideAlert = () => {
@@ -60,7 +58,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
                 ) : (
                     <View style={style.buttonLogoContainer}>
                         <Image
-                            style={{ height: '30%', width: '50%', marginBottom: 30 }}
+                            style={{ height: '25%', width: '40%', marginBottom: 30 }}
                             source={Images.launchScreen}
                             resizeMode="stretch"
                         />
@@ -95,7 +93,7 @@ const mapDispatchToProps = (dispatch: any) => ({
         dispatch(setIsAlertShown(value));
     },
     login: () => {
-        dispatch(login());
+        dispatch(userLoginCalled());
     },
 });
 

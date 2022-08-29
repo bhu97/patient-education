@@ -45,6 +45,6 @@
     "logoutNow": "Logout Now",
     "downloadFolder": "Download Folder",
     "removeFolder": "Remove Folder",
-    "folderOptions": "Folder Options"
-
+    "folderOptions": "Folder Options",
+    "commonError":"Something went wrong"
 }

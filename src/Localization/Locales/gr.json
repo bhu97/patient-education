@@ -45,5 +45,6 @@
     "logoutNow": "jetzt abmelden",
     "downloadFolder": "Download Ordner",
     "removeFolder": "Ordner entfernen",
-    "folderOptions": "Ordneroptionen"
+    "folderOptions": "Ordneroptionen",
+    "commonError":"Etwas ist schief gelaufen"
 }

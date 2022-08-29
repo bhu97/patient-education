@@ -1,19 +1,22 @@
 import { Linking, Platform } from 'react-native';
 import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
+import CustomToast from '../Components/custom-toast/custom-toast';
 import { API_NAMES, HTTP_METHODS } from '../Constant/Constants';
 import dbHelper from '../Database/DBHelper';
 import apiManager from '../Helper/ApiManager';
 import deviceManager from '../Helper/DeviceManager';
 import LogManager from '../Helper/LogManager';
 import NavigationManager from '../Helper/NavigationManager';
+import networkManager from '../Helper/NetworkManager';
 import permissions from '../Helper/Permission';
+import { BaseLocalization } from '../Localization/BaseLocalization';
 import { DriveItemModel } from '../Model/DriveItemModel';
 import { FavoriteModel } from '../Model/FavouriteModel';
 
 class DownloadManager {
 
-    updateCurrentDriveItem = async (item: DriveItemModel, filePath: string): Promise<boolean> => {
+    updateCurrentDriveItem = async (item: DriveItemModel, filePath: string): Promise<boolean> => {        
         let localItem = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
         localItem.downloadLocation = filePath;
         await dbHelper.createDriveItemEnteriesById(localItem, item.uniqueId);
@@ -147,12 +150,12 @@ class DownloadManager {
         // await this.deleteDownloadedFile(item.name);
         // this.downloadFile(item,isFav);
         //if file already downloaded, display same file
-        if(item.downloadLocation) {
-            LogManager.debug("return already downloaded file path")
-            return new Promise((resolve) => {
-                resolve(item.downloadLocation);
-            });
-        }
+        // if (item.downloadLocation) {
+        //     LogManager.debug("return already downloaded file path")
+        //     return new Promise((resolve) => {
+        //         resolve(item.downloadLocation);
+        //     });
+        // }
 
         const response = await apiManager.callApiToGetData(API_NAMES.THUMBNAIL_LIST_ITEM_DETAILS(item.listItemId));
         const url = response.driveItem['@microsoft.graph.downloadUrl'];
@@ -167,11 +170,11 @@ class DownloadManager {
             RNFS.downloadFile(options)
                 .promise.then(async (res) => {
                     LogManager.debug('local file path =', `file://${localFile}`);
-                    if (isFav) {
-                        this.updateCurrentFavItem(item, localFile)
-                    } else {
-                        this.updateCurrentDriveItem(item, localFile)
-                    }
+                    // if (isFav) {
+                    //     this.updateCurrentFavItem(item, localFile)
+                    // } else {
+                    //     this.updateCurrentDriveItem(item, localFile)
+                    // }
                     resolve(`file://${localFile}`);
                 })
                 .catch(() => {
@@ -181,7 +184,7 @@ class DownloadManager {
     };
 
     getUrl = async (item): Promise<string> => {
-        
+
         const response = await apiManager.callApiToGetData(
             API_NAMES.GRAPH_DRIVE_ITEM_ENDPOINT(item.listItemId),
             HTTP_METHODS.GET,
@@ -198,57 +201,85 @@ class DownloadManager {
     };
 
     displayDocument = async (item, isFav): Promise<boolean> => {
-        
+
         const fileExt = item.fileExtension;
         let title = '';
         if (item.name) title = item.name.split('.' + fileExt)[0];
+        //display downloaded file
 
-        return new Promise((resolve) => {
-            if (fileExt.toLowerCase() === 'url') {
-                downloadManager
-                    .getUrl(item)
-                    .then((res) => {
-                        NavigationManager.navigate('CustomWebView', {
-                            url: res,
-                            fileName: title ? title : 'QUIZ',
-                            isPdf: false,
-                        });
-                        resolve(true);
-                    })
-                    .catch(() => {
-                        resolve(true);
-                    });
-            } else if (fileExt.toLowerCase() === 'pdf') {
-                downloadManager
-                    .downloadFileAndShow(item, isFav)
-                    .then((res) => {
-                        NavigationManager.navigate('CustomWebView', {
-                            url: res,
-                            fileName: title ? title : 'PDF',
-                            isPdf: true,
-                        });
-                        resolve(true);
-                    })
-                    .catch(() => {
-                        resolve(true);
-                    });
-            } else {
-                Linking.canOpenURL(item.webUrl).then((supported) => {
-                    if (supported) {
-                        NavigationManager.navigate('CustomWebView', {
-                            url: item.webUrl,
-                            fileName: title ? title : 'VIDEO',
-                            isPdf: false,
-                        });
-                        resolve(true);
+        if (fileExt.toLowerCase() === 'pdf' && item.downloadLocation != "" && item.downloadLocation) {
+            return new Promise((resolve) => {
+                console.log("item.downloadLocation",item.downloadLocation);
+                
+                NavigationManager.navigate('CustomWebView', {
+                    url: item.downloadLocation,
+                    fileName: title ? title : 'PDF',
+                    isPdf: true,
+                });
+                resolve(true);
+            });
+
+        }
+      
+        networkManager.isNetworkAvailable()
+        .then((isNetAvailable) => {
+            if(isNetAvailable){
+                return new Promise((resolve) => {
+                    if (fileExt.toLowerCase() === 'url') {
+                        downloadManager
+                            .getUrl(item)
+                            .then((res) => {
+                                NavigationManager.navigate('CustomWebView', {
+                                    url: res,
+                                    fileName: title ? title : 'QUIZ',
+                                    isPdf: false,
+                                });
+                                resolve(true);
+                            })
+                            .catch(() => {
+                                resolve(true);
+                            });
+                    } else if (fileExt.toLowerCase() === 'pdf') {
+                        downloadManager
+                            .downloadFileAndShow(item, isFav)
+                            .then((res) => {
+                                NavigationManager.navigate('CustomWebView', {
+                                    url: res,
+                                    fileName: title ? title : 'PDF',
+                                    isPdf: true,
+                                });
+                                resolve(true);
+                            })
+                            .catch(() => {
+                                CustomToast.show(BaseLocalization.commonError,1000)
+                                resolve(true);
+        
+                            });
                     } else {
-                        console.log(item.webUrl);
-                        resolve(true);
-                        console.log('error opening url');
+                        Linking.canOpenURL(item.webUrl).then((supported) => {
+                            if (supported) {
+                                NavigationManager.navigate('CustomWebView', {
+                                    url: item.webUrl,
+                                    fileName: title ? title : 'VIDEO',
+                                    isPdf: false,
+                                });
+                                resolve(true);
+                            } else {
+                                CustomToast.show(BaseLocalization.commonError,1000)
+                                resolve(true);
+                            }
+                        });
                     }
                 });
+            } else {
+                return new Promise((resolve) => {
+                    LogManager.warn("network not available ")
+                    CustomToast.show(BaseLocalization.noInternetConnection,1000)
+                    resolve(true);
+                })
             }
         });
+        
     };
 }
 
