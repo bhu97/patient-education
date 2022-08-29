@@ -12,7 +12,7 @@ import { RootState } from '../../Redux/rootReducer';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import { style } from './style';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface LoginScreenProps {
     navigation: any;
     isAlertShown: boolean;
@@ -31,10 +31,14 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
         LocalizationManager.initializeAppLanguage();
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+     let  isLogout = await AsyncStorage.getItem('isLogout');
+     console.log("isLogout",isLogout);
+     
         SplashScreen.hide();
-        //this.props.login();
-
+        if(isLogout == 'false'){
+            this.props.login();
+        }
     }
 
     hideAlert = () => {

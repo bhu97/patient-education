@@ -219,6 +219,7 @@ export const logout = createAsyncThunk('appData/logout', async () => {
     authenticationManager.setAuthorization(null);
     let obj = await dbHelper.getUser();
     dbHelper.removeUser(obj);
+    await AsyncStorage.setItem('isLogout', 'true');
     replaceAndNavigate(SCREEN_NAME.LoginScreen);
 });
 
