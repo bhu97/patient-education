@@ -263,8 +263,10 @@ export const fetchEmailSupport = createAsyncThunk('appData/fetchEmailSupport', a
     
     const params = {};
     if(isSupportEmailLoad == false)
+    // if(true)
     {
     console.log("called ######");
+    // dispatchState(setAppDataLoading(true))
     const response = await apiManager.callApiToGetData(
         API_NAMES.COUNTRY_SUPPORT_EMAIL,
         HTTP_METHODS.GET,
@@ -281,9 +283,20 @@ export const fetchEmailSupport = createAsyncThunk('appData/fetchEmailSupport', a
         }
         dispatchState(setSupportEmailData(emailSupportData))
         dispatchState(setIsSupportEmailLoad(true))
+        dispatchState(setAppDataLoading(false))
+        return response;
     }
-    return response;
+    else{
+        dispatchState(setIsSupportEmailLoad(false))
+        dispatchState(setAppDataLoading(false))
+    }
+   
 }
+else
+{
+    dispatchState(setAppDataLoading(false))
+}
+
 });
 
 

@@ -51,6 +51,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     }
     componentDidMount() {
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.props.setIsLoading(true);
             this.initializeSetting();
             
         });
@@ -59,7 +60,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         this._unsubscribe();
     }
     async initializeSetting() {
-        this.props.setIsLoading(true);
+       
         let countryData = await dbHelper.getAllAvailableCountries();
         this.props.setCountryListData(countryData);
         const userData = await dbHelper.getUser();
@@ -67,8 +68,8 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         let getDate = (await dbHelper.getLastDateModify())
         let getParsDate = DateUtility.getDateTimeStringFromDateTimeMs(getDate.length > 0 ? getDate[0].lastModifyDate : '')
         this.setState({ lastUpdatedDate: getParsDate })
-        this.props.setIsLoading(false);
         this.props.fetchSupportEmail(this.props.isSupportEmailLoad);
+       
     }
 
     titleRowView = (leftHeader, rightHeader) => {
@@ -159,10 +160,10 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     };
 
     render() {
-       
         return this.props.isLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
+            
             <MainContainer>
                  <CustomToast />
                 <View style={style.navContainer}>
