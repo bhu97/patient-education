@@ -110,22 +110,23 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     }
 
     onPressUpdate = () => {
+        CustomToast.show(BaseLocalization.noInternetConnection,1000)
 
-        networkManager.isNetworkAvailable()
-        .then((isNetAvailable) => {
-            if(isNetAvailable){
-                LogManager.debug("network available ")
-                if (this.props.isUpdateNowEnable) {
-                    this.props.fetchData()
-                }
-            } else {
-                LogManager.warn("network not available ")
-                //add toast
-                CustomToast.show(
-                    BaseLocalization.noInternetConnection
-                )
-            }
-        });
+        // networkManager.isNetworkAvailable()
+        // .then((isNetAvailable) => {
+        //     if(isNetAvailable){
+        //         LogManager.debug("network available ")
+        //         if (this.props.isUpdateNowEnable) {
+        //             this.props.fetchData()
+        //         }
+        //     } else {
+        //         LogManager.warn("network not available ")
+        //         //add toast
+        //         // CustomToast.show(
+        //         //     BaseLocalization.noInternetConnection
+        //         // )
+        //     }
+        // });
 
     }
 
@@ -165,7 +166,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         ) : (
             
             <MainContainer>
-                 <CustomToast />
+
                 <View style={style.navContainer}>
                     <CustomTopNav
                         title={BaseLocalization.settingTitle}

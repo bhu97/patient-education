@@ -9,6 +9,9 @@ import NavigationManager from './src/Helper/NavigationManager';
 import Routes from './src/Navigation/Routes';
 import store, { dispatchState, getStateOfReducer } from './src/Redux/store';
 import { PersistGate } from "redux-persist/integration/react";
+import CustomToast from './src/Components/custom-toast/custom-toast';
+
+
 
 let Persistor = persistStore(store)
 
@@ -36,7 +39,9 @@ export default class App extends PureComponent {
                             }}
                         >
                             <Routes />
+
                         </NavigationContainer>
+                        <CustomToast  />
                         </PersistGate>
                 </Provider>
             </ErrorBoundary>

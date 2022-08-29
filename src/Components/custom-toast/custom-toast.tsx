@@ -1,58 +1,89 @@
-import { Text, View, Modal } from 'react-native';
-import React, { PureComponent } from 'react';
-import { style } from './style';
+import React, { Component } from 'react';
+import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
+import { isTablet } from 'react-native-device-info';
+import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
+import {style} from './style'
 
-interface CustomToastPopupProps {
+const height = Dimensions.get('screen').height;
 
-}
+export interface CustomToastProps {}
 
-interface CustomToastPopupState {
-    isToastVisible: boolean;
+export interface CustomToastState {
+    showCustomToast: boolean;
     message: string;
+    CustomToastColor: any;
+    position?: any;
 }
-export default class CustomToast extends PureComponent<CustomToastPopupProps, CustomToastPopupState> {
+
+export default class CustomToast extends Component<CustomToastProps, CustomToastState> {
     static shared: any;
-    constructor(props: CustomToastPopupProps) {
+    animateOpacityValue: any;
+    timerID: any;
+
+    constructor(props: CustomToastProps) {
         super(props);
-        this.state = {
-            isToastVisible: false,
-            message: ''
-        };
         CustomToast.shared = this;
+        this.animateOpacityValue = new Animated.Value(height);
+        this.state = {
+            showCustomToast: false,
+            message: '',
+            CustomToastColor: BaseThemeStyle.colors.blue,
+            position: 'bottom'
+        };
     }
 
-    /**
-     *
-     * @param message Toast message
-     * this function is to make toast self closing
-     */
-    showModal = (message: string) => {
-        this.setState({
-            message: message,
-            isToastVisible: true
+    componentWillUnmount() {
+        this.timerID && clearTimeout(this.timerID);
+    }
+
+    static show(message: string, duration?: number) {
+        setTimeout(() => {
+            this.shared.ShowCustomToast(message, duration);
+        }, 0);
+    }
+
+    ShowCustomToast(message: any, duration: number = 2000) {
+        this.setState({ showCustomToast: true, message }, () => {
+            Animated.timing(this.animateOpacityValue, {
+                toValue: -40,
+                duration: 1000,
+                useNativeDriver: false
+            }).start(() => this.hideCustomToast(duration));
         });
-        setTimeout(() => {
-            this.setState({
-                isToastVisible: false
-            });
-        }, 5000);
-    };
-    static show(message: string) {
-        setTimeout(() => {
-            this.shared?.showModal(message);
-        }, 200);
     }
-
+    hideCustomToast = (duration: number) => {
+        this.timerID = setTimeout(() => {
+            Animated.timing(this.animateOpacityValue, {
+                toValue: height,
+                duration: duration,
+                useNativeDriver: false
+            }).start(() => {
+                this.setState({ showCustomToast: false },()=>{
+                   // console.log("this.state.showCustomToast = 64",this.state.showCustomToast);
+                });
+                clearTimeout(this.timerID);
+            });
+        }, duration);
+    };
     render() {
-        return (
-            <Modal animationType="fade" transparent visible={this.state.isToastVisible}>
-                <View style={style.mainContainer}>
-                    <View style={style.messageContainer}>
-                        <Text style={style.messageText}>{this.state.message}</Text>
+        if (this.state.showCustomToast) {
+            return (
+                <Animated.View
+                    style={[
+                        style.animatedCustomTostView,
+                        {
+                            transform: [{ translateY: this.animateOpacityValue }],
+                            top: this.state.position == 'top' ? height / 2 : '90%'
+                        }
+                    ]}
+                >
+                    <View style={[style.bottomPopup]}>
+                        <Text style={[ style.popupText]} numberOfLines={3}>
+                            {this.state.message}
+                        </Text>
                     </View>
-                </View>
-            </Modal>
-        );
+                </Animated.View>
+            );
+        } else return null;
     }
 }
-
