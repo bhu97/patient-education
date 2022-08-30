@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import SplashScreen from 'react-native-splash-screen';
 import authenticationManager from '../../Authentication/AuthenticationManager';
+import CustomToast from '../../Components/custom-toast/custom-toast';
 import { API_NAMES, HTTP_METHODS, SCREEN_NAME } from '../../Constant/Constants';
 import { DatabaseManager } from '../../Database/DatabaseManager';
 import dbHelper from '../../Database/DBHelper';
@@ -11,8 +12,10 @@ import apiManager from '../../Helper/ApiManager';
 import { createDriveModelData, createListModelData, isStringEmpty } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
+import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
+import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import { setIsFetchThumbnailLoaded, setIsSupportEmailLoad, setIsUpdateNowEnable, setMainCategoryList, setRefreshDetailScreen, setSupportEmailData } from '../category/categorySlice';
 import { dispatchState } from '../store';
 import { setAppDataLoading, setIsAlertShown } from './appDataSlice';
@@ -230,7 +233,7 @@ export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (
     dispatchState(setAppDataLoading(true))
     for (let i = 0; i < driveItems.length; i++) {
         if (isStringEmpty(driveItems[i].downloadLocation)) {
-            await downloadManager.downloadFile(driveItems[i], false);
+            await downloadManager.downloadFile(driveItems[i], false,true);
 
         } else {
             console.log("already downloaded")
@@ -238,6 +241,7 @@ export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (
         if (i == driveItems.length - 1) {
             dispatchState(setAppDataLoading(false))
             dispatchState(setRefreshDetailScreen(true))
+            CustomToast.show(BaseLocalization.fileDownloaded, 1000, BaseThemeStyle.colors.blue)
         }
     }
 });
@@ -249,11 +253,12 @@ export const removeDownloadedFolder = createAsyncThunk('appData/removeDownloaded
     dispatchState(setAppDataLoading(true))
     for (let i = 0; i < driveItems.length; i++) {
         if (isStringEmpty(driveItems[i].downloadLocation) == false) {
-            await downloadManager.removeFile(driveItems[i], false);
+            await downloadManager.removeFile(driveItems[i], false, true);
         }
         if (i == driveItems.length - 1) {
             dispatchState(setAppDataLoading(false))
             dispatchState(setRefreshDetailScreen(true))
+            CustomToast.show(BaseLocalization.fileRemove, 1000)
         }
     }
 });

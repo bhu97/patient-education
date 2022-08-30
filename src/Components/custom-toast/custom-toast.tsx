@@ -36,14 +36,14 @@ export default class CustomToast extends Component<CustomToastProps, CustomToast
         this.timerID && clearTimeout(this.timerID);
     }
 
-    static show(message: string, duration?: number) {
+    static show(message: string, duration?: number,color?:string) {
         setTimeout(() => {
-            this.shared.ShowCustomToast(message, duration);
+            this.shared.ShowCustomToast(message, duration,color);
         }, 0);
     }
 
-    ShowCustomToast(message: any, duration: number = 2000) {
-        this.setState({ showCustomToast: true, message }, () => {
+    ShowCustomToast(message: any, duration: number = 2000, color: string = BaseThemeStyle.colors.danger) {
+        this.setState({ showCustomToast: true, message, CustomToastColor: color }, () => {
             Animated.timing(this.animateOpacityValue, {
                 toValue: -40,
                 duration: 1000,
@@ -73,11 +73,11 @@ export default class CustomToast extends Component<CustomToastProps, CustomToast
                         style.animatedCustomTostView,
                         {
                             transform: [{ translateY: this.animateOpacityValue }],
-                            top: this.state.position == 'top' ? height / 2 : '90%'
+                            top: this.state.position == 'top' ? height / 2 : '90%',
                         }
                     ]}
                 >
-                    <View style={[style.bottomPopup]}>
+                    <View style={[style.bottomPopup,{backgroundColor: this.state.CustomToastColor}]}>
                         <Text style={[ style.popupText]} numberOfLines={3}>
                             {this.state.message}
                         </Text>

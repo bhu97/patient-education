@@ -62,7 +62,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
                 ) : (
                     <View style={style.buttonLogoContainer}>
                         <Image
-                            style={{ height: '25%', width: '40%', marginBottom: 30 }}
+                            style={{ height: '15%', width: '35%', marginBottom: 60 }}
                             source={Images.launchScreen}
                             resizeMode="stretch"
                         />

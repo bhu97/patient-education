@@ -46,5 +46,7 @@
     "downloadFolder": "Download Ordner",
     "removeFolder": "Ordner entfernen",
     "folderOptions": "Ordneroptionen",
-    "commonError":"Etwas ist schief gelaufen"
+    "commonError":"Etwas ist schief gelaufen",
+    "fileDownloaded":"Download erfolgreich",
+    "fileRemove":"Erfolgreich entfernen"
 }

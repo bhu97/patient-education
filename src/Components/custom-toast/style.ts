@@ -17,7 +17,7 @@ export const style = StyleSheet.create({
         width: isTablet() ? '80%' : '100%',
         minHeight: 60,
         elevation: 3,
-        borderWidth: 2,
+        borderWidth: 0,
         borderRadius: 5,
         backgroundColor: BaseThemeStyle.colors.danger,
         justifyContent: 'center',
