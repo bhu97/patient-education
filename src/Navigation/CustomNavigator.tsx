@@ -1,9 +1,8 @@
 import { createNavigatorFactory, TabActions, TabRouter, useNavigationBuilder } from '@react-navigation/native';
 import * as React from 'react';
-import { Image, Pressable, StyleSheet, View ,TouchableOpacity} from 'react-native';
-
+import { Image, Pressable, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import NavigationManager from '../Helper/NavigationManager';
-import { BaseThemeStyle } from '../Theme/BaseThemeStyle';
 import Images from '../Theme/Images';
 import { style } from './style';
 
@@ -13,7 +12,7 @@ const ScreenOptions = ({ route, isFocused }) => {
             return (
                 <View style={[style.tabIconContainer, isFocused ? style.focused : style.unfocused]}>
                     <View style={style.tabIcon}>
-                          <Image style={{ height: 35, width: 35 }} source={ isFocused? Images.homeFilled : Images.home} />
+                        <Image style={{ height: 35, width: 35 }} source={isFocused ? Images.homeFilled : Images.home} />
                     </View>
                 </View>
             );
@@ -22,7 +21,10 @@ const ScreenOptions = ({ route, isFocused }) => {
             return (
                 <View style={[style.tabIconContainer, isFocused ? style.focused : style.unfocused]}>
                     <View style={style.tabIcon}>
-                         <Image style={{ height: 35, width: 35 }} source={ isFocused? Images.favoritesFilled : Images.favorites} />
+                        <Image
+                            style={{ height: 35, width: 35 }}
+                            source={isFocused ? Images.favoritesFilled : Images.favorites}
+                        />
                     </View>
                 </View>
             );
@@ -31,7 +33,10 @@ const ScreenOptions = ({ route, isFocused }) => {
             return (
                 <View style={[style.tabIconContainer, isFocused ? style.focused : style.unfocused]}>
                     <View style={style.tabIcon}>
-                         <Image style={{ height: 35, width: 35 }} source={ isFocused? Images.settingsFilled : Images.settings} />
+                        <Image
+                            style={{ height: 35, width: 35 }}
+                            source={isFocused ? Images.settingsFilled : Images.settings}
+                        />
                     </View>
                 </View>
             );
@@ -39,8 +44,8 @@ const ScreenOptions = ({ route, isFocused }) => {
 };
 
 const onClickSuperLogo = () => {
-    NavigationManager.navigateAndClear('HomeScreen')
-}
+    NavigationManager.navigateAndClear('HomeScreen');
+};
 
 function TabNavigator({ initialRouteName, children, screenOptions }) {
     const { state, navigation, descriptors, NavigationContent } = useNavigationBuilder(TabRouter, {
@@ -49,20 +54,13 @@ function TabNavigator({ initialRouteName, children, screenOptions }) {
         initialRouteName,
     });
 
+    const hideTabNavigator = useSelector((state: any) => state.appDataReducer.hideTabNavigator);
     return (
         <NavigationContent>
-
-
-
-            <View style={style.tabMainContainer}>
-
-                <View style={style.tabLogo} >
+            <View style={[style.tabMainContainer, hideTabNavigator ? { width: '0%' } : { width: '11%' }]}>
+                <View style={style.tabLogo}>
                     <TouchableOpacity onPress={onClickSuperLogo}>
-                        <Image
-                            resizeMode="contain"
-                            style={style.logoSize}
-                            source={Images.superSignLogoWhite}
-                        />
+                        <Image resizeMode="contain" style={style.logoSize} source={Images.superSignLogoWhite} />
                     </TouchableOpacity>
                 </View>
 
@@ -93,7 +91,7 @@ function TabNavigator({ initialRouteName, children, screenOptions }) {
                     ))}
                 </View>
             </View>
-            <View style={style.screenContainer}>
+            <View style={[style.screenContainer, hideTabNavigator ? { width: '100%', left: '0%' } : { width: '89%' }]}>
                 {state.routes.map((route, i) => {
                     return (
                         <View

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import WebView, { WebViewNavigation } from 'react-native-webview'
 import { connect } from 'react-redux';
-import {View} from 'react-native'
+import {View, BackHandler} from 'react-native'
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { RootState } from '../../Redux/rootReducer';
@@ -10,6 +10,7 @@ import FullScreenLoader from '../full-screen-loader/full-screen-loader';
 import MainContainer from '../main-container/main-container';
 import Pdf from 'react-native-pdf';
 import { style } from './style'
+import {setHideTabNavigator } from '../../Redux/app-data/appDataSlice';
 
 interface CustomWebViewProps {
     route?: { params: { url: string, fileName: string,isPdf:boolean } };
@@ -19,6 +20,8 @@ interface CustomWebViewProps {
     headers?: any;
     customNavTitle?: string;
     setCurrentUrl?: (e: string) => void;
+    setHideTabNavigation: (boolean) => void;
+    hideTabNavigator: boolean;
 }
 
 interface CustomWebViewState {
@@ -33,23 +36,32 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
             currentUrl: '',
             downloadUrl: ''
         };
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+        this.props.setHideTabNavigation(true);
     }
 
     ref = React.createRef<WebView>();
-
-    componentDidMount() {
-
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
+    
     componentWillUnmount() {
-
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+    handleBackButtonClick() {
+        NavigationManager.goBack()
+        this.props.setHideTabNavigation(false);
+        return true;
     }
     onPressClose = () => {
         // this.props.onBack && this.props.onBack();
         NavigationManager.goBack()
+        this.props.setHideTabNavigation(false);
     }
 
     onPressBack = () => {
         this.ref?.current?.goBack();
+        this.props.setHideTabNavigation(false);
     }
 
     renderLoading = () => (
@@ -68,10 +80,8 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
     }
 
     render() {
-    
         return (
             <MainContainer>
-                
                 <CustomTopNav
                     back
                     subTitle={this.props.route?.params?.fileName}
@@ -81,9 +91,8 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
                     largeTitle
                 />
                
-
                 {(this.props.route?.params?.isPdf) && (
-                    <View style={style.pdfContainer}>
+                    <View style={[style.pdfContainer]}>
                         <Pdf
                             source={{ uri: this.props.route?.params?.url }}
                             onLoadComplete={(numberOfPages, filePath) => {
@@ -111,18 +120,18 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
                     onFileDownload={this.onFileDownload}
                     onHttpError={this.props.onHttpError}
                 />)}
-
-
             </MainContainer>
         );
     }
 }
 const mapStateToProps = (state: RootState) => ({
-
+   hideTabNavigator: state.appDataReducer.hideTabNavigator
 });
 
 const mapDispatchToProps = (dispatch: any): object => ({
-
+    setHideTabNavigation: (value: boolean) => {
+        dispatch(setHideTabNavigator(value));
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomWebView);

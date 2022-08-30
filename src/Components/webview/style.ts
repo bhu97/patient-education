@@ -14,4 +14,7 @@ export const style = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    webViewContainer: {
+        flex: 1,
+    }
 });

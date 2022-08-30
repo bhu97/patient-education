@@ -7,6 +7,7 @@ const initialState = {
     alertMessage: '',
     isAlertShown: false,
     isLogout:false,
+    hideTabNavigator: false
 };
 
 export const appDataSlice = createSlice({
@@ -22,7 +23,12 @@ export const appDataSlice = createSlice({
         setIsAlertShown: (state, action: PayloadAction<boolean>) => {
             state.isAlertShown = action.payload;
         },
-       
+        setIsLogout: (state, action: PayloadAction<boolean>) => {
+            state.isLogout = action.payload;
+        },
+        setHideTabNavigator: (state, action: PayloadAction<boolean>) => {
+            state.hideTabNavigator = action.payload;
+        },
     },
 
     extraReducers: (builder) => {
@@ -64,6 +70,6 @@ export const appDataSlice = createSlice({
     },
 });
 
-export const { setAppDataLoading, setAlertMessage, setIsAlertShown } = appDataSlice.actions;
+export const { setAppDataLoading, setAlertMessage, setIsAlertShown,setIsLogout, setHideTabNavigator } = appDataSlice.actions;
 
 export default appDataSlice.reducer;
