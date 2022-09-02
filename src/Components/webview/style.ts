@@ -6,13 +6,10 @@ export const style = StyleSheet.create({
     },
     pdf: {
         flex:1,
-        width:Dimensions.get('window').width,
-        height:Dimensions.get('window').height,
+        width:Dimensions.get('window').width- 40,
     },
     pdfContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     webViewContainer: {
         flex: 1,

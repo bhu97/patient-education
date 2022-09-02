@@ -89,14 +89,14 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
                     smallHeader
                     isShowCard
                     largeTitle
-                />
-               
+                />  
                 {(this.props.route?.params?.isPdf) && (
                     <View style={[style.pdfContainer]}>
                         <Pdf
                             source={{ uri: this.props.route?.params?.url }}
                             onLoadComplete={(numberOfPages, filePath) => {
                             }}
+                            fitPolicy={0}
                             onPageChanged={(page, numberOfPages) => {
                             }}
                             onError={(error) => {
