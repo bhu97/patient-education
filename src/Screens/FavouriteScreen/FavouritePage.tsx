@@ -131,7 +131,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                         <View style={style.cardStyle}>
                             <TextInput
                                 style={style.cardTextInputStyle}
-                                placeholder="Enter the title"
+                                placeholder={BaseLocalization.placeholder}
                                 placeholderTextColor={BaseThemeStyle.colors.placeholder}
                                 value={this.state.group_name}
                                 onChangeText={(text) => {

@@ -208,12 +208,13 @@ alignItems:'center'
      //    borderWidth: 1,
      //    borderColor: 'gray',
         // width:'25%',
-        borderRadius:5
+        borderRadius:5,
+        width:350
     },
 
     cardStyle: {
         // backgroundColor: '#E5EAF6',
-        // padding: '3%',
+        //  padding: '3%',
         // width: '100%',
     },
     cardTextInputStyle: {

@@ -56,5 +56,6 @@ export const BaseLocalization = {
     commonError: LocalizationManager.getLocalizedStrings('commonError'),
     fileDownloaded: LocalizationManager.getLocalizedStrings('fileDownloaded'),
     fileRemove: LocalizationManager.getLocalizedStrings('fileRemove'),
+    placeholder: LocalizationManager.getLocalizedStrings('placeholder'),
 
 };
