@@ -43,9 +43,9 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
             selectedGroups: [],
             selectedItem: null,
             toolTipData: [
-                { index: 0, title: 'Download', isEnable: true },
-                { index: 1, title: 'Remove Locally', isEnable: true },
-                { index: 2, title: 'Add/Remove Favourite', isEnable: true }
+                { index: 0, title: BaseLocalization.download, isEnable: true },
+                { index: 1, title: BaseLocalization.removeLocally, isEnable: true },
+                { index: 2, title: BaseLocalization.addRemoveFavorite, isEnable: true },
             ]
 
         };

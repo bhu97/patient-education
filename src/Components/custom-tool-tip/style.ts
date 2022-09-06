@@ -18,7 +18,8 @@ export const style = StyleSheet.create({
         fontSize: 20, fontWeight: '500', padding: 5 
     },
     toolTipOptionSeperator:{
-        height: 1, width: 300, backgroundColor: 'gray'
+        height: 1, width: 300, backgroundColor: 'gray',
+        justifyContent:'center',alignItems:'center'
     },
     folderTitle:{
         fontSize: 20, marginTop: 40, marginBottom: 10, fontWeight: 'bold' 
@@ -28,7 +29,7 @@ export const style = StyleSheet.create({
         color: BaseThemeStyle.colors.blue,
     },
     categoryTextStyleToolTip: {
-        fontSize:24,
+        fontSize:20,
         color: BaseThemeStyle.colors.blue,
     },
     listView:{

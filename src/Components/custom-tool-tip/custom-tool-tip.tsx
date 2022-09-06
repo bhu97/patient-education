@@ -80,7 +80,7 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
                     arrowSize={style.toolTipArrow}
                     isVisible={this.props.isVisible}
                     content={
-                        <View style={[{ ...style.toolTipContainer, height: this.props.isCountryList ? 'auto' : 220 }]}>
+                        <View style={[{ ...style.toolTipContainer, height: this.props.isCountryList ? 'auto' : 210 }]}>
                             {!this.props.isCountryList ? (
                                 <>
                                     <Text style={style.folderTitle}>
