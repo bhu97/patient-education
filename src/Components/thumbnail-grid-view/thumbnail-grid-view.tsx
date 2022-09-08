@@ -16,6 +16,7 @@ import GroupItem from '../favourit-thumbnail-grid-view/group-item';
 import FullScreenLoader from '../full-screen-loader/full-screen-loader';
 import CustomIcon from '../custom-icon/custom-icon';
 import { style } from './style';
+import permissions from '../../Helper/Permission';
 
 interface ThumbnailGridViewProps {
     gridViewList: GridViewModel[];
@@ -53,7 +54,9 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
         };
     }
 
-    componentDidMount(): void {}
+    async componentDidMount():  Promise<void> {
+       await permissions.checkPermission();
+    }
 
     componentDidUpdate(prevProp): void {
         if (prevProp.gridViewList.length !== this.props.gridViewList.length) {

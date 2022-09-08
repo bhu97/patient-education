@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import dbHelper from '../../Database/DBHelper';
 import downloadManager from '../../Download/DownloadManager';
 import { getIconByExtension, isStringEmpty } from '../../Helper/Helper';
+import permissions from '../../Helper/Permission';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
@@ -51,7 +52,8 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         };
     }
 
-    componentDidMount(): void {
+    async componentDidMount(): Promise<void> {
+        await permissions.checkPermission();
     }
 
 
