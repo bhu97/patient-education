@@ -31,7 +31,17 @@ export default class FullScreenLoader extends PureComponent<FullScreenLoaderProp
                 easing: Easing.linear, // Easing is an additional import from react-native
                 useNativeDriver: true  // To make use of native driver for performance
             }
-        ).start()
+        ).start(()=>{
+            Animated.timing(
+                this.spinValue,
+                {
+                    toValue: 1,
+                    duration: 3000,
+                    easing: Easing.linear, // Easing is an additional import from react-native
+                    useNativeDriver: true  // To make use of native driver for performance
+                }
+            )
+        })
     }
 
     spin = this.spinValue.interpolate({

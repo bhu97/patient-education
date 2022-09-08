@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import WebView, { WebViewNavigation } from 'react-native-webview'
 import { connect } from 'react-redux';
-import {View, BackHandler} from 'react-native'
+import { View, BackHandler, TouchableOpacity,Image } from 'react-native'
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { RootState } from '../../Redux/rootReducer';
@@ -10,10 +10,12 @@ import FullScreenLoader from '../full-screen-loader/full-screen-loader';
 import MainContainer from '../main-container/main-container';
 import Pdf from 'react-native-pdf';
 import { style } from './style'
-import {setHideTabNavigator } from '../../Redux/app-data/appDataSlice';
+import { setHideTabNavigator } from '../../Redux/app-data/appDataSlice';
+import CustomIcon from '../custom-icon/custom-icon';
+import Images from '../../Theme/Images';
 
 interface CustomWebViewProps {
-    route?: { params: { url: string, fileName: string,isPdf:boolean } };
+    route?: { params: { url: string, fileName: string, isPdf: boolean } };
     html?: any,
     onBack?: () => void
     onHttpError?: (event: any) => void;
@@ -44,7 +46,7 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
     componentWillMount() {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
-    
+
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
@@ -82,14 +84,13 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
     render() {
         return (
             <MainContainer>
-                <CustomTopNav
-                    back
-                    subTitle={this.props.route?.params?.fileName}
-                    onPressBack={this.onPressClose}
-                    smallHeader
-                    isShowCard
-                    largeTitle
-                />  
+                <TouchableOpacity
+                    onPress={this.onPressClose}
+                >
+                    <Image source={Images.backArrowImage} />
+                </TouchableOpacity>
+
+
                 {(this.props.route?.params?.isPdf) && (
                     <View style={[style.pdfContainer]}>
                         <Pdf
@@ -103,29 +104,30 @@ class CustomWebView extends PureComponent<CustomWebViewProps, CustomWebViewState
                             }}
                             onPressLink={(uri) => {
                             }}
-                            style={style.pdf} />
+                            style={style.pdf}
+                        />
                     </View>
                 )}
                 {(this.props.route?.params?.isPdf == false) && (
-                <WebView
-                    ref={this.ref}
-                    source={{
-                        uri: this.props.route?.params?.url,
-                        html: this.props.html,
-                        headers: this.props.headers,
-                    }}
-                    startInLoadingState={true}
-                    renderLoading={this.renderLoading}
-                    onNavigationStateChange={this.setCurrentUrl}
-                    onFileDownload={this.onFileDownload}
-                    onHttpError={this.props.onHttpError}
-                />)}
+                    <WebView
+                        ref={this.ref}
+                        source={{
+                            uri: this.props.route?.params?.url,
+                            html: this.props.html,
+                            headers: this.props.headers,
+                        }}
+                        startInLoadingState={true}
+                        renderLoading={this.renderLoading}
+                        onNavigationStateChange={this.setCurrentUrl}
+                        onFileDownload={this.onFileDownload}
+                        onHttpError={this.props.onHttpError}
+                    />)}
             </MainContainer>
         );
     }
 }
 const mapStateToProps = (state: RootState) => ({
-   hideTabNavigator: state.appDataReducer.hideTabNavigator
+    hideTabNavigator: state.appDataReducer.hideTabNavigator
 });
 
 const mapDispatchToProps = (dispatch: any): object => ({

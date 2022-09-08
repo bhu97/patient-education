@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
+var {width, height} = Dimensions.get('screen');
 
 export const style = StyleSheet.create({
     flexContainer: {
@@ -6,7 +7,8 @@ export const style = StyleSheet.create({
     },
     pdf: {
         flex:1,
-        width:Dimensions.get('window').width- 40,
+        paddingTop:10,
+        width:'100%',
     },
     pdfContainer: {
         flex: 1,
