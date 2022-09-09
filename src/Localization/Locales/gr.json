@@ -47,5 +47,6 @@
     "commonError":"Etwas ist schief gelaufen. Bitte versuche es erneut",
     "fileDownloaded":"Download erfolgreich",
     "fileRemove":"Erfolgreich entfernen",
-    "placeholder": "Geben Sie den Titel ein" 
+    "placeholder": "Geben Sie den Titel ein" ,
+    
 }

@@ -42,6 +42,12 @@ export const BINARY_STRING = 'q4t7w!z%C*F-JaNcRfUjXn2r5u8x/A?D(G+KbPeSgVkYp3s6v9
 // Technical email support 
 export const SUPPORT_EMAIL = 'Laura.Bechtold@fmc-ag.com'
 
+export const AAD_ENDPOINT_HOST = 'https://login.microsoftonline.com'
+export const DRIVE_ID = 'b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL'
+export const SITE_ID = 'ce9ddfbf-3e3c-4569-952c-2366b6352bba'
+export const LIST_ID = 'c5c38f36-9e7d-4f3a-8049-094782193c0b'
+export const GRAPH_ENDPOINT_HOST = 'https://graph.microsoft.com'
+
 
 export const API_NAMES = {
     //ROOT_ID: '01GX2IG4N6Y2GOVW7725BZO354PWSELRRZ',
@@ -50,7 +56,7 @@ export const API_NAMES = {
 
     ROOT_ID: '01CF5DFEN6Y2GOVW7725BZO354PWSELRRZ',
     USER_ID: '0',
-    FIRST_LEVEL_PATH: '/teams/FMETS0447212/Shared%20Documents/',
+   // FIRST_LEVEL_PATH: '/teams/FMETS0447212/Shared%20Documents/',
     ROOT_WEB_URL: 'https://fresenius.sharepoint.com/teams/FMETS0447212/Shared%20Documents/',
     ROOT_LOGIN_URL: 'https://fresenius.sharepoint.com/',
     ROOT_LOGOUT_URL: 'https://fresenius.sharepoint.com/_layouts/15/SignOut.aspx',
@@ -61,42 +67,39 @@ export const API_NAMES = {
     INTERACTIVE_LOGIN_HOSTS: ['fresenius.com', 'login.microsoftonline.com'],
 
     //Endpoints
-    AUTHORIZATION_ENDPOINT: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-    TOKEN_ENDPOINT: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
-    AAD_ENDPOINT_HOST: 'https://login.microsoftonline.com/',
-    GRAPH_ENDPOINT_HOST: 'https://graph.microsoft.com/',
+    AUTHORIZATION_ENDPOINT: `${AAD_ENDPOINT_HOST}/common/oauth2/v2.0/authorize`,
+    TOKEN_ENDPOINT: `${AAD_ENDPOINT_HOST}/common/oauth2/v2.0/token`,
+   
+    
 
-    DRIVE_ID: 'b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL',
-    SITE_ID: 'ce9ddfbf-3e3c-4569-952c-2366b6352bba',
-    LIST_ID: 'c5c38f36-9e7d-4f3a-8049-094782193c0b',
     // RESOURCES
     // GRAPH_ME_ENDPOINT: 'v1.0/me',
     // GRAPH_MAIL_ENDPOINT: 'v1.0/me/messages',
 
     //
     FETCH_DATA_URL:
-        'https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/root/delta?$select=id,name,@microsoft.graph.downloadUrl,sharepointIds,name,file,folder,parentReference,createdDateTime,lastModifiedDateTime,webUrl,fields,size',
+        `${GRAPH_ENDPOINT_HOST}/v1.0/drives/${DRIVE_ID}/root/delta?$select=id,name,@microsoft.graph.downloadUrl,sharepointIds,name,file,folder,parentReference,createdDateTime,lastModifiedDateTime,webUrl,fields,size`,
 
     //all folder and its sub folder and files
     ALL_DRIVE_ITEM_ENDPOINT:
-        'https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/root/delta?$select=id, sharepointIds, title, name, webUrl, fields, parentReference, file, lastModifiedDateTime, size',
+        `https://graph.microsoft.com/v1.0/drives/${DRIVE_ID}/root/delta?$select=id, sharepointIds, title, name, webUrl, fields, parentReference, file, lastModifiedDateTime, size`,
 
     //get title, linked file / folder  and other content specific to drive it
     ALL_LIST_ITEM_ENDPOINT:
-        'https://graph.microsoft.com/v1.0/sites/ce9ddfbf-3e3c-4569-952c-2366b6352bba/lists/c5c38f36-9e7d-4f3a-8049-094782193c0b/items?$expand=fields, driveitem&$select=fields, id, contentType',
+        `https://graph.microsoft.com/v1.0/sites/${SITE_ID}/lists/${LIST_ID}/items?$expand=fields, driveitem&$select=fields, id, contentType`,
 
     // get item details for drive
-    GRAPH_DRIVE_ITEM_ENDPOINT: (itemId:string)=>`https://graph.microsoft.com/v1.0/sites/ce9ddfbf-3e3c-4569-952c-2366b6352bba/lists/c5c38f36-9e7d-4f3a-8049-094782193c0b/items/${itemId}?$expand=driveItem&$select=driveItem`,
+    GRAPH_DRIVE_ITEM_ENDPOINT: (itemId:string)=>`https://graph.microsoft.com/v1.0/sites/${SITE_ID}/lists/${LIST_ID}/items/${itemId}?$expand=driveItem&$select=driveItem`,
     GRAPH_LAST_MODIFIED_DATE:
-        'https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/root/delta?$top=1&$orderBy=lastModifiedDateTime+DESC',
+        `https://graph.microsoft.com/v1.0/drives/${DRIVE_ID}/root/delta?$top=1&$orderBy=lastModifiedDateTime+DESC`,
     // SCOPES
     GRAPH_THUMBNAILS_ENDPOINT: (uniqueId: string) =>
-        `https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/items/${uniqueId}/children?$expand=thumbnails`,
+        `https://graph.microsoft.com/v1.0/drives/${DRIVE_ID}/items/${uniqueId}/children?$expand=thumbnails`,
     GRAPH_ITEM_THUMBNAIL_ENDPOINT: (uniqueId: string) =>
-        `https://graph.microsoft.com/v1.0/drives/b!v9-dzjw-aUWVLCNmtjUrurV3uMVWJDRFqvxeIEZPrqY2j8PFfZ46T4BJCUeCGTwL/items/${uniqueId}?$expand=thumbnails`,
+        `https://graph.microsoft.com/v1.0/drives/${DRIVE_ID}/items/${uniqueId}?$expand=thumbnails`,
 
     THUMBNAIL_LIST_ITEM_DETAILS: (itemId: string) =>
-        `https://graph.microsoft.com/v1.0/sites/ce9ddfbf-3e3c-4569-952c-2366b6352bba/lists/c5c38f36-9e7d-4f3a-8049-094782193c0b/items/${itemId}?$expand=driveItem`,
+        `https://graph.microsoft.com/v1.0/sites/${SITE_ID}/lists/${LIST_ID}/items/${itemId}?$expand=driveItem`,
 
     GRAPH_SCOPES: [
         'offline_access', /// Needed to receive a refresh token
@@ -111,7 +114,7 @@ export const API_NAMES = {
     ],
 
    // COUNTRY_SUPPORT_EMAIL:'https://fresenius.sharepoint.com/teams/FMETS0447212/Lists/Support%20Emails',
-    COUNTRY_SUPPORT_EMAIL:'https://graph.microsoft.com/v1.0/sites/ce9ddfbf-3e3c-4569-952c-2366b6352bba/lists/7adc35bd-0c3b-416f-8865-9cc957fee891/items?expand=fields(select=Id,country,email,LinkTitle,LinkTitleNoMenu,Title)',
+    COUNTRY_SUPPORT_EMAIL:`https://graph.microsoft.com/v1.0/sites/${SITE_ID}/lists/7adc35bd-0c3b-416f-8865-9cc957fee891/items?expand=fields(select=Id,country,email,LinkTitle,LinkTitleNoMenu,Title)`,
 
     
     
