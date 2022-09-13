@@ -82,5 +82,7 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+  <key>NSCameraUsageDescription</key>
+      <string>YOUR TEXT</string>
 </dict>
 </plist>

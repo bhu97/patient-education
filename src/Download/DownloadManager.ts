@@ -1,6 +1,6 @@
 import { Linking, Platform } from 'react-native';
 import RNFS from 'react-native-fs';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import CustomToast from '../Components/custom-toast/custom-toast';
 import { API_NAMES, HTTP_METHODS } from '../Constant/Constants';
 import dbHelper from '../Database/DBHelper';
@@ -110,9 +110,7 @@ class DownloadManager {
 
     getDownloadedFilesName = async () => {
         let downloadedList: any[] = [];
-        const {
-            dirs: { DownloadDir, DocumentDir },
-        } = RNFetchBlob.fs;
+        const  DocumentDir   =  RNFS.DocumentDirectoryPath;
         let isPermitted = await permissions.checkPermission();
         let path: string = '';
         if (deviceManager.isAndroid()) {
