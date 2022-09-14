@@ -1,6 +1,6 @@
 const FontFamily = {
-    HelveticaNeueM: 'Helvetica Neue, Medium',
-    Helvetica65R: 'Helvetica 65 Medium, Regular',
+    HelveticaNeueM: 'HelveticaNeue-Medium',
+    Helvetica65R: 'HelveticaNeue',
 } as const;
 
 export const BaseThemeStyle = {

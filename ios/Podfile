@@ -11,6 +11,10 @@ target 'PatientEducation_dev' do
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false
   )
+#  use_native_modules!
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+    permissions_path = '../node_modules/react-native-permissions/ios'
+#    pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
   end
 
 target 'PatientEducation_sit' do
@@ -46,11 +50,6 @@ target 'PatientEducation' do
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
   pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
-  
-  permissions_path = '../node_modules/react-native-permissions/ios'
-  
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
-
 
   target 'PatientEducationTests' do
     inherit! :complete
@@ -69,6 +68,8 @@ target 'PatientEducation' do
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
       config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
       end
-    end
+     end
     end
   end
+
+
