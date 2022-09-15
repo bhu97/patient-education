@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, Text, TouchableOpacity, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import ApplicationAlert from '../../Components/custom-alert/custom-alert-component';
@@ -62,7 +62,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
                 ) : (
                     <View style={style.buttonLogoContainer}>
                         <Image
-                            style={{ height: '15%', width: '35%', marginBottom: 60 }}
+                            style={(Platform.OS='ios')?style.iOSImg:style.androidImg}
                             source={Images.launchScreen}
                             resizeMode="stretch"
                         />

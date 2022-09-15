@@ -19,4 +19,6 @@ export const style = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    iOSImg:{ height: '20%', width: '65%', marginBottom: 60 },
+    androidImg:{ height: '15%', width: '35%', marginBottom: 60 }
 });
