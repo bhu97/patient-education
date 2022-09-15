@@ -50,6 +50,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>per pagamenti di pagoPA e bollettini, e per completare la richiesta di apertura del conto</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Comforter-Regular.ttf</string>
@@ -96,7 +98,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-	<string>per pagamenti di pagoPA e bollettini, e per completare la richiesta di apertura del conto</string>
 </dict>
 </plist>

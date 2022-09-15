@@ -30,8 +30,7 @@ export const style = StyleSheet.create({
     },
     contentContainer: {
         flexDirection: 'row',
-        // paddingHorizontal: BaseThemeStyle.margin.subtitle,
-        paddingHorizontal:16,
+        paddingHorizontal:12,
         paddingVertical: BaseThemeStyle.margin.subtitle,
         justifyContent: 'space-between',
         alignItems: 'center',

@@ -152,6 +152,8 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
             //Content support will be country specific mail address 
             mailEmailAddress= this.getSupportEmail();
         }
+        console.log("155 *************mailAdd",mailEmailAddress);
+        
         Linking.openURL(`mailto:${mailEmailAddress}`); 
     };
 
