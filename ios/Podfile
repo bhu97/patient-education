@@ -11,10 +11,6 @@ target 'PatientEducation_dev' do
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => false
   )
-#  use_native_modules!
-  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
-    permissions_path = '../node_modules/react-native-permissions/ios'
-#    pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
   end
 
 target 'PatientEducation_sit' do

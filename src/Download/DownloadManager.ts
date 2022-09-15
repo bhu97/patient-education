@@ -14,6 +14,7 @@ import { BaseLocalization } from '../Localization/BaseLocalization';
 import { DriveItemModel } from '../Model/DriveItemModel';
 import { FavoriteModel } from '../Model/FavouriteModel';
 import { BaseThemeStyle } from '../Theme/BaseThemeStyle';
+import ReactNativeBlobUtil from 'react-native-blob-util'
 
 class DownloadManager {
 
@@ -60,35 +61,86 @@ class DownloadManager {
             } else {
                 downloadFilePath = downloadUrl;
             }
+            //   let fileDownloadPath = Platform.OS === 'ios' ? documentDir : downloadFilePath;
             let fileDownloadPath = Platform.OS === 'ios' ? documentDir : downloadFilePath;
+
+
             const options = {
                 fromUrl: downloadUrl,
                 toFile: fileDownloadPath,
             };
-            return new Promise((resolve, reject) => {
-                RNFS.downloadFile(options)
-                    .promise.then(async (res: any) => {
-                        console.log('SUCCESS');
-                        if (isFavPage) {
-                            this.updateCurrentFavItem(item, fileDownloadPath).then((res) => {
+            if (Platform.OS == 'android') {
+                return new Promise((resolve, reject) => {
+                    RNFS.downloadFile(options)
+                        .promise.then(async (res: any) => {
+                            console.log('SUCCESS');
+                            if (isFavPage) {
+                                this.updateCurrentFavItem(item, fileDownloadPath).then((res) => {
+                                    resolve(fileDownloadPath);
+                                })
+                            } else {
+                                await this.updateCurrentDriveItem(item, fileDownloadPath)
                                 resolve(fileDownloadPath);
-                            })
-                        } else {
-                            await this.updateCurrentDriveItem(item, fileDownloadPath)
-                            resolve(fileDownloadPath);
+                            }
+
+                            isFolder ? null : CustomToast.show(BaseLocalization.fileDownloaded, 3000, BaseThemeStyle.colors.blue)
+
+                        })
+                        .catch((err) => {
+                            console.log('ERROR', err);
+                            reject(err);
+                        });
+                });
+            } else {
+                const { dirs } = ReactNativeBlobUtil.fs;
+                const dirToSave =  dirs.DocumentDir 
+                const configfb = {
+                    fileCache: true,
+                    useDownloadManager: true,
+                    notification: true,
+                    mediaScannable: true,
+                    title: fileName,
+                    path: `${dirToSave}/${fileName}`,
+                }
+                const configOptions = Platform.select({
+                    ios: {
+                        fileCache: configfb.fileCache,
+                        title: configfb.title,
+                        path: configfb.path,
+                    },
+                    android: configfb,
+                });
+                return new Promise((resolve, reject) => {
+                ReactNativeBlobUtil.config(configOptions)
+                    .fetch('GET', downloadUrl, {})
+                    .then(async (res) => {
+                        if (Platform.OS === "ios") {
+                            ReactNativeBlobUtil.fs.writeFile(configfb.path, res.data, 'base64');
+                            if (isFavPage) {
+                                this.updateCurrentFavItem(item, `file://${res.data}`).then((respose) => {
+                                    resolve(res.data);
+                                })
+                            } else {
+                                await this.updateCurrentDriveItem(item, `file://${res.data}`)
+                                resolve(`file://${res.data}`);
+                            }
+
+                            isFolder ? null : CustomToast.show(BaseLocalization.fileDownloaded, 3000, BaseThemeStyle.colors.blue)
                         }
-
-                        isFolder ? null : CustomToast.show(BaseLocalization.fileDownloaded, 3000, BaseThemeStyle.colors.blue)
-
                     })
-                    .catch((err) => {
-                        // console.log('ERROR', err);
-                        reject(err);
+                    .catch((e) => {
+                        console.log('The file saved to ERROR', e.message)
                     });
-            });
+                });
+            }
+
         }
     };
-    removeFile = async (item: any, isFavPage: boolean,isFolder?:boolean) => {
+
+   
+
+
+    removeFile = async (item: any, isFavPage: boolean, isFolder?: boolean) => {
         var path = RNFS.DocumentDirectoryPath + `/${item.name}`;
         return (
             RNFS.unlink(path)
@@ -110,7 +162,7 @@ class DownloadManager {
 
     getDownloadedFilesName = async () => {
         let downloadedList: any[] = [];
-        const  DocumentDir   =  RNFS.DocumentDirectoryPath;
+        const DocumentDir = RNFS.DocumentDirectoryPath;
         let isPermitted = await permissions.checkPermission();
         let path: string = '';
         if (deviceManager.isAndroid()) {
@@ -245,6 +297,8 @@ class DownloadManager {
                             downloadManager
                                 .downloadFileAndShow(item, isFav)
                                 .then((res) => {
+                                    console.log("337 res &&&&&&&&&& ===", res);
+                                    
                                     NavigationManager.navigate('CustomWebView', {
                                         url: res,
                                         fileName: title ? title : 'PDF',

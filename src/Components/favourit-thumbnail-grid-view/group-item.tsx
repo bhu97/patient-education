@@ -19,7 +19,7 @@ const GroupItem = (props) => {
                     }}
                 />
             </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{paddingLeft:8, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{fontSize: 18, color: 'black' }}>{props.name}</Text>
             </View>
         </View>

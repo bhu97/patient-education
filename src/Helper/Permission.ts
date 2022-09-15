@@ -1,8 +1,11 @@
-import { check, PERMISSIONS, request, RESULTS, AndroidPermission } from 'react-native-permissions';
+
+import { Platform } from 'react-native';
 import deviceManager from './DeviceManager';
 
 export class Permissions {
     public checkPermission = async () => {
+        if(Platform.OS == 'android'){ 
+        var { check, PERMISSIONS, request, RESULTS, AndroidPermission } = require('react-native-permissions') ;
         let result = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
         let result2 = await check(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
         switch (result) {
@@ -33,11 +36,16 @@ export class Permissions {
                 console.log('The permission is denied and not requestable anymore');
                 return false;
         }
-
         console.log('CHECK::', result);
+    }else{
+        return true
+    }
+
+        
     };
 
     public getPermission = async () => {
+        var { check, PERMISSIONS, request, RESULTS, AndroidPermission } = require('react-native-permissions') ;
         let isAndroidDevice = deviceManager.isAndroid();
         if (isAndroidDevice) {
             await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE).then((result) => {
