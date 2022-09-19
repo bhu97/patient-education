@@ -22,53 +22,44 @@ export default class FullScreenLoader extends PureComponent<FullScreenLoaderProp
         };
     }
     spinValue = new Animated.Value(0);
+
     componentDidMount() {
-        Animated.timing(
-            this.spinValue,
-            {
+        Animated.loop(
+            Animated.timing(this.spinValue, {
                 toValue: 1,
                 duration: 3000,
-                easing: Easing.linear, // Easing is an additional import from react-native
-                useNativeDriver: true  // To make use of native driver for performance
-            }
-        ).start(()=>{
-            Animated.timing(
-                this.spinValue,
-                {
-                    toValue: 1,
-                    duration: 3000,
-                    easing: Easing.linear, // Easing is an additional import from react-native
-                    useNativeDriver: true  // To make use of native driver for performance
-                }
-            )
-        })
-    }
+                easing: Easing.linear,
+                useNativeDriver: true,
+            })
+        ).start();
+    };
 
-    spin = this.spinValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '360deg']
-    })
 
-    render() {
-        return (
-            <Fragment>
-                {this.props.isLoading && (
-                    <View accessible style={style.container}>
-                        {this.props.showSpinner && (
-                            <>
-                                <View style={style.indicatorContainer}>
-                                    {/* <Image source={Images.loaderImage} /> */}
-                                    <Animated.Image
-                                        style={{ transform: [{ rotate: this.spin }] }}
-                                        source={Images.loaderImage} />
-                                    {/* <ActivityIndicator size={'large'} color={BaseThemeStyle.colors.blue}/> */}
-                                </View>
-                                <Text style={style.textStyle}>{BaseLocalization.pleaseWait}</Text>
-                            </>
-                        )}
-                    </View>
-                )}
-            </Fragment>
-        );
-    }
+spin = this.spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+})
+
+render() {
+    return (
+        <Fragment>
+            {this.props.isLoading && (
+                <View accessible style={style.container}>
+                    {this.props.showSpinner && (
+                        <>
+                            <View style={style.indicatorContainer}>
+                                {/* <Image source={Images.loaderImage} /> */}
+                                <Animated.Image
+                                    style={{ transform: [{ rotate: this.spin }] }}
+                                    source={Images.loaderImage} />
+                                {/* <ActivityIndicator size={'large'} color={BaseThemeStyle.colors.blue}/> */}
+                            </View>
+                            <Text style={style.textStyle}>{BaseLocalization.pleaseWait}</Text>
+                        </>
+                    )}
+                </View>
+            )}
+        </Fragment>
+    );
+}
 }
