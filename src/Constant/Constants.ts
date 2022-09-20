@@ -116,7 +116,7 @@ export const API_NAMES = {
    // COUNTRY_SUPPORT_EMAIL:'https://fresenius.sharepoint.com/teams/FMETS0447212/Lists/Support%20Emails',
     COUNTRY_SUPPORT_EMAIL:`https://graph.microsoft.com/v1.0/sites/${SITE_ID}/lists/7adc35bd-0c3b-416f-8865-9cc957fee891/items?expand=fields(select=Id,country,email,LinkTitle,LinkTitleNoMenu,Title)`,
 
-    
+    SUPPORT_LANGUAGE:`https://graph.microsoft.com/v1.0/sites/ce9ddfbf-3e3c-4569-952c-2366b6352bba/lists/be6d8375-8813-46b5-9695-4983e1539f94/items?expand=fields(select=Id,Language,Translation,field_0,field_1,field_2,field_3)`,
     
 };
 

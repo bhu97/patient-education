@@ -14,6 +14,7 @@ import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
+import { LanguageDataModel } from '../../Model/language-data-model';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import { setIsFetchThumbnailLoaded, setIsSupportEmailLoad, setIsUpdateNowEnable, setMainCategoryList, setRefreshDetailScreen, setSupportEmailData } from '../category/categorySlice';
@@ -303,5 +304,35 @@ else
 
 });
 
+export const fetchLanguageSupport = createAsyncThunk('appData/fetchLanguageSupport', async () => {
+    
+    const params = {};
 
+    console.log("called ######");
+    // dispatchState(setAppDataLoading(true))
+    const response = await apiManager.callApiToGetData(
+        API_NAMES.SUPPORT_LANGUAGE,
+        HTTP_METHODS.GET,
+        params,
+    );
+
+    if (response.value.length > 0) {
+        let languageData: any[] = [];
+        let allLanguage:string[] = []
+        for (let item of response.value) {
+            const {field_0, field_1, field_2,field_3} = item.fields
+            const data = {languageCode:field_0, countryCode:field_1, devId:field_2,translatedValue:field_3}
+            languageData.push(data)
+            allLanguage.push(field_0)
+        } 
+        let localLangSet = new Set(allLanguage);
+        allLanguage = Array.from(localLangSet)
+        dispatchState(setAppDataLoading(false))
+        return response;
+    }
+    else{
+        dispatchState(setAppDataLoading(false))
+    }
+
+});
 

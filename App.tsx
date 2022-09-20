@@ -24,8 +24,7 @@ export default class App extends PureComponent {
         LogManager.debug('app loading', 'test');
         LogBox.ignoreAllLogs();
         //persistentReducer
-        console.log(getStateOfReducer('persistentReducer'));
-        
+        // console.log(getStateOfReducer('persistentReducer'));
     }
 
     render() {

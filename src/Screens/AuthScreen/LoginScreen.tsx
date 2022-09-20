@@ -7,12 +7,13 @@ import FullScreenLoader from '../../Components/full-screen-loader/full-screen-lo
 import { BaseLocalization } from '../../Localization/BaseLocalization';
 import LocalizationManager from '../../Localization/LocalizationManager';
 import { setIsAlertShown } from '../../Redux/app-data/appDataSlice';
-import {  userLoginCalled } from '../../Redux/app-data/appDataThunk';
+import {  fetchLanguageSupport, userLoginCalled } from '../../Redux/app-data/appDataThunk';
 import { RootState } from '../../Redux/rootReducer';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import { style } from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { dispatchState } from '../../Redux/store';
 interface LoginScreenProps {
     navigation: any;
     isAlertShown: boolean;
@@ -34,7 +35,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     async componentDidMount() {
      let  isLogout = await AsyncStorage.getItem('isLogout');
      console.log("isLogout",isLogout);
-     
+     dispatchState(fetchLanguageSupport())
         SplashScreen.hide();
         if(isLogout == 'false'){
             this.props.login();

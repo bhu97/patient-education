@@ -92,12 +92,14 @@ class AuthenticationManager {
         LogManager.info('getAccessToken called =');
         let authorization = await this.getAuthorization();
 
-
+        console.log("authorization.accessToken",authorization.accessToken);
         if (authorization) {
             LogManager.info('auth token exist');
             if (this.isAuthorizationExpired(authorization)) {
                 console.info('expired need new token: ');
                 authorization = await this.refreshToken(authorization);
+                
+                
                 return authorization.accessToken;
             } else {
               //  console.info('Azure AD - Answering request for access token =');

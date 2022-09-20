@@ -16,7 +16,7 @@
     "android:uat-release": "set ENVFILE=.env.uat & react-native run-android --variant=uatrelease",
     "android-prod": "set ENVFILE=.env.prod & react-native run-android --variant=proddebug",
     "android-prod-release": "set ENVFILE=.env.prod & react-native run-android --variant=prodrelease",
-    "pod install":"npx react-native unlink react-native-permissions --platforms=ios"
+    "pod-install": "npx react-native unlink react-native-permissions --platforms=ios"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.3",
