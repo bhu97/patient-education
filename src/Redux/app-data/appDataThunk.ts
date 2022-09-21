@@ -278,7 +278,7 @@ export const fetchEmailSupport = createAsyncThunk('appData/fetchEmailSupport', a
         params,
     );
     
-    LogManager.debug('response= value &&&&&&&', JSON.stringify(response.value));
+   // LogManager.debug('response= value &&&&&&&', JSON.stringify(response.value));
     if (response.value.length > 0) {
         let emailSupportData: any = []
         for (let item of response.value) {
@@ -327,6 +327,9 @@ export const fetchLanguageSupport = createAsyncThunk('appData/fetchLanguageSuppo
         } 
         let localLangSet = new Set(allLanguage);
         allLanguage = Array.from(localLangSet)
+        console.log("allLanguage &&",allLanguage);
+        let dataEnglish = languageData.filter((item,k)=> item.languageCode == "en" )
+      //  console.log("dataEnglish &&",dataEnglish);
         dispatchState(setAppDataLoading(false))
         return response;
     }
