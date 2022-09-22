@@ -35,7 +35,6 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     async componentDidMount() {
      let  isLogout = await AsyncStorage.getItem('isLogout');
      console.log("isLogout",isLogout);
-     dispatchState(fetchLanguageSupport())
         SplashScreen.hide();
         if(isLogout == 'false'){
             this.props.login();

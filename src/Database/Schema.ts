@@ -84,3 +84,14 @@ export const LastModifyDateSchema = {
         createdDateTime:'string'
     },
 };
+
+export const LanguageDataSchema = {
+    name: 'LanguageDataSchema',
+    primaryKey: 'id',
+    properties: {
+        id: 'string',
+        allLanguage:'string[]',
+        currentLangData:'string[]',
+        currentSelectedLangCode:'string'
+    },
+};

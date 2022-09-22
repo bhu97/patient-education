@@ -180,7 +180,7 @@ export const fetchData = async (url: string, params?: any): Promise<any[]> => {
 
 const fetchNext = async (endpoint: string, params: any, data: Array<any>): Promise<any[]> => {
     const response = await apiManager.callApiToGetData(endpoint, params);
-   
+
     if (response['@odata.nextLink']) {
         const nextData = (await fetchNext(
             response['@odata.nextLink'],
@@ -203,6 +203,7 @@ export const userLoginCalled = createAsyncThunk('appData/login', async () => {
         dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));
         authenticationManager.userLogin().then(async (token) => {
             if (token) {
+                dispatchState(fetchLanguageSupport())
                 dispatchState(setIsAlertShown(false));
                 dispatchState(fetchAllDriveItems(true));
                 await AsyncStorage.setItem('isLogout', 'false');
@@ -234,7 +235,7 @@ export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (
     dispatchState(setAppDataLoading(true))
     for (let i = 0; i < driveItems.length; i++) {
         if (isStringEmpty(driveItems[i].downloadLocation)) {
-            await downloadManager.downloadFile(driveItems[i], false,true);
+            await downloadManager.downloadFile(driveItems[i], false, true);
 
         } else {
             console.log("already downloaded")
@@ -265,75 +266,82 @@ export const removeDownloadedFolder = createAsyncThunk('appData/removeDownloaded
 });
 
 export const fetchEmailSupport = createAsyncThunk('appData/fetchEmailSupport', async (isSupportEmailLoad?: boolean) => {
-    
+
     const params = {};
-    if(isSupportEmailLoad == false)
+    if (isSupportEmailLoad == false)
     // if(true)
     {
-    console.log("called ######");
-    // dispatchState(setAppDataLoading(true))
-    const response = await apiManager.callApiToGetData(
-        API_NAMES.COUNTRY_SUPPORT_EMAIL,
-        HTTP_METHODS.GET,
-        params,
-    );
-    
-   // LogManager.debug('response= value &&&&&&&', JSON.stringify(response.value));
-    if (response.value.length > 0) {
-        let emailSupportData: any = []
-        for (let item of response.value) {
-            const {Title, country, email} = item.fields
-            const data = {Title, country, email}
-            emailSupportData.push(data)
+        console.log("called ######");
+        // dispatchState(setAppDataLoading(true))
+        const response = await apiManager.callApiToGetData(
+            API_NAMES.COUNTRY_SUPPORT_EMAIL,
+            HTTP_METHODS.GET,
+            params,
+        );
+
+        // LogManager.debug('response= value &&&&&&&', JSON.stringify(response.value));
+        if (response.value.length > 0) {
+            let emailSupportData: any = []
+            for (let item of response.value) {
+                const { Title, country, email } = item.fields
+                const data = { Title, country, email }
+                emailSupportData.push(data)
+            }
+            dispatchState(setSupportEmailData(emailSupportData))
+            dispatchState(setIsSupportEmailLoad(true))
+            dispatchState(setAppDataLoading(false))
+            return response;
         }
-        dispatchState(setSupportEmailData(emailSupportData))
-        dispatchState(setIsSupportEmailLoad(true))
-        dispatchState(setAppDataLoading(false))
-        return response;
+        else {
+            dispatchState(setIsSupportEmailLoad(false))
+            dispatchState(setAppDataLoading(false))
+        }
+
     }
-    else{
-        dispatchState(setIsSupportEmailLoad(false))
+    else {
         dispatchState(setAppDataLoading(false))
     }
-   
-}
-else
-{
-    dispatchState(setAppDataLoading(false))
-}
 
 });
 
-export const fetchLanguageSupport = createAsyncThunk('appData/fetchLanguageSupport', async () => {
-    
+export const fetchLanguageSupport = createAsyncThunk('appData/fetchLanguageSupport', async (currentLang?: string) => {
     const params = {};
-
     console.log("called ######");
-    // dispatchState(setAppDataLoading(true))
+   // dispatchState(setAppDataLoading(true))
+    let url = currentLang ? API_NAMES.SUPPORT_LANGUAGE_BY_CODE : API_NAMES.SUPPORT_LANGUAGE
     const response = await apiManager.callApiToGetData(
-        API_NAMES.SUPPORT_LANGUAGE,
+        url,
         HTTP_METHODS.GET,
         params,
     );
-
     if (response.value.length > 0) {
         let languageData: any[] = [];
-        let allLanguage:string[] = []
-        for (let item of response.value) {
-            const {field_0, field_1, field_2,field_3} = item.fields
-            const data = {languageCode:field_0, countryCode:field_1, devId:field_2,translatedValue:field_3}
-            languageData.push(data)
-            allLanguage.push(field_0)
-        } 
-        let localLangSet = new Set(allLanguage);
-        allLanguage = Array.from(localLangSet)
-        console.log("allLanguage &&",allLanguage);
-        let dataEnglish = languageData.filter((item,k)=> item.languageCode == "en" )
-      //  console.log("dataEnglish &&",dataEnglish);
+        let allLanguage: string[] = []
+        if (currentLang) {
+
+        } else {
+            for (let item of response.value) {
+                const { field_0, field_1, field_2, field_3, id } = item.fields
+                const data = { languageCode: field_0, countryCode: field_1, devId: field_2, translatedValue: field_3, languageId: id }
+                languageData.push(data)
+                allLanguage.push(field_0)
+            }
+            let localLangSet = new Set(allLanguage);
+            allLanguage = Array.from(localLangSet)
+
+            let dataEnglish = languageData.filter((item, k) => item.languageCode == "en")
+            
+            let group: LanguageDataModel = {
+                allLanguage: allLanguage,
+                currentLangData: dataEnglish,
+                currentSelectedLangCode: 'en'
+            };
+            dbHelper.createLanguageData(LanguageDataModel.generate(group))
+        }
         dispatchState(setAppDataLoading(false))
         return response;
     }
-    else{
+    else {
         dispatchState(setAppDataLoading(false))
     }
 

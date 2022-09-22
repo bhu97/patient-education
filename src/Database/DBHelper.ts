@@ -4,6 +4,7 @@ import LogManager from '../Helper/LogManager';
 import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
 import { FavoriteGroupModel } from '../Model/FavouriteGroupModel';
 import { FavoriteModel } from '../Model/FavouriteModel';
+import { LanguageDataModel } from '../Model/language-data-model';
 import { LastModifyDateModel } from '../Model/LastModifyDateModel';
 import { MoreInfoListModel } from '../Model/MoreInfoListModel';
 import { IUserModel, UserModel } from '../Model/UserModel';
@@ -12,6 +13,7 @@ import {
     DriveItemSchema,
     FavoriteGroupSchema,
     FavoriteSchema,
+    LanguageDataSchema,
     LastModifyDateSchema,
     UserSchema,
 } from './Schema';
@@ -292,6 +294,16 @@ export class DBhelper {
         // await DatabaseManager.getInstance().deleteRealmObject(DriveItemSchema.name, uniqueId);
         await DatabaseManager.getInstance().createEntity(DriveItemSchema.name, data);
     }
+
+    async createLanguageData(data: LanguageDataModel) {
+        await DatabaseManager.getInstance().createEntity(LanguageDataSchema.name, data);
+    }
+
+    async getLanguageData(): Promise<LanguageDataModel[]> {
+        let itemData = DatabaseManager.getInstance().getEntities(LanguageDataSchema.name, ``);
+        return itemData;
+    }
+
 
 }
 
