@@ -4,7 +4,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import ApplicationAlert from '../../Components/custom-alert/custom-alert-component';
 import FullScreenLoader from '../../Components/full-screen-loader/full-screen-loader';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
+
 import LocalizationManager from '../../Localization/LocalizationManager';
 import { setIsAlertShown } from '../../Redux/app-data/appDataSlice';
 import {  fetchLanguageSupport, userLoginCalled } from '../../Redux/app-data/appDataThunk';
@@ -14,6 +14,9 @@ import Images from '../../Theme/Images';
 import { style } from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { dispatchState } from '../../Redux/store';
+import BaseLocalization from '../../Localization/BaseLocalization';
+
+
 interface LoginScreenProps {
     navigation: any;
     isAlertShown: boolean;
@@ -29,16 +32,16 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     constructor(props: LoginScreenProps) {
         super(props);
         this.state = {};
-        LocalizationManager.initializeAppLanguage();
+        // LocalizationManager.initializeAppLanguage();
     }
 
     async componentDidMount() {
      let  isLogout = await AsyncStorage.getItem('isLogout');
-     console.log("isLogout",isLogout);
+    //  console.log("isLogout",isLogout);
         SplashScreen.hide();
         if(isLogout == 'false'){
             this.props.login();
-        }
+        }     
     }
 
     hideAlert = () => {
@@ -55,6 +58,8 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
 
     render() {
         const { appDataLoading } = this.props;
+      
+        
         return (
             <View style={style.container}>
                 {appDataLoading ? (
@@ -68,7 +73,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
                         />
                         <TouchableOpacity style={style.buttonStyle} onPress={this.onLogin}>
                             <Text style={[BaseThemeStyle.fonts.h8, { color: BaseThemeStyle.colors.white }]}>
-                                {BaseLocalization.login}
+                               {BaseLocalization.getInstance().getObject().login}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -77,9 +82,9 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
                     visible={this.props.isAlertShown}
                     onRightPress={this.reTry}
                     onLeftPress={this.hideAlert}
-                    alertMsg={BaseLocalization.authFailed}
-                    rightButtonText={BaseLocalization.reTry}
-                    leftButtonText={BaseLocalization.cancel}
+                    alertMsg={BaseLocalization.getInstance().getObject().authFailed}
+                    rightButtonText={BaseLocalization.getInstance().getObject().reTry}
+                    leftButtonText={BaseLocalization.getInstance().getObject().cancel}
                 />
             </View>
         );

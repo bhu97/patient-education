@@ -23,7 +23,8 @@ export class LocalizationManager {
     }
 
     static getLocalizedStrings(name: string) {
-        const str = I18n.t(name);
+        //const str = I18n.t(name);
+        const str = en_US[`${name}`]
         return str;
     }
 

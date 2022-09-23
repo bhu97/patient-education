@@ -13,7 +13,7 @@ import dbHelper from '../../Database/DBHelper';
 import { createBredCrumbList } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
+import BaseLocalization from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { setCategoryList, setIsFetchThumbnailLoaded, setSelectedCategoryData } from '../../Redux/category/categorySlice';
@@ -172,7 +172,7 @@ class CategoryScreen extends Component<CategoryScreenProps, CategoryScreenState>
                             <View style={style.imageContainer}>
                                 <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
                                 <Text style={style.secondtextStyle} numberOfLines={3}>
-                                    {BaseLocalization.noDataText}
+                                    {BaseLocalization.getInstance().getObject().noDataText}
                                 </Text>
                             </View>
                         </View>

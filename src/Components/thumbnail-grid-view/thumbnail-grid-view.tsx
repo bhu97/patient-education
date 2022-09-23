@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import dbHelper from '../../Database/DBHelper';
 import downloadManager from '../../Download/DownloadManager';
 import { createGridModelData, getIconByExtension, isStringEmpty } from '../../Helper/Helper';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
+import BaseLocalization from '../../Localization/BaseLocalization';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllThumbnails } from '../../Redux/app-data/appDataThunk';
@@ -47,9 +47,9 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
             selectedGroups: [],
             selectedItem: null,
             toolTipData: [
-                { index: 0, title: BaseLocalization.download, isEnable: true },
-                { index: 1, title: BaseLocalization.removeLocally, isEnable: true },
-                { index: 2, title: BaseLocalization.addRemoveFavorite, isEnable: true },
+                { index: 0, title: BaseLocalization.getInstance().getObject().download, isEnable: true },
+                { index: 1, title: BaseLocalization.getInstance().getObject().removeLocally, isEnable: true },
+                { index: 2, title: BaseLocalization.getInstance().getObject().addRemoveFavorite, isEnable: true },
             ],
         };
     }
@@ -292,8 +292,8 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                                     marginHorizontal: 10,
                                 }}
                             >
-                                <Text style={style.modalTitle}>{BaseLocalization.addToFav}</Text>
-                                <Text style={style.modalSubTitle}>{BaseLocalization.checkSubTitle}</Text>
+                                <Text style={style.modalTitle}>{BaseLocalization.getInstance().getObject().addToFav}</Text>
+                                <Text style={style.modalSubTitle}>{BaseLocalization.getInstance().getObject().checkSubTitle}</Text>
                             </View>
                             <FlatList
                                 data={this.props.favGroup}
@@ -307,12 +307,12 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                                     }}
                                 >
                                     <View style={{ marginRight: 20 }}>
-                                        <Text style={style.modalButton}>{BaseLocalization.cancel}</Text>
+                                        <Text style={style.modalButton}>{BaseLocalization.getInstance().getObject().cancel}</Text>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.updateModal()}>
                                     <View>
-                                        <Text style={style.modalButton}>{BaseLocalization.submit}</Text>
+                                        <Text style={style.modalButton}>{BaseLocalization.getInstance().getObject().submit}</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>
@@ -343,7 +343,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                 ) : (
                     <View style={style.emptyIconStyle}>
                         <Image style={style.emptyImageStyle} source={Images.emptyImg} />
-                        <Text style={style.emptyDataText}>{BaseLocalization.noDataText}</Text>
+                        <Text style={style.emptyDataText}>{BaseLocalization.getInstance().getObject().noDataText}</Text>
                     </View>
                 )}
             </>

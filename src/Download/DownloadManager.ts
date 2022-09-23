@@ -10,7 +10,7 @@ import LogManager from '../Helper/LogManager';
 import NavigationManager from '../Helper/NavigationManager';
 import networkManager from '../Helper/NetworkManager';
 import permissions from '../Helper/Permission';
-import { BaseLocalization } from '../Localization/BaseLocalization';
+import BaseLocalization from '../Localization/BaseLocalization';
 import { DriveItemModel } from '../Model/DriveItemModel';
 import { FavoriteModel } from '../Model/FavouriteModel';
 import { BaseThemeStyle } from '../Theme/BaseThemeStyle';
@@ -83,7 +83,7 @@ class DownloadManager {
                                 resolve(fileDownloadPath);
                             }
 
-                            isFolder ? null : CustomToast.show(BaseLocalization.fileDownloaded, 3000, BaseThemeStyle.colors.blue)
+                            isFolder ? null : CustomToast.show(BaseLocalization.getInstance().getObject().fileDownloaded, 3000, BaseThemeStyle.colors.blue)
 
                         })
                         .catch((err) => {
@@ -125,7 +125,7 @@ class DownloadManager {
                                 resolve(`file://${res.data}`);
                             }
 
-                            isFolder ? null : CustomToast.show(BaseLocalization.fileDownloaded, 3000, BaseThemeStyle.colors.blue)
+                            isFolder ? null : CustomToast.show(BaseLocalization.getInstance().getObject().fileDownloaded, 3000, BaseThemeStyle.colors.blue)
                         }
                     })
                     .catch((e) => {
@@ -151,7 +151,7 @@ class DownloadManager {
                     } else {
                         this.updateCurrentDriveItem(item, '')
                     }
-                    isFolder ? null : CustomToast.show(BaseLocalization.fileRemove, 1000)
+                    isFolder ? null : CustomToast.show(BaseLocalization.getInstance().getObject().fileRemove, 1000)
                 })
                 // `unlink` will throw an error, if the item to unlink does not exist
                 .catch((err) => {
@@ -307,7 +307,7 @@ class DownloadManager {
                                     resolve(true);
                                 })
                                 .catch(() => {
-                                    CustomToast.show(BaseLocalization.commonError, 1000)
+                                    CustomToast.show(BaseLocalization.getInstance().getObject().commonError, 1000)
                                     resolve(true);
 
                                 });
@@ -321,7 +321,7 @@ class DownloadManager {
                                     });
                                     resolve(true);
                                 } else {
-                                    CustomToast.show(BaseLocalization.commonError, 1000)
+                                    CustomToast.show(BaseLocalization.getInstance().getObject().commonError, 1000)
                                     resolve(true);
                                 }
                             });
@@ -330,7 +330,7 @@ class DownloadManager {
                 } else {
                     return new Promise((resolve) => {
                         LogManager.warn("network not available ")
-                        CustomToast.show(BaseLocalization.noInternetConnection, 1000)
+                        CustomToast.show(BaseLocalization.getInstance().getObject().noInternetConnection, 1000)
                         resolve(true);
                     })
                 }

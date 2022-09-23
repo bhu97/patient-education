@@ -12,7 +12,7 @@ import apiManager from '../../Helper/ApiManager';
 import { createDriveModelData, createListModelData, isStringEmpty } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
+import BaseLocalization, { BaseLocalizations } from '../../Localization/BaseLocalization';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LanguageDataModel } from '../../Model/language-data-model';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
@@ -243,7 +243,7 @@ export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (
         if (i == driveItems.length - 1) {
             dispatchState(setAppDataLoading(false))
             dispatchState(setRefreshDetailScreen(true))
-            CustomToast.show(BaseLocalization.fileDownloaded, 1000, BaseThemeStyle.colors.blue)
+            CustomToast.show(BaseLocalization.getInstance().getObject().fileDownloaded, 1000, BaseThemeStyle.colors.blue)
         }
     }
 });
@@ -260,7 +260,7 @@ export const removeDownloadedFolder = createAsyncThunk('appData/removeDownloaded
         if (i == driveItems.length - 1) {
             dispatchState(setAppDataLoading(false))
             dispatchState(setRefreshDetailScreen(true))
-            CustomToast.show(BaseLocalization.fileRemove, 1000)
+            CustomToast.show(BaseLocalization.getInstance().getObject().fileRemove, 1000)
         }
     }
 });
@@ -330,13 +330,14 @@ export const fetchLanguageSupport = createAsyncThunk('appData/fetchLanguageSuppo
             allLanguage = Array.from(localLangSet)
 
             let dataEnglish = languageData.filter((item, k) => item.languageCode == "en")
-            
+            // BaseLocalization.getInstance().getObject().generate(dataEnglish)
             let group: LanguageDataModel = {
                 allLanguage: allLanguage,
                 currentLangData: dataEnglish,
                 currentSelectedLangCode: 'en'
             };
             dbHelper.createLanguageData(LanguageDataModel.generate(group))
+            
         }
         dispatchState(setAppDataLoading(false))
         return response;
@@ -347,3 +348,46 @@ export const fetchLanguageSupport = createAsyncThunk('appData/fetchLanguageSuppo
 
 });
 
+export const fetchSupportedLang = createAsyncThunk('appData/fetchSupportedLang', async (currentLang?: string) => {
+    const params = {};
+    console.log("called ######");
+   // dispatchState(setAppDataLoading(true))
+    let url = currentLang ? API_NAMES.SUPPORT_LANGUAGE_BY_CODE : API_NAMES.SUPPORT_LANGUAGE
+    const response = await apiManager.callApiToGetData(
+        url,
+        HTTP_METHODS.GET,
+        params,
+    );
+    if (response.value.length > 0) {
+        let languageData: any[] = [];
+        let allLanguage: string[] = []
+        if (currentLang) {
+
+        } else {
+            for (let item of response.value) {
+                const { field_0, field_1, field_2, field_3, id } = item.fields
+                const data = { languageCode: field_0, countryCode: field_1, devId: field_2, translatedValue: field_3, languageId: id }
+                languageData.push(data)
+                allLanguage.push(field_0)
+            }
+            let localLangSet = new Set(allLanguage);
+            allLanguage = Array.from(localLangSet)
+
+            let dataEnglish = languageData.filter((item, k) => item.languageCode == "en")
+            // BaseLocalization.getInstance().getObject().generate(dataEnglish)
+            let group: LanguageDataModel = {
+                allLanguage: allLanguage,
+                currentLangData: dataEnglish,
+                currentSelectedLangCode: 'en'
+            };
+            dbHelper.createLanguageData(LanguageDataModel.generate(group))
+            
+        }
+        dispatchState(setAppDataLoading(false))
+        return response;
+    }
+    else {
+        dispatchState(setAppDataLoading(false))
+    }
+
+});

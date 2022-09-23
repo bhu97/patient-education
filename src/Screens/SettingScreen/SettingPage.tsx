@@ -14,7 +14,7 @@ import { DateUtility } from '../../Helper/date-utility';
 import deviceManager from '../../Helper/DeviceManager';
 import LogManager from '../../Helper/LogManager';
 import networkManager from '../../Helper/NetworkManager';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
+import BaseLocalization from '../../Localization/BaseLocalization';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllDriveItems, fetchEmailSupport, logout } from '../../Redux/app-data/appDataThunk';
 import { setCountryListData, setSelectedCountry } from '../../Redux/category/categorySlice';
@@ -81,7 +81,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         );
     };
     onCustomItemPress=(title)=>{
-        if(title == BaseLocalization.logoutNow){
+        if(title == BaseLocalization.getInstance().getObject().logoutNow){
             this.props.logoutPress()
         }
     }
@@ -119,7 +119,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                 }
             } else {
                 LogManager.warn("network not available ")
-                CustomToast.show(BaseLocalization.noInternetConnection,1000)
+                CustomToast.show(BaseLocalization.getInstance().getObject().noInternetConnection,1000)
             }
         });
 
@@ -166,8 +166,8 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
 
                 <View style={style.navContainer}>
                     <CustomTopNav
-                        title={BaseLocalization.settingTitle}
-                        subTitle={BaseLocalization.settingSubTitle}
+                        title={BaseLocalization.getInstance().getObject().settingTitle}
+                        subTitle={BaseLocalization.getInstance().getObject().settingSubTitle}
                         isShowCard
                         imageName={Images.topNavImageSettingScreen}
                     />
@@ -175,40 +175,40 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                 <CustomBody>
                     <View style={style.mainContainer}>
                         <View style={style.contactConatiner}>
-                            {this.headerContainer(BaseLocalization.contact)}
+                            {this.headerContainer(BaseLocalization.getInstance().getObject().contact)}
 
                             <CustomListWithHeader
-                                headerText={BaseLocalization.generalTitle}
-                                labelText={BaseLocalization.contact}
+                                headerText={BaseLocalization.getInstance().getObject().generalTitle}
+                                labelText={BaseLocalization.getInstance().getObject().contact}
                                 iconName={Images.circleMail}
                                 selectedCountry={this.props.selectedCountry}
                                 onPressItem={() => this.sendMail(false)}
                             />
 
                             <CustomListWithHeader
-                                headerText={BaseLocalization.technicalTitle}
-                                labelText={BaseLocalization.contact}
+                                headerText={BaseLocalization.getInstance().getObject().technicalTitle}
+                                labelText={BaseLocalization.getInstance().getObject().contact}
                                 iconName={Images.circleMail}
                                 selectedCountry={this.props.selectedCountry}
                                 onPressItem={() => this.sendMail(true)}
                             />
                         </View>
                         <View style={style.appInfoConatiner}>
-                            {this.headerContainer(BaseLocalization.appInformation)}
+                            {this.headerContainer(BaseLocalization.getInstance().getObject().appInformation)}
 
-                            {this.titleRowView(BaseLocalization.countryTitle, BaseLocalization.version)}
+                            {this.titleRowView(BaseLocalization.getInstance().getObject().countryTitle, BaseLocalization.getInstance().getObject().version)}
 
                             {this.boxRowView(this.props.selectedCountry, Images.circleEditCountry, deviceManager.getAppVersion())}
 
-                            {this.headerContainer(BaseLocalization.contentUpdates)}
+                            {this.headerContainer(BaseLocalization.getInstance().getObject().contentUpdates)}
 
-                            {this.titleRowView(BaseLocalization.contentTitle, BaseLocalization.modificationDate)}
+                            {this.titleRowView(BaseLocalization.getInstance().getObject().contentTitle, BaseLocalization.getInstance().getObject().modificationDate)}
 
-                            {this.boxRowViewSecond(BaseLocalization.updateTitle, Images.circleUpdate)}
+                            {this.boxRowViewSecond(BaseLocalization.getInstance().getObject().updateTitle, Images.circleUpdate)}
 
-                            {this.headerContainer(BaseLocalization.logout)}
+                            {this.headerContainer(BaseLocalization.getInstance().getObject().logout)}
 
-                            {this.boxRowView(BaseLocalization.logoutNow, Images.logout, '')}
+                            {this.boxRowView(BaseLocalization.getInstance().getObject().logoutNow, Images.logout, '')}
                         </View>
                     </View>
                 </CustomBody>

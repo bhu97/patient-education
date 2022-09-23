@@ -13,7 +13,7 @@ import dbHelper from '../../Database/DBHelper';
 import downloadManager from '../../Download/DownloadManager';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
+import BaseLocalization from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { fetchAllDriveItems, fetchLastModifiedDate } from '../../Redux/app-data/appDataThunk';
 import { setIsCountrySelected, setIsFetchThumbnailLoaded, setMainCategoryList, setSelectedCategoryData } from '../../Redux/category/categorySlice';
@@ -64,6 +64,9 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         LogManager.debug('mainCategoryData=', mainCategoryData);
         this.props.setMainList(mainCategoryData);
         this.props.fetchLastModifyDate();
+    
+         //console.log("Baseloclization #######", BaseLocalization.getInstance().getObject().getInstance().getObject().howAreYou);
+       
     }
     componentDidUpdate(prevProp): void {
         if (prevProp.isCountrySelected !== this.props.isCountrySelected) {
@@ -96,7 +99,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         ) : (
             <MainContainer>
                 <View style={style.navContainer}>
-                    <CustomTopNav title={BaseLocalization.welcome} subTitle={BaseLocalization.selectCategory} />
+                    <CustomTopNav title={BaseLocalization.getInstance().getObject().welcome} subTitle={BaseLocalization.getInstance().getObject().selectCategory} />
                 </View>
                 <CustomBody>
                     {this.props.mainList ? (
@@ -117,7 +120,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                             <View style={style.imageContainer}>
                                 <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
                                 <Text style={style.secondtextStyle} numberOfLines={3}>
-                                    {BaseLocalization.noDataText}
+                                    {BaseLocalization.getInstance().getObject().noDataText}
                                 </Text>
                             </View>
                         </View>

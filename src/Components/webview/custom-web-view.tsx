@@ -3,7 +3,7 @@ import WebView, { WebViewNavigation } from 'react-native-webview'
 import { connect } from 'react-redux';
 import { View, BackHandler, TouchableOpacity,Image } from 'react-native'
 import NavigationManager from '../../Helper/NavigationManager';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
+import BaseLocalization from '../../Localization/BaseLocalization';
 import { RootState } from '../../Redux/rootReducer';
 import CustomTopNav from '../custom-top-nav/custom-top-nav';
 import FullScreenLoader from '../full-screen-loader/full-screen-loader';

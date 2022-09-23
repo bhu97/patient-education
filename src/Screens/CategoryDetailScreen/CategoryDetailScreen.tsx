@@ -14,7 +14,7 @@ import dbHelper from '../../Database/DBHelper';
 import { createBredCrumbList, createGridModelData, isStringEmpty, linkedUrlListToArray } from '../../Helper/Helper';
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
+import BaseLocalization from '../../Localization/BaseLocalization';
 import { DriveItemModel } from '../../Model/DriveItemModel';
 import { GridViewModel } from '../../Model/GridViewModel';
 import { MoreInfoListModel } from '../../Model/MoreInfoListModel';
@@ -268,8 +268,8 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                                                 {this.props.gridViewData.filter((item) => {
                                                     return isStringEmpty(item.downloadLocation);
                                                 }).length
-                                                    ? BaseLocalization.downloadFolder
-                                                    : BaseLocalization.removeFolder}
+                                                    ? BaseLocalization.getInstance().getObject().downloadFolder
+                                                    : BaseLocalization.getInstance().getObject().removeFolder}
                                             </Text>
                                         </View>
                                     </View>
@@ -278,7 +278,7 @@ class CategoryDetailScreen extends Component<CategoryDetailScreenProps, Category
                             <View style={style.seperator}></View>
                             {this.props.moreInfoData && (
                                 <MoreInfoList
-                                    title={BaseLocalization.moreInfoTitle}
+                                    title={BaseLocalization.getInstance().getObject().moreInfoTitle}
                                     moreInfoList={this.props.moreInfoData}
                                     onPress={this.loadMoreScreenData}
                                 />

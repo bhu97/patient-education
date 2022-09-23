@@ -9,7 +9,7 @@ import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
 import FavouritThumbnailGridView from '../../Components/favourit-thumbnail-grid-view/favourit-thumbnail-grid-view';
 import MainContainer from '../../Components/main-container/main-container';
 import dbHelper from '../../Database/DBHelper';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
+import BaseLocalization from '../../Localization/BaseLocalization';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { setFavGroupData, setFavGroupItemData } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
@@ -118,20 +118,20 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                         <View style={{}}>
                             {this.state.renameFavGroup ? (
                                 <>
-                                    <Text style={style.modalTitle}>{BaseLocalization.editTitle}</Text>
-                                    <Text style={style.modalSubTitle}>{BaseLocalization.editSubTitle}</Text>
+                                    <Text style={style.modalTitle}>{BaseLocalization.getInstance().getObject().editTitle}</Text>
+                                    <Text style={style.modalSubTitle}>{BaseLocalization.getInstance().getObject().editSubTitle}</Text>
                                 </>
                             ) : (
                                 <>
-                                    <Text style={style.modalTitle}>{BaseLocalization.newListTitle}</Text>
-                                    <Text style={style.modalSubTitle}>{BaseLocalization.newListSubTitle}</Text>
+                                    <Text style={style.modalTitle}>{BaseLocalization.getInstance().getObject().newListTitle}</Text>
+                                    <Text style={style.modalSubTitle}>{BaseLocalization.getInstance().getObject().newListSubTitle}</Text>
                                 </>
                             )}
                         </View>
                         <View style={style.cardStyle}>
                             <TextInput
                                 style={style.cardTextInputStyle}
-                                placeholder={BaseLocalization.placeholder}
+                                placeholder={BaseLocalization.getInstance().getObject().placeholder}
                                 placeholderTextColor={BaseThemeStyle.colors.placeholder}
                                 value={this.state.group_name}
                                 onChangeText={(text) => {
@@ -147,7 +147,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                 }}
                             >
                                 <View style={style.cancelButton}>
-                                    <Text style={style.modalButton}>{BaseLocalization.cancel}</Text>
+                                    <Text style={style.modalButton}>{BaseLocalization.getInstance().getObject().cancel}</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -172,7 +172,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                 }}
                             >
                                 <View>
-                                    <Text style={style.modalButton}>{BaseLocalization.save}</Text>
+                                    <Text style={style.modalButton}>{BaseLocalization.getInstance().getObject().save}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -254,8 +254,8 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                     <CustomTopNav
                         imageName={Images.favoritesHeaderImg}
                         isShowCard
-                        title={BaseLocalization.favTitleText}
-                        subTitle={BaseLocalization.favSubTitleText}
+                        title={BaseLocalization.getInstance().getObject().favTitleText}
+                        subTitle={BaseLocalization.getInstance().getObject().favSubTitleText}
                     />
                 </View>
                 <CustomBody>
@@ -263,7 +263,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                         <View style={style.mainContainer}>
                             <View style={style.customcontainerview}>
                                 <View style={style.contentContainer}>
-                                    <Text style={style.textStyle}>{BaseLocalization.lists}</Text>
+                                    <Text style={style.textStyle}>{BaseLocalization.getInstance().getObject().lists}</Text>
                                     <TouchableOpacity onPress={() => this.setState({ visible: true })}>
                                         <Image style={{ height: 30, width: 30 }} source={Images.squarePlus} />
                                     </TouchableOpacity>
@@ -295,7 +295,7 @@ class FavouritePage extends Component<FavouritePageProps, FavouritePageState> {
                                     <View style={style.imageContainer}>
                                         <Image style={{ height: 200, width: 200 }} source={Images.emptyImg} />
                                         <Text numberOfLines={3} style={style.secondtextStyle}>
-                                            {BaseLocalization.noFavTitle}
+                                            {BaseLocalization.getInstance().getObject().noFavTitle}
                                         </Text>
                                     </View>
                                 )}

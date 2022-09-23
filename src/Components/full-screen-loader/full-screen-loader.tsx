@@ -1,6 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import { ActivityIndicator, Animated, Easing, Image, Text, View } from 'react-native';
-import { BaseLocalization } from '../../Localization/BaseLocalization';
+import BaseLocalization from '../../Localization/BaseLocalization';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import { style } from './style';
@@ -54,7 +54,7 @@ render() {
                                     source={Images.loaderImage} />
                                 {/* <ActivityIndicator size={'large'} color={BaseThemeStyle.colors.blue}/> */}
                             </View>
-                            <Text style={style.textStyle}>{BaseLocalization.pleaseWait}</Text>
+                            <Text style={style.textStyle}>{BaseLocalization.getInstance().getObject().pleaseWait}</Text>
                         </>
                     )}
                 </View>

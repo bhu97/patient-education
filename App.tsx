@@ -10,6 +10,10 @@ import Routes from './src/Navigation/Routes';
 import store, { dispatchState, getStateOfReducer } from './src/Redux/store';
 import { PersistGate } from "redux-persist/integration/react";
 import CustomToast from './src/Components/custom-toast/custom-toast';
+import BaseLocalization from './src/Localization/BaseLocalization';
+
+
+
 
 
 
@@ -23,6 +27,7 @@ export default class App extends PureComponent {
     componentDidMount() {
         LogManager.debug('app loading', 'test');
         LogBox.ignoreAllLogs();
+        BaseLocalization.getInstance().generate({})
         //persistentReducer
         // console.log(getStateOfReducer('persistentReducer'));
     }
