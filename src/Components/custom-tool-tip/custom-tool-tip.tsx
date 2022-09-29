@@ -11,8 +11,9 @@ interface CustomToolTipProps {
     insideToolTip?: any;
     closeToolTip?: any;
     isCountryList?: boolean;
-    position:string,
-    isEmpty:boolean
+    isLanguageList?: boolean;
+    position: string,
+    isEmpty: boolean
 }
 
 interface CustomToolTipState {
@@ -25,19 +26,20 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
         super(props);
         this.state = {
             isVisible: false,
-            model:this.props.model
+            model: this.props.model
         };
     }
 
 
-    
+
     onPressOfToolTipItem = (item: any) => {
-        if(item.isEnable){
+        if (item.isEnable) {
             this.props.onPressOfToolTipItem && this.props.onPressOfToolTipItem?.(item); // The optional chaining (?.) operator short-circuits instead of throwing an error if the reference is undefined or null.
         }
-        else if(this.props.isCountryList)
-        {
-            this.props.onPressOfToolTipItem?.(item)    
+        else if (this.props.isCountryList) {
+            this.props.onPressOfToolTipItem?.(item)
+        } else if (this.props.isLanguageList) {
+            this.props.onPressOfToolTipItem?.(item)
         }
     };
 
@@ -47,19 +49,22 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
                 <FlatList
                     ItemSeparatorComponent={this.toolTipOptionSeparator}
                     data={this.props.model}
-                    renderItem={({ item }) => {
+                    renderItem={({ item , index}) => {
                         return (
                             <TouchableOpacity onPress={() => this.onPressOfToolTipItem(item)}>
-                                <View style={[this.props.isCountryList ? style.listView : [style.categoryListView,{opacity:item.isEnable?1:0.3}]]}>
+                                <View style={[this.props.isCountryList || this.props.isLanguageList ? style.listView : [style.categoryListView, { opacity: this.props.isLanguageList ? 1 : item.isEnable ? 1 : 0.3 }]]}>
                                     <Text
                                         style={[
-                                            this.props.isCountryList
+                                            this.props.isCountryList || this.props.isLanguageList
                                                 ? style.textStyleToolTip
                                                 : style.categoryTextStyleToolTip,
                                         ]}
                                     >
-                                        {this.props.isCountryList ? item.countryTitle : item.title}
+                                        {this.props.isLanguageList ? item : this.props.isCountryList ? item.countryTitle : item.title}
                                     </Text>
+                                    {(index === this.props.model.length-1)&&(
+                                        <View style={style.blankView}></View>
+                                    )}
                                 </View>
                             </TouchableOpacity>
                         );
@@ -80,8 +85,8 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
                     arrowSize={style.toolTipArrow}
                     isVisible={this.props.isVisible}
                     content={
-                        <View style={[{ ...style.toolTipContainer, height: this.props.isCountryList ? 'auto' : 210 }]}>
-                            {!this.props.isCountryList ? (
+                        <View style={[{ ...style.toolTipContainer, height: this.props.isCountryList || this.props.isLanguageList ? 'auto' : 210 }]}>
+                            {!this.props.isCountryList || !this.props.isLanguageList ? (
                                 <>
                                     <Text style={style.folderTitle}>
                                         {BaseLocalization.getInstance().getObject().folderOptions}

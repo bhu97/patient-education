@@ -91,7 +91,7 @@ export const LanguageDataSchema = {
     properties: {
         id: 'string',
         allLanguage:'string[]',
-        currentLangData:'string[]',
-        currentSelectedLangCode:'string'
+        currentLangData:'string{}',
+        currentSelectedLangCode:'string',
     },
 };

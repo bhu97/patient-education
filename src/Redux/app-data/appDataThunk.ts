@@ -18,8 +18,8 @@ import { LanguageDataModel } from '../../Model/language-data-model';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import { setIsFetchThumbnailLoaded, setIsSupportEmailLoad, setIsUpdateNowEnable, setMainCategoryList, setRefreshDetailScreen, setSupportEmailData } from '../category/categorySlice';
-import { dispatchState } from '../store';
-import { setAppDataLoading, setIsAlertShown } from './appDataSlice';
+import { dispatchState, getStateOfReducer } from '../store';
+import { setAllLanguage, setAppDataLoading, setCurrentLanguageData, setIsAlertShown, setSelectedLanguage } from './appDataSlice';
 
 /**
  * createAsyncThunk receives two arguments
@@ -87,6 +87,7 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
     // LogManager.debug('mainCategoryData=', mainCategoryData);
 
     dispatchState(setMainCategoryList(mainCategoryData));
+    dispatchState(fetchAllSupportedLang());
 
     LogManager.debug('fetchDriveItems call ended');
     /**
@@ -203,10 +204,9 @@ export const userLoginCalled = createAsyncThunk('appData/login', async () => {
         dbHelper.createFavGroup(FavoriteGroupModel.generate({ name: 'Default' }));
         authenticationManager.userLogin().then(async (token) => {
             if (token) {
-                dispatchState(fetchLanguageSupport())
                 dispatchState(setIsAlertShown(false));
                 dispatchState(fetchAllDriveItems(true));
-                await AsyncStorage.setItem('isLogout', 'false');
+                 AsyncStorage.setItem('isLogout', 'false');
             } else {
                 dispatchState(setIsAlertShown(true));
             }
@@ -304,90 +304,82 @@ export const fetchEmailSupport = createAsyncThunk('appData/fetchEmailSupport', a
 
 });
 
-export const fetchLanguageSupport = createAsyncThunk('appData/fetchLanguageSupport', async (currentLang?: string) => {
+
+
+export const fetchLanguageSupport = createAsyncThunk('appData/fetchLanguageSupport', async (currentLang: string) => {
     const params = {};
-    console.log("called ######");
-   // dispatchState(setAppDataLoading(true))
-    let url = currentLang ? API_NAMES.SUPPORT_LANGUAGE_BY_CODE : API_NAMES.SUPPORT_LANGUAGE
+    dispatchState(setAppDataLoading(true))
+    let url = API_NAMES.SUPPORT_LANGUAGE_BY_CODE(currentLang);
+    const response = await apiManager.callApiToGetData(
+        url,
+        HTTP_METHODS.GET,
+        params,
+    );
+    console.log("getStateOfReducer",getStateOfReducer("appDataReducer").allLanguages);
+    if (response.value.length > 0) {
+        let customResponse:any={}
+        for (let item of response.value) {
+            const { field_0, Title, field_2, field_4, id } = item.fields
+            customResponse[field_2] = field_4;
+        }
+
+        BaseLocalization.getInstance().generate(customResponse)
+        let group: LanguageDataModel = {
+            allLanguage: getStateOfReducer("appDataReducer").allLanguages,
+            currentLangData: customResponse,
+            currentSelectedLangCode: currentLang
+        }; 
+        dbHelper.createLanguageData(LanguageDataModel.generate(group))
+        dispatchState(setCurrentLanguageData(customResponse))
+        dispatchState(setSelectedLanguage(currentLang))
+        let data = dbHelper.getLanguageData()
+        console.log(data);
+        
+        dispatchState(setAppDataLoading(false))
+        return response;
+    }
+    else {
+        dispatchState(setAppDataLoading(false))
+
+    }
+});
+
+export const fetchAllSupportedLang = createAsyncThunk('appData/fetchAllSupportedLang', async () => {
+    const params = {};
+
+    let url = API_NAMES.ALL_LANGUAGE_SUPPORT;
+    console.log("url",url);
     const response = await apiManager.callApiToGetData(
         url,
         HTTP_METHODS.GET,
         params,
     );
     if (response.value.length > 0) {
-        let languageData: any[] = [];
         let allLanguage: string[] = []
-        if (currentLang) {
-
-        } else {
-            for (let item of response.value) {
-                const { field_0, field_1, field_2, field_3, id } = item.fields
-                const data = { languageCode: field_0, countryCode: field_1, devId: field_2, translatedValue: field_3, languageId: id }
-                languageData.push(data)
-                allLanguage.push(field_0)
-            }
-            let localLangSet = new Set(allLanguage);
-            allLanguage = Array.from(localLangSet)
-
-            let dataEnglish = languageData.filter((item, k) => item.languageCode == "en")
-            // BaseLocalization.getInstance().getObject().generate(dataEnglish)
-            let group: LanguageDataModel = {
-                allLanguage: allLanguage,
-                currentLangData: dataEnglish,
-                currentSelectedLangCode: 'en'
-            };
-            dbHelper.createLanguageData(LanguageDataModel.generate(group))
-            
+        for (let item of response.value) {
+            allLanguage.push(item.fields.field_0)
         }
-        dispatchState(setAppDataLoading(false))
+        allLanguage.sort((a, b) => a.localeCompare(b));
+         dispatchState(setAllLanguage(allLanguage))
+         dispatchState(fetchLanguageSupport("English"))    
         return response;
     }
     else {
-        dispatchState(setAppDataLoading(false))
+     //   dispatchState(setAppDataLoading(false))
     }
 
 });
 
-export const fetchSupportedLang = createAsyncThunk('appData/fetchSupportedLang', async (currentLang?: string) => {
-    const params = {};
-    console.log("called ######");
-   // dispatchState(setAppDataLoading(true))
-    let url = currentLang ? API_NAMES.SUPPORT_LANGUAGE_BY_CODE : API_NAMES.SUPPORT_LANGUAGE
-    const response = await apiManager.callApiToGetData(
-        url,
-        HTTP_METHODS.GET,
-        params,
-    );
-    if (response.value.length > 0) {
-        let languageData: any[] = [];
-        let allLanguage: string[] = []
-        if (currentLang) {
-
-        } else {
-            for (let item of response.value) {
-                const { field_0, field_1, field_2, field_3, id } = item.fields
-                const data = { languageCode: field_0, countryCode: field_1, devId: field_2, translatedValue: field_3, languageId: id }
-                languageData.push(data)
-                allLanguage.push(field_0)
-            }
-            let localLangSet = new Set(allLanguage);
-            allLanguage = Array.from(localLangSet)
-
-            let dataEnglish = languageData.filter((item, k) => item.languageCode == "en")
-            // BaseLocalization.getInstance().getObject().generate(dataEnglish)
-            let group: LanguageDataModel = {
-                allLanguage: allLanguage,
-                currentLangData: dataEnglish,
-                currentSelectedLangCode: 'en'
-            };
-            dbHelper.createLanguageData(LanguageDataModel.generate(group))
-            
-        }
-        dispatchState(setAppDataLoading(false))
-        return response;
+export const getLanguageData = createAsyncThunk('appData/getLanguageData', async () => {
+    let langData = await dbHelper.getLanguageData();
+    if(langData.length>0 && langData[0].currentLangData != ""){
+        console.log("langData[0].currentLangData &&&&&&&&&&&& 374#",langData[0].currentSelectedLangCode,"/n totel item",langData.length);
+        BaseLocalization.getInstance().generate(langData[0].currentLangData)
+        dispatchState(setAllLanguage(langData[0].allLanguage));
+        dispatchState(setSelectedLanguage(langData[0].currentSelectedLangCode))
+    }else{
+        BaseLocalization.getInstance().generate({})
     }
-    else {
-        dispatchState(setAppDataLoading(false))
-    }
+    
 
-});
+})

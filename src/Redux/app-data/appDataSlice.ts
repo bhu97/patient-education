@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { string } from 'prop-types';
 import LogManager from '../../Helper/LogManager';
 import { fetchAllDriveItems, fetchItemThumbnail, fetchLastModifiedDate } from './appDataThunk';
 
@@ -7,7 +8,10 @@ const initialState = {
     alertMessage: '',
     isAlertShown: false,
     isLogout:false,
-    hideTabNavigator: false
+    hideTabNavigator: false,
+    currentLanguageData:{},
+    allLanguages:[],
+    selectedLanguage:'',
 };
 
 export const appDataSlice = createSlice({
@@ -28,6 +32,15 @@ export const appDataSlice = createSlice({
         },
         setHideTabNavigator: (state, action: PayloadAction<boolean>) => {
             state.hideTabNavigator = action.payload;
+        },
+        setAllLanguage:(state,action:PayloadAction<[]>)=>{
+            state.allLanguages = action.payload
+        },
+        setCurrentLanguageData:(state,action:PayloadAction<any>)=>{
+            state.currentLanguageData = action.payload
+        },
+        setSelectedLanguage:(state,action:PayloadAction<string>)=>{
+            state.selectedLanguage = action.payload
         },
     },
 
@@ -70,6 +83,6 @@ export const appDataSlice = createSlice({
     },
 });
 
-export const { setAppDataLoading, setAlertMessage, setIsAlertShown,setIsLogout, setHideTabNavigator } = appDataSlice.actions;
+export const { setAppDataLoading, setAlertMessage, setIsAlertShown,setIsLogout, setHideTabNavigator,setAllLanguage,setCurrentLanguageData, setSelectedLanguage } = appDataSlice.actions;
 
 export default appDataSlice.reducer;

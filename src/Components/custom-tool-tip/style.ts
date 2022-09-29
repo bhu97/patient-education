@@ -33,12 +33,15 @@ export const style = StyleSheet.create({
         color: BaseThemeStyle.colors.blue,
     },
     listView:{
-        padding:5
+        padding:10,
     },
     categoryListView:{
         padding:15,
         justifyContent:'center',
         alignItems:'center',
     },
+    blankView:{
+        height:20
+    }
 
 });

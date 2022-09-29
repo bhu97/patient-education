@@ -1,7 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import { isTablet } from 'react-native-device-info';
-
 export const style = StyleSheet.create({
     container: {
         height: Dimensions.get('screen').height,
@@ -15,12 +14,12 @@ export const style = StyleSheet.create({
         minHeight: Dimensions.get('screen').width * 0.4,
         flexDirection: 'column',
         alignSelf: 'center',
-        backgroundColor: BaseThemeStyle.colors.white,
         width: isTablet() ? '60%' : '85%',
         padding: 5,
-        borderRadius: 8,
+        borderRadius: 15,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: BaseThemeStyle.colors.blue,
     },
     buttonContainer: {
         backgroundColor: BaseThemeStyle.colors.screenBackgroundColor,
@@ -28,6 +27,7 @@ export const style = StyleSheet.create({
         width: 100,
         alignItems: 'center',
         justifyContent: 'center',
+        borderRadius: 10,
     },
     popButton: {
         marginRight: '5%',
@@ -39,9 +39,5 @@ export const style = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
     },
-   buttonContainers: {
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-        width: '100%',
-    }
+    textStyle: { color: BaseThemeStyle.colors.blue, fontWeight: 'bold' },
 });

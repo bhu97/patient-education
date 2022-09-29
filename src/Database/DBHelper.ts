@@ -296,11 +296,22 @@ export class DBhelper {
     }
 
     async createLanguageData(data: LanguageDataModel) {
+      
+        let items = DatabaseManager.getInstance().getEntities(LanguageDataSchema.name, `id == 'Language_Data_Present'`);
+      //  console.log("items lenght 301 ^^^^^^^^^^^",items.length);
+        
+        if (items.length > 0) {
+            items.forEach(async (_element) => {
+                await DatabaseManager.getInstance().deleteRealmObject(LanguageDataSchema.name, _element.id);
+            });
+        }
+
         await DatabaseManager.getInstance().createEntity(LanguageDataSchema.name, data);
     }
 
     async getLanguageData(): Promise<LanguageDataModel[]> {
         let itemData = DatabaseManager.getInstance().getEntities(LanguageDataSchema.name, ``);
+       //  console.log("get lang ^^^^^^^^^^ 307 ^^^^^^^^^^^ $$$",JSON.stringify(itemData.length));
         return itemData;
     }
 

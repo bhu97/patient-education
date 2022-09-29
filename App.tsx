@@ -11,6 +11,8 @@ import store, { dispatchState, getStateOfReducer } from './src/Redux/store';
 import { PersistGate } from "redux-persist/integration/react";
 import CustomToast from './src/Components/custom-toast/custom-toast';
 import BaseLocalization from './src/Localization/BaseLocalization';
+import { getLanguageData } from './src/Redux/app-data/appDataThunk';
+import SplashScreen from 'react-native-splash-screen';
 
 
 
@@ -22,14 +24,14 @@ let Persistor = persistStore(store)
 export default class App extends PureComponent {
     constructor(props: any) {
         super(props);
+        // SplashScreen.show();
     }
 
     componentDidMount() {
         LogManager.debug('app loading', 'test');
         LogBox.ignoreAllLogs();
-        BaseLocalization.getInstance().generate({})
-        //persistentReducer
-        // console.log(getStateOfReducer('persistentReducer'));
+        BaseLocalization.getInstance().generate({});
+        dispatchState(getLanguageData());
     }
 
     render() {

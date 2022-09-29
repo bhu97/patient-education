@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { Linking, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import CustomBody from '../../Components/custom-body/custom-body';
+import CustomLanguageHeader from '../../Components/custom-list-with-header/custom-language-header';
 import CustomListWithHeader from '../../Components/custom-list-with-header/custom-list-with-header';
 import CustomToast from '../../Components/custom-toast/custom-toast';
 import CustomTopNav from '../../Components/custom-top-nav/custom-top-nav';
@@ -16,7 +17,7 @@ import LogManager from '../../Helper/LogManager';
 import networkManager from '../../Helper/NetworkManager';
 import BaseLocalization from '../../Localization/BaseLocalization';
 import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
-import { fetchAllDriveItems, fetchEmailSupport, logout } from '../../Redux/app-data/appDataThunk';
+import { fetchAllDriveItems, fetchEmailSupport, fetchLanguageSupport, getLanguageData, logout } from '../../Redux/app-data/appDataThunk';
 import { setCountryListData, setSelectedCountry } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
 import Images from '../../Theme/Images';
@@ -35,10 +36,15 @@ interface SettingPageProps {
     fetchSupportEmail:(any)=>void;
     supportEmailData: any;
     isSupportEmailLoad: boolean;
+    fetchLanguage:(code:string)=>void;
+    allLanguage:string[],
+    selectedLanguage:string,
+    getLangData:()=>void;
 }
 
 interface SettingPageState {
-    lastUpdatedDate: string
+    lastUpdatedDate: string,
+    languageCode:string
 }
 
 class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
@@ -46,7 +52,8 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     constructor(props: SettingPageProps) {
         super(props);
         this.state = {
-            lastUpdatedDate: ''
+            lastUpdatedDate: '',
+            languageCode:'English'
         }
     }
     componentDidMount() {
@@ -67,6 +74,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         this.props.setSelectedCountry(userData.countryTitle);
         let getDate = (await dbHelper.getLastDateModify())
         let getParsDate = DateUtility.getDateTimeStringFromDateTimeMs(getDate.length > 0 ? getDate[0].lastModifyDate : '')
+        this.props.getLangData();
         this.setState({ lastUpdatedDate: getParsDate })
         this.props.fetchSupportEmail(this.props.isSupportEmailLoad);
        
@@ -96,6 +104,30 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
                 <View style={style.textView}>
                     <Text style={style.rowTextStyle}>{customListValue}</Text>
                 </View>
+            </View>
+        );
+    };
+
+    onLangChange=(lang:string)=>{
+        this.props.fetchLanguage(lang)
+        
+    }
+
+    boxRowViewLang = () => {
+       
+        return (
+            <View style={style.boxContainer}>
+                <View style={style.boxView}>
+                    <CustomLanguageHeader
+                     languageList={this.props.allLanguage} 
+                     labelText={this.props.selectedLanguage}
+                      iconName={Images.circleEditCountry} 
+                      isToolTipEnable={true} 
+                      onPressItem={(lng) => {this.onLangChange(lng)}} />
+                </View>
+                {/* <View style={style.textView}>
+                    <Text style={style.rowTextStyle}>{customListValue}</Text>
+                </View> */}
             </View>
         );
     };
@@ -158,6 +190,8 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     };
 
     render() {
+        // console.log("allLanguage",this.props.allLanguage);
+        
         return this.props.isLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
@@ -200,8 +234,10 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
 
                             {this.boxRowView(this.props.selectedCountry, Images.circleEditCountry, deviceManager.getAppVersion())}
 
-                            {this.headerContainer(BaseLocalization.getInstance().getObject().contentUpdates)}
+                            {this.boxRowViewLang()}
 
+                            {this.headerContainer(BaseLocalization.getInstance().getObject().contentUpdates)}
+                            
                             {this.titleRowView(BaseLocalization.getInstance().getObject().contentTitle, BaseLocalization.getInstance().getObject().modificationDate)}
 
                             {this.boxRowViewSecond(BaseLocalization.getInstance().getObject().updateTitle, Images.circleUpdate)}
@@ -221,7 +257,9 @@ const mapStateToProps = (state: RootState) => ({
     selectedCountry: state.categoryReducer.selectedCountry,
     isUpdateNowEnable: state.categoryReducer.isUpdateNowEnable,
     supportEmailData: state.categoryReducer.supportEmailData,
-    isSupportEmailLoad: state.categoryReducer.isSupportEmailLoad
+    isSupportEmailLoad: state.categoryReducer.isSupportEmailLoad,
+    allLanguage:state.appDataReducer.allLanguages,
+    selectedLanguage:state.appDataReducer.selectedLanguage
 });
 const mapDispatchToProps = (dispatch: any) => ({
     setCountryListData: (value: any) => {
@@ -241,7 +279,15 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     fetchSupportEmail:(value: boolean)=>{
         dispatch(fetchEmailSupport(value))
-    }
+    },
+    fetchLanguage:(value: string)=>{
+        dispatch(fetchLanguageSupport(value))
+    },
+    getLangData:()=>{
+        dispatch(getLanguageData())
+    },
+    
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingPage);
