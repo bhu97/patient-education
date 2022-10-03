@@ -74,6 +74,7 @@ export class DriveItemModel {
         createdObject.serverRelativeUrl = item?.serverRelativeUrl ?? '';
         createdObject.timeLastModified = item?.lastModifiedDateTime ?? '';
         createdObject.timeCreated = item?.timeCreated ?? '';
+        createdObject.timeDownloaded = item?.timeDownloaded ?? '';
         createdObject.listItemId = item?.listItemId ?? '';
         createdObject.listId = item?.listId ?? '';
         createdObject.siteId = item?.siteId ?? '';

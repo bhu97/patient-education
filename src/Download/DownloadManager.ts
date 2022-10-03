@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Linking, Platform } from 'react-native';
 import RNFS from 'react-native-fs';
 // import RNFetchBlob from 'rn-fetch-blob';
@@ -18,25 +19,33 @@ import ReactNativeBlobUtil from 'react-native-blob-util'
 
 class DownloadManager {
 
-    updateCurrentDriveItem = async (item: DriveItemModel, filePath: string): Promise<boolean> => {
+    updateCurrentDriveItem = async (item: DriveItemModel, filePath: string, date: string): Promise<boolean> => {
         let localItem = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
         localItem.downloadLocation = filePath;
+        localItem.timeDownloaded = date;
         await dbHelper.createDriveItemEnteriesById(localItem, item.uniqueId);
         let localItemFav = await dbHelper.getFavItemsByUniqueId(item.uniqueId);
         if (localItemFav.length > 0) {
             localItemFav[0].downloadLocation = filePath;
+            localItemFav[0].timeDownloaded = date;
             await dbHelper.createFavouriteEntries([localItemFav[0]]);
         }
         return true
     }
 
 
-    updateCurrentFavItem = async (item: FavoriteModel, filePath: string): Promise<boolean> => {
+    updateCurrentFavItem = async (item: FavoriteModel, filePath: string, date: string): Promise<boolean> => {
         let localItem = await dbHelper.getFavItemsByUniqueId(item.uniqueId);
+      
         localItem[0].downloadLocation = filePath;
+        localItem[0].timeDownloaded = date;
+    
+        // localItem[0].timeDown = dayjs;
         await dbHelper.createFavouriteEntries([localItem[0]]);
         let localItemDri = await dbHelper.getItemDetailByUniqueId(item.uniqueId);
         localItemDri.downloadLocation = filePath;
+        localItemDri.timeDownloaded = date;
+
         await dbHelper.createDriveItemEnteriesById(localItemDri, item.uniqueId);
 
         return true
@@ -69,20 +78,24 @@ class DownloadManager {
                 fromUrl: downloadUrl,
                 toFile: fileDownloadPath,
             };
-            if (Platform.OS == 'android') {
-                return new Promise((resolve, reject) => {
-                    RNFS.downloadFile(options)
-                        .promise.then(async (res: any) => {
-                            console.log('SUCCESS');
-                            if (isFavPage) {
-                                this.updateCurrentFavItem(item, fileDownloadPath).then((res) => {
-                                    resolve(fileDownloadPath);
-                                })
-                            } else {
-                                await this.updateCurrentDriveItem(item, fileDownloadPath)
-                                resolve(fileDownloadPath);
-                            }
 
+            if (Platform.OS == 'android') {
+
+            return new Promise((resolve, reject) => {
+                RNFS.downloadFile(options)
+                    .promise.then(async (res: any) => {
+                        var date = `${dayjs().toJSON()}`;
+                        console.log('SUCCESS');
+                        if (isFavPage) {
+                           
+                            this.updateCurrentFavItem(item, fileDownloadPath, date).then((res) => {
+                                resolve(fileDownloadPath);
+                            })
+                        } else {
+                            // let date = dayjs().toDate();
+                            await this.updateCurrentDriveItem(item, fileDownloadPath, date)
+                            resolve(fileDownloadPath);
+                        }
                             isFolder ? null : CustomToast.show(BaseLocalization.getInstance().getObject().fileDownloaded, 3000, BaseThemeStyle.colors.blue)
 
                         })
@@ -114,14 +127,16 @@ class DownloadManager {
                 ReactNativeBlobUtil.config(configOptions)
                     .fetch('GET', downloadUrl, {})
                     .then(async (res) => {
+                      
                         if (Platform.OS === "ios") {
+                            var date = `${dayjs().toJSON()}`;
                             ReactNativeBlobUtil.fs.writeFile(configfb.path, res.data, 'base64');
                             if (isFavPage) {
-                                this.updateCurrentFavItem(item, `file://${res.data}`).then((respose) => {
+                                this.updateCurrentFavItem(item, `file://${res.data}`, date).then((respose) => {
                                     resolve(res.data);
                                 })
                             } else {
-                                await this.updateCurrentDriveItem(item, `file://${res.data}`)
+                                await this.updateCurrentDriveItem(item, `file://${res.data}`, date)
                                 resolve(`file://${res.data}`);
                             }
 
@@ -147,9 +162,9 @@ class DownloadManager {
                 .then(() => {
                     LogManager.info('FILE DELETED');
                     if (isFavPage) {
-                        this.updateCurrentFavItem(item, '')
+                        this.updateCurrentFavItem(item, '', '')
                     } else {
-                        this.updateCurrentDriveItem(item, '')
+                        this.updateCurrentDriveItem(item, '', '')
                     }
                     isFolder ? null : CustomToast.show(BaseLocalization.getInstance().getObject().fileRemove, 1000)
                 })

@@ -63,6 +63,8 @@ export const FavoriteSchema = {
         title: 'string',
         webUrl: 'string',
         downloadLocation: 'string?',
+        timeDownloaded: 'string?',
+        lastModifiedDateTime: 'string?'
     },
 };
 

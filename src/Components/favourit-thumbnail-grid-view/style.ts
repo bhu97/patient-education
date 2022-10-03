@@ -163,6 +163,10 @@ export const style = StyleSheet.create({
     downloadedListStyle: {
         backgroundColor:BaseThemeStyle.colors.blue,height:55,width:5
     },
+    downloadedListStyleForUpdatedFile: {
+        backgroundColor:'#E3467D',
+        height:55,width:5
+    },
     modalButton: {
         color: BaseThemeStyle.colors.blue,
         fontSize: 18,

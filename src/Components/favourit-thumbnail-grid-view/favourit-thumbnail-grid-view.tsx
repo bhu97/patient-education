@@ -115,11 +115,16 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         this.props.setShowToolTip({ isVisible: false, currentIndex: -1 }); 
     };
 
-    getToolTipList = (index: number) => {
+    getToolTipList = (index: number, item: any) => {
         let localToolTip = [...this.state.toolTipData]
         const isEmpaty = isStringEmpty(this.props.gridViewList[index].downloadLocation)
+        let downloadEnable;
+        if(item.timeDownloaded)
+        {
+            downloadEnable=  item.timeDownloaded.localeCompare(item.lastModifiedDateTime); 
+        }
         localToolTip.map((ele: any, ind: number) => {
-            if (isEmpaty) {
+            if (isEmpaty || downloadEnable == -1) {
                 if (ind == 0) {
                     ele.isEnable = true
                 } else if (ind == 1) {
@@ -157,7 +162,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         return (
             <TouchableOpacity
                 onPress={() => {
-                    this.getToolTipList(index)
+                    this.getToolTipList(index,item)
                     this.getSelectedGroupsFromRealm(item.uniqueId);
                     this.props.setShowToolTip({ isVisible: true, currentIndex: index })
                 }}
@@ -186,7 +191,10 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
     };
 
     renderItem = ({ item, index }: any) => {
-
+        let changeInFile;
+        if(item.timeDownloaded){
+        changeInFile =  item.timeDownloaded.localeCompare(item.lastModifiedDateTime);
+        }
         let fileName = item.name.split('.');
         return (
             <View style={style.backgroundViewStyle}>
@@ -203,7 +211,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                 </TouchableOpacity>
 
                 <View style={style.itemContainer}>
-                    {item.downloadLocation ? <View style={style.downloadedListStyle}></View> : null}
+                {item.downloadLocation ? <View style={[ (changeInFile == -1) ? style.downloadedListStyleForUpdatedFile : style.downloadedListStyle ]}></View> : null}
                     <View style={style.textContainer}>
                         <Text numberOfLines={2} ellipsizeMode="tail" style={style.textStyle}>
                             {fileName[0]}
@@ -267,7 +275,9 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                     smallUrl: this.state.selectedItem.smallUrl,
                     title: this.state.selectedItem.title,
                     webUrl: this.state.selectedItem.webUrl,
-                    downloadLocation: this.state.selectedItem.downloadLocation
+                    downloadLocation: this.state.selectedItem.downloadLocation,
+                    timeDownloaded : this.state.selectedItem.timeDownloaded,
+                    lastModifiedDateTime: this.state.selectedItem.lastModifiedDateTime
                 });
             } else {
                 //console.log();

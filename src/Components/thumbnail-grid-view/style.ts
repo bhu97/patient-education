@@ -70,7 +70,12 @@ export const style = StyleSheet.create({
         flex: 0.6,
     },
     downloadedListStyle: {
-        backgroundColor:BaseThemeStyle.colors.blue,height:55,width:5
+        backgroundColor:BaseThemeStyle.colors.blue,
+        height:55,width:5
+    },
+    downloadedListStyleForUpdatedFile: {
+        backgroundColor:'#E3467D',
+        height:55,width:5
     },
     textStyle: {
         ...BaseThemeStyle.fonts.listTitle,
