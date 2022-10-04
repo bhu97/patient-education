@@ -49,7 +49,7 @@
     "commonError":"Something went wrong, Please try again", 
     "fileDownloaded":"Downloaded successfully",
     "fileRemove":"Remove successfully",
-    "placeholder": "Enter the title" 
-
+    "placeholder": "Enter the title" ,
+    "appLanguage": "App Language"
 
 }

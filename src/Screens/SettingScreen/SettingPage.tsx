@@ -20,6 +20,7 @@ import { setAppDataLoading } from '../../Redux/app-data/appDataSlice';
 import { fetchAllDriveItems, fetchEmailSupport, fetchLanguageSupport, getLanguageData, logout } from '../../Redux/app-data/appDataThunk';
 import { setCountryListData, setSelectedCountry } from '../../Redux/category/categorySlice';
 import { RootState } from '../../Redux/rootReducer';
+import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
 import { style } from './style';
 interface SettingPageProps {
@@ -32,19 +33,19 @@ interface SettingPageProps {
     navigation: any;
     isUpdateNowEnable: boolean
     fetchData: () => void;
-    logoutPress:()=>void;
-    fetchSupportEmail:(any)=>void;
+    logoutPress: () => void;
+    fetchSupportEmail: (any) => void;
     supportEmailData: any;
     isSupportEmailLoad: boolean;
-    fetchLanguage:(code:string)=>void;
-    allLanguage:string[],
-    selectedLanguage:string,
-    getLangData:()=>void;
+    fetchLanguage: (code: string) => void;
+    allLanguage: string[],
+    selectedLanguage: string,
+    getLangData: () => void;
 }
 
 interface SettingPageState {
     lastUpdatedDate: string,
-    languageCode:string
+    languageCode: string
 }
 
 class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
@@ -53,21 +54,21 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         super(props);
         this.state = {
             lastUpdatedDate: '',
-            languageCode:'English'
+            languageCode: 'English'
         }
     }
     componentDidMount() {
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
             this.props.setIsLoading(true);
             this.initializeSetting();
-            
+
         });
     }
     componentWillUnmount() {
         this._unsubscribe();
     }
     async initializeSetting() {
-       
+
         let countryData = await dbHelper.getAllAvailableCountries();
         this.props.setCountryListData(countryData);
         const userData = await dbHelper.getUser();
@@ -77,7 +78,7 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         this.props.getLangData();
         this.setState({ lastUpdatedDate: getParsDate })
         this.props.fetchSupportEmail(this.props.isSupportEmailLoad);
-       
+
     }
 
     titleRowView = (leftHeader, rightHeader) => {
@@ -88,18 +89,18 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
             </View>
         );
     };
-    onCustomItemPress=(title)=>{
-        if(title == BaseLocalization.getInstance().getObject().logoutNow){
+    onCustomItemPress = (title) => {
+        if (title == BaseLocalization.getInstance().getObject().logoutNow) {
             this.props.logoutPress()
         }
     }
 
     boxRowView = (customListlabel, source, customListValue) => {
-       
+
         return (
             <View style={style.boxContainer}>
                 <View style={style.boxView}>
-                    <CustomListWithHeader labelText={customListlabel} iconName={source} isToolTipEnable={source == Images.circleEditCountry} onPressItem={() => {this.onCustomItemPress(customListlabel)}} />
+                    <CustomListWithHeader labelText={customListlabel} iconName={source} isToolTipEnable={source == Images.circleEditCountry} onPressItem={() => { this.onCustomItemPress(customListlabel) }} />
                 </View>
                 <View style={style.textView}>
                     <Text style={style.rowTextStyle}>{customListValue}</Text>
@@ -108,22 +109,22 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
         );
     };
 
-    onLangChange=(lang:string)=>{
+    onLangChange = (lang: string) => {
         this.props.fetchLanguage(lang)
-        
+
     }
 
     boxRowViewLang = () => {
-       
+
         return (
             <View style={style.boxContainer}>
                 <View style={style.boxView}>
                     <CustomLanguageHeader
-                     languageList={this.props.allLanguage} 
-                     labelText={this.props.selectedLanguage}
-                      iconName={Images.circleEditCountry} 
-                      isToolTipEnable={true} 
-                      onPressItem={(lng) => {this.onLangChange(lng)}} />
+                        languageList={this.props.allLanguage}
+                        labelText={this.props.selectedLanguage}
+                        iconName={Images.circleEditCountry}
+                        isToolTipEnable={true}
+                        onPressItem={(lng) => { this.onLangChange(lng) }} />
                 </View>
                 {/* <View style={style.textView}>
                     <Text style={style.rowTextStyle}>{customListValue}</Text>
@@ -133,27 +134,27 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     };
 
     getSupportEmail = () => {
-        for(var i = 0; i < this.props.supportEmailData.length; i++) {
+        for (var i = 0; i < this.props.supportEmailData.length; i++) {
             if (this.props.supportEmailData[i].country == this.props.selectedCountry) {
-               return this.props.supportEmailData[i].email;
-            }   
+                return this.props.supportEmailData[i].email;
+            }
         }
         return this.props.supportEmailData[0].email;
     }
 
     onPressUpdate = () => {
         networkManager.isNetworkAvailable()
-        .then((isNetAvailable) => {
-            if(isNetAvailable){
-                LogManager.debug("network available ")
-                if (this.props.isUpdateNowEnable) {
-                    this.props.fetchData()
+            .then((isNetAvailable) => {
+                if (isNetAvailable) {
+                    LogManager.debug("network available ")
+                    if (this.props.isUpdateNowEnable) {
+                        this.props.fetchData()
+                    }
+                } else {
+                    LogManager.warn("network not available ")
+                    CustomToast.show(BaseLocalization.getInstance().getObject().noInternetConnection, 1000)
                 }
-            } else {
-                LogManager.warn("network not available ")
-                CustomToast.show(BaseLocalization.getInstance().getObject().noInternetConnection,1000)
-            }
-        });
+            });
 
     }
 
@@ -175,27 +176,27 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
     };
 
     sendMail = (isTechnicalSupport) => {
-        LogManager.debug("Technical support click=",isTechnicalSupport)
-        let mailEmailAddress =SUPPORT_EMAIL;
-        if(isTechnicalSupport){
+        LogManager.debug("Technical support click=", isTechnicalSupport)
+        let mailEmailAddress = SUPPORT_EMAIL;
+        if (isTechnicalSupport) {
             //Technical support will be always Laura’s Mail
-            mailEmailAddress =SUPPORT_EMAIL;
-        }else {
+            mailEmailAddress = SUPPORT_EMAIL;
+        } else {
             //Content support will be country specific mail address 
-            mailEmailAddress= this.getSupportEmail();
+            mailEmailAddress = this.getSupportEmail();
         }
-        console.log("155 *************mailAdd",mailEmailAddress);
-        
-        Linking.openURL(`mailto:${mailEmailAddress}`); 
+        console.log("155 *************mailAdd", mailEmailAddress);
+
+        Linking.openURL(`mailto:${mailEmailAddress}`);
     };
 
     render() {
         // console.log("allLanguage",this.props.allLanguage);
-        
+
         return this.props.isLoading ? (
             <FullScreenLoader isLoading showSpinner />
         ) : (
-            
+
             <MainContainer>
 
                 <View style={style.navContainer}>
@@ -234,13 +235,18 @@ class SettingPage extends PureComponent<SettingPageProps, SettingPageState> {
 
                             {this.boxRowView(this.props.selectedCountry, Images.circleEditCountry, deviceManager.getAppVersion())}
 
-                            {this.boxRowViewLang()}
+                            {this.titleRowView(BaseLocalization.getInstance().getObject().appLanguage, '')}
 
-                            {this.headerContainer(BaseLocalization.getInstance().getObject().contentUpdates)}
+                            {this.boxRowViewLang()}
                             
+                            <View style={style.seprater} />
+                            {this.headerContainer(BaseLocalization.getInstance().getObject().contentUpdates)}
+
                             {this.titleRowView(BaseLocalization.getInstance().getObject().contentTitle, BaseLocalization.getInstance().getObject().modificationDate)}
 
                             {this.boxRowViewSecond(BaseLocalization.getInstance().getObject().updateTitle, Images.circleUpdate)}
+
+                            <View style={style.seprater} />
 
                             {this.headerContainer(BaseLocalization.getInstance().getObject().logout)}
 
@@ -258,8 +264,8 @@ const mapStateToProps = (state: RootState) => ({
     isUpdateNowEnable: state.categoryReducer.isUpdateNowEnable,
     supportEmailData: state.categoryReducer.supportEmailData,
     isSupportEmailLoad: state.categoryReducer.isSupportEmailLoad,
-    allLanguage:state.appDataReducer.allLanguages,
-    selectedLanguage:state.appDataReducer.selectedLanguage
+    allLanguage: state.appDataReducer.allLanguages,
+    selectedLanguage: state.appDataReducer.selectedLanguage
 });
 const mapDispatchToProps = (dispatch: any) => ({
     setCountryListData: (value: any) => {
@@ -274,19 +280,19 @@ const mapDispatchToProps = (dispatch: any) => ({
     fetchData: () => {
         dispatch(fetchAllDriveItems(true));
     },
-    logoutPress:()=>{
+    logoutPress: () => {
         dispatch(logout())
     },
-    fetchSupportEmail:(value: boolean)=>{
+    fetchSupportEmail: (value: boolean) => {
         dispatch(fetchEmailSupport(value))
     },
-    fetchLanguage:(value: string)=>{
+    fetchLanguage: (value: string) => {
         dispatch(fetchLanguageSupport(value))
     },
-    getLangData:()=>{
+    getLangData: () => {
         dispatch(getLanguageData())
     },
-    
+
 
 });
 

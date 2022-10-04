@@ -32,16 +32,15 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     constructor(props: LoginScreenProps) {
         super(props);
         this.state = {};
-        // LocalizationManager.initializeAppLanguage();
     }
 
     async componentDidMount() {
-     let  isLogout = await AsyncStorage.getItem('isLogout');
-    //  console.log("isLogout",isLogout);
-        SplashScreen.hide();
-        if(isLogout == 'false'){
+     let  isLogout = await AsyncStorage.getItem('isLogout');  
+         console.log("isLogout",isLogout);
+        if(isLogout == 'false' || isLogout == null){
             this.props.login();
-        }     
+        }   
+        SplashScreen.hide();  
     }
 
     hideAlert = () => {
@@ -67,7 +66,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
                 ) : (
                     <View style={style.buttonLogoContainer}>
                         <Image
-                            style={(Platform.OS='ios')?style.iOSImg:style.androidImg}
+                            style={style.androidImg}
                             source={Images.launchScreen}
                             resizeMode="stretch"
                         />

@@ -57,6 +57,7 @@ interface IGroupModel {
     fileDownloaded: string,
     fileRemove: string,
     placeholder: string,
+    appLanguage:string,
 }
 
 
@@ -114,6 +115,7 @@ interface IGroupModel {
     fileDownloaded: string;
     fileRemove: string;
     placeholder: string;
+    appLanguage: string;
    instanceObject: IGroupModel;
  
     static loclizationInstance: BaseLocalization;
@@ -180,6 +182,7 @@ interface IGroupModel {
             fileDownloaded: '',
             fileRemove: '',
             placeholder: '',
+            appLanguage:''
         };
 
             object.welcome = response.welcome ? response.welcome : LocalizationManager.getLocalizedStrings('welcome'),
@@ -233,7 +236,8 @@ interface IGroupModel {
             object.commonError = response.commonError ? response.commonError : LocalizationManager.getLocalizedStrings('commonError'),
             object.fileDownloaded = response.fileDownloaded ? response.fileDownloaded : LocalizationManager.getLocalizedStrings('fileDownloaded'),
             object.fileRemove = response.fileRemove ? response.fileRemove : LocalizationManager.getLocalizedStrings('fileRemove'),
-            object.placeholder = response.placeholder ? response.placeholder : LocalizationManager.getLocalizedStrings('placeholder')
+            object.placeholder = response.placeholder ? response.placeholder : LocalizationManager.getLocalizedStrings('placeholder'),
+            object.appLanguage = response.appLanguage ? response.appLanguage : LocalizationManager.getLocalizedStrings('appLanguage'),
           this.instanceObject = object
     }
 
