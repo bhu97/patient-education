@@ -86,7 +86,7 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
                     isVisible={this.props.isVisible}
                     content={
                         <View style={[{ ...style.toolTipContainer, height: this.props.isCountryList || this.props.isLanguageList ? 'auto' : 210 }]}>
-                            {!this.props.isCountryList || !this.props.isLanguageList ? (
+                            {!this.props.isCountryList && !this.props.isLanguageList ? (
                                 <>
                                     <Text style={style.folderTitle}>
                                         {BaseLocalization.getInstance().getObject().folderOptions}
