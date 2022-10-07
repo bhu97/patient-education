@@ -97,6 +97,10 @@
 		24978491CC6F4724A88495FF /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		2635C25E84A6A9734EABED04 /* Pods-PatientEducation_uat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_uat.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat.release.xcconfig"; sourceTree = "<group>"; };
 		35618677DECCAE2A06B53E9D /* Pods-PatientEducation_dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_dev.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev.release.xcconfig"; sourceTree = "<group>"; };
+		3B5DD2A728EEEDFB0062E90E /* PatientEducation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PatientEducation-Bridging-Header.h"; sourceTree = "<group>"; };
+		3B5DD2A828EEEDFB0062E90E /* PatientEducation_sit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PatientEducation_sit-Bridging-Header.h"; sourceTree = "<group>"; };
+		3B5DD2A928EEEDFB0062E90E /* PatientEducation_uat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PatientEducation_uat-Bridging-Header.h"; sourceTree = "<group>"; };
+		3B5DD2AA28EEEDFB0062E90E /* PatientEducation_dev-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PatientEducation_dev-Bridging-Header.h"; sourceTree = "<group>"; };
 		3BE5FD68286ADE1800D59958 /* PatientEducation_sit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PatientEducation_sit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BE5FD83286ADE5E00D59958 /* PatientEducation_uat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PatientEducation_uat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BE5FD9E286ADE6E00D59958 /* PatientEducation_dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PatientEducation_dev.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -216,6 +220,10 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				3B5DD2A728EEEDFB0062E90E /* PatientEducation-Bridging-Header.h */,
+				3B5DD2A828EEEDFB0062E90E /* PatientEducation_sit-Bridging-Header.h */,
+				3B5DD2A928EEEDFB0062E90E /* PatientEducation_uat-Bridging-Header.h */,
+				3B5DD2AA28EEEDFB0062E90E /* PatientEducation_dev-Bridging-Header.h */,
 			);
 			name = PatientEducation;
 			sourceTree = "<group>";
@@ -442,7 +450,16 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1320;
+					};
+					3BE5FD4F286ADE1800D59958 = {
+						LastSwiftMigration = 1320;
+					};
+					3BE5FD6A286ADE5E00D59958 = {
+						LastSwiftMigration = 1320;
+					};
+					3BE5FD85286ADE6E00D59958 = {
+						LastSwiftMigration = 1320;
 					};
 				};
 			};
@@ -1045,6 +1062,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.freseniusnetcare.patienteducation;
 				PRODUCT_NAME = PatientEducation;
+				SWIFT_OBJC_BRIDGING_HEADER = "PatientEducation-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1071,6 +1089,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.freseniusnetcare.patienteducation;
 				PRODUCT_NAME = PatientEducation;
+				SWIFT_OBJC_BRIDGING_HEADER = "PatientEducation-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1098,6 +1117,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.freseniusnetcare.patienteducation.sit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PatientEducation_sit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1124,6 +1144,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.freseniusnetcare.patienteducation.sit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PatientEducation_sit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1151,6 +1172,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.freseniusnetcare.patienteducation.uat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PatientEducation_uat-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1177,6 +1199,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.freseniusnetcare.patienteducation.uat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PatientEducation_uat-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1190,6 +1213,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4UK5XUT55L;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				HEADER_SEARCH_PATHS = (
@@ -1326,6 +1350,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.freseniusnetcare.patienteducation.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PatientEducation_dev-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1340,6 +1365,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4UK5XUT55L;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/Headers/Public\"",
@@ -1474,6 +1500,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.freseniusnetcare.patienteducation.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PatientEducation_dev-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";

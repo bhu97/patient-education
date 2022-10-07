@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { PureComponent } from 'react';
-import { LogBox } from 'react-native';
+import { LogBox, NativeModules } from 'react-native';
 import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import ErrorBoundary from './src/Components/error-boundary/error-boudary';
@@ -31,7 +31,7 @@ export default class App extends PureComponent {
         LogManager.debug('app loading', 'test');
         LogBox.ignoreAllLogs();
         BaseLocalization.getInstance().generate({});
-        dispatchState(getLanguageData());
+        dispatchState(getLanguageData());    
     }
 
     render() {

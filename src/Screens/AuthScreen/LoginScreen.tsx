@@ -7,7 +7,7 @@ import FullScreenLoader from '../../Components/full-screen-loader/full-screen-lo
 
 import LocalizationManager from '../../Localization/LocalizationManager';
 import { setIsAlertShown } from '../../Redux/app-data/appDataSlice';
-import {  fetchLanguageSupport, userLoginCalled } from '../../Redux/app-data/appDataThunk';
+import { fetchLanguageSupport, userLoginCalled } from '../../Redux/app-data/appDataThunk';
 import { RootState } from '../../Redux/rootReducer';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import Images from '../../Theme/Images';
@@ -23,10 +23,10 @@ interface LoginScreenProps {
     appDataLoading: boolean;
     setIsAlertShown: (value: boolean) => void;
     login: () => void;
-    isLogout:boolean;
+    isLogout: boolean;
 }
 
-interface LoginScreenState {}
+interface LoginScreenState { }
 
 class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     constructor(props: LoginScreenProps) {
@@ -35,12 +35,12 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
     }
 
     async componentDidMount() {
-     let  isLogout = await AsyncStorage.getItem('isLogout');  
-         console.log("isLogout",isLogout);
-        if(isLogout == 'false' || isLogout == null){
+        let isLogout = await AsyncStorage.getItem('isLogout');
+        console.log("isLogout", isLogout);
+        if (isLogout == 'false' || isLogout == null) {
             this.props.login();
-        }   
-        SplashScreen.hide();  
+        }
+        SplashScreen.hide();
     }
 
     hideAlert = () => {
@@ -57,22 +57,33 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
 
     render() {
         const { appDataLoading } = this.props;
-      
-        
+
+
         return (
             <View style={style.container}>
                 {appDataLoading ? (
                     <FullScreenLoader isLoading showSpinner />
                 ) : (
                     <View style={style.buttonLogoContainer}>
-                        <Image
-                            style={style.androidImg}
-                            source={Images.launchScreen}
-                            resizeMode="stretch"
-                        />
+                        {(Platform.OS == 'android') && (
+                            <Image
+                                style={style.androidImg}
+                                source={Images.launchScreen}
+                                resizeMode="stretch"
+                            />
+                        )}
+                        
+                             {(Platform.OS == 'ios') && (
+                            <Image
+                                style={style.iOSImg}
+                                source={Images.launchScreen}
+                                resizeMode="stretch"
+                            />
+                        )}
+
                         <TouchableOpacity style={style.buttonStyle} onPress={this.onLogin}>
                             <Text style={[BaseThemeStyle.fonts.h8, { color: BaseThemeStyle.colors.white }]}>
-                               {BaseLocalization.getInstance().getObject().login}
+                                {BaseLocalization.getInstance().getObject().login}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -93,7 +104,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
 const mapStateToProps = (state: RootState) => ({
     isAlertShown: state.appDataReducer.isAlertShown,
     appDataLoading: state.appDataReducer.appDataLoading,
-    isLogout:state.appDataReducer.isLogout
+    isLogout: state.appDataReducer.isLogout
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
