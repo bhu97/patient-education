@@ -150,12 +150,12 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.patienteducation"
+        applicationId "com.fresenius.patienteducation"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.8"
-        resValue "string", "build_config_package", "com.patienteducation"
+        versionCode 9
+        versionName "1.9"
+        resValue "string", "build_config_package", "com.fresenius.patienteducation"
         manifestPlaceholders = [
                 appAuthRedirectScheme: 'preisfindungstool'
         ]
@@ -207,16 +207,16 @@ android {
     flavorDimensions "default"
     productFlavors {
         dev {
-            applicationId 'com.patienteducation.dev'
+            applicationId 'com.fresenius.patienteducation.dev'
         }
         uat {
-            applicationId 'com.patienteducation.uat'
+            applicationId 'com.fresenius.patienteducation.uat'
         }
         sit {
-            applicationId 'com.patienteducation.sit'
+            applicationId 'com.fresenius.patienteducation.sit'
         }
         prod {
-            applicationId 'com.patienteducation'
+            applicationId 'com.fresenius.patienteducation'
         }
     }
 

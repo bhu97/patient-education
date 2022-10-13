@@ -1,4 +1,4 @@
-package com.patienteducation;
+package com.fresenius.patienteducation;
 
 import android.app.Application;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.patienteducation;
+package com.fresenius.patienteducation;
 
 import android.os.Bundle; 
 import com.facebook.react.ReactActivity;

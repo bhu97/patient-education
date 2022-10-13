@@ -8,14 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* PatientEducationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PatientEducationTests.m */; };
-		0244E40C992FF39C868C5E3C /* libPods-PatientEducation-PatientEducationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90B710FEDA8BD048C8C6F5A7 /* libPods-PatientEducation-PatientEducationTests.a */; };
+		0F59C2749EB5F0C5631EE25D /* libPods-PatientEducation_dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9FF7C1B1B27AB576AD96B55 /* libPods-PatientEducation_dev.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		14412439CCA74E39854F9DC0 /* Lato-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E3AD688272C740489C64BB2D /* Lato-BoldItalic.ttf */; };
 		238F945EDBB64A6D92425016 /* HelveticaNeueMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52CF11037C4942988BF892F8 /* HelveticaNeueMedium.ttf */; };
-		2AC9B55C6DA29F43CD20EDF4 /* libPods-PatientEducation_uat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 143AA33EC6245BFE6AA31C0D /* libPods-PatientEducation_uat.a */; };
-		340BE6FA0D33BDFF5F89BBBF /* libPods-PatientEducation_dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F29E6CA4CEA77953B2D04F1 /* libPods-PatientEducation_dev.a */; };
 		3BE5FD53286ADE1800D59958 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		3BE5FD54286ADE1800D59958 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3BE5FD58286ADE1800D59958 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -59,14 +57,16 @@
 		3BF4580228D091A300991564 /* HelveticaNeueMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52CF11037C4942988BF892F8 /* HelveticaNeueMedium.ttf */; };
 		3E350B0C618F4F218370049A /* Comforter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 53BD6D2E19CA4D24812D62C3 /* Comforter-Regular.ttf */; };
 		434A9CF2AC744FC38028DC94 /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7D0C9223DBB4A628F008BE2 /* Lato-Black.ttf */; };
-		547E62413572AD41FCFCDC5F /* libPods-PatientEducation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40429EF9D36023188708B281 /* libPods-PatientEducation.a */; };
+		45FC8A84E0B324CDEA52747C /* libPods-PatientEducation_sit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A6E66F03D9E3F812F4AE672 /* libPods-PatientEducation_sit.a */; };
+		71BC39CEFCE025DA32917E12 /* libPods-PatientEducation_uat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF154C194E8962D3ECA7D4CB /* libPods-PatientEducation_uat.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		897ABD6C411BC068E085B6E9 /* libPods-PatientEducation_sit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 781477F76E51619B3C6830D7 /* libPods-PatientEducation_sit.a */; };
+		977A98F70FE3F8316CC5A121 /* libPods-PatientEducation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC20D0BB8A398AE5DB00CA6C /* libPods-PatientEducation.a */; };
 		A38BE69765B24BDE950E3CF2 /* Lato-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90CC7ED47F6E4760963A487C /* Lato-Thin.ttf */; };
 		AD16A02EBADF4BFA8F20ED11 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46B10CA356734CC5B6A4C2AF /* Lato-Light.ttf */; };
 		AD227D5C3D2C472C9FCA987C /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 71D8ADB5643E48DA968AB3CB /* Lato-Bold.ttf */; };
 		AE3566E67A214B328A88CE20 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9A6CBD1EE2094606B7C90B1D /* Lato-Regular.ttf */; };
 		B01B2C6AF6F84C6AB16FDE96 /* HelveticaNeueLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CFA5ED9BDA3F48CF82B4737E /* HelveticaNeueLight.ttf */; };
+		B8D39EC699BD439CE3735C5E /* libPods-PatientEducation-PatientEducationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9071A903324F26DD27E175D /* libPods-PatientEducation-PatientEducationTests.a */; };
 		D257712B93774A4D80113587 /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A775935CE6BC410897A0CD10 /* Lato-Italic.ttf */; };
 /* End PBXBuildFile section */
 
@@ -81,22 +81,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00205F0A200403794FA6F1D7 /* Pods-PatientEducation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation/Pods-PatientEducation.release.xcconfig"; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* PatientEducationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PatientEducationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* PatientEducationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PatientEducationTests.m; sourceTree = "<group>"; };
+		03049390322AAFCE5774D718 /* Pods-PatientEducation_uat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_uat.debug.xcconfig"; path = "Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat.debug.xcconfig"; sourceTree = "<group>"; };
 		042C4216D5264D6C985D04CA /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		0A4DEC7F4664BF820E0A738B /* Pods-PatientEducation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation.debug.xcconfig"; path = "Target Support Files/Pods-PatientEducation/Pods-PatientEducation.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* PatientEducation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PatientEducation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PatientEducation/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = PatientEducation/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PatientEducation/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PatientEducation/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PatientEducation/main.m; sourceTree = "<group>"; };
-		143AA33EC6245BFE6AA31C0D /* libPods-PatientEducation_uat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatientEducation_uat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2282E0FCF7F6E2FFE981B276 /* Pods-PatientEducation_sit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_sit.debug.xcconfig"; path = "Target Support Files/Pods-PatientEducation_sit/Pods-PatientEducation_sit.debug.xcconfig"; sourceTree = "<group>"; };
+		1A6E66F03D9E3F812F4AE672 /* libPods-PatientEducation_sit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatientEducation_sit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2393C914405746C7BED46865 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		24978491CC6F4724A88495FF /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		2635C25E84A6A9734EABED04 /* Pods-PatientEducation_uat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_uat.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat.release.xcconfig"; sourceTree = "<group>"; };
-		35618677DECCAE2A06B53E9D /* Pods-PatientEducation_dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_dev.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev.release.xcconfig"; sourceTree = "<group>"; };
+		249D673E4F5DD8304C340F5A /* Pods-PatientEducation-PatientEducationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation-PatientEducationTests.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests.release.xcconfig"; sourceTree = "<group>"; };
 		3B5DD2A728EEEDFB0062E90E /* PatientEducation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PatientEducation-Bridging-Header.h"; sourceTree = "<group>"; };
 		3B5DD2A828EEEDFB0062E90E /* PatientEducation_sit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PatientEducation_sit-Bridging-Header.h"; sourceTree = "<group>"; };
 		3B5DD2A928EEEDFB0062E90E /* PatientEducation_uat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PatientEducation_uat-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -109,42 +110,41 @@
 		3BE5FDAC286AE73800D59958 /* Info-UAT.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-UAT.plist"; path = "PatientEducation/Info-UAT.plist"; sourceTree = "<group>"; };
 		3BE823AD28D05873006AC9F9 /* libPermission-Camera.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libPermission-Camera.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BF4580328D1CB3400991564 /* libRNPermissions.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNPermissions.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		3DEF7DE533CA1C19828C4288 /* Pods-PatientEducation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation.debug.xcconfig"; path = "Target Support Files/Pods-PatientEducation/Pods-PatientEducation.debug.xcconfig"; sourceTree = "<group>"; };
-		40429EF9D36023188708B281 /* libPods-PatientEducation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatientEducation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		46B10CA356734CC5B6A4C2AF /* Lato-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Light.ttf"; path = "../assets/fonts/Lato-Light.ttf"; sourceTree = "<group>"; };
 		52CF11037C4942988BF892F8 /* HelveticaNeueMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = HelveticaNeueMedium.ttf; path = ../assets/fonts/HelveticaNeueMedium.ttf; sourceTree = "<group>"; };
 		53BD6D2E19CA4D24812D62C3 /* Comforter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Comforter-Regular.ttf"; path = "../assets/fonts/Comforter-Regular.ttf"; sourceTree = "<group>"; };
+		53C7C9EB0EE294F33154A548 /* Pods-PatientEducation_dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_dev.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev.release.xcconfig"; sourceTree = "<group>"; };
 		56CE282B5D9F4262BCC7689A /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		6453E7233C183B982F1F5A4C /* Pods-PatientEducation_sit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_sit.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation_sit/Pods-PatientEducation_sit.release.xcconfig"; sourceTree = "<group>"; };
 		65E36C1D1F06407A81F4D4CC /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		65E3B8AF3F934371BE1A3C79 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		6A80B2259B78D81F1095B923 /* Pods-PatientEducation_sit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_sit.debug.xcconfig"; path = "Target Support Files/Pods-PatientEducation_sit/Pods-PatientEducation_sit.debug.xcconfig"; sourceTree = "<group>"; };
 		6D2BB5A88F5142038922CB50 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		6E6A3E83B3C4441790D11212 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		6F29E6CA4CEA77953B2D04F1 /* libPods-PatientEducation_dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatientEducation_dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D8ADB5643E48DA968AB3CB /* Lato-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Bold.ttf"; path = "../assets/fonts/Lato-Bold.ttf"; sourceTree = "<group>"; };
-		781477F76E51619B3C6830D7 /* libPods-PatientEducation_sit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatientEducation_sit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		789AE08F25314E4B957E7022 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		7BC0D07995082F1A7E205775 /* Pods-PatientEducation_dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_dev.debug.xcconfig"; path = "Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev.debug.xcconfig"; sourceTree = "<group>"; };
+		810185B9899FCBB7780316E6 /* Pods-PatientEducation-PatientEducationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation-PatientEducationTests.debug.xcconfig"; path = "Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PatientEducation/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		90B710FEDA8BD048C8C6F5A7 /* libPods-PatientEducation-PatientEducationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatientEducation-PatientEducationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D77F7749AF32634825C8A7C /* Pods-PatientEducation_uat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_uat.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat.release.xcconfig"; sourceTree = "<group>"; };
 		90CC7ED47F6E4760963A487C /* Lato-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Thin.ttf"; path = "../assets/fonts/Lato-Thin.ttf"; sourceTree = "<group>"; };
 		916659E8FE9B422F9401789D /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		98C11722FC5342168F75F344 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		9A6CBD1EE2094606B7C90B1D /* Lato-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Regular.ttf"; path = "../assets/fonts/Lato-Regular.ttf"; sourceTree = "<group>"; };
 		A775935CE6BC410897A0CD10 /* Lato-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Italic.ttf"; path = "../assets/fonts/Lato-Italic.ttf"; sourceTree = "<group>"; };
-		A8DDD60343893BC780A17D94 /* Pods-PatientEducation_sit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_sit.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation_sit/Pods-PatientEducation_sit.release.xcconfig"; sourceTree = "<group>"; };
+		AF154C194E8962D3ECA7D4CB /* libPods-PatientEducation_uat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatientEducation_uat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF1605E8B98747899CF0283B /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		B6BC2A822E5F8AF0581B348C /* Pods-PatientEducation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation/Pods-PatientEducation.release.xcconfig"; sourceTree = "<group>"; };
 		B8BF415AA7D44068ABB0C2C2 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		B95D3476B4BE21A5D179C7F7 /* Pods-PatientEducation-PatientEducationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation-PatientEducationTests.debug.xcconfig"; path = "Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests.debug.xcconfig"; sourceTree = "<group>"; };
+		CC20D0BB8A398AE5DB00CA6C /* libPods-PatientEducation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatientEducation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC5052546D3345DFB7245A06 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		CFA5ED9BDA3F48CF82B4737E /* HelveticaNeueLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = HelveticaNeueLight.ttf; path = ../assets/fonts/HelveticaNeueLight.ttf; sourceTree = "<group>"; };
-		D56DA13F9F49131725257BC3 /* Pods-PatientEducation_dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_dev.debug.xcconfig"; path = "Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev.debug.xcconfig"; sourceTree = "<group>"; };
-		DDF403B60C45312594AB65EF /* Pods-PatientEducation_uat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation_uat.debug.xcconfig"; path = "Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat.debug.xcconfig"; sourceTree = "<group>"; };
+		D9071A903324F26DD27E175D /* libPods-PatientEducation-PatientEducationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatientEducation-PatientEducationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3AD688272C740489C64BB2D /* Lato-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-BoldItalic.ttf"; path = "../assets/fonts/Lato-BoldItalic.ttf"; sourceTree = "<group>"; };
 		E7D0C9223DBB4A628F008BE2 /* Lato-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Lato-Black.ttf"; path = "../assets/fonts/Lato-Black.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F392E90AC6C6D21F6782572D /* Pods-PatientEducation-PatientEducationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PatientEducation-PatientEducationTests.release.xcconfig"; path = "Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests.release.xcconfig"; sourceTree = "<group>"; };
 		F65BE2DA482C42109A637256 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		F7BE502687234E8498F2B2D7 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		F9FF7C1B1B27AB576AD96B55 /* libPods-PatientEducation_dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PatientEducation_dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,7 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0244E40C992FF39C868C5E3C /* libPods-PatientEducation-PatientEducationTests.a in Frameworks */,
+				B8D39EC699BD439CE3735C5E /* libPods-PatientEducation-PatientEducationTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,7 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				547E62413572AD41FCFCDC5F /* libPods-PatientEducation.a in Frameworks */,
+				977A98F70FE3F8316CC5A121 /* libPods-PatientEducation.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,7 +168,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				897ABD6C411BC068E085B6E9 /* libPods-PatientEducation_sit.a in Frameworks */,
+				45FC8A84E0B324CDEA52747C /* libPods-PatientEducation_sit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,7 +176,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2AC9B55C6DA29F43CD20EDF4 /* libPods-PatientEducation_uat.a in Frameworks */,
+				71BC39CEFCE025DA32917E12 /* libPods-PatientEducation_uat.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,7 +184,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				340BE6FA0D33BDFF5F89BBBF /* libPods-PatientEducation_dev.a in Frameworks */,
+				0F59C2749EB5F0C5631EE25D /* libPods-PatientEducation_dev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,11 +234,11 @@
 				3BF4580328D1CB3400991564 /* libRNPermissions.a */,
 				3BE823AD28D05873006AC9F9 /* libPermission-Camera.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				40429EF9D36023188708B281 /* libPods-PatientEducation.a */,
-				90B710FEDA8BD048C8C6F5A7 /* libPods-PatientEducation-PatientEducationTests.a */,
-				6F29E6CA4CEA77953B2D04F1 /* libPods-PatientEducation_dev.a */,
-				781477F76E51619B3C6830D7 /* libPods-PatientEducation_sit.a */,
-				143AA33EC6245BFE6AA31C0D /* libPods-PatientEducation_uat.a */,
+				CC20D0BB8A398AE5DB00CA6C /* libPods-PatientEducation.a */,
+				D9071A903324F26DD27E175D /* libPods-PatientEducation-PatientEducationTests.a */,
+				F9FF7C1B1B27AB576AD96B55 /* libPods-PatientEducation_dev.a */,
+				1A6E66F03D9E3F812F4AE672 /* libPods-PatientEducation_sit.a */,
+				AF154C194E8962D3ECA7D4CB /* libPods-PatientEducation_uat.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -314,16 +314,16 @@
 		DD00B3073F10D9516290499B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3DEF7DE533CA1C19828C4288 /* Pods-PatientEducation.debug.xcconfig */,
-				B6BC2A822E5F8AF0581B348C /* Pods-PatientEducation.release.xcconfig */,
-				B95D3476B4BE21A5D179C7F7 /* Pods-PatientEducation-PatientEducationTests.debug.xcconfig */,
-				F392E90AC6C6D21F6782572D /* Pods-PatientEducation-PatientEducationTests.release.xcconfig */,
-				D56DA13F9F49131725257BC3 /* Pods-PatientEducation_dev.debug.xcconfig */,
-				35618677DECCAE2A06B53E9D /* Pods-PatientEducation_dev.release.xcconfig */,
-				2282E0FCF7F6E2FFE981B276 /* Pods-PatientEducation_sit.debug.xcconfig */,
-				A8DDD60343893BC780A17D94 /* Pods-PatientEducation_sit.release.xcconfig */,
-				DDF403B60C45312594AB65EF /* Pods-PatientEducation_uat.debug.xcconfig */,
-				2635C25E84A6A9734EABED04 /* Pods-PatientEducation_uat.release.xcconfig */,
+				0A4DEC7F4664BF820E0A738B /* Pods-PatientEducation.debug.xcconfig */,
+				00205F0A200403794FA6F1D7 /* Pods-PatientEducation.release.xcconfig */,
+				810185B9899FCBB7780316E6 /* Pods-PatientEducation-PatientEducationTests.debug.xcconfig */,
+				249D673E4F5DD8304C340F5A /* Pods-PatientEducation-PatientEducationTests.release.xcconfig */,
+				7BC0D07995082F1A7E205775 /* Pods-PatientEducation_dev.debug.xcconfig */,
+				53C7C9EB0EE294F33154A548 /* Pods-PatientEducation_dev.release.xcconfig */,
+				6A80B2259B78D81F1095B923 /* Pods-PatientEducation_sit.debug.xcconfig */,
+				6453E7233C183B982F1F5A4C /* Pods-PatientEducation_sit.release.xcconfig */,
+				03049390322AAFCE5774D718 /* Pods-PatientEducation_uat.debug.xcconfig */,
+				8D77F7749AF32634825C8A7C /* Pods-PatientEducation_uat.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -335,12 +335,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "PatientEducationTests" */;
 			buildPhases = (
-				92017B7FD97B9ECB90F68444 /* [CP] Check Pods Manifest.lock */,
+				749EFD34880CBE4100453C9E /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				5A7112BDD9ACBF4C5BB2DEA2 /* [CP] Embed Pods Frameworks */,
-				D8B8451DFF321503E50405AD /* [CP] Copy Pods Resources */,
+				D27C5149CB86F90190767BD2 /* [CP] Embed Pods Frameworks */,
+				C7AA9F65BBF3CBA5E8EDFC0D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -356,14 +356,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PatientEducation" */;
 			buildPhases = (
-				07AB9C190CF2C0B694026C2A /* [CP] Check Pods Manifest.lock */,
+				6C1201322C98C1CFFEE9A37D /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				025C1ECFF984F2FBF3B799DF /* [CP] Embed Pods Frameworks */,
-				A8E3C8E474C672EE8FDD7D9B /* [CP] Copy Pods Resources */,
+				18C74D6A8E937DBD00A6AD85 /* [CP] Embed Pods Frameworks */,
+				658A2008A098542BAA67D315 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -378,13 +378,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3BE5FD65286ADE1800D59958 /* Build configuration list for PBXNativeTarget "PatientEducation_sit" */;
 			buildPhases = (
-				FA9E00D6224FE5DC152C08C1 /* [CP] Check Pods Manifest.lock */,
+				B171235D380CC41ADF0EC50E /* [CP] Check Pods Manifest.lock */,
 				3BE5FD51286ADE1800D59958 /* Start Packager */,
 				3BE5FD52286ADE1800D59958 /* Sources */,
 				3BE5FD55286ADE1800D59958 /* Frameworks */,
 				3BE5FD57286ADE1800D59958 /* Resources */,
 				3BE5FD62286ADE1800D59958 /* Bundle React Native code and images */,
-				381E83B2023AD21AFC2B357E /* [CP] Copy Pods Resources */,
+				D17A0FAB8FD11A95A26E9FDE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -399,13 +399,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3BE5FD80286ADE5E00D59958 /* Build configuration list for PBXNativeTarget "PatientEducation_uat" */;
 			buildPhases = (
-				A0FAFE127CA849F288439254 /* [CP] Check Pods Manifest.lock */,
+				D892F31E0825812C53BDA4C6 /* [CP] Check Pods Manifest.lock */,
 				3BE5FD6C286ADE5E00D59958 /* Start Packager */,
 				3BE5FD6D286ADE5E00D59958 /* Sources */,
 				3BE5FD70286ADE5E00D59958 /* Frameworks */,
 				3BE5FD72286ADE5E00D59958 /* Resources */,
 				3BE5FD7D286ADE5E00D59958 /* Bundle React Native code and images */,
-				2B8585698FC1078F57545515 /* [CP] Copy Pods Resources */,
+				8DBD969DF238DEB82EBEC7FB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -420,13 +420,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3BE5FD9B286ADE6E00D59958 /* Build configuration list for PBXNativeTarget "PatientEducation_dev" */;
 			buildPhases = (
-				963B320C1C1A1C5F4B0EC258 /* [CP] Check Pods Manifest.lock */,
+				E7ACDAD9B5EF720C6C8879C7 /* [CP] Check Pods Manifest.lock */,
 				3BE5FD87286ADE6E00D59958 /* Start Packager */,
 				3BE5FD88286ADE6E00D59958 /* Sources */,
 				3BE5FD8B286ADE6E00D59958 /* Frameworks */,
 				3BE5FD8D286ADE6E00D59958 /* Resources */,
 				3BE5FD98286ADE6E00D59958 /* Bundle React Native code and images */,
-				F79BF9E52BE4816006E4F4D7 /* [CP] Copy Pods Resources */,
+				4A8F0EB7235725FFF82E876A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -585,7 +585,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		025C1ECFF984F2FBF3B799DF /* [CP] Embed Pods Frameworks */ = {
+		18C74D6A8E937DBD00A6AD85 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -600,62 +600,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation/Pods-PatientEducation-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		07AB9C190CF2C0B694026C2A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PatientEducation-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2B8585698FC1078F57545515 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		381E83B2023AD21AFC2B357E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_sit/Pods-PatientEducation_sit-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_sit/Pods-PatientEducation_sit-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_sit/Pods-PatientEducation_sit-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3BE5FD51286ADE1800D59958 /* Start Packager */ = {
@@ -757,24 +701,63 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		5A7112BDD9ACBF4C5BB2DEA2 /* [CP] Embed Pods Frameworks */ = {
+		4A8F0EB7235725FFF82E876A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		92017B7FD97B9ECB90F68444 /* [CP] Check Pods Manifest.lock */ = {
+		658A2008A098542BAA67D315 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation/Pods-PatientEducation-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation/Pods-PatientEducation-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation/Pods-PatientEducation-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6C1201322C98C1CFFEE9A37D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PatientEducation-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		749EFD34880CBE4100453C9E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -796,7 +779,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		963B320C1C1A1C5F4B0EC258 /* [CP] Check Pods Manifest.lock */ = {
+		8DBD969DF238DEB82EBEC7FB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_uat/Pods-PatientEducation_uat-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B171235D380CC41ADF0EC50E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -811,14 +811,65 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PatientEducation_dev-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PatientEducation_sit-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A0FAFE127CA849F288439254 /* [CP] Check Pods Manifest.lock */ = {
+		C7AA9F65BBF3CBA5E8EDFC0D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D17A0FAB8FD11A95A26E9FDE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_sit/Pods-PatientEducation_sit-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_sit/Pods-PatientEducation_sit-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_sit/Pods-PatientEducation_sit-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D27C5149CB86F90190767BD2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D892F31E0825812C53BDA4C6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -840,58 +891,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A8E3C8E474C672EE8FDD7D9B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation/Pods-PatientEducation-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation/Pods-PatientEducation-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation/Pods-PatientEducation-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D8B8451DFF321503E50405AD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation-PatientEducationTests/Pods-PatientEducation-PatientEducationTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F79BF9E52BE4816006E4F4D7 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PatientEducation_dev/Pods-PatientEducation_dev-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FA9E00D6224FE5DC152C08C1 /* [CP] Check Pods Manifest.lock */ = {
+		E7ACDAD9B5EF720C6C8879C7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -906,7 +906,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PatientEducation_sit-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PatientEducation_dev-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -992,7 +992,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B95D3476B4BE21A5D179C7F7 /* Pods-PatientEducation-PatientEducationTests.debug.xcconfig */;
+			baseConfigurationReference = 810185B9899FCBB7780316E6 /* Pods-PatientEducation-PatientEducationTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1019,7 +1019,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F392E90AC6C6D21F6782572D /* Pods-PatientEducation-PatientEducationTests.release.xcconfig */;
+			baseConfigurationReference = 249D673E4F5DD8304C340F5A /* Pods-PatientEducation-PatientEducationTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1043,11 +1043,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3DEF7DE533CA1C19828C4288 /* Pods-PatientEducation.debug.xcconfig */;
+			baseConfigurationReference = 0A4DEC7F4664BF820E0A738B /* Pods-PatientEducation.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 59EA8Y2QUM;
 				ENABLE_BITCODE = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = PatientEducation/Info.plist;
@@ -1055,6 +1056,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.8;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1072,16 +1074,18 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6BC2A822E5F8AF0581B348C /* Pods-PatientEducation.release.xcconfig */;
+			baseConfigurationReference = 00205F0A200403794FA6F1D7 /* Pods-PatientEducation.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 59EA8Y2QUM;
 				INFOPLIST_FILE = PatientEducation/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.8;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1098,7 +1102,7 @@
 		};
 		3BE5FD66286ADE1800D59958 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2282E0FCF7F6E2FFE981B276 /* Pods-PatientEducation_sit.debug.xcconfig */;
+			baseConfigurationReference = 6A80B2259B78D81F1095B923 /* Pods-PatientEducation_sit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1127,7 +1131,7 @@
 		};
 		3BE5FD67286ADE1800D59958 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A8DDD60343893BC780A17D94 /* Pods-PatientEducation_sit.release.xcconfig */;
+			baseConfigurationReference = 6453E7233C183B982F1F5A4C /* Pods-PatientEducation_sit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1153,7 +1157,7 @@
 		};
 		3BE5FD81286ADE5E00D59958 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DDF403B60C45312594AB65EF /* Pods-PatientEducation_uat.debug.xcconfig */;
+			baseConfigurationReference = 03049390322AAFCE5774D718 /* Pods-PatientEducation_uat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1182,7 +1186,7 @@
 		};
 		3BE5FD82286ADE5E00D59958 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2635C25E84A6A9734EABED04 /* Pods-PatientEducation_uat.release.xcconfig */;
+			baseConfigurationReference = 8D77F7749AF32634825C8A7C /* Pods-PatientEducation_uat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1208,7 +1212,7 @@
 		};
 		3BE5FD9C286ADE6E00D59958 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D56DA13F9F49131725257BC3 /* Pods-PatientEducation_dev.debug.xcconfig */;
+			baseConfigurationReference = 7BC0D07995082F1A7E205775 /* Pods-PatientEducation_dev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1360,7 +1364,7 @@
 		};
 		3BE5FD9D286ADE6E00D59958 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35618677DECCAE2A06B53E9D /* Pods-PatientEducation_dev.release.xcconfig */;
+			baseConfigurationReference = 53C7C9EB0EE294F33154A548 /* Pods-PatientEducation_dev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
