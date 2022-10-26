@@ -166,6 +166,7 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
                     this.getSelectedGroupsFromRealm(item.uniqueId);
                     this.props.setShowToolTip({ isVisible: true, currentIndex: index })
                 }}
+                hitSlop={{top: 20, bottom: 20, left: 40, right: 40}}
             >
                   <View style={style.sepration}>
                      <Image source={Images.dots} /> 
@@ -192,8 +193,8 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
 
     renderItem = ({ item, index }: any) => {
         let changeInFile;
-        if(item.timeDownloaded){
-        changeInFile =  item.timeDownloaded.localeCompare(item.lastModifiedDateTime);
+        if(item.timeDownloaded && item.lastModifiedDateTime){
+            changeInFile =  item.timeDownloaded.localeCompare(item.lastModifiedDateTime);
         }
         let fileName = item.name.split('.');
         return (

@@ -172,6 +172,7 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
                     this.setState({ selectedGroups: [] });
                     this.getSelectedGroupsFromRealm(item.uniqueId);
                 }}
+                hitSlop={{top: 20, bottom: 20, left: 40, right: 40}}
             >
                 <View style={style.sepration}>
                      <Image source={Images.dots} /> 
@@ -198,8 +199,8 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
 
     renderItem = ({ item, index }: any) => {
         let changeInFile;
-        if(item.timeDownloaded){
-        changeInFile =  item.timeDownloaded.localeCompare(item.lastModifiedDateTime);
+        if(item.timeDownloaded && item.lastModifiedDateTime){
+            changeInFile =  item.timeDownloaded.localeCompare(item.lastModifiedDateTime);
         }
         let fileName = item.name.split('.');
         return (

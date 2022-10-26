@@ -370,7 +370,7 @@ PODS:
     - React-perflogger (= 0.67.3)
   - ReactNativeLocalization (2.3.1):
     - React-Core
-  - RealmJS (10.19.2):
+  - RealmJS (10.22.0):
     - GCDWebServer
     - React
   - RNCAsyncStorage (1.17.6):
@@ -383,13 +383,15 @@ PODS:
     - React-Core
   - RNFS (2.20.0):
     - React-Core
-  - RNGestureHandler (2.4.2):
+  - RNGestureHandler (2.7.1):
     - React-Core
   - RNI18n (2.0.15):
     - React
   - RNLocalize (2.2.2):
     - React-Core
-  - RNReanimated (2.8.0):
+  - RNPermissions (3.6.1):
+    - React-Core
+  - RNReanimated (2.11.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -501,6 +503,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNI18n (from `../node_modules/react-native-i18n`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSecureKeyStore (from `../node_modules/react-native-secure-key-store/ios`)
@@ -622,6 +625,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-i18n"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -689,16 +694,17 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: af1946623656f9c5fd64ca6f36f3863516193446
   ReactCommon: 650e33cde4fb7d36781cd3143f5276da0abb2f96
   ReactNativeLocalization: be60e3a0e6e8db88d9f8190719ffb75e1cdab22a
-  RealmJS: a96d96674318e2fa46ed2ac82b18169ae7548c10
+  RealmJS: 2c1f4abe7eeb0b00881f3cbd08d18a208d5e6bd1
   RNCAsyncStorage: 86050d31a1cdc564876f68d8e342688b29f9b186
   RNCCheckbox: 934e11d33abb6b0db105cfa5a22a42bd89dfb4b9
   RNDeviceInfo: af47a7d1a09d64c8cbb8b0c883db9bca422a9813
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
+  RNGestureHandler: b7a872907ee289ada902127f2554fa1d2c076122
   RNI18n: e2f7e76389fcc6e84f2c8733ea89b92502351fd8
   RNLocalize: 481e572c8605c1c84b8a4c116d35bd61ce9c96b3
-  RNReanimated: 46cdb89ca59ab7181334f4ed05a70e82ddb36751
+  RNPermissions: 79d0c889562fd792329821bea3155fe6eb54d359
+  RNReanimated: 6133b98f25a95f3d04634c6c5492e1ca8d391753
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNSecureKeyStore: f1ad870e53806453039f650720d2845c678d89c8
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
