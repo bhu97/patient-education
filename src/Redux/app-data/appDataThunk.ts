@@ -18,6 +18,7 @@ import { LanguageDataModel } from '../../Model/language-data-model';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
 import { BaseThemeStyle } from '../../Theme/BaseThemeStyle';
 import { setIsFetchThumbnailLoaded, setIsSupportEmailLoad, setIsUpdateNowEnable, setMainCategoryList, setRefreshDetailScreen, setSupportEmailData } from '../category/categorySlice';
+import { setDownloadFileItem } from '../persistent/persistentSlice';
 import { dispatchState, getStateOfReducer } from '../store';
 import { setAllLanguage, setAppDataLoading, setCurrentLanguageData, setIsAlertShown, setSelectedLanguage } from './appDataSlice';
 
@@ -98,6 +99,11 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
         replaceAndNavigate(SCREEN_NAME.HomeScreen);
     }
     dispatchState(fetchLastModifiedDate());
+    let downloadFilesArray = await dbHelper.getDownloadItemFromDriveItem();
+    if(downloadFilesArray && downloadFilesArray?.length>0){
+        dispatchState(downloadFolder(downloadFilesArray))
+    }
+    
     dispatchState(setAppDataLoading(false));
     return mainCategoryData;
 });
@@ -206,7 +212,7 @@ export const userLoginCalled = createAsyncThunk('appData/login', async () => {
             if (token) {
                 dispatchState(setIsAlertShown(false));
                 dispatchState(fetchAllDriveItems(true));
-                 AsyncStorage.setItem('isLogout', 'false');
+                AsyncStorage.setItem('isLogout', 'false');
             } else {
                 dispatchState(setIsAlertShown(true));
             }
@@ -315,9 +321,9 @@ export const fetchLanguageSupport = createAsyncThunk('appData/fetchLanguageSuppo
         HTTP_METHODS.GET,
         params,
     );
-    console.log("getStateOfReducer",getStateOfReducer("appDataReducer").allLanguages);
+    console.log("getStateOfReducer", getStateOfReducer("appDataReducer").allLanguages);
     if (response.value.length > 0) {
-        let customResponse:any={}
+        let customResponse: any = {}
         for (let item of response.value) {
             const { field_0, Title, field_2, field_4, id } = item.fields
             customResponse[field_2] = field_4;
@@ -328,13 +334,13 @@ export const fetchLanguageSupport = createAsyncThunk('appData/fetchLanguageSuppo
             allLanguage: getStateOfReducer("appDataReducer").allLanguages,
             currentLangData: customResponse,
             currentSelectedLangCode: currentLang
-        }; 
+        };
         dbHelper.createLanguageData(LanguageDataModel.generate(group))
         dispatchState(setCurrentLanguageData(customResponse))
         dispatchState(setSelectedLanguage(currentLang))
         let data = dbHelper.getLanguageData()
         console.log(data);
-        
+
         dispatchState(setAppDataLoading(false))
         return response;
     }
@@ -348,7 +354,7 @@ export const fetchAllSupportedLang = createAsyncThunk('appData/fetchAllSupported
     const params = {};
 
     let url = API_NAMES.ALL_LANGUAGE_SUPPORT;
-    console.log("url",url);
+    console.log("url", url);
     const response = await apiManager.callApiToGetData(
         url,
         HTTP_METHODS.GET,
@@ -360,26 +366,28 @@ export const fetchAllSupportedLang = createAsyncThunk('appData/fetchAllSupported
             allLanguage.push(item.fields.field_0)
         }
         allLanguage.sort((a, b) => a.localeCompare(b));
-         dispatchState(setAllLanguage(allLanguage))
-         dispatchState(fetchLanguageSupport("English"))    
+        dispatchState(setAllLanguage(allLanguage))
+        dispatchState(fetchLanguageSupport("English"))
         return response;
     }
     else {
-     //   dispatchState(setAppDataLoading(false))
+        //   dispatchState(setAppDataLoading(false))
     }
 
 });
 
 export const getLanguageData = createAsyncThunk('appData/getLanguageData', async () => {
     let langData = await dbHelper.getLanguageData();
-    if(langData.length>0 && langData[0].currentLangData != ""){
-        console.log("langData[0].currentLangData &&&&&&&&&&&& 374#",langData[0].currentSelectedLangCode,"/n totel item",langData.length);
+    if (langData.length > 0 && langData[0].currentLangData != "") {
+        // console.log("langData[0].currentLangData &&&&&&&&&&&& 374#",langData[0].currentSelectedLangCode,"/n totel item",langData.length);
         BaseLocalization.getInstance().generate(langData[0].currentLangData)
         dispatchState(setAllLanguage(langData[0].allLanguage));
         dispatchState(setSelectedLanguage(langData[0].currentSelectedLangCode))
-    }else{
+    } else {
         BaseLocalization.getInstance().generate({})
     }
-    
+
 
 })
+
+

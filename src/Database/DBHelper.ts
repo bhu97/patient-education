@@ -3,7 +3,7 @@ import { applyDriveItemFilter, findCountry, normalizeUrl, notEmpty, sanitizeWebU
 import LogManager from '../Helper/LogManager';
 import { DriveItemModel, IDriveItem } from '../Model/DriveItemModel';
 import { FavoriteGroupModel } from '../Model/FavouriteGroupModel';
-import { FavoriteModel } from '../Model/FavouriteModel';
+import { FavoriteModel, IFavoriteModel } from '../Model/FavouriteModel';
 import { LanguageDataModel } from '../Model/language-data-model';
 import { LastModifyDateModel } from '../Model/LastModifyDateModel';
 import { MoreInfoListModel } from '../Model/MoreInfoListModel';
@@ -315,6 +315,11 @@ export class DBhelper {
         return itemData;
     }
 
+
+    async getDownloadItemFromDriveItem(): Promise<IDriveItem[] | null> {
+        const downloadItemArray = await DatabaseManager.getInstance().getEntities(DriveItemSchema.name, `downloadLocation != null`);
+        return downloadItemArray
+    }
 
 }
 

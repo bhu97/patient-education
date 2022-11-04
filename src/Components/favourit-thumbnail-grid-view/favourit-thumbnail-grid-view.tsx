@@ -121,10 +121,17 @@ class FavouritThumbnailGridView extends PureComponent<FavouritThumbnailGridViewP
         let downloadEnable;
         if(item.timeDownloaded)
         {
-            downloadEnable=  item.timeDownloaded.localeCompare(item.lastModifiedDateTime); 
+            downloadEnable =  item.timeDownloaded.localeCompare(item.lastModifiedDateTime); 
         }
         localToolTip.map((ele: any, ind: number) => {
-            if (isEmpaty || downloadEnable == -1) {
+            if (downloadEnable == -1) {
+                if (ind == 0) {
+                    ele.isEnable = true
+                } else if (ind == 1) {
+                    ele.isEnable = true
+                }
+            } 
+            else if (isEmpaty) {
                 if (ind == 0) {
                     ele.isEnable = true
                 } else if (ind == 1) {

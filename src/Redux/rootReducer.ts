@@ -7,7 +7,7 @@ import persistentReducer from './persistent/persistentSlice'
 const rootReducer = combineReducers({
     categoryReducer: categoryReducer,
     appDataReducer: appDataReducer,
-    persistent:persistentReducer
+    persistentReducer:persistentReducer
 });
 
 // typescript type for the combined state

@@ -6,13 +6,15 @@ import { UserModel } from '../../Model/UserModel';
 
 // interface to declare all required variables
 export interface PersistentState {
-   isSupportEmailDownloaded: boolean
+   isSupportEmailDownloaded: boolean,
+   downloadFileItem:any[]
 
 }
 
 // to set initial value for all variable
 const initialState: PersistentState = {  
-    isSupportEmailDownloaded:false
+    isSupportEmailDownloaded:false,
+    downloadFileItem:[]
 };
 
 // basic example slice done based on the docs
@@ -26,12 +28,19 @@ const PersistentSlice = createSlice({
         setIsSupportEmailDownloaded: (state, action: PayloadAction<boolean>) => {
             state.isSupportEmailDownloaded = action.payload;
         },
+        setDownloadFileItem:(state, action:PayloadAction<[]>)=>{      
+            console.log("state.downloadFileItem",state.downloadFileItem.length);      
+            state.downloadFileItem  =  action.payload
+           
+            
+        }
     },
 });
 
 // export individual action creator functions
 export const {
-    setIsSupportEmailDownloaded
+    setIsSupportEmailDownloaded,
+    setDownloadFileItem
 } = PersistentSlice.actions;
 
 // often the reducer is a default export, but that doesn't matter

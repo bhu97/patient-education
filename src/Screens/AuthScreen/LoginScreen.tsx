@@ -15,6 +15,8 @@ import { style } from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { dispatchState } from '../../Redux/store';
 import BaseLocalization from '../../Localization/BaseLocalization';
+import HomeIcon from '../../../assets/svg/home-icon';
+import HomeIconWhiteline from '../../../assets/svg/home-icon-whiteline';
 
 
 interface LoginScreenProps {
@@ -64,6 +66,7 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
                 {appDataLoading ? (
                     <FullScreenLoader isLoading showSpinner />
                 ) : (
+                    <>
                     <View style={style.buttonLogoContainer}>
                         {(Platform.OS == 'android') && (
                             <Image
@@ -86,16 +89,19 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
                                 {BaseLocalization.getInstance().getObject().login}
                             </Text>
                         </TouchableOpacity>
+                        <HomeIconWhiteline color={BaseThemeStyle.colors.blue} />
                     </View>
+                         <ApplicationAlert
+                         visible={this.props.isAlertShown}
+                         onRightPress={this.reTry}
+                         onLeftPress={this.hideAlert}
+                         alertMsg={BaseLocalization.getInstance().getObject().authFailed}
+                         rightButtonText={BaseLocalization.getInstance().getObject().reTry}
+                         leftButtonText={BaseLocalization.getInstance().getObject().cancel}
+                     />
+                     </>
                 )}
-                <ApplicationAlert
-                    visible={this.props.isAlertShown}
-                    onRightPress={this.reTry}
-                    onLeftPress={this.hideAlert}
-                    alertMsg={BaseLocalization.getInstance().getObject().authFailed}
-                    rightButtonText={BaseLocalization.getInstance().getObject().reTry}
-                    leftButtonText={BaseLocalization.getInstance().getObject().cancel}
-                />
+           
             </View>
         );
     }
