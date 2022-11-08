@@ -130,6 +130,8 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
         {
             downloadEnable=  item.timeDownloaded.localeCompare(item.lastModifiedDateTime); 
         }
+        console.log("downloadEnable",downloadEnable);
+        
         localToolTip.map((ele: any, ind: number) => {
             if (isEmpaty || downloadEnable == -1) {
                 if (ind == 0) {
@@ -199,10 +201,14 @@ class ThumbnailGridView extends PureComponent<ThumbnailGridViewProps, ThumbnailG
 
     renderItem = ({ item, index }: any) => {
         let changeInFile;
+        console.log("item.lastModifiedDateTime",item.lastModifiedDateTime,"/n item.timeDownloaded",item.timeDownloaded);
+        
         if(item.timeDownloaded && item.lastModifiedDateTime){
             changeInFile =  item.timeDownloaded.localeCompare(item.lastModifiedDateTime);
         }
         let fileName = item.name.split('.');
+        console.log("changeInFile",changeInFile);
+        
         return (
             <View style={style.backgroundViewStyle}>
                 <TouchableOpacity onPress={() => this.loadDocument(item)}>

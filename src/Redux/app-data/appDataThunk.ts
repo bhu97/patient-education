@@ -13,6 +13,7 @@ import { createDriveModelData, createListModelData, isStringEmpty } from '../../
 import LogManager from '../../Helper/LogManager';
 import NavigationManager from '../../Helper/NavigationManager';
 import BaseLocalization, { BaseLocalizations } from '../../Localization/BaseLocalization';
+import { DriveItemModel } from '../../Model/DriveItemModel';
 import { FavoriteGroupModel } from '../../Model/FavouriteGroupModel';
 import { LanguageDataModel } from '../../Model/language-data-model';
 import { LastModifyDateModel } from '../../Model/LastModifyDateModel';
@@ -59,11 +60,18 @@ export const fetchLastModifiedDate = createAsyncThunk('appData/fetchLastModified
 export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', async (isRedirectToHomeScreen?: boolean) => {
     LogManager.debug('fetchDriveItems call started');
     dispatchState(setAppDataLoading(true));
+    let downloadFilesArray = await dbHelper.getDownloadItemFromDriveItem();
+
+    //console.log('^^^^^^^^^^^^^^downloadFilesArray%%%%%%%%%%',downloadFilesArray);
+    
+
+    let ___ = await dbHelper.deleteDriveItemAllData();
+
     const driveItems = await fetchData(API_NAMES.ALL_DRIVE_ITEM_ENDPOINT);
-    LogManager.info('responses driveItems=', driveItems);
+  //  LogManager.info('responses driveItems=', driveItems);
 
     const driveModelData = createDriveModelData(driveItems);
-    LogManager.info('driveModelData=', driveModelData);
+   // LogManager.info('driveModelData=', driveModelData);
 
     //add drive item to db
     LogManager.debug('insert DB stars 1=');
@@ -71,10 +79,10 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
     LogManager.debug('insert DB end 1=');
 
     const listItems = await fetchData(API_NAMES.ALL_LIST_ITEM_ENDPOINT);
-    LogManager.info('responses list Item=', listItems);
+   // LogManager.info('responses list Item=', listItems);
 
     const listModelData = createListModelData(listItems);
-    LogManager.debug('listModelData=', listModelData);
+   // LogManager.debug('listModelData=', listModelData);
 
     //update drive item with list item into db
     LogManager.debug('insert DB stars 2=');
@@ -90,20 +98,30 @@ export const fetchAllDriveItems = createAsyncThunk('appData/fetchDriveItems', as
     dispatchState(setMainCategoryList(mainCategoryData));
     dispatchState(fetchAllSupportedLang());
 
-    LogManager.debug('fetchDriveItems call ended');
+   // LogManager.debug('fetchDriveItems call ended');
     /**
      * For first time login navigating to home screen
      * In Case of update now(Setting screen option) redirect to home screen
      */
+    dispatchState(fetchLastModifiedDate());
+
+    // let newDownloadedArray = downloadFilesArray?.filter((dItem: DriveItemModel) => driveModelData.some((lclItem) => {dItem.listItemId == lclItem.listItemId}));
+    console.log("downloadFilesArray.length 106", JSON.stringify(downloadFilesArray?.length), "/n/n driveModelData", JSON.stringify(driveModelData.length));
+
+    let newDownloadedArray = downloadFilesArray?.filter(e => {
+        return driveModelData.some(item => item.uniqueId === e.uniqueId);
+    });
+
+    console.log("newDownloadedArray 112", newDownloadedArray);
+
+    if (newDownloadedArray && newDownloadedArray?.length > 0) {
+        dispatchState(downloadFolder(newDownloadedArray))
+    }
+
     if (isRedirectToHomeScreen) {
         replaceAndNavigate(SCREEN_NAME.HomeScreen);
     }
-    dispatchState(fetchLastModifiedDate());
-    let downloadFilesArray = await dbHelper.getDownloadItemFromDriveItem();
-    if(downloadFilesArray && downloadFilesArray?.length>0){
-        dispatchState(downloadFolder(downloadFilesArray))
-    }
-    
+
     dispatchState(setAppDataLoading(false));
     return mainCategoryData;
 });
@@ -240,12 +258,14 @@ export const logout = createAsyncThunk('appData/logout', async () => {
 export const downloadFolder = createAsyncThunk('appData/downlaodFolder', async (driveItems: Array<any>) => {
     dispatchState(setAppDataLoading(true))
     for (let i = 0; i < driveItems.length; i++) {
-        if (isStringEmpty(driveItems[i].downloadLocation)) {
+        //if (driveItems[i].lastModifiedDateTime) {
+            console.log("i am called in download");
+            
             await downloadManager.downloadFile(driveItems[i], false, true);
-
-        } else {
-            console.log("already downloaded")
-        }
+        // } else {
+        //     console.log("i am called in remove",driveItems[i].lastModifiedDateTime);
+        //     await downloadManager.removeFile(driveItems[i], false, true)
+        // }
         if (i == driveItems.length - 1) {
             dispatchState(setAppDataLoading(false))
             dispatchState(setRefreshDetailScreen(true))

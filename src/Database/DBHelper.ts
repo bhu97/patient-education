@@ -321,6 +321,10 @@ export class DBhelper {
         return downloadItemArray
     }
 
+    async deleteDriveItemAllData(){
+        const _ = await DatabaseManager.getInstance().deleteEntity(DriveItemSchema.name);
+    }   
+
 }
 
 const dbHelper = new DBhelper();

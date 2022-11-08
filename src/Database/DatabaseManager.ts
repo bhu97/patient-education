@@ -134,4 +134,16 @@ export class DatabaseManager {
             console.log(error);
         }
     };
+
+    public deleteEntity = async (schema: SchemaType) => {
+        try {
+            this.realm.write(() => {
+                this.realm.delete(this.realm.objects(schema));
+            });
+        } catch (error) {
+            console.log('deleteEntity--->', error);
+            return '';
+        }
+    };
+
 }

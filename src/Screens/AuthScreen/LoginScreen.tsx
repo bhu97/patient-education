@@ -89,7 +89,6 @@ class LoginScreen extends Component<LoginScreenProps, LoginScreenState> {
                                 {BaseLocalization.getInstance().getObject().login}
                             </Text>
                         </TouchableOpacity>
-                        <HomeIconWhiteline color={BaseThemeStyle.colors.blue} />
                     </View>
                          <ApplicationAlert
                          visible={this.props.isAlertShown}
