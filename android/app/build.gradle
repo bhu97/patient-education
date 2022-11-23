@@ -153,8 +153,8 @@ android {
         applicationId "com.fresenius.patienteducation"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
-        versionName "1.9"
+        versionCode 10
+        versionName "2.0"
         resValue "string", "build_config_package", "com.fresenius.patienteducation"
         manifestPlaceholders = [
                 appAuthRedirectScheme: 'preisfindungstool'
