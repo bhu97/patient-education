@@ -60,6 +60,8 @@ class CustomLanguageHeader extends PureComponent<CustomLanguageHeaderProps, Cust
     }
 
     render() {
+        //console.log("this.props.languageList",this.props.languageList.length);
+        
         return (
             <TouchableOpacity onPress={this.onPressItem}>
             <View style={style.mainContainer}>

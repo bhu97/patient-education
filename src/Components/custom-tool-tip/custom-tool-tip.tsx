@@ -1,5 +1,5 @@
 import React, { Fragment, PureComponent } from 'react';
-import { Alert, FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import BaseLocalization from '../../Localization/BaseLocalization';
 import { style } from './style';
@@ -49,6 +49,7 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
                 <FlatList
                     ItemSeparatorComponent={this.toolTipOptionSeparator}
                     data={this.props.model}
+                    nestedScrollEnabled
                     renderItem={({ item , index}) => {
                         return (
                             <TouchableOpacity onPress={() => this.onPressOfToolTipItem(item)}>
@@ -85,7 +86,7 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
                     arrowSize={style.toolTipArrow}
                     isVisible={this.props.isVisible}
                     content={
-                        <View style={[{ ...style.toolTipContainer, height: this.props.isCountryList || this.props.isLanguageList ? 'auto' : 210 }]}>
+                        <ScrollView contentContainerStyle={[{ ...style.toolTipContainer, height: this.props.isCountryList || this.props.isLanguageList ? 'auto' : 210 }]}>
                             {!this.props.isCountryList && !this.props.isLanguageList ? (
                                 <>
                                     <Text style={style.folderTitle}>
@@ -95,7 +96,7 @@ export default class CustomToolTip extends PureComponent<CustomToolTipProps, Cus
                                 </>
                             ) : null}
                             {this.toolTipList()}
-                        </View>
+                        </ScrollView>
                     }
                     placement={this.props.position}
                     onClose={this.props.closeToolTip}

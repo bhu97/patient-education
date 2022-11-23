@@ -9,7 +9,7 @@ export const style = StyleSheet.create({
         width: 16, height: 8
     },
     toolTipContainer:{   
-        borderRadius: 10,justifyContent: 'center', alignItems: 'center',flex:1,height:'auto'
+        flex:1,borderRadius: 10,justifyContent: 'center', alignItems: 'center',
     },
     toolTipOptions:{
         fontSize: 24, fontWeight: '500', padding: 10 , color:BaseThemeStyle.colors.blue
